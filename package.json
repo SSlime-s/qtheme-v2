@@ -16,10 +16,13 @@
     "@types/react-dom": "18.0.10",
     "eslint": "8.31.0",
     "eslint-config-next": "13.1.1",
+    "mysql": "^2.18.1",
     "next": "13.1.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "typescript": "4.9.4"
+    "swr": "^2.0.0",
+    "typescript": "4.9.4",
+    "zod": "^3.20.2"
   },
   "packageManager": "yarn@3.3.0",
   "engines": {
@@ -27,6 +30,7 @@
     "yarn": ">=3.0.0"
   },
   "devDependencies": {
+    "@types/mysql": "^2.15.21",
     "@typescript-eslint/eslint-plugin": "^5.48.0",
     "@typescript-eslint/parser": "^5.48.0",
     "eslint-config-prettier": "^8.6.0",
