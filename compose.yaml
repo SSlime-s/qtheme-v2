@@ -1,0 +1,28 @@
+version: "3"
+
+services:
+  db:
+    container_name: qtheme-db
+    image: mariadb:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: qtheme
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - ./mysql/data:/var/lib/mysql:z
+      - ./mysql/init:/docker-entrypoint-initdb.d:z
+    ports:
+      - "3306:3306"
+
+  phpmyadmin:
+    depends_on:
+      - db
+    container_name: qtheme-phpmyadmin
+    image: phpmyadmin:latest
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+      PMA_USER: root
+      PMA_PASSWORD: root
+    ports:
+      - "8080:80"
