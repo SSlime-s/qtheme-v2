@@ -27,20 +27,20 @@ VALUES
   ('draft');
 
 CREATE TABLE IF NOT EXISTS `theme_tags` (
-  `id` VARBINARY(16) NOT NULL PRIMARY KEY,
+  `id` CHAR(26) NOT NULL PRIMARY KEY,
   `name` VARCHAR(255) NOT NULL,
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS `themes` (
-  `id` VARBINARY(16) NOT NULL PRIMARY KEY,
+  `id` CHAR(26) NOT NULL PRIMARY KEY,
   `title` VARCHAR(255) NOT NULL,
   `description` TEXT NOT NULL,
   `author_user_id` VARCHAR(32) NOT NULL,
   `visibility` VARCHAR(32) NOT NULL,
   `type` VARCHAR(32),
+  `theme` JSON NOT NULL,
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (`author_user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   FOREIGN KEY (`type`) REFERENCES `theme_types` (`name`) ON DELETE
   SET
     NULL ON UPDATE CASCADE,
@@ -48,8 +48,8 @@ CREATE TABLE IF NOT EXISTS `themes` (
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS `theme_versions` (
-  `id` VARBINARY(16) NOT NULL PRIMARY KEY,
-  `theme_id` VARBINARY(16) NOT NULL,
+  `id` CHAR(26) NOT NULL PRIMARY KEY,
+  `theme_id` CHAR(26) NOT NULL,
   `version` VARCHAR(255) NOT NULL,
   `theme` JSON NOT NULL,
   `created_at` DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -58,8 +58,8 @@ CREATE TABLE IF NOT EXISTS `theme_versions` (
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS `theme_tag_relations` (
-  `theme_id` VARBINARY(16) NOT NULL,
-  `tag_id` VARBINARY(16) NOT NULL,
+  `theme_id` CHAR(26) NOT NULL,
+  `tag_id` CHAR(26) NOT NULL,
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`theme_id`, `tag_id`),
   FOREIGN KEY (`theme_id`) REFERENCES `themes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -68,7 +68,7 @@ CREATE TABLE IF NOT EXISTS `theme_tag_relations` (
 
 CREATE TABLE IF NOT EXISTS `likes` (
   `user_id` VARCHAR(32) NOT NULL,
-  `theme_id` VARBINARY(16) NOT NULL,
+  `theme_id` CHAR(26) NOT NULL,
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`user_id`, `theme_id`),
   FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
