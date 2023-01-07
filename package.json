@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "fix": "next lint --fix && prettier --write . --cache --ignore-unknown '!.yarn/**/*'"
+    "fix": "next lint --fix && prettier --write './{apollo,lib,model,pages,public,styles}/**/*' --cache --ignore-unknown '!.yarn/**/*,!./mysql/data'"
   },
   "dependencies": {
     "@next/font": "13.1.1",
