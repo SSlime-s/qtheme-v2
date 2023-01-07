@@ -18,7 +18,7 @@ const CSSColorTypeSimpleSchema = z
   .string()
   .min(1)
   .refine(value => parseColor(value) !== null, {
-    message: 'Invalid CSSColorTypeSimple'
+    message: 'Invalid CSSColorTypeSimple',
   })
 
 export type CSSColorType = string
@@ -30,7 +30,7 @@ const CSSImageTypeSchema = z.string().min(1)
 export type CSSImageColorType = z.infer<typeof CSSImageColorTypeSchema>
 const CSSImageColorTypeSchema = z.union([
   CSSColorTypeSchema,
-  CSSImageTypeSchema
+  CSSImageTypeSchema,
 ])
 
 const maybeCSSColorTypeSimple = <T extends z.ZodTypeAny>(t: T) =>
@@ -49,42 +49,42 @@ const basicThemeSchema = z.object({
         default: CSSColorTypeSchema.optional(),
         background: CSSImageColorTypeSchema.optional(),
         inactive: CSSColorTypeSchema.optional(),
-        fallback: CSSColorTypeSimpleSchema
+        fallback: CSSColorTypeSimpleSchema,
       })
     ),
     notification: maybeCSSColorTypeSimple(
       z.object({
         default: CSSColorTypeSchema.optional(),
         background: CSSImageColorTypeSchema.optional(),
-        fallback: CSSColorTypeSchema
+        fallback: CSSColorTypeSchema,
       })
     ),
     online: CSSColorTypeSimpleSchema,
     error: CSSColorTypeSimpleSchema,
-    focus: CSSColorTypeSimpleSchema
+    focus: CSSColorTypeSimpleSchema,
   }),
   background: z.object({
     primary: maybeCSSColorTypeSimple(
       z.object({
         default: CSSImageColorTypeSchema.optional(),
         border: CSSColorTypeSchema.optional(),
-        fallback: CSSColorTypeSimpleSchema
+        fallback: CSSColorTypeSimpleSchema,
       })
     ),
     secondary: maybeCSSColorTypeSimple(
       z.object({
         default: CSSImageColorTypeSchema.optional(),
         border: CSSColorTypeSchema.optional(),
-        fallback: CSSColorTypeSimpleSchema
+        fallback: CSSColorTypeSimpleSchema,
       })
     ),
     tertiary: maybeCSSColorTypeSimple(
       z.object({
         default: CSSImageColorTypeSchema.optional(),
         border: CSSColorTypeSchema.optional(),
-        fallback: CSSColorTypeSimpleSchema
+        fallback: CSSColorTypeSimpleSchema,
       })
-    )
+    ),
   }),
   ui: z.object({
     primary: maybeCSSColorTypeSimple(
@@ -92,7 +92,7 @@ const basicThemeSchema = z.object({
         default: CSSColorTypeSchema.optional(),
         background: CSSImageColorTypeSchema.optional(),
         inactive: CSSColorTypeSchema.optional(),
-        fallback: CSSColorTypeSimpleSchema
+        fallback: CSSColorTypeSimpleSchema,
       })
     ),
     secondary: maybeCSSColorTypeSimple(
@@ -100,15 +100,15 @@ const basicThemeSchema = z.object({
         default: CSSColorTypeSchema.optional(),
         background: CSSImageColorTypeSchema.optional(),
         inactive: CSSColorTypeSchema.optional(),
-        fallback: CSSColorTypeSimpleSchema
+        fallback: CSSColorTypeSimpleSchema,
       })
     ),
-    tertiary: CSSColorTypeSimpleSchema
+    tertiary: CSSColorTypeSimpleSchema,
   }),
   text: z.object({
     primary: CSSColorTypeSimpleSchema,
-    secondary: CSSColorTypeSimpleSchema
-  })
+    secondary: CSSColorTypeSimpleSchema,
+  }),
 })
 
 export type SpecificTheme = z.infer<typeof specificThemeSchema>
@@ -121,7 +121,7 @@ const specificThemeSchema = z.object({
   mainViewBackground: z.string(),
   sideBarBackground: z.string(),
 
-  stampEdgeEnable: z.boolean()
+  stampEdgeEnable: z.boolean(),
 })
 
 export type BrowserTheme = z.infer<typeof browserThemeSchema>
@@ -135,7 +135,7 @@ const browserThemeSchema = z.object({
 
   scrollbarThumb: CSSColorTypeSchema,
   scrollbarThumbHover: CSSColorTypeSchema,
-  scrollbarTrack: CSSColorTypeSchema
+  scrollbarTrack: CSSColorTypeSchema,
 })
 
 export type MarkdownDefaultTheme = z.infer<typeof markdownDefaultThemeSchema>
@@ -163,7 +163,7 @@ const markdownThemeSchema = z.object({
   embedLinkText: CSSColorTypeSchema,
   embedLinkBackground: CSSColorTypeSchema,
   embedLinkHighlightText: CSSColorTypeSchema,
-  embedLinkHighlightBackground: CSSColorTypeSchema
+  embedLinkHighlightBackground: CSSColorTypeSchema,
 })
 
 export type ExtendedOptionalMarkdownTheme = z.infer<
@@ -171,7 +171,7 @@ export type ExtendedOptionalMarkdownTheme = z.infer<
 >
 const extendedOptionalMarkdownThemeSchema = z
   .object({
-    extends: markdownDefaultThemeSchema
+    extends: markdownDefaultThemeSchema,
   })
   .merge(markdownThemeSchema.partial())
 
@@ -183,5 +183,5 @@ export const themeSchema = z.object({
   browser: browserThemeSchema.partial().optional(),
   markdown: z
     .union([markdownDefaultThemeSchema, extendedOptionalMarkdownThemeSchema])
-    .optional()
+    .optional(),
 })

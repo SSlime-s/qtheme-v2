@@ -3,10 +3,7 @@ import { themeSchema } from './theme'
 
 export const ulidSchema = z.string().uuid()
 
-export const themeTypeSchema = z.union([
-  z.literal('light'),
-  z.literal('dark'),
-])
+export const themeTypeSchema = z.union([z.literal('light'), z.literal('dark')])
 export const visibilityTypeSchema = z.union([
   z.literal('public'),
   z.literal('private'),

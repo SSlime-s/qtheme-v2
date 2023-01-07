@@ -48,7 +48,7 @@ const parseHexNotationColor = (str: string): RGBColor | null => {
         r: (mustConvertHex(str[1]!) / 15) * 255,
         g: (mustConvertHex(str[2]!) / 15) * 255,
         b: (mustConvertHex(str[3]!) / 15) * 255,
-        a: mustConvertHex(str[4] ?? 'F') / 15
+        a: mustConvertHex(str[4] ?? 'F') / 15,
       } as const
     } catch {
       return null
@@ -61,7 +61,7 @@ const parseHexNotationColor = (str: string): RGBColor | null => {
         r: mustConvertHex(str.slice(1, 3)),
         g: mustConvertHex(str.slice(3, 5)),
         b: mustConvertHex(str.slice(5, 7)),
-        a: mustConvertHex(str.slice(7, 9) || 'FF') / 255
+        a: mustConvertHex(str.slice(7, 9) || 'FF') / 255,
       } as const
     } catch {
       return null
@@ -98,7 +98,7 @@ const angleUnits = {
   deg: 360,
   grad: 400,
   rad: 2 * Math.PI,
-  turn: 1
+  turn: 1,
 }
 
 /**
@@ -138,7 +138,7 @@ const parseRGBFunctionColorValues = (
       r: mustConvertPercentageOrNumber(values[0]!, 255),
       g: mustConvertPercentageOrNumber(values[1]!, 255),
       b: mustConvertPercentageOrNumber(values[2]!, 255),
-      a: mustConvertPercentageOrNumber(values[3] ?? '1')
+      a: mustConvertPercentageOrNumber(values[3] ?? '1'),
     }
     /* eslint-enable @typescript-eslint/no-non-null-assertion */
   } catch {
@@ -181,7 +181,7 @@ const parseHSLFunctionColorValues = (
       h: mustConvertHue(values[0]!),
       s: mustConvertPercentage(values[1]!),
       l: mustConvertPercentage(values[2]!),
-      a: mustConvertPercentageOrNumber(values[3] ?? '1')
+      a: mustConvertPercentageOrNumber(values[3] ?? '1'),
     }
     /* eslint-enable @typescript-eslint/no-non-null-assertion */
   } catch {
