@@ -46,6 +46,9 @@ export const createTheme = async (
     ])
   } catch (err: unknown) {
     console.error(err)
+    if (err instanceof GraphQLError) {
+      throw err
+    }
     throw new GraphQLError(`Internal server error: ${err}`)
   }
   return getTheme(_, { id }, { userId })

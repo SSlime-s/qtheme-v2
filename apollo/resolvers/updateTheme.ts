@@ -88,6 +88,9 @@ export const updateTheme = async (
   } catch (err: unknown) {
     await connection?.rollback()
     console.error(err)
+    if (err instanceof GraphQLError) {
+      throw err
+    }
     throw new GraphQLError(`Internal server error: ${err}`)
   } finally {
     await connection?.end()

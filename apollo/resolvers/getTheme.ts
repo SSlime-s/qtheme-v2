@@ -58,6 +58,9 @@ export const getTheme = async (
     return rows[0]
   } catch (err: unknown) {
     console.error(err)
+    if (err instanceof GraphQLError) {
+      throw err
+    }
     throw new GraphQLError(`Internal server error: ${err}`)
   }
 }
