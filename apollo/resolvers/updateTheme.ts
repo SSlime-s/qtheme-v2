@@ -1,7 +1,7 @@
 import { GraphQLError } from 'graphql'
 import { assertIsObject } from '@/lib/types'
 import { connectDb } from '@/model/db'
-import { ContextValue } from './resolvers'
+import { ContextValue } from '.'
 import { getTheme } from './getTheme'
 import { Connection } from 'mysql2/promise'
 import { ulid } from 'ulid'

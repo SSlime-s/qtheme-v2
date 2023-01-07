@@ -2,7 +2,7 @@ import { GraphQLError } from 'graphql'
 import { Connection } from 'mysql2/promise'
 import { assertIsArrayObject } from '@/lib/types'
 import { connectDb } from '@/model/db'
-import { ContextValue } from './resolvers'
+import { ContextValue } from '.'
 
 export const deleteTheme = async (
   _: unknown,

@@ -1,6 +1,6 @@
 import { GraphQLError } from 'graphql'
 import { connectDb } from '@/model/db'
-import { ContextValue } from './resolvers'
+import { ContextValue } from '.'
 import { getTheme } from './getTheme'
 import { ulid } from 'ulid'
 

@@ -1,7 +1,7 @@
 import { GraphQLError } from 'graphql'
 import { assertIsArray, assertIsArrayObject } from '@/lib/types'
 import { connectDb } from '@/model/db'
-import { ContextValue } from './resolvers'
+import { ContextValue } from '.'
 
 export const getThemes = async (
   _: unknown,
