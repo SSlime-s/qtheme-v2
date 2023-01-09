@@ -10,6 +10,8 @@
     "fix": "next lint --fix && prettier --write './{apollo,lib,model,pages,public,styles}/**/*' --cache --ignore-unknown '!.yarn/**/*,!./mysql/data'"
   },
   "dependencies": {
+    "@emotion/react": "^11.10.5",
+    "@emotion/styled": "^11.10.5",
     "@next/font": "13.1.1",
     "@types/node": "18.11.18",
     "@types/react": "18.0.26",
