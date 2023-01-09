@@ -2,7 +2,7 @@ import useSWR from 'swr'
 import useSWRInfinite from 'swr/infinite'
 import { useClient } from '@/lib/api'
 import { gql } from 'graphql-request'
-import { useCallback, useMemo } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { Theme } from '@/model/theme'
 import { resolveTheme } from '@/lib/theme'
 import { lightTheme } from './default'
@@ -87,6 +87,63 @@ const toggleLikeMutation = gql`
   }
 `
 
+export const createThemeMutation = gql`
+  mutation CreateTheme(
+    $title: String!
+    $description: String!
+    $visibility: Visibility!
+    $type: Type!
+    $theme: String!
+  ) {
+    createTheme(
+      title: $title
+      description: $description
+      visibility: $visibility
+      type: $type
+      theme: $theme
+    )
+  }
+`
+export interface CreateThemeInput {
+  title: string
+  description: string
+  visibility: 'public' | 'private' | 'draft'
+  type: 'light' | 'dark' | 'other'
+  theme: Theme
+}
+
+export const updateThemeMutation = gql`
+  mutation UpdateTheme(
+    id: ID!
+    $title: String!
+    $description: String!
+    $visibility: Visibility!
+    $type: Type!
+    $theme: String!
+  ) {
+    updateTheme(
+      id: $id
+      title: $title
+      description: $description
+      visibility: $visibility
+      type: $type
+      theme: $theme
+    )
+  }
+`
+export interface UpdateThemeInput extends CreateThemeInput {
+  id: string
+}
+
+export const deleteThemeMutation = gql`
+  mutation DeleteTheme($id: ID!) {
+    deleteTheme(id: $id)
+  }
+`
+export interface DeleteThemeInput {
+  id: string
+}
+
 interface ThemeInfo {
   id: string
   author: string
@@ -159,6 +216,8 @@ export const useThemeList = (
 ) => {
   const client = useClient()
 
+  const [delta, setDelta] = useState(0)
+
   const { data, error, isLoading, mutate, setSize } = useSWRInfinite<{
     themes: ThemeWhole[]
     total: number
@@ -172,7 +231,7 @@ export const useThemeList = (
         getThemeListQuery,
         {
           limit: pageSize,
-          offset: index * pageSize,
+          offset: index * pageSize + delta,
           type: type?.toUpperCase() ?? null,
           visibility: visibility?.toUpperCase() ?? null,
           filter: filter?.toUpperCase() ?? null,
@@ -261,6 +320,86 @@ export const useThemeList = (
     [client, mutate]
   )
 
+  const createTheme = useCallback(
+    async (
+      theme: Pick<
+        ThemeWhole,
+        'title' | 'description' | 'theme' | 'type' | 'visibility'
+      >
+    ) => {
+      const { createTheme } = await client.request(createThemeMutation, {
+        theme,
+      })
+      mutate(data => {
+        if (!data) {
+          return data
+        }
+        const newData = [...data]
+        newData[0].themes.unshift(createTheme)
+        newData[0].total += 1
+        return newData
+      }, false)
+      setDelta(delta => delta + 1)
+    },
+    [client, mutate]
+  )
+
+  const updateTheme = useCallback(
+    async (
+      id: string,
+      theme: Pick<
+        ThemeWhole,
+        'title' | 'description' | 'theme' | 'type' | 'visibility'
+      >
+    ) => {
+      const { updateTheme } = await client.request(updateThemeMutation, {
+        id,
+        theme,
+      })
+      mutate(data => {
+        if (!data) {
+          return data
+        }
+
+        return data.map(page => {
+          return {
+            ...page,
+            themes: page.themes.map(oldTheme => {
+              if (oldTheme.id !== id) {
+                return oldTheme
+              }
+              return {
+                ...oldTheme,
+                ...updateTheme,
+              }
+            }),
+          }
+        })
+      }, false)
+    },
+    [client, mutate]
+  )
+
+  const deleteTheme = useCallback(
+    async (id: string) => {
+      await client.request(deleteThemeMutation, { id })
+      mutate(data => {
+        if (!data) {
+          return data
+        }
+
+        return data.map(page => {
+          return {
+            ...page,
+            themes: page.themes.filter(theme => theme.id !== id),
+          }
+        })
+      }, false)
+      setDelta(delta => delta - 1)
+    },
+    [client, mutate]
+  )
+
   return {
     themes,
     total,
@@ -268,6 +407,9 @@ export const useThemeList = (
     mutate: {
       loadMore,
       toggleLike,
+      createTheme,
+      updateTheme,
+      deleteTheme,
     },
     error,
     isLoading,
