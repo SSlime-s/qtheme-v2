@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "fix": "next lint --fix && prettier --write './{apollo,lib,model,pages,public,styles}/**/*' --cache --ignore-unknown '!.yarn/**/*,!./mysql/data'"
+    "fix": "next lint --fix && prettier --write './{apollo,lib,model,pages,public,styles,components}/**/*' --cache --ignore-unknown '!.yarn/**/*,!./mysql/data'"
   },
   "dependencies": {
     "@emotion/react": "^11.10.5",
