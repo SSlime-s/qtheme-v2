@@ -24,10 +24,6 @@ export const resolvers: Config['resolvers'] = {
     DARK: 'dark',
     OTHER: 'other',
   },
-  Filter: {
-    IS_LIKE: 'isLike',
-    IS_MINE: 'isMine',
-  },
   Query: {
     getRandomTheme,
     getTheme,
