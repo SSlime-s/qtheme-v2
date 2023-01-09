@@ -10,18 +10,19 @@ export const getThemes = async (
     offset?: number
     visibility?: 'public' | 'private' | 'draft'
     type?: 'light' | 'dark' | 'other'
-    filter?: 'isLike' | 'isMine'
+    only_like?: boolean
+    author?: string
   },
   { userId, connection }: ContextValue
 ) => {
-  const { limits, offset, visibility, type, filter } = args
+  const { limits, offset, visibility, type, only_like, author } = args
   if (visibility === 'draft') {
     throw new GraphQLError('Invalid visibility')
   }
   if (visibility === 'private' && userId === undefined) {
     throw new GraphQLError('Forbidden')
   }
-  if (filter !== undefined && userId === undefined) {
+  if (only_like === true && userId === undefined) {
     throw new GraphQLError('Forbidden')
   }
   if (limits === undefined && offset !== undefined) {
@@ -72,12 +73,11 @@ export const getThemes = async (
             }
             ${type === undefined ? '' : `AND themes.type = ?`}
             ${
-              filter === undefined
+              only_like === undefined || !only_like
                 ? ''
-                : filter === 'isLike'
-                ? 'AND isLikes.isLike = TRUE'
-                : 'AND themes.author_user_id = ?'
+                : `AND isLikes.isLike = TRUE`
             }
+            ${author === undefined ? '' : `AND themes.author_user_id = ?`}
           ORDER BY themes.created_at DESC
           ${limits === undefined ? '' : `LIMIT ?`}
           ${offset === undefined ? '' : `OFFSET ?`}
@@ -86,9 +86,9 @@ export const getThemes = async (
       ...(userId !== undefined ? [userId] : []),
       ...(visibility !== undefined ? [visibility] : []),
       ...(type !== undefined ? [type] : []),
+      ...(author !== undefined ? [author] : []),
       ...(limits !== undefined ? [limits] : []),
       ...(offset !== undefined ? [offset] : []),
-      ...(filter === 'isMine' ? [userId] : []),
     ])
     console.log(rows)
     assertIsArray(rows)

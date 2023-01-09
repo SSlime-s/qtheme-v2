@@ -13,11 +13,6 @@ export const typeDefs: Config['typeDefs'] = gql`
     OTHER
   }
 
-  enum Filter {
-    IS_LIKE
-    IS_MINE
-  }
-
   type Theme {
     id: ID!
     title: String!
@@ -56,7 +51,8 @@ export const typeDefs: Config['typeDefs'] = gql`
       offset: Int
       visibility: Visibility
       type: Type
-      filter: Filter
+      only_like: Boolean
+      author: String
     ): Themes
   }
 
