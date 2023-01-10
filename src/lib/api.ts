@@ -22,3 +22,7 @@ export const useClient = () => {
 
   return client
 }
+
+export const userIconUrl = (userId: string) => {
+  return `https://q.trap.jp/api/1.0/public/icon/${userId}`
+}
