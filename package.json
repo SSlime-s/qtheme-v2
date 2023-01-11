@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "fix": "next lint --fix && prettier --write './src/**/*' --cache",
-    "storybook": "start-storybook -p 6006",
+    "storybook": "start-storybook -p 6006 -s ./src",
     "build-storybook": "build-storybook"
   },
   "dependencies": {
@@ -28,6 +28,7 @@
     "next": "13.1.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-icons": "^4.7.1",
     "react-linkify": "^1.0.0-alpha",
     "swr": "^2.0.0",
     "typescript": "4.9.4",
