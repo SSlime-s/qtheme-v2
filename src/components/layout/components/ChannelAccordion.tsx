@@ -36,7 +36,6 @@ export const ChannelAccordion: React.FC<PropsWithChildren<Props>> = ({
   const toggleOpen = useCallback(() => {
     setIsOpen(isOpen => !isOpen)
   }, [])
-  const hidden = isOpen ? undefined : 'until-found'
 
   useEffect(() => {
     if (ref.current === null) {
@@ -69,14 +68,12 @@ export const ChannelAccordion: React.FC<PropsWithChildren<Props>> = ({
         </ToggleButton>
         <ChannelLink href={to}>{name}</ChannelLink>
       </ChannelWrap>
-      <ContentWrap data-height={contentHeight}>
-        <div
-          ref={ref}
-          id={contentsId}
-          aria-hidden={!isOpen}
-          // react が until-found に対応していないため as で無理やりキャストしてる
-          hidden={hidden as unknown as boolean}
-        >
+      <ContentWrap
+        data-height={contentHeight}
+        // FIXME: ページ内検索で引っかからないように hidden もつけるべき
+        aria-hidden={!isOpen}
+      >
+        <div ref={ref} id={contentsId}>
           {children}
         </div>
       </ContentWrap>
