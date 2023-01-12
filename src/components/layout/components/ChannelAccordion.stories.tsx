@@ -23,6 +23,10 @@ const Template: ComponentStory<typeof ChannelAccordion> = function (
           <Channel name='light' to='#' />
           <Channel name='dark' to='#' />
         </ChannelAccordion>
+        <ChannelAccordion {...args}>
+          <Channel name='light' to='#' />
+          <Channel name='dark' to='#' />
+        </ChannelAccordion>
       </Wrap>
     </ThemeProvider>
   )
