@@ -7,4 +7,6 @@ export const Header: React.FC = () => {
 const Wrap = styled.div`
   grid-area: header;
   color: ${({ theme }) => theme.theme.basic.ui.primary.default};
+  border-bottom: solid 2px
+    ${({ theme }) => theme.theme.basic.ui.tertiary.default};
 `
