@@ -1,5 +1,5 @@
 import { ResolvedTheme } from '@/lib/theme'
-import { ThemeProvider } from '@emotion/react'
+import { css } from '@emotion/react'
 import styled from '@emotion/styled'
 import Link from 'next/link'
 import {
@@ -14,14 +14,12 @@ import { BsHash } from 'react-icons/bs'
 
 interface Props {
   name: string
-  theme: ResolvedTheme
   to: string
   selected?: boolean
 }
 
 export const ChannelAccordion: React.FC<PropsWithChildren<Props>> = ({
   name,
-  theme,
   selected,
   to,
   children,
@@ -59,36 +57,30 @@ export const ChannelAccordion: React.FC<PropsWithChildren<Props>> = ({
   }, [])
 
   return (
-    <ThemeProvider
-      theme={{
-        theme,
-      }}
-    >
-      <div>
-        <ChannelWrap data-selected={selected}>
-          <ToggleButton
-            onClick={toggleOpen}
-            aria-controls={contentsId}
-            aria-expanded={isOpen}
-            data-selected={selected}
-          >
-            <BsHash height={22} width={22} />
-          </ToggleButton>
-          <ChannelLink href={to}>{name}</ChannelLink>
-        </ChannelWrap>
-        <ContentWrap data-height={contentHeight}>
-          <div
-            ref={ref}
-            id={contentsId}
-            aria-hidden={!isOpen}
-            // react が until-found に対応していないため as で無理やりキャストしてる
-            hidden={hidden as unknown as boolean}
-          >
-            {children}
-          </div>
-        </ContentWrap>
-      </div>
-    </ThemeProvider>
+    <div>
+      <ChannelWrap data-selected={selected}>
+        <ToggleButton
+          onClick={toggleOpen}
+          aria-controls={contentsId}
+          aria-expanded={isOpen}
+          data-selected={selected}
+        >
+          <BsHash height={22} width={22} />
+        </ToggleButton>
+        <ChannelLink href={to}>{name}</ChannelLink>
+      </ChannelWrap>
+      <ContentWrap data-height={contentHeight}>
+        <div
+          ref={ref}
+          id={contentsId}
+          aria-hidden={!isOpen}
+          // react が until-found に対応していないため as で無理やりキャストしてる
+          hidden={hidden as unknown as boolean}
+        >
+          {children}
+        </div>
+      </ContentWrap>
+    </div>
   )
 }
 const ChannelWrap = styled.div<{
@@ -125,6 +117,7 @@ const ToggleButton = styled.button<{
   border-radius: 4px;
   background-color: transparent;
   position: relative;
+  transition: all 0.1s ease;
 
   &[aria-expanded='true'] {
     background-color: ${({ theme, ...props }) =>
@@ -146,7 +139,11 @@ const ToggleButton = styled.button<{
     inset: -4px;
   }
 `
-const ChannelLink = styled(Link)`
+const ChannelTextStyle = ({
+  theme,
+}: {
+  theme: { theme: ResolvedTheme }
+}) => css`
   width: 100%;
   padding-left: 8px;
 
@@ -163,13 +160,15 @@ const ChannelLink = styled(Link)`
     pointer-events: none;
   }
 
+  [data-selected='true'] &:after {
+    background-color: ${theme.theme.basic.accent.primary.default};
+  }
+`
+const ChannelLink = styled(Link)`
+  ${ChannelTextStyle}
+
   &:hover:after {
     background-color: ${({ theme }) => theme.theme.basic.ui.primary.default};
-  }
-
-  [data-selected='true'] &:after {
-    background-color: ${({ theme }) =>
-      theme.theme.basic.accent.primary.default};
   }
 `
 const ContentWrap = styled.div<{
@@ -179,12 +178,32 @@ const ContentWrap = styled.div<{
   transition: all 0.3s ease;
   height: ${({ 'data-height': height }) =>
     height === undefined ? 'auto' : height}px;
+  padding-left: 12px;
 
   &[aria-hidden='true'] {
     height: 0;
   }
 `
 
-export const Channel: React.FC<Props> = ({ name, theme }) => {
-  return <></>
+export const Channel: React.FC<Props> = ({ name, to, selected }) => {
+  return (
+    <div>
+      <Link href={to}>
+        <ChannelWrap data-selected={selected}>
+          <CenteredBsHash height={22} width={22} />
+          <ChannelText>{name}</ChannelText>
+        </ChannelWrap>
+      </Link>
+    </div>
+  )
 }
+const CenteredBsHash = styled(BsHash)`
+  place-self: center;
+`
+const ChannelText = styled.div`
+  ${ChannelTextStyle}
+
+  *:hover > * > &:after {
+    background-color: ${({ theme }) => theme.theme.basic.ui.primary.default};
+  }
+`
