@@ -2,6 +2,7 @@ import { useIsMobile } from '@/lib/isMobile'
 import styled from '@emotion/styled'
 import { PropsWithChildren } from 'react'
 import { Header } from './Header'
+import { Navbar } from './Navbar'
 
 interface Props {
   userId?: string
@@ -15,6 +16,7 @@ export const Layout: React.FC<PropsWithChildren<Props>> = ({
 
   return (
     <Container>
+      <Navbar />
       <Header />
       <Main>{children}</Main>
     </Container>
