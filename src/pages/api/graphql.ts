@@ -14,7 +14,12 @@ const apolloServer = new ApolloServer({
   resolvers,
   context: ({ req, res }) => {
     const userId = req.headers['x-showcase-user'] as string | undefined
-    return { userId, req, res }
+
+    return {
+      userId: userId === '-' ? undefined : userId,
+      req,
+      res,
+    }
   },
 })
 
