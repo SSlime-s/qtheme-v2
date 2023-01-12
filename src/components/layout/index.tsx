@@ -3,6 +3,7 @@ import styled from '@emotion/styled'
 import { PropsWithChildren } from 'react'
 import { Header } from './Header'
 import { Navbar } from './Navbar'
+import { Sidebar } from './Sidebar'
 
 interface Props {
   userId?: string
@@ -19,6 +20,7 @@ export const Layout: React.FC<PropsWithChildren<Props>> = ({
       <Navbar />
       <Header />
       <Main>{children}</Main>
+      <Sidebar />
     </Container>
   )
 }
@@ -33,6 +35,8 @@ const Container = styled.div`
 
   position: relative;
   overflow: hidden;
+  background-color: ${({ theme }) =>
+    theme.theme.basic.background.primary.default};
 `
 
 const Main = styled.div`
@@ -40,4 +44,5 @@ const Main = styled.div`
   overflow: auto;
   contain: strict;
   height: 100%;
+  background: ${({ theme }) => theme.theme.specific.mainViewBackground};
 `
