@@ -19,20 +19,6 @@ export const Layout: React.FC<PropsWithChildren<Props>> = ({
       <Main>{children}</Main>
     </Container>
   )
-  // return (
-  //   <Container>
-  //     <NavWrap>nav</NavWrap>
-  //     <RightWrap>
-  //       <HeaderWrap>
-  //         <Header />
-  //       </HeaderWrap>
-  //       <MainSideWrap>
-  //         <MainWrap>{children}</MainWrap>
-  //         <SideWrap>side</SideWrap>
-  //       </MainSideWrap>
-  //     </RightWrap>
-  //   </Container>
-  // )
 }
 
 const Container = styled.div`
@@ -52,36 +38,4 @@ const Main = styled.div`
   overflow: auto;
   contain: strict;
   height: 100%;
-  /* height: 500px; */
 `
-
-// const Container = styled.div`
-//   display: flex;
-//   flex-direction: row;
-//   flex-wrap: nowrap;
-// `
-// const NavWrap = styled.div`
-//   width: 340px;
-//   flex-grow: 0;
-// `
-// const RightWrap = styled.div`
-//   display: flex;
-//   flex-direction: column;
-//   flex-grow: 1;
-// `
-// const HeaderWrap = styled.div`
-//   height: 80px;
-// `
-// const MainSideWrap = styled.div`
-//   display: flex;
-//   flex-direction: row;
-//   flex-wrap: nowrap;
-//   flex-grow: 1;
-// `
-// const MainWrap = styled.div`
-//   flex-grow: 1;
-// `
-// const SideWrap = styled.div`
-//   width: 256px;
-//   flex-grow: 0;
-// `
