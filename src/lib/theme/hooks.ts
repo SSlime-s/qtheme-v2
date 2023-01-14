@@ -144,7 +144,7 @@ export interface DeleteThemeInput {
   id: string
 }
 
-interface ThemeInfo {
+export interface ThemeInfo {
   id: string
   author: string
   title: string
@@ -156,7 +156,7 @@ interface ThemeInfo {
   isLike: boolean
 }
 
-interface ThemeWhole extends ThemeInfo {
+export interface ThemeWhole extends ThemeInfo {
   theme: Theme
 }
 
