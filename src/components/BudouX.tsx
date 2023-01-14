@@ -4,27 +4,31 @@ import React, { PropsWithChildren, useMemo } from 'react'
 
 const parser = loadDefaultJapaneseParser()
 
-type Props = Record<string, never>
+interface Props {
+  children: string
+  Wrapper?: React.FC<PropsWithChildren<unknown>>
+}
 
-export const BudouJa: React.FC<
-  PropsWithChildren<Props> & {
-    children: string
-  }
-> = ({ children }) => {
+export const BudouJa: React.FC<PropsWithChildren<Props>> = ({
+  children,
+  Wrapper,
+}) => {
   const parsed = useMemo(() => {
     const result = parser.parse(children)
     return result.map((v, i) => {
+      const wrapped = Wrapper !== undefined ? <Wrapper>{v}</Wrapper> : v
+
       if (i == 0) {
-        return <React.Fragment key={i}>{v}</React.Fragment>
+        return <React.Fragment key={i}>{wrapped}</React.Fragment>
       }
       return (
         <React.Fragment key={i}>
           <wbr />
-          {v}
+          {wrapped}
         </React.Fragment>
       )
     })
-  }, [children])
+  }, [Wrapper, children])
 
   return <Wrap>{parsed}</Wrap>
 }
