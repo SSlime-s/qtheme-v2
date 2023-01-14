@@ -1,5 +1,5 @@
 import { NextPage } from 'next'
-import { GlassmorphismCard } from '@/components/card'
+import { GlassmorphismStyle } from '@/components/card'
 import styled from '@emotion/styled'
 
 const Test: NextPage = () => {
@@ -13,7 +13,8 @@ const Test: NextPage = () => {
 }
 export default Test
 
-const Card = styled(GlassmorphismCard)`
+const Card = styled.div`
+  ${GlassmorphismStyle}
   padding: 80px;
 `
 

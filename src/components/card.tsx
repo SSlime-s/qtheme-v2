@@ -1,6 +1,6 @@
-import styled from '@emotion/styled'
+import { css } from '@emotion/react'
 
-export const GlassmorphismCard = styled.div`
+export const GlassmorphismStyle = css`
   border-radius: 20px;
   background: radial-gradient(
     0% 0%,

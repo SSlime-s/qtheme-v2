@@ -3,7 +3,7 @@ import { lightTheme, darkTheme } from '@/lib/theme/default'
 import { ThemeProvider } from '@emotion/react'
 import styled from '@emotion/styled'
 import { ComponentMeta, ComponentStory } from '@storybook/react'
-import { GlassmorphismCard } from './card'
+import { GlassmorphismStyle } from './card'
 import { SmallPreview } from './preview'
 
 export default {
@@ -47,7 +47,8 @@ const WrapCard = styled.div`
       transparent 100%
     );
 `
-const CardGlass = styled(GlassmorphismCard)`
+const CardGlass = styled.div`
+  ${GlassmorphismStyle}
   padding: 40px;
 `
 
