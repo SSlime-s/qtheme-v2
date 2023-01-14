@@ -1,5 +1,6 @@
 import { resolveTheme } from '@/lib/theme'
 import { lightTheme, darkTheme } from '@/lib/theme/default'
+import { ThemeProvider } from '@emotion/react'
 import styled from '@emotion/styled'
 import { ComponentMeta, ComponentStory } from '@storybook/react'
 import { GlassmorphismCard } from './card'
@@ -13,13 +14,15 @@ export default {
 const Template: ComponentStory<typeof SmallPreview> = (
   args: Parameters<typeof SmallPreview>[0]
 ) => (
-  <Wrap>
-    <WrapCard>
-      <CardBackground {...args} />
-      <CardGlass />
-      <SmallPreview {...args} />
-    </WrapCard>
-  </Wrap>
+  <ThemeProvider theme={{ theme: args.theme }}>
+    <Wrap>
+      <WrapCard>
+        <CardBackground />
+        <CardGlass />
+        <SmallPreview {...args} />
+      </WrapCard>
+    </Wrap>
+  </ThemeProvider>
 )
 const Wrap = styled.div`
   height: 100%;
@@ -35,7 +38,7 @@ const WrapCard = styled.div`
   border-radius: 20px;
   overflow: hidden;
 `
-const CardBackground = styled.div<Parameters<typeof SmallPreview>[0]>`
+const CardBackground = styled.div`
   position: absolute;
   top: 0;
   left: 0;
@@ -43,12 +46,12 @@ const CardBackground = styled.div<Parameters<typeof SmallPreview>[0]>`
   width: 100%;
   background: radial-gradient(
       ellipse at left top,
-      ${({ theme }) => theme.basic.background.primary.default} 0%,
+      ${({ theme }) => theme.theme.basic.background.primary.default} 0%,
       transparent 100%
     ),
     radial-gradient(
       ellipse at right bottom,
-      ${({ theme }) => theme.basic.accent.primary.default} 0%,
+      ${({ theme }) => theme.theme.basic.accent.primary.default} 0%,
       transparent 100%
     );
 `
