@@ -17,9 +17,9 @@ const Template: ComponentStory<typeof SmallPreview> = (
   <ThemeProvider theme={{ theme: args.theme }}>
     <Wrap>
       <WrapCard>
-        <CardBackground />
-        <CardGlass />
-        <SmallPreview {...args} />
+        <CardGlass>
+          <SmallPreview {...args} />
+        </CardGlass>
       </WrapCard>
     </Wrap>
   </ThemeProvider>
@@ -31,19 +31,11 @@ const Wrap = styled.div`
   border: 2px solid black;
 `
 const WrapCard = styled.div`
-  padding: 40px;
   margin: 40px;
-  position: relative;
   background-color: transparent;
   border-radius: 20px;
   overflow: hidden;
-`
-const CardBackground = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
+
   background: radial-gradient(
       ellipse at left top,
       ${({ theme }) => theme.theme.basic.background.primary.default} 0%,
@@ -56,11 +48,7 @@ const CardBackground = styled.div`
     );
 `
 const CardGlass = styled(GlassmorphismCard)`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  padding: 40px;
 `
 
 export const LightDefault: ComponentStory<typeof SmallPreview> = Template.bind(
