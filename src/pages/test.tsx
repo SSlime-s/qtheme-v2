@@ -1,5 +1,5 @@
 import { NextPage } from 'next'
-import { GlassmorphismStyle } from '@/components/card'
+import { GlassmorphismStyle } from '@/components/Glassmorphism'
 import styled from '@emotion/styled'
 
 const Test: NextPage = () => {

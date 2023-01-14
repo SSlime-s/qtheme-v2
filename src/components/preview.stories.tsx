@@ -3,7 +3,7 @@ import { lightTheme, darkTheme } from '@/lib/theme/default'
 import { ThemeProvider } from '@emotion/react'
 import styled from '@emotion/styled'
 import { ComponentMeta, ComponentStory } from '@storybook/react'
-import { GlassmorphismStyle } from './card'
+import { GlassmorphismStyle } from './Glassmorphism'
 import { SmallPreview } from './preview'
 
 export default {
