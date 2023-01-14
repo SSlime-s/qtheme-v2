@@ -1,6 +1,6 @@
 import { useIsMobile } from '@/lib/isMobile'
 import styled from '@emotion/styled'
-import { PropsWithChildren } from 'react'
+import { PropsWithChildren, useMemo } from 'react'
 import { Header } from './Header'
 import { Navbar } from './Navbar'
 import { Sidebar } from './Sidebar'
@@ -14,11 +14,14 @@ export const Layout: React.FC<PropsWithChildren<Props>> = ({
   children,
 }) => {
   const isMobile = useIsMobile()
+  const nowChannelPath = useMemo(() => {
+    return ['favorite', 'light']
+  }, [])
 
   return (
     <Container>
       <Navbar />
-      <Header />
+      <Header channelPath={nowChannelPath} />
       <Main>{children}</Main>
       <Sidebar />
     </Container>
