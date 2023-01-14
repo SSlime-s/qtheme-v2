@@ -1,13 +1,11 @@
+import { IWrapper, WrapResolver } from '@/lib/wrapper'
 import styled from '@emotion/styled'
 import { loadDefaultJapaneseParser } from 'budoux'
 import React, { PropsWithChildren, useMemo } from 'react'
 
 const parser = loadDefaultJapaneseParser()
 
-interface Props {
-  children: string
-  Wrapper?: React.FC<PropsWithChildren<unknown>>
-}
+type Props = IWrapper
 
 export const BudouJa: React.FC<PropsWithChildren<Props>> = ({
   children,
@@ -16,7 +14,7 @@ export const BudouJa: React.FC<PropsWithChildren<Props>> = ({
   const parsed = useMemo(() => {
     const result = parser.parse(children)
     return result.map((v, i) => {
-      const wrapped = Wrapper !== undefined ? <Wrapper>{v}</Wrapper> : v
+      const wrapped = <WrapResolver Wrapper={Wrapper}>{v}</WrapResolver>
 
       if (i == 0) {
         return <React.Fragment key={i}>{wrapped}</React.Fragment>

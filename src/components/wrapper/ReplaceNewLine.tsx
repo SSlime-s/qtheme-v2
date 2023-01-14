@@ -1,10 +1,8 @@
+import { IWrapper, WrapResolver } from '@/lib/wrapper'
 import React from 'react'
 import { PropsWithChildren } from 'react'
 
-interface Props {
-  children: string
-  Wrapper?: React.FC<PropsWithChildren<unknown>>
-}
+type Props = IWrapper
 
 export const ReplaceNewLine: React.FC<PropsWithChildren<Props>> = ({
   children,
@@ -15,7 +13,7 @@ export const ReplaceNewLine: React.FC<PropsWithChildren<Props>> = ({
       return <br key={i} />
     }
 
-    const wrapped = Wrapper !== undefined ? <Wrapper>{v}</Wrapper> : v
+    const wrapped = <WrapResolver Wrapper={Wrapper}>{v}</WrapResolver>
     return <React.Fragment key={i}>{wrapped}</React.Fragment>
   })
 
