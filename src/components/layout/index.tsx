@@ -37,6 +37,43 @@ const Container = styled.div`
   overflow: hidden;
   background-color: ${({ theme }) =>
     theme.theme.basic.background.primary.default};
+
+  & * {
+    scrollbar-color: ${({ theme }) =>
+      `${theme.theme.browser.scrollbarThumb} ${theme.theme.browser.scrollbarTrack}`};
+    transition: scrollbar-color 0.3s;
+    &:hover,
+    &:active {
+      scrollbar-color: ${({ theme }) =>
+        `${theme.theme.browser.scrollbarThumbHover} ${theme.theme.browser.scrollbarTrack}`};
+    }
+
+    &::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    scrollbar-width: thin;
+
+    &::-webkit-scrollbar-track {
+      background: ${({ theme }) => theme.theme.browser.scrollbarTrack};
+      &:hover {
+        background: ${({ theme }) => theme.theme.browser.scrollbarTrack};
+      }
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: ${({ theme }) => theme.theme.browser.scrollbarThumb};
+      transition: background 0.3s;
+      border-radius: 3px;
+      &:hover {
+        background: ${({ theme }) => theme.theme.browser.scrollbarThumbHover};
+      }
+    }
+    &::-webkit-scrollbar-corner {
+      visibility: hidden;
+      display: none;
+    }
+  }
 `
 
 const Main = styled.div`
