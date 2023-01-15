@@ -2,6 +2,7 @@ import { css } from '@emotion/react'
 import styled from '@emotion/styled'
 import React, { PropsWithChildren, useMemo } from 'react'
 import { ColoredGlassmorphismStyle } from './Glassmorphism'
+import Link, { LinkProps as RawLinkProps } from 'next/link'
 
 type Variant = 'light' | 'dark' | 'other' | 'private' | 'public' | 'draft'
 
@@ -9,24 +10,28 @@ type AnchorProps = React.DetailedHTMLProps<
   React.AnchorHTMLAttributes<HTMLAnchorElement>,
   HTMLAnchorElement
 > & {
-  as: 'a'
+  tag: 'a'
+}
+
+type LinkProps = RawLinkProps & {
+  tag: 'link'
 }
 
 type ButtonProps = React.DetailedHTMLProps<
   React.ButtonHTMLAttributes<HTMLButtonElement>,
   HTMLButtonElement
 > & {
-  as: 'button'
+  tag: 'button'
 }
 
 type DivProps = React.DetailedHTMLProps<
   React.HTMLAttributes<HTMLDivElement>,
   HTMLDivElement
 > & {
-  as: 'div'
+  tag: 'div'
 }
 
-type Props = (AnchorProps | ButtonProps | DivProps) & {
+type Props = (AnchorProps | ButtonProps | DivProps | LinkProps) & {
   variant: Variant
 }
 
@@ -70,7 +75,7 @@ const colorMap: Record<Variant, Color> = {
 }
 
 export const Tag: React.FC<PropsWithChildren<Props>> = ({
-  as,
+  tag,
   children,
   variant,
   ...props
@@ -89,15 +94,15 @@ export const Tag: React.FC<PropsWithChildren<Props>> = ({
       box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
     `
   }, [variant])
-  const Tag = useMemo(() => {
-    return styled(as)`
+  const style = useMemo(() => {
+    return css`
       ${baseStyle}
       padding: 4px 8px;
       border-radius: 8px;
 
       transition: all 0.1s ease-in-out;
 
-      ${as !== 'div'
+      ${tag !== 'div'
         ? css`
             cursor: pointer;
             &:hover {
@@ -106,7 +111,12 @@ export const Tag: React.FC<PropsWithChildren<Props>> = ({
           `
         : ''}
     `
-  }, [as, baseStyle])
+  }, [tag, baseStyle])
 
+  const Tag = useMemo(() => {
+    return tag === 'link' ? styled(Link)(style) : styled(tag)(style)
+  }, [tag, style])
+
+  // @ts-expect-error: Tag と props の整合性が型レベルではうまくとれなかった
   return <Tag {...props}>{children}</Tag>
 }

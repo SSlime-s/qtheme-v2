@@ -20,6 +20,6 @@ const Template: ComponentStory<typeof Tag> = args => (
 
 export const Default = Template.bind({})
 Default.args = {
-  as: 'button',
+  tag: 'button',
   variant: 'light',
 }

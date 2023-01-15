@@ -44,14 +44,14 @@ export const PreviewCard: React.FC<Props> = ({
         <TagWrap>
           <Tag
             variant={themeInfo.type}
-            as='a'
+            tag='a'
             href={`/themes/${themeInfo.type}`}
           >
             {themeInfo.type}
           </Tag>
           <Tag
             variant={themeInfo.visibility}
-            as='a'
+            tag='a'
             href={`/themes/${themeInfo.visibility}`}
           >
             {themeInfo.visibility}
