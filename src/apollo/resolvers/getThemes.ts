@@ -57,7 +57,7 @@ export const getThemes = async (
               ? ''
               : `
             LEFT JOIN (
-              SELECT theme_id, TRUE AS isLike
+              SELECT theme_id, TRUE AS isLike, created_at
               FROM likes
               WHERE user_id = ?
             ) AS isLikes ON isLikes.theme_id = themes.id
@@ -78,7 +78,11 @@ export const getThemes = async (
                 : `AND isLikes.isLike = TRUE`
             }
             ${author === undefined ? '' : `AND themes.author_user_id = ?`}
-          ORDER BY themes.created_at DESC
+          ORDER BY ${
+            only_like === true
+              ? 'isLikes.created_at DESC'
+              : 'themes.created_at DESC'
+          }
           ${limits === undefined ? '' : `LIMIT ?`}
           ${offset === undefined ? '' : `OFFSET ?`}
         `
