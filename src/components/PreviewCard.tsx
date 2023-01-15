@@ -2,6 +2,7 @@ import { resolveTheme } from '@/lib/theme'
 import { ThemeWhole } from '@/lib/theme/hooks'
 import { ThemeProvider } from '@emotion/react'
 import styled from '@emotion/styled'
+import Link from 'next/link'
 import { useCallback, useMemo } from 'react'
 import { FavoriteButton } from './FavoriteButton'
 import { GlassmorphismStyle } from './Glassmorphism'
@@ -72,6 +73,10 @@ export const PreviewCard: React.FC<Props> = ({
             favoriteCount={themeInfo.likes}
           />
         </ControlWrap>
+
+        <DetailButton href={`/themes/${themeInfo.id}`}>
+          <span>view detail</span>
+        </DetailButton>
       </Wrap>
     </ThemeProvider>
   )
@@ -82,6 +87,7 @@ const Wrap = styled.article`
   width: 100%;
   max-width: 400px;
   padding: 40px;
+  padding-bottom: 0px;
   display: flex;
   flex-direction: column;
   color: #333;
@@ -129,4 +135,31 @@ const ButtonWrap = styled.div`
 const ControlWrap = styled.div`
   display: flex;
   justify-content: flex-end;
+  margin-bottom: 16px;
+`
+
+const DetailButton = styled(Link)`
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-top-color: rgba(200, 200, 200, 0.5);
+  border-radius: 0 0 20px 20px;
+  margin: 0 -41px -1px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  text-transform: capitalize;
+  transition: all 0.1s ease-in;
+
+  & > span {
+    transition: all 0.1s ease-in;
+    transform-origin: center;
+  }
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.2);
+  }
+
+  &:hover > span {
+    transform: scale(1.05);
+  }
 `
