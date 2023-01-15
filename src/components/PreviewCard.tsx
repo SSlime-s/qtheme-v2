@@ -7,6 +7,7 @@ import { useCallback, useMemo } from 'react'
 import { FavoriteButton } from './FavoriteButton'
 import { GlassmorphismStyle } from './Glassmorphism'
 import { SmallPreview } from './preview'
+import { Tag } from './Tag'
 import { BudouJa } from './wrapper/BudouX'
 import { ReplaceNewLine } from './wrapper/ReplaceNewLine'
 
@@ -40,6 +41,22 @@ export const PreviewCard: React.FC<Props> = ({
       <Wrap>
         <Title>{themeInfo.title}</Title>
         <Author>{themeInfo.author}</Author>
+        <TagWrap>
+          <Tag
+            variant={themeInfo.type}
+            as='a'
+            href={`/themes/${themeInfo.type}`}
+          >
+            {themeInfo.type}
+          </Tag>
+          <Tag
+            variant={themeInfo.visibility}
+            as='a'
+            href={`/themes/${themeInfo.visibility}`}
+          >
+            {themeInfo.visibility}
+          </Tag>
+        </TagWrap>
         <Description>
           <BudouJa Wrapper={ReplaceNewLine}>{themeInfo.description}</BudouJa>
         </Description>
@@ -70,6 +87,13 @@ const Wrap = styled.article`
   flex-direction: column;
   color: #333;
 `
+const TagWrap = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: end;
+  gap: 8px;
+  margin: 8px 0;
+`
 const Title = styled.h1`
   font-size: 1.5rem;
   font-weight: bold;
@@ -89,7 +113,6 @@ const Description = styled.p`
 const PreviewWrap = styled.button`
   ${GlassmorphismStyle}
   width: 100%;
-  /* max-width: 300px; */
   align-self: center;
   cursor: pointer;
   margin: 16px 0;
