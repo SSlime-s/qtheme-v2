@@ -1,6 +1,5 @@
 import { resolveTheme } from '@/lib/theme'
-import { lightTheme } from '@/lib/theme/default'
-import { ThemeWhole, useTheme } from '@/lib/theme/hooks'
+import { ThemeWhole } from '@/lib/theme/hooks'
 import { ThemeProvider } from '@emotion/react'
 import styled from '@emotion/styled'
 import { useCallback, useMemo } from 'react'
