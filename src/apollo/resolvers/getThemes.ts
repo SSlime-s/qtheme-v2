@@ -6,12 +6,12 @@ import { ContextValue } from '.'
 export const getThemes = async (
   _: unknown,
   args: {
-    limit?: number
-    offset?: number
-    visibility?: 'public' | 'private' | 'draft'
-    type?: 'light' | 'dark' | 'other'
-    only_like?: boolean
-    author?: string
+    limit?: number | null
+    offset?: number | null
+    visibility?: 'public' | 'private' | 'draft' | null
+    type?: 'light' | 'dark' | 'other' | null
+    only_like?: boolean | null
+    author?: string | null
   },
   { userId, connection }: ContextValue
 ) => {

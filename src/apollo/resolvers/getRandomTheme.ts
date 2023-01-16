@@ -6,8 +6,8 @@ import { ContextValue } from '.'
 export const getRandomTheme = async (
   _parent: unknown,
   args: {
-    visibility?: 'public' | 'private' | 'draft'
-    type?: 'light' | 'dark' | 'other'
+    visibility?: 'public' | 'private' | 'draft' | null
+    type?: 'light' | 'dark' | 'other' | null
   },
   { userId, connection }: ContextValue
 ) => {
@@ -41,12 +41,12 @@ export const getRandomTheme = async (
             ) AS likes ON likes.theme_id = themes.id
             WHERE
               themes.visibility = 'public'
-              ${type === undefined ? '' : `AND themes.type = ?`}
+              ${type == undefined ? '' : `AND themes.type = ?`}
             ORDER BY RAND()
             LIMIT 1
           `
       const [rows] = await connection.execute(sql, [
-        ...(type !== undefined ? [type] : []),
+        ...(type != undefined ? [type] : []),
       ])
       console.log(rows)
       assertIsArray(rows)
@@ -80,18 +80,18 @@ export const getRandomTheme = async (
             ) AS isLikes ON isLikes.theme_id = themes.id
             WHERE
               ${
-                visibility === undefined
+                visibility == undefined
                   ? 'themes.visibility IN ("public", "private")'
                   : 'themes.visibility = ?'
               }
-              ${type === undefined ? '' : `AND themes.type = ?`}
+              ${type == undefined ? '' : `AND themes.type = ?`}
             ORDER BY RAND()
             LIMIT 1
           `
       const [rows] = await connection.execute(sql, [
         userId,
-        ...(visibility !== undefined ? [visibility] : []),
-        ...(type !== undefined ? [type] : []),
+        ...(visibility != undefined ? [visibility] : []),
+        ...(type != undefined ? [type] : []),
       ])
       console.log(rows)
       assertIsArray(rows)
