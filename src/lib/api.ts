@@ -1,7 +1,8 @@
 import { GraphQLClient } from 'graphql-request'
 import { useMemo } from 'react'
 
-const ENDPOINT = `${window.location.origin}/api/graphql`
+const ENDPOINT = `${process.env.BASE_URL ?? ''}/api/graphql`
+
 export const useClient = () => {
   const client = useMemo(
     () =>

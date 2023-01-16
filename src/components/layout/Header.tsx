@@ -17,7 +17,7 @@ interface Path {
 
 export const Header: React.FC<Props> = ({ channelPath }) => {
   const basePath = useMemo(() => {
-    return window.location.origin
+    return process.env.BASE_URL ?? ''
   }, [])
 
   const now: Path | undefined = useMemo(() => {
