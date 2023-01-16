@@ -18,8 +18,8 @@ interface ThemeRes {
   likes: number
   theme: string
   title: string
-  type: 'light' | 'dark' | 'other'
-  visibility: 'public' | 'private' | 'draft'
+  type: 'LIGHT' | 'DARK' | 'OTHER'
+  visibility: 'PUBLIC' | 'PRIVATE' | 'DRAFT'
 }
 const randomQuery = gql`
   query Random($visibility: Visibility, $type: Type) {
@@ -185,19 +185,29 @@ export interface ThemeInfo {
 export interface ThemeWhole extends ThemeInfo {
   theme: Theme
 }
-export interface ThemeWholeRaw extends ThemeInfo {
+export interface ThemeWholeRaw
+  extends Omit<ThemeWhole, 'theme' | 'type' | 'visibility'> {
   theme: string
+  type: 'LIGHT' | 'DARK' | 'OTHER'
+  visibility: 'PUBLIC' | 'PRIVATE' | 'DRAFT'
 }
 export const themeFromRaw = (raw: ThemeWholeRaw): ThemeWhole => {
   return {
     ...raw,
     theme: themeSchema.parse(JSON.parse(raw.theme)),
+    type: raw.type.toLowerCase() as 'light' | 'dark' | 'other',
+    visibility: raw.visibility.toLowerCase() as 'public' | 'private' | 'draft',
   }
 }
 export const themeToRaw = (theme: ThemeWhole): ThemeWholeRaw => {
   return {
     ...theme,
     theme: JSON.stringify(theme.theme),
+    type: theme.type.toUpperCase() as 'LIGHT' | 'DARK' | 'OTHER',
+    visibility: theme.visibility.toUpperCase() as
+      | 'PUBLIC'
+      | 'PRIVATE'
+      | 'DRAFT',
   }
 }
 
@@ -238,7 +248,7 @@ export const useTheme = () => {
       const theme = themeSchema.parse(rawTheme)
       currentThemeMutate(theme)
       currentThemeInfoMutate({
-        ...getTheme.theme,
+        ...themeFromRaw(getTheme.theme),
       })
     },
     [client, currentThemeInfoMutate, currentThemeMutate]
