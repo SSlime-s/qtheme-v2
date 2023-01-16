@@ -6,7 +6,7 @@ import { ContextValue } from '.'
 export const getThemes = async (
   _: unknown,
   args: {
-    limits?: number
+    limit?: number
     offset?: number
     visibility?: 'public' | 'private' | 'draft'
     type?: 'light' | 'dark' | 'other'
@@ -15,17 +15,17 @@ export const getThemes = async (
   },
   { userId, connection }: ContextValue
 ) => {
-  const { limits, offset, visibility, type, only_like, author } = args
+  const { limit, offset, visibility, type, only_like, author } = args
   if (visibility === 'draft') {
     throw new GraphQLError('Invalid visibility')
   }
-  if (visibility === 'private' && userId === undefined) {
+  if (visibility === 'private' && userId == undefined) {
     throw new GraphQLError('Forbidden')
   }
-  if (only_like === true && userId === undefined) {
+  if (only_like === true && userId == undefined) {
     throw new GraphQLError('Forbidden')
   }
-  if (limits === undefined && offset !== undefined) {
+  if (limit == undefined && offset != undefined) {
     throw new GraphQLError('Invalid offset')
   }
   try {
@@ -42,7 +42,7 @@ export const getThemes = async (
             themes.theme,
             CASE WHEN likes.count IS NULL THEN 0 ELSE likes.count END AS likes,
             ${
-              userId === undefined
+              userId == undefined
                 ? 'FALSE'
                 : 'CASE WHEN isLikes.isLike IS NULL THEN FALSE ELSE isLikes.isLike END'
             } AS isLike
@@ -53,7 +53,7 @@ export const getThemes = async (
             GROUP BY theme_id
           ) AS likes ON likes.theme_id = themes.id
           ${
-            userId === undefined
+            userId == undefined
               ? ''
               : `
             LEFT JOIN (
@@ -65,34 +65,34 @@ export const getThemes = async (
           }
           WHERE
             ${
-              visibility === undefined
-                ? userId === undefined
+              visibility == undefined
+                ? userId == undefined
                   ? 'themes.visibility = "public"'
                   : 'themes.visibility IN ("public", "private")'
                 : 'themes.visibility = ?'
             }
-            ${type === undefined ? '' : `AND themes.type = ?`}
+            ${type == undefined ? '' : `AND themes.type = ?`}
             ${
-              only_like === undefined || !only_like
+              only_like == undefined || !only_like
                 ? ''
                 : `AND isLikes.isLike = TRUE`
             }
-            ${author === undefined ? '' : `AND themes.author_user_id = ?`}
+            ${author == undefined ? '' : `AND themes.author_user_id = ?`}
           ORDER BY ${
             only_like === true
               ? 'isLikes.created_at DESC'
               : 'themes.created_at DESC'
           }
-          ${limits === undefined ? '' : `LIMIT ?`}
-          ${offset === undefined ? '' : `OFFSET ?`}
+          ${limit == undefined ? '' : `LIMIT ?`}
+          ${offset == undefined ? '' : `OFFSET ?`}
         `
     const [rows] = await connection.execute(sql, [
-      ...(userId !== undefined ? [userId] : []),
-      ...(visibility !== undefined ? [visibility] : []),
-      ...(type !== undefined ? [type] : []),
-      ...(author !== undefined ? [author] : []),
-      ...(limits !== undefined ? [limits] : []),
-      ...(offset !== undefined ? [offset] : []),
+      ...(userId != undefined ? [userId] : []),
+      ...(visibility != undefined ? [visibility] : []),
+      ...(type != undefined ? [type] : []),
+      ...(author != undefined ? [author] : []),
+      ...(limit != undefined ? [limit] : []),
+      ...(offset != undefined ? [offset] : []),
     ])
     console.log(rows)
     assertIsArray(rows)
