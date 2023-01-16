@@ -10,17 +10,17 @@ import { lightTheme } from './default'
 const THEMES_PER_PAGE = 20
 
 interface ThemeRes {
-    author: string
-    createdAt: string
-    description: string
-    id: string
-    isLike: boolean
-    likes: number
-    theme: string
-    title: string
-    type: 'light' | 'dark' | 'other'
-    visibility: 'public' | 'private' | 'draft'
-  }
+  author: string
+  createdAt: string
+  description: string
+  id: string
+  isLike: boolean
+  likes: number
+  theme: string
+  title: string
+  type: 'light' | 'dark' | 'other'
+  visibility: 'public' | 'private' | 'draft'
+}
 const randomQuery = gql`
   query Random($visibility: Visibility, $type: Type) {
     getRandomTheme(visibility: $visibility, type: $type) {
@@ -230,7 +230,10 @@ export const useTheme = () => {
           ...fallback,
         })
       }
-      const { getTheme } = await client.request<GetThemeQueryRes>(getThemeQuery, { id })
+      const { getTheme } = await client.request<GetThemeQueryRes>(
+        getThemeQuery,
+        { id }
+      )
       const rawTheme: string = getTheme.theme.theme
       const theme = themeSchema.parse(rawTheme)
       currentThemeMutate(theme)
@@ -282,7 +285,10 @@ export const useThemeList = (
       ]
     },
     async ([query, variables]) => {
-      const { getThemes } = await client.request<GetThemeListQueryRes>(query, variables)
+      const { getThemes } = await client.request<GetThemeListQueryRes>(
+        query,
+        variables
+      )
       return getThemes
     }
   )
@@ -334,7 +340,10 @@ export const useThemeList = (
 
       // SWR の mutate の更新に任せると全部ロードされなおされちゃうので自前でロード
       void (async () => {
-        const { getTheme } = await client.request<GetThemeQueryRes>(getThemeQuery, { id })
+        const { getTheme } = await client.request<GetThemeQueryRes>(
+          getThemeQuery,
+          { id }
+        )
         mutate(data => {
           if (!data) {
             return data
