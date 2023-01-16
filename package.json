@@ -57,6 +57,7 @@
     "@types/mysql": "^2.15.21",
     "@typescript-eslint/eslint-plugin": "^5.48.0",
     "@typescript-eslint/parser": "^5.48.0",
+    "assert": "^2.0.0",
     "babel-loader": "^8.3.0",
     "eslint-config-prettier": "^8.6.0",
     "eslint-plugin-react": "^7.31.11",
