@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react'
 
 export const useIsMobile = () => {
-  const matchQuery: MediaQueryList | undefined = typeof window !== 'undefined' ?  window.matchMedia('(max-width: 768px)') : undefined
+  const matchQuery: MediaQueryList | undefined =
+    typeof window !== 'undefined'
+      ? window.matchMedia('(max-width: 768px)')
+      : undefined
 
   const [isMobile, setIsMobile] = useState(matchQuery?.matches ?? false)
 
