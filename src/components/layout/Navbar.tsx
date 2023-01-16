@@ -6,6 +6,5 @@ export const Navbar: React.FC = () => {
 
 const Wrap = styled.div`
   grid-area: nav;
-  background-color: ${({ theme }) =>
-    theme.theme.basic.background.secondary.default};
+  background: ${({ theme }) => theme.theme.basic.background.secondary.default};
 `

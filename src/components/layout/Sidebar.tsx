@@ -6,6 +6,5 @@ export const Sidebar: React.FC = () => {
 
 const Wrap = styled.div`
   grid-area: side;
-  background-color: ${({ theme }) =>
-    theme.theme.basic.background.secondary.default};
+  background: ${({ theme }) => theme.theme.basic.background.secondary.default};
 `

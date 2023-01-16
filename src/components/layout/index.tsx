@@ -38,8 +38,7 @@ const Container = styled.div`
 
   position: relative;
   overflow: hidden;
-  background-color: ${({ theme }) =>
-    theme.theme.basic.background.primary.default};
+  background: ${({ theme }) => theme.theme.basic.background.primary.default};
 
   & * {
     scrollbar-color: ${({ theme }) =>

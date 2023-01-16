@@ -32,7 +32,6 @@ const Wrap = styled.div`
 `
 const WrapCard = styled.div`
   margin: 40px;
-  background-color: transparent;
   border-radius: 20px;
   overflow: hidden;
 

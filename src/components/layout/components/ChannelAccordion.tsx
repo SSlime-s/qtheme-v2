@@ -112,12 +112,12 @@ const ToggleButton = styled.button<{
         : theme.theme.basic.ui.primary.default}
     2px solid;
   border-radius: 4px;
-  background-color: transparent;
+  background: transparent;
   position: relative;
   transition: all 0.1s ease;
 
   &[aria-expanded='true'] {
-    background-color: ${({ theme, ...props }) =>
+    background: ${({ theme, ...props }) =>
       props['data-selected'] === true
         ? theme.theme.basic.accent.primary.default
         : theme.theme.basic.ui.primary.default};
@@ -125,7 +125,7 @@ const ToggleButton = styled.button<{
   }
 
   &:hover::before {
-    background-color: ${({ theme, ...props }) =>
+    background: ${({ theme, ...props }) =>
       props['data-selected'] === true
         ? theme.theme.basic.accent.primary.default
         : theme.theme.basic.ui.primary.default};
@@ -148,7 +148,7 @@ const ChannelTextStyle = ({
     content: '';
     border-radius: 9999px 0 0 9999px;
     opacity: 0.1;
-    background-color: transparent;
+    background: transparent;
     position: absolute;
     top: 0;
     left: 0;
@@ -158,14 +158,14 @@ const ChannelTextStyle = ({
   }
 
   [data-selected='true'] &:after {
-    background-color: ${theme.theme.basic.accent.primary.default};
+    background: ${theme.theme.basic.accent.primary.default};
   }
 `
 const ChannelLink = styled(Link)`
   ${ChannelTextStyle}
 
   &:hover:after {
-    background-color: ${({ theme }) => theme.theme.basic.ui.primary.default};
+    background: ${({ theme }) => theme.theme.basic.ui.primary.default};
   }
 `
 const ContentWrap = styled.div<{
@@ -201,6 +201,6 @@ const ChannelText = styled.div`
   ${ChannelTextStyle}
 
   *:hover > * > &:after {
-    background-color: ${({ theme }) => theme.theme.basic.ui.primary.default};
+    background: ${({ theme }) => theme.theme.basic.ui.primary.default};
   }
 `

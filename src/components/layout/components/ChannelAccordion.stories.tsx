@@ -34,8 +34,7 @@ const Template: ComponentStory<typeof ChannelAccordion> = function (
 const Wrap = styled.div`
   width: 280px;
   height: 100%;
-  background-color: ${({ theme }) =>
-    theme.theme.basic.background.secondary.default};
+  background: ${({ theme }) => theme.theme.basic.background.secondary.default};
 `
 
 export const LightDefault: ComponentStory<typeof ChannelAccordion> =
