@@ -55,7 +55,11 @@ export const getTheme = async (
     if (rows.length === 0) {
       return null
     }
-    return rows[0]
+    return {
+      theme: rows[0],
+      // TODO: あとで実装する
+      versions: [],
+    }
   } catch (err: unknown) {
     console.error(err)
     if (err instanceof GraphQLError) {
