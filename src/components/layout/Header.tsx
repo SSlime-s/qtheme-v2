@@ -42,7 +42,7 @@ export const Header: React.FC<Props> = ({ channelPath }) => {
     const rest = channelPath.slice(1, -1)
     const res: Path[] = []
     rest.forEach((name, i) => {
-      if (i == 0) {
+      if (i === 0) {
         res.push({
           name,
           href: path.join(basePath, name),

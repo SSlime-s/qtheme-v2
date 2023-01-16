@@ -16,7 +16,7 @@ export const BudouJa: React.FC<PropsWithChildren<Props>> = ({
     return result.map((v, i) => {
       const wrapped = <WrapResolver Wrapper={Wrapper}>{v}</WrapResolver>
 
-      if (i == 0) {
+      if (i === 0) {
         return <React.Fragment key={i}>{wrapped}</React.Fragment>
       }
       return (
