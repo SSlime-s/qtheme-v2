@@ -60,7 +60,7 @@ const getThemeListQuery = gql`
       visibility: $visibility
       type: $type
       only_like: $only_like
-      $author: $author
+      author: $author
     ) {
       themes {
         author
