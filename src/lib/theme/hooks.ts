@@ -3,12 +3,24 @@ import useSWRInfinite from 'swr/infinite'
 import { useClient } from '@/lib/api'
 import { gql } from 'graphql-request'
 import { useCallback, useMemo, useState } from 'react'
-import { Theme } from '@/model/theme'
+import { Theme, themeSchema } from '@/model/theme'
 import { resolveTheme } from '@/lib/theme'
 import { lightTheme } from './default'
 
 const THEMES_PER_PAGE = 20
 
+interface ThemeRes {
+    author: string
+    createdAt: string
+    description: string
+    id: string
+    isLike: boolean
+    likes: number
+    theme: string
+    title: string
+    type: 'light' | 'dark' | 'other'
+    visibility: 'public' | 'private' | 'draft'
+  }
 const randomQuery = gql`
   query Random($visibility: Visibility, $type: Type) {
     getRandomTheme(visibility: $visibility, type: $type) {
@@ -25,6 +37,9 @@ const randomQuery = gql`
     }
   }
 `
+interface RandomQueryRes {
+  getRandomTheme: ThemeRes
+}
 
 const getThemeQuery = gql`
   query GetTheme($id: ID!) {
@@ -44,6 +59,11 @@ const getThemeQuery = gql`
     }
   }
 `
+interface GetThemeQueryRes {
+  getTheme: {
+    theme: ThemeRes
+  }
+}
 
 const getThemeListQuery = gql`
   query GetThemes(
@@ -78,6 +98,12 @@ const getThemeListQuery = gql`
     }
   }
 `
+interface GetThemeListQueryRes {
+  getThemes: {
+    themes: ThemeRes[]
+    total: number
+  }
+}
 
 const toggleLikeMutation = gql`
   mutation ToggleLike($id: ID!, $isLike: Boolean!) {
@@ -159,6 +185,21 @@ export interface ThemeInfo {
 export interface ThemeWhole extends ThemeInfo {
   theme: Theme
 }
+export interface ThemeWholeRaw extends ThemeInfo {
+  theme: string
+}
+export const themeFromRaw = (raw: ThemeWholeRaw): ThemeWhole => {
+  return {
+    ...raw,
+    theme: themeSchema.parse(JSON.parse(raw.theme)),
+  }
+}
+export const themeToRaw = (theme: ThemeWhole): ThemeWholeRaw => {
+  return {
+    ...theme,
+    theme: JSON.stringify(theme.theme),
+  }
+}
 
 export const useTheme = () => {
   const client = useClient()
@@ -189,8 +230,10 @@ export const useTheme = () => {
           ...fallback,
         })
       }
-      const { getTheme } = await client.request(getThemeQuery, { id })
-      currentThemeMutate(getTheme.theme.theme)
+      const { getTheme } = await client.request<GetThemeQueryRes>(getThemeQuery, { id })
+      const rawTheme: string = getTheme.theme.theme
+      const theme = themeSchema.parse(rawTheme)
+      currentThemeMutate(theme)
       currentThemeInfoMutate({
         ...getTheme.theme,
       })
@@ -219,7 +262,7 @@ export const useThemeList = (
   const [delta, setDelta] = useState(0)
 
   const { data, error, isLoading, mutate, setSize } = useSWRInfinite<{
-    themes: ThemeWhole[]
+    themes: ThemeWholeRaw[]
     total: number
   }>(
     (index, previousPageData) => {
@@ -239,13 +282,13 @@ export const useThemeList = (
       ]
     },
     async ([query, variables]) => {
-      const { getThemes } = await client.request(query, variables)
+      const { getThemes } = await client.request<GetThemeListQueryRes>(query, variables)
       return getThemes
     }
   )
 
   const themes = useMemo(() => {
-    return data ? data.flatMap(page => page.themes) : []
+    return data ? data.flatMap(page => page.themes.map(themeFromRaw)) : []
   }, [data])
 
   const total = useMemo(() => {
@@ -291,7 +334,7 @@ export const useThemeList = (
 
       // SWR の mutate の更新に任せると全部ロードされなおされちゃうので自前でロード
       void (async () => {
-        const { getTheme } = await client.request(getThemeQuery, { id })
+        const { getTheme } = await client.request<GetThemeQueryRes>(getThemeQuery, { id })
         mutate(data => {
           if (!data) {
             return data
