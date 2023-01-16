@@ -4,6 +4,8 @@ import type { AppProps } from 'next/app'
 import { Roboto, Roboto_Mono } from '@next/font/google'
 import { ReactElement, ReactNode } from 'react'
 import { NextPage } from 'next'
+import { useTheme } from '@/lib/theme/hooks'
+import { ThemeProvider } from '@emotion/react'
 
 export type NextPageWithLayout<P = Record<string, unknown>, IP = P> = NextPage<
   P,
@@ -28,6 +30,7 @@ export const robotoMono = Roboto_Mono({
 
 export default function App({ Component, pageProps }: AppPropsWithLayout) {
   const getLayout = Component.getLayout ?? (x => x)
+  const { currentTheme } = useTheme()
 
   return (
     <>
@@ -40,7 +43,9 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
           font-family: ${robotoMono.style.fontFamily};
         }
       `}</style>
-      {getLayout(<Component {...pageProps} />)}
+      <ThemeProvider theme={{ theme: currentTheme }}>
+        {getLayout(<Component {...pageProps} />)}
+      </ThemeProvider>
     </>
   )
 }
