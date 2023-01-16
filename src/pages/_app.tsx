@@ -2,6 +2,19 @@ import '@/styles/globals.css'
 import '@/styles/reset.css'
 import type { AppProps } from 'next/app'
 import { Roboto, Roboto_Mono } from '@next/font/google'
+import { ReactElement, ReactNode } from 'react'
+import { NextPage } from 'next'
+
+export type NextPageWithLayout<P = Record<string, unknown>, IP = P> = NextPage<
+  P,
+  IP
+> & {
+  getLayout?: (page: ReactElement) => ReactNode
+}
+
+type AppPropsWithLayout = AppProps & {
+  Component: NextPageWithLayout
+}
 
 export const roboto = Roboto({
   weight: ['400', '700'],
@@ -13,7 +26,9 @@ export const robotoMono = Roboto_Mono({
   subsets: ['latin'],
 })
 
-export default function App({ Component, pageProps }: AppProps) {
+export default function App({ Component, pageProps }: AppPropsWithLayout) {
+  const getLayout = Component.getLayout ?? (x => x)
+
   return (
     <>
       <style jsx global>{`
@@ -25,7 +40,7 @@ export default function App({ Component, pageProps }: AppProps) {
           font-family: ${robotoMono.style.fontFamily};
         }
       `}</style>
-      <Component {...pageProps} />
+      {getLayout(<Component {...pageProps} />)}
     </>
   )
 }
