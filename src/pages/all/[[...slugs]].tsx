@@ -1,9 +1,11 @@
+import { Layout } from '@/components/layout'
 import { PreviewCard } from '@/components/PreviewCard'
 import { extractShowcaseUser } from '@/lib/extractUser'
 import { useTheme, useThemeList } from '@/lib/theme/hooks'
 import { assertIsArray } from '@/lib/types'
 import styled from '@emotion/styled'
 import { GetServerSidePropsContext, NextPage } from 'next'
+import { NextPageWithLayout } from '@/pages/_app'
 
 export const getServerSideProps = async ({
   req,
@@ -46,7 +48,7 @@ type Props = NonNullable<
   Awaited<ReturnType<typeof getServerSideProps>>['props']
 >
 
-const AllPage: NextPage<Props> = ({ userId, filter }) => {
+const AllPage: NextPageWithLayout<Props> = ({ userId, filter }) => {
   const {
     themes,
     total,
@@ -72,6 +74,9 @@ const AllPage: NextPage<Props> = ({ userId, filter }) => {
   )
 }
 export default AllPage
+AllPage.getLayout = page => {
+  return <Layout>{page}</Layout>
+}
 
 const Wrap = styled.div`
   /* TODO: grid でいい感じに並べる */
