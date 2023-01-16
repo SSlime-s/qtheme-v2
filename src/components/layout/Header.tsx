@@ -21,7 +21,7 @@ export const Header: React.FC<Props> = ({ channelPath }) => {
   }, [])
 
   const now: Path | undefined = useMemo(() => {
-    const name = channelPath.at(-1)
+    const name = channelPath[channelPath.length - 1]
     if (name === undefined) return undefined
     return {
       name,
@@ -30,7 +30,7 @@ export const Header: React.FC<Props> = ({ channelPath }) => {
   }, [basePath, channelPath])
 
   const root: Path | undefined = useMemo(() => {
-    const name = channelPath.at(0)
+    const name = channelPath[0]
     if (name === undefined) return undefined
     return {
       name,
@@ -51,7 +51,7 @@ export const Header: React.FC<Props> = ({ channelPath }) => {
         res.push({
           name,
           // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          href: path.join(res.at(-1)!.href, name),
+          href: path.join(res[res.length - 1].href, name),
         })
       }
     })
