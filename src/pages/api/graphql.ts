@@ -2,6 +2,7 @@ import { ApolloServer } from 'apollo-server-micro'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { resolvers } from '@/apollo/resolvers'
 import { typeDefs } from '@/apollo/type-defs'
+import { extractShowcaseUser } from '@/lib/extractUser'
 
 export const config = {
   api: {
@@ -13,10 +14,10 @@ const apolloServer = new ApolloServer({
   typeDefs,
   resolvers,
   context: ({ req, res }) => {
-    const userId = req.headers['x-showcase-user'] as string | undefined
+    const userId = extractShowcaseUser(req)
 
     return {
-      userId: userId === '-' ? undefined : userId,
+      userId,
       req,
       res,
     }
