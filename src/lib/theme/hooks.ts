@@ -245,7 +245,7 @@ export const useTheme = () => {
         { id }
       )
       const rawTheme: string = getTheme.theme.theme
-      const theme = themeSchema.parse(rawTheme)
+      const theme = themeSchema.parse(JSON.parse(rawTheme))
       currentThemeMutate(theme)
       currentThemeInfoMutate({
         ...themeFromRaw(getTheme.theme),
