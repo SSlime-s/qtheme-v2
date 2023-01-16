@@ -1,6 +1,7 @@
 import { PreviewCard } from '@/components/PreviewCard'
 import { extractShowcaseUser } from '@/lib/extractUser'
 import { useTheme, useThemeList } from '@/lib/theme/hooks'
+import { assertIsArray } from '@/lib/types'
 import styled from '@emotion/styled'
 import { GetServerSidePropsContext, NextPage } from 'next'
 
@@ -15,6 +16,7 @@ export const getServerSideProps = async ({
   if (slugs === undefined || slugs.length === 0) {
     filter = 'all'
   } else if (slugs.length === 1) {
+    assertIsArray(slugs)
     if (['light', 'dark'].includes(slugs[0].toLowerCase())) {
       filter = slugs[0].toLowerCase() as 'light' | 'dark'
     } else {
