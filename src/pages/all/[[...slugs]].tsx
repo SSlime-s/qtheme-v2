@@ -39,7 +39,7 @@ export const getServerSideProps = async ({
 
   return {
     props: {
-      userId,
+      userId: userId ?? null,
       filter,
     },
   }
