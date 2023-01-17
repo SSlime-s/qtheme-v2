@@ -16,27 +16,23 @@ interface Path {
 }
 
 export const Header: React.FC<Props> = ({ channelPath }) => {
-  const basePath = useMemo(() => {
-    return process.env.BASE_URL ?? ''
-  }, [])
-
   const now: Path | undefined = useMemo(() => {
     const name = channelPath[channelPath.length - 1]
     if (name === undefined) return undefined
     return {
       name,
-      href: path.join(basePath, channelPath.join('/')),
+      href: path.join('/', channelPath.join('/')),
     }
-  }, [basePath, channelPath])
+  }, [channelPath])
 
   const root: Path | undefined = useMemo(() => {
     const name = channelPath[0]
     if (name === undefined) return undefined
     return {
       name,
-      href: path.join(basePath, name),
+      href: path.join('/', name),
     }
-  }, [basePath, channelPath])
+  }, [channelPath])
 
   const rest: Path[] = useMemo(() => {
     const rest = channelPath.slice(1, -1)
@@ -45,7 +41,7 @@ export const Header: React.FC<Props> = ({ channelPath }) => {
       if (i === 0) {
         res.push({
           name,
-          href: path.join(basePath, name),
+          href: path.join('/', name),
         })
       } else {
         res.push({
@@ -56,7 +52,7 @@ export const Header: React.FC<Props> = ({ channelPath }) => {
       }
     })
     return res
-  }, [basePath, channelPath])
+  }, [channelPath])
 
   const isRoot = useMemo(() => {
     return channelPath.length === 1
