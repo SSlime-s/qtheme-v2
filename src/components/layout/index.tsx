@@ -1,5 +1,6 @@
 import { useIsMobile } from '@/lib/isMobile'
 import styled from '@emotion/styled'
+import { useRouter } from 'next/router'
 import { PropsWithChildren, useMemo } from 'react'
 import { Header } from './Header'
 import { Navbar } from './Navbar'
@@ -14,9 +15,11 @@ export const Layout: React.FC<PropsWithChildren<Props>> = ({
   children,
 }) => {
   const isMobile = useIsMobile()
+  const router = useRouter()
   const nowChannelPath = useMemo(() => {
-    return ['favorite', 'light']
-  }, [])
+    const path = router.asPath.split('/').filter(p => p !== '')
+    return path
+  }, [router])
 
   return (
     <Container>
