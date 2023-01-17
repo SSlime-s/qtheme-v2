@@ -66,22 +66,31 @@ export const Header: React.FC<Props> = ({ channelPath }) => {
   return (
     <Wrap>
       <PathWrap>
-        <RestPath>
-          <RootLink href={root?.href ?? '/'}>
-            <HashWrap root={isRoot}>#</HashWrap>
-            {root?.name}
-          </RootLink>
-          <Separator />
-        </RestPath>
-        {rest.map(path => {
-          return (
-            <RestPath key={path.href}>
-              <Link href={path.href}>{path.name}</Link>
+        {isRoot ? (
+          <NowPath>
+            <HashWrap>#</HashWrap>
+            {now?.name}
+          </NowPath>
+        ) : (
+          <>
+            <RestPath>
+              <RootLink href={root?.href ?? '/'}>
+                <HashWrap>#</HashWrap>
+                {root?.name}
+              </RootLink>
               <Separator />
             </RestPath>
-          )
-        })}
-        <NowPath>{now?.name}</NowPath>
+            {rest.map(path => {
+              return (
+                <RestPath key={path.href}>
+                  <Link href={path.href}>{path.name}</Link>
+                  <Separator />
+                </RestPath>
+              )
+            })}
+            <NowPath>{now?.name}</NowPath>
+          </>
+        )}
       </PathWrap>
     </Wrap>
   )
@@ -104,9 +113,7 @@ const PathWrap = styled.div`
   user-select: none;
   font-weight: bold;
 `
-const HashWrap = styled.span<{ root: boolean }>`
-  color: ${({ theme, root }) =>
-    root ? theme.theme.basic.ui.primary.default : 'inherit'};
+const HashWrap = styled.span`
   font-size: 1.5rem;
   margin-right: 0.125rem;
 `
