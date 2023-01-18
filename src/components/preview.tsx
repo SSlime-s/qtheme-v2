@@ -233,44 +233,86 @@ export const SmallPreview: React.FC<Props> = ({ author, theme }) => {
             <div
               style={{
                 fontSize: '0.5rem',
+                flexGrow: '1',
+                height: '100%',
               }}
             >
-              <div>
+              <div
+                style={{
+                  height: '20%',
+                  display: 'flex',
+                  gap: '2.5%',
+                }}
+              >
                 <span
                   style={{
-                    color: theme.basic.ui.primary.default,
-                    fontWeight: 'bold',
+                    background: theme.basic.ui.primary.default,
+                    borderRadius: '9999px',
+                    width: '40%',
+                    height: '100%',
+                    display: 'inline-block',
                   }}
-                >
-                  Dummy
-                </span>
+                />
                 <span
                   style={{
-                    color: theme.basic.ui.secondary.default,
-                    backgroundColor: theme.basic.background.secondary.default,
-                    fontWeight: 'bold',
+                    background: theme.basic.background.secondary.default,
+                    display: 'inline-grid',
                     borderRadius: '4px',
-                    fontSize: '0.875em',
-                    padding: '0.5% 2.5%',
+                    padding: '1% 4%',
+                    width: '20%',
+                    height: '100%',
                   }}
                 >
-                  TAG
+                  <span
+                    style={{
+                      background: theme.basic.ui.secondary.default,
+                      display: 'inline-block',
+                      borderRadius: '9999px',
+                    }}
+                  />
                 </span>
                 <span
                   style={{
-                    color: theme.basic.ui.secondary.default,
-                    fontSize: '0.875em',
+                    background: theme.basic.ui.secondary.default,
+                    borderRadius: '9999px',
+                    height: '80%',
+                    width: '30%',
                   }}
-                >
-                  @dummy
-                </span>
+                />
               </div>
               <div
                 style={{
-                  color: theme.basic.ui.primary.default,
+                  height: '80%',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '2.5px',
+                  padding: '5% 0',
                 }}
               >
-                Message Content
+                <div
+                  style={{
+                    background: theme.basic.ui.primary.default,
+                    height: '20%',
+                    borderRadius: '9999px',
+                    width: '100%',
+                  }}
+                />
+                <div
+                  style={{
+                    background: theme.basic.ui.primary.default,
+                    height: '20%',
+                    borderRadius: '9999px',
+                    width: '100%',
+                  }}
+                />
+                <div
+                  style={{
+                    background: theme.basic.ui.primary.default,
+                    height: '20%',
+                    borderRadius: '9999px',
+                    width: '100%',
+                  }}
+                />
               </div>
             </div>
           </div>
