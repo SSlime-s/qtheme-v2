@@ -4,24 +4,23 @@ import { useMemo } from 'react'
 const ENDPOINT = `/api/graphql`
 
 export const useClient = () => {
-  const client = useMemo(
-    () =>
-      new GraphQLClient(
-        ENDPOINT,
-        process.env.NODE_ENV === 'development'
-          ? {
-              headers: {
-                'X-Showcase-User': 'SSlime',
-              },
-            }
-          : {
-              credentials: 'include',
-            }
-      ),
-    []
-  )
+  const client = useMemo(() => newClient(), [])
 
   return client
+}
+export const newClient = () => {
+  return new GraphQLClient(
+    ENDPOINT,
+    process.env.NODE_ENV === 'development'
+      ? {
+          headers: {
+            'X-Showcase-User': 'SSlime',
+          },
+        }
+      : {
+          credentials: 'include',
+        }
+  )
 }
 
 export const userIconUrl = (userId: string) => {
