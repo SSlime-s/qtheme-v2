@@ -1,6 +1,6 @@
 import { userIconUrl } from '@/lib/api'
 import { ResolvedTheme } from '@/lib/theme'
-import React, { PropsWithChildren } from 'react'
+import React from 'react'
 
 interface Props {
   author: string
@@ -9,7 +9,6 @@ interface Props {
 
 export const SmallPreview: React.FC<Props> = props => {
   // vercel og で使うために全部 style 直書きする
-  const { author, theme } = props
 
   return (
     <div
@@ -205,8 +204,8 @@ const Nav: React.FC<Props> = ({ theme }) => {
         backgroundColor: theme.basic.background.primary.default,
         display: 'flex',
         flexDirection: 'column',
+        alignItems: 'center',
         padding: '50% 10%',
-        // gap: '2.5%',
       }}
     >
       <FixRatioBox
@@ -214,7 +213,6 @@ const Nav: React.FC<Props> = ({ theme }) => {
         style={{
           backgroundColor: theme.basic.accent.primary.default,
           width: '80%',
-          // aspectRatio: '1 / 1',
           borderRadius: '9999px',
         }}
       />
@@ -347,7 +345,6 @@ const Sidebar: React.FC<Props> = ({ theme }) => {
         display: 'flex',
         flexDirection: 'column',
         padding: '5%',
-        gap: '2.5%',
       }}
     >
       <div
@@ -431,7 +428,6 @@ const Main: React.FC<Props> = props => {
           width: '100%',
           display: 'flex',
           flexDirection: 'column',
-          gap: '10%',
         }}
       >
         <Separator type='notification' {...props} />
@@ -444,14 +440,13 @@ const Main: React.FC<Props> = props => {
             width: '100%',
             display: 'flex',
             padding: '0 5%',
-            gap: '2.5%',
           }}
         >
           <FixRatioBox
             ratio='1:1'
             style={{
-              height: '80%',
-              width: 'auto',
+              width: '17.5%',
+              height: '65%',
             }}
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -459,17 +454,18 @@ const Main: React.FC<Props> = props => {
               src={userIconUrl(author)}
               style={{
                 borderRadius: '9999px',
-                // aspectRatio: '1 / 1',
-                height: '80%',
+                width: '100%',
               }}
               alt=''
             />
           </FixRatioBox>
+          <HGaper width='2.5%' />
           <div
             style={{
               fontSize: '0.5rem',
               flexGrow: '1',
               height: '100%',
+              width: '80%',
               display: 'flex',
               flexDirection: 'column',
             }}
@@ -478,7 +474,6 @@ const Main: React.FC<Props> = props => {
               style={{
                 height: '20%',
                 display: 'flex',
-                gap: '2.5%',
               }}
             >
               <span
@@ -487,27 +482,28 @@ const Main: React.FC<Props> = props => {
                   borderRadius: '9999px',
                   width: '40%',
                   height: '100%',
-                  // display: 'inline-block',
                 }}
               />
+              <HGaper width='2.5%' />
               <span
                 style={{
                   background: theme.basic.background.secondary.default,
-                  // display: 'inline-block',
                   borderRadius: '4px',
                   padding: '1% 4%',
                   width: '20%',
                   height: '100%',
                 }}
               >
-                <span
+                <div
                   style={{
                     background: theme.basic.ui.secondary.default,
-                    // display: 'inline-block',
                     borderRadius: '9999px',
+                    height: '100%',
+                    width: '100%',
                   }}
                 />
               </span>
+              <HGaper width='2.5%' />
               <span
                 style={{
                   background: theme.basic.ui.secondary.default,
@@ -519,10 +515,10 @@ const Main: React.FC<Props> = props => {
             </div>
             <div
               style={{
+                width: '100%',
                 height: '80%',
                 display: 'flex',
                 flexDirection: 'column',
-                gap: '2.5px',
                 padding: '5% 0',
               }}
             >
@@ -530,24 +526,26 @@ const Main: React.FC<Props> = props => {
                 style={{
                   background: theme.basic.ui.primary.default,
                   height: '20%',
-                  borderRadius: '9999px',
                   width: '100%',
+                  borderRadius: '9999px',
                 }}
               />
+              <VGaper height='7.5%' />
               <div
                 style={{
                   background: theme.basic.ui.primary.default,
                   height: '20%',
-                  borderRadius: '9999px',
                   width: '100%',
+                  borderRadius: '9999px',
                 }}
               />
+              <VGaper height='7.5%' />
               <div
                 style={{
                   background: theme.basic.ui.primary.default,
                   height: '20%',
+                  width: '30%',
                   borderRadius: '9999px',
-                  width: '100%',
                 }}
               />
             </div>
@@ -575,7 +573,7 @@ const Main: React.FC<Props> = props => {
               height: '80%',
               backgroundColor: theme.basic.background.primary.default,
             }}
-          ></div>
+          />
         </div>
       </div>
     </div>
