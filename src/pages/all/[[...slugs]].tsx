@@ -6,6 +6,7 @@ import { assertIsArray } from '@/lib/types'
 import styled from '@emotion/styled'
 import { GetServerSidePropsContext } from 'next'
 import { NextPageWithLayout } from '@/pages/_app'
+import Head from 'next/head'
 
 export const getServerSideProps = async ({
   req,
@@ -59,18 +60,32 @@ const AllPage: NextPageWithLayout<Props> = ({ userId, filter }) => {
   } = useTheme()
 
   return (
-    <Wrap>
-      {themes.map(theme => {
-        return (
-          <PreviewCard
-            key={theme.id}
-            themeInfo={theme}
-            onFavorite={toggleLike}
-            changeTheme={changeTheme}
-          />
-        )
-      })}
-    </Wrap>
+    <>
+      <Head>
+        <title>all themes: {total} themes</title>
+        <meta name='description' content='all themes' />
+        <meta name='og:title' content='all themes' />
+        <meta name='og:description' content='all themes' />
+        <meta
+          name='og:image'
+          content={`http://localhost:3000/api/og?id=${
+            themes[0]?.id ?? '01GPX823XG885ZENT9QD6E76EQ'
+          }`}
+        />
+      </Head>
+      <Wrap>
+        {themes.map(theme => {
+          return (
+            <PreviewCard
+              key={theme.id}
+              themeInfo={theme}
+              onFavorite={toggleLike}
+              changeTheme={changeTheme}
+            />
+          )
+        })}
+      </Wrap>
+    </>
   )
 }
 export default AllPage
