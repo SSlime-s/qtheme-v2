@@ -7,6 +7,7 @@ import styled from '@emotion/styled'
 import { GetServerSidePropsContext } from 'next'
 import { NextPageWithLayout } from '@/pages/_app'
 import Head from 'next/head'
+import { useMemo } from 'react'
 
 export const getServerSideProps = async ({
   req,
@@ -59,6 +60,17 @@ const AllPage: NextPageWithLayout<Props> = ({ userId, filter }) => {
     mutate: { changeTheme },
   } = useTheme()
 
+  // TODO: そのうち消す テスト用
+  const ogUrl = useMemo(() => {
+    const url = new URL('http://localhost:3000/api/og')
+    url.searchParams.set(
+      'theme',
+      JSON.stringify(themes[0]?.theme ?? '01GPX823XG885ZENT9QD6E76EQ')
+    )
+    url.searchParams.set('author', themes[0]?.author)
+    return url.toString()
+  }, [themes])
+
   return (
     <>
       <Head>
@@ -66,12 +78,7 @@ const AllPage: NextPageWithLayout<Props> = ({ userId, filter }) => {
         <meta name='description' content='all themes' />
         <meta name='og:title' content='all themes' />
         <meta name='og:description' content='all themes' />
-        <meta
-          name='og:image'
-          content={`http://localhost:3000/api/og?id=${
-            themes[0]?.id ?? '01GPX823XG885ZENT9QD6E76EQ'
-          }`}
-        />
+        <meta name='og:image' content={ogUrl} />
       </Head>
       <Wrap>
         {themes.map(theme => {
