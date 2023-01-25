@@ -10813,6 +10813,49 @@ __metadata:
   languageName: node
   linkType: hard
 
+"jotai@npm:^1.13.1":
+  version: 1.13.1
+  resolution: "jotai@npm:1.13.1"
+  peerDependencies:
+    "@babel/core": "*"
+    "@babel/template": "*"
+    jotai-devtools: "*"
+    jotai-immer: "*"
+    jotai-optics: "*"
+    jotai-redux: "*"
+    jotai-tanstack-query: "*"
+    jotai-urql: "*"
+    jotai-valtio: "*"
+    jotai-xstate: "*"
+    jotai-zustand: "*"
+    react: ">=16.8"
+  peerDependenciesMeta:
+    "@babel/core":
+      optional: true
+    "@babel/template":
+      optional: true
+    jotai-devtools:
+      optional: true
+    jotai-immer:
+      optional: true
+    jotai-optics:
+      optional: true
+    jotai-redux:
+      optional: true
+    jotai-tanstack-query:
+      optional: true
+    jotai-urql:
+      optional: true
+    jotai-valtio:
+      optional: true
+    jotai-xstate:
+      optional: true
+    jotai-zustand:
+      optional: true
+  checksum: bc1f88ec1d52dda7c2aa39d278b15c128a6babc91fe9294862feb1b2d8467e47fc37cd193fd1358107212b9a4e5f5a8ae9a5a5ed1e845b74421d4476ce5d9efd
+  languageName: node
+  linkType: hard
+
 "js-sdsl@npm:^4.1.4":
   version: 4.2.0
   resolution: "js-sdsl@npm:4.2.0"
@@ -13501,6 +13544,7 @@ __metadata:
     eslint-plugin-storybook: ^0.6.8
     graphql: ^16.6.0
     graphql-request: ^5.1.0
+    jotai: ^1.13.1
     micro: ^10.0.1
     mysql: ^2.18.1
     mysql2: ^2.3.3
