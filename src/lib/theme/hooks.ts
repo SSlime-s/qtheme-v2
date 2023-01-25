@@ -6,6 +6,7 @@ import { useCallback, useMemo, useState } from 'react'
 import { Theme, themeSchema } from '@/model/theme'
 import { resolveTheme } from '@/lib/theme'
 import { lightTheme } from './default'
+import { atom, useAtom } from 'jotai'
 
 const THEMES_PER_PAGE = 20
 
@@ -211,47 +212,48 @@ export const themeToRaw = (theme: ThemeWhole): ThemeWholeRaw => {
   }
 }
 
+const currentThemeWholeAtom = atom<ThemeWhole | null>(null)
+const currentThemeAtom = atom(get => {
+  const currentThemeWhole = get(currentThemeWholeAtom)
+  return currentThemeWhole?.theme ?? null
+})
+const currentThemeInfoAtom = atom(get => {
+  const currentThemeWhole = get(currentThemeWholeAtom)
+  if (currentThemeWhole === null) return null
+  const { theme: _, ...info } = currentThemeWhole
+  return info
+})
+
 export const useTheme = () => {
   const client = useClient()
 
-  const { data: currentTheme, mutate: currentThemeMutate } =
-    useSWR<Theme | null>('currentTheme', null, {
-      fallbackData: null,
-    })
-  const { data: currentThemeInfo, mutate: currentThemeInfoMutate } =
-    useSWR<ThemeInfo | null>('currentThemeInfo', null, {
-      fallbackData: null,
-    })
+  const [currentTheme] = useAtom(currentThemeAtom)
+  const [currentThemeInfo] = useAtom(currentThemeInfoAtom)
+  const [_currentThemeWhole, setCurrentThemeWhole] = useAtom(
+    currentThemeWholeAtom
+  )
 
   const currentResolvedTheme = useMemo(() => {
     return resolveTheme(currentTheme ?? lightTheme)
   }, [currentTheme])
 
   const changeToDefaultTheme = useCallback(() => {
-    currentThemeMutate(null)
-    currentThemeInfoMutate(null)
-  }, [currentThemeInfoMutate, currentThemeMutate])
+    setCurrentThemeWhole(null)
+  }, [setCurrentThemeWhole])
 
   const changeTheme = useCallback(
     async (id: string, fallback?: ThemeWhole) => {
       if (fallback) {
-        currentThemeMutate(fallback.theme)
-        currentThemeInfoMutate({
-          ...fallback,
-        })
+        setCurrentThemeWhole(fallback)
       }
       const { getTheme } = await client.request<GetThemeQueryRes>(
         getThemeQuery,
         { id }
       )
-      const rawTheme: string = getTheme.theme.theme
-      const theme = themeSchema.parse(JSON.parse(rawTheme))
-      currentThemeMutate(theme)
-      currentThemeInfoMutate({
-        ...themeFromRaw(getTheme.theme),
-      })
+      const themeWhole = themeFromRaw(getTheme.theme)
+      setCurrentThemeWhole(themeWhole)
     },
-    [client, currentThemeInfoMutate, currentThemeMutate]
+    [client, setCurrentThemeWhole]
   )
 
   return {
