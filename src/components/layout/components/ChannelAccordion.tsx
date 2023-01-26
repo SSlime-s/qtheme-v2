@@ -188,7 +188,7 @@ export const Channel: React.FC<Props> = ({ name, to, selected }) => {
       <Link href={to}>
         <ChannelWrap data-selected={selected}>
           <CenteredBsHash height={22} width={22} />
-          <ChannelText>{name}</ChannelText>
+          <ChannelText selected={selected}>{name}</ChannelText>
         </ChannelWrap>
       </Link>
     </div>
@@ -197,10 +197,13 @@ export const Channel: React.FC<Props> = ({ name, to, selected }) => {
 const CenteredBsHash = styled(BsHash)`
   place-self: center;
 `
-const ChannelText = styled.div`
+const ChannelText = styled.div<{
+  selected?: boolean
+}>`
   ${ChannelTextStyle}
 
   *:hover > * > &:after {
-    background: ${({ theme }) => theme.theme.basic.ui.primary.default};
+    background: ${({ theme, selected }) =>
+      selected === true ? undefined : theme.theme.basic.ui.primary.default};
   }
 `
