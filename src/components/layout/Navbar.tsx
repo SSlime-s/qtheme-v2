@@ -1,5 +1,6 @@
 import { ReadonlyTree, Tree } from '@/lib/typeUtils'
 import styled from '@emotion/styled'
+import { useRouter } from 'next/router'
 import path from 'path'
 import { useMemo } from 'react'
 import { Channel, ChannelAccordion } from './components/ChannelAccordion'
@@ -97,12 +98,24 @@ const ChannelGroupContent = styled.div`
 `
 
 const Channels: React.FC<ReadonlyTree<ChannelInfo>> = ({ value, children }) => {
+  const { asPath } = useRouter()
+
   if (children === undefined || children.length === 0) {
-    return <Channel name={value.name} to={value.href} />
+    return (
+      <Channel
+        name={value.name}
+        to={value.href}
+        selected={asPath === value.href}
+      />
+    )
   }
 
   return (
-    <ChannelAccordion name={value.name} to={value.href}>
+    <ChannelAccordion
+      name={value.name}
+      to={value.href}
+      selected={asPath === value.href}
+    >
       {children.map(child => {
         return <Channels key={child.value.href} {...child} />
       })}
