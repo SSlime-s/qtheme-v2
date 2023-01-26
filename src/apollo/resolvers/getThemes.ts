@@ -1,5 +1,5 @@
 import { GraphQLError } from 'graphql'
-import { assertIsArray, assertIsArrayObject } from '@/lib/types'
+import { assertIsArray, assertIsArrayObject } from '@/lib/typeUtils'
 import { connectDb } from '@/model/db'
 import { ContextValue } from '.'
 

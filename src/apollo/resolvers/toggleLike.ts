@@ -1,4 +1,4 @@
-import { assertIsArrayObject } from '@/lib/types'
+import { assertIsArrayObject } from '@/lib/typeUtils'
 import { connectDb } from '@/model/db'
 import { GraphQLError } from 'graphql'
 import { Connection } from 'mysql2/promise'
