@@ -23,3 +23,12 @@ export const assertIsArrayObject: AssertIsArrayObject = value => {
     assertIsObject(row)
   })
 }
+
+export interface Tree<T> extends ReadonlyTree<T> {
+  value: T
+  children?: Tree<T>[]
+}
+export interface ReadonlyTree<T> {
+  readonly value: T
+  readonly children?: readonly ReadonlyTree<T>[]
+}
