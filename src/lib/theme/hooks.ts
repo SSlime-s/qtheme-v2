@@ -266,6 +266,50 @@ export const useCurrentTheme = () => {
   }
 }
 
+export const useTheme = (id: string) => {
+  const client = useClient()
+
+  const { data, error, isLoading, mutate } = useSWR<ThemeWhole, Error>(
+    [getThemeQuery, { id }],
+    async ([query, variables]) => {
+      const { getTheme } = await client.request<GetThemeQueryRes>(query, {
+        ...variables,
+      })
+      return themeFromRaw(getTheme.theme)
+    }
+  )
+
+  const resolvedTheme = useMemo(() => {
+    return resolveTheme(data?.theme ?? lightTheme)
+  }, [data])
+
+  const toggleLike = useCallback(
+    async (isLike: boolean) => {
+      if (data === undefined) return
+      await client.request(toggleLikeMutation, { id: data.id, isLike })
+      mutate(data => {
+        if (data === undefined) return data
+        return {
+          ...data,
+          likes: isLike ? data.likes + 1 : data.likes - 1,
+          isLike,
+        }
+      })
+    },
+    [client, data, mutate]
+  )
+
+  return {
+    theme: data,
+    resolvedTheme,
+    error,
+    isLoading,
+    mutate: {
+      toggleLike,
+    },
+  }
+}
+
 export const useThemeList = (
   type: 'light' | 'dark' | 'other' | null,
   visibility: 'public' | 'private' | 'draft' | null,
