@@ -21,6 +21,7 @@
     "@vercel/og": "^0.0.27",
     "apollo-server-micro": "^3.11.1",
     "budoux": "^0.4.1",
+    "dayjs": "^1.11.7",
     "eslint": "8.31.0",
     "eslint-config-next": "13.1.1",
     "graphql": "^16.6.0",
