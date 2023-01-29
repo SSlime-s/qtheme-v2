@@ -1,7 +1,7 @@
 import { Layout } from '@/components/layout'
 import { PreviewCard } from '@/components/PreviewCard'
 import { extractShowcaseUser } from '@/lib/extractUser'
-import { useTheme, useThemeList } from '@/lib/theme/hooks'
+import { useCurrentTheme, useThemeList } from '@/lib/theme/hooks'
 import { assertIsArray } from '@/lib/typeUtils'
 import styled from '@emotion/styled'
 import { GetServerSidePropsContext } from 'next'
@@ -58,7 +58,7 @@ const AllPage: NextPageWithLayout<Props> = ({ userId, filter }) => {
   } = useThemeList(filter === 'all' ? null : filter, null, null)
   const {
     mutate: { changeTheme },
-  } = useTheme()
+  } = useCurrentTheme()
 
   // TODO: そのうち消す テスト用
   const ogUrl = useMemo(() => {

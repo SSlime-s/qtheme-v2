@@ -224,7 +224,7 @@ const currentThemeInfoAtom = atom(get => {
   return info
 })
 
-export const useTheme = () => {
+export const useCurrentTheme = () => {
   const client = useClient()
 
   const [currentTheme] = useAtom(currentThemeAtom)
