@@ -74,7 +74,7 @@ export const PreviewCard: React.FC<Props> = ({
           />
         </ControlWrap>
 
-        <DetailButton href={`/themes/${themeInfo.id}`}>
+        <DetailButton href={`/theme/${themeInfo.id}`}>
           <span>view detail</span>
         </DetailButton>
       </Wrap>
