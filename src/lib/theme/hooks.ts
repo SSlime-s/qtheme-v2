@@ -7,6 +7,7 @@ import { Theme, themeSchema } from '@/model/theme'
 import { resolveTheme } from '@/lib/theme'
 import { lightTheme } from './default'
 import { atom, useAtom } from 'jotai'
+import dayjs from 'dayjs'
 
 const THEMES_PER_PAGE = 20
 
@@ -198,6 +199,7 @@ export const themeFromRaw = (raw: ThemeWholeRaw): ThemeWhole => {
     theme: themeSchema.parse(JSON.parse(raw.theme)),
     type: raw.type.toLowerCase() as 'light' | 'dark' | 'other',
     visibility: raw.visibility.toLowerCase() as 'public' | 'private' | 'draft',
+    createdAt: dayjs.unix(Number(raw.createdAt) / 1000).format('YYYY/MM/DD'),
   }
 }
 export const themeToRaw = (theme: ThemeWhole): ThemeWholeRaw => {
@@ -209,6 +211,7 @@ export const themeToRaw = (theme: ThemeWhole): ThemeWholeRaw => {
       | 'PUBLIC'
       | 'PRIVATE'
       | 'DRAFT',
+    createdAt: (dayjs(theme.createdAt).unix() * 1000).toString(),
   }
 }
 
