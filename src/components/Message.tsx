@@ -95,6 +95,7 @@ const Content = styled.div`
   grid-area: content;
   margin-top: 4px;
   margin-left: 8px;
+  color: ${({ theme }) => theme.theme.basic.ui.primary.default};
 `
 const Stamps = styled.div`
   grid-area: stamps;
