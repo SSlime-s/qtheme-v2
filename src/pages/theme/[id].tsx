@@ -1,18 +1,27 @@
 import { GlassmorphismStyle } from '@/components/Glassmorphism'
 import { Layout } from '@/components/layout'
 import { SmallPreview } from '@/components/preview'
-import { useTheme } from '@/lib/theme/hooks'
+import { useCurrentTheme, useTheme } from '@/lib/theme/hooks'
 import styled from '@emotion/styled'
 import { useRouter } from 'next/router'
 import { NextPageWithLayout } from '@/pages/_app'
-import { Message } from '@/components/Message'
+import { H1, H2, Message } from '@/components/Message'
 import { ReadOnlyTextBox } from '@/components/TextBox'
 import { CopyButton } from '@/components/CopyButton'
+import { FavoriteButton } from '@/components/FavoriteButton'
 import { useMemo } from 'react'
 
 const ThemePage: NextPageWithLayout = () => {
   const { id } = useRouter().query as { id: string }
-  const { theme, resolvedTheme } = useTheme(id)
+  const {
+    theme,
+    resolvedTheme,
+    mutate: { toggleLike },
+  } = useTheme(id)
+  const {
+    currentTheme,
+    mutate: { changeTheme },
+  } = useCurrentTheme()
 
   const themeString = useMemo(() => {
     if (theme === undefined) {
@@ -32,23 +41,41 @@ const ThemePage: NextPageWithLayout = () => {
           iconUser={theme.author}
           content={
             <>
-              {theme.title}
+              <H1>{theme.title}</H1>
               <Card>
                 <SmallPreview theme={resolvedTheme} author={theme.author} />
+                <button
+                  onClick={() => {
+                    changeTheme(theme.id, theme)
+                  }}
+                >
+                  change to this
+                </button>
               </Card>
             </>
           }
           date={theme.createdAt}
           tag={theme.type}
           name={theme.author}
-          stamps={'todo'}
+          stamps={
+            <FavoriteButton
+              isFavorite={theme.isLike}
+              onClick={toggleLike}
+              favoriteCount={theme.likes}
+            />
+          }
         />
         <Message
           iconUser={theme.author}
-          content={theme.description}
+          content={
+            <>
+              <H2>詳細</H2>
+              {theme.description}
+            </>
+          }
           date={theme.createdAt}
           tag={theme.type}
-          name='Description'
+          name={theme.author}
         />
       </MainWrap>
       <CopyBox
@@ -77,7 +104,8 @@ const Card = styled.div`
   padding: 1rem;
   margin: 32px auto;
   max-width: 600px;
-  width: calc(100% - 64px);
+  /* width: calc(100% - 32px); */
+  width: 100%;
 `
 const CopyBox = styled(ReadOnlyTextBox)`
   margin: 0 32px 20px;
