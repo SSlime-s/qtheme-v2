@@ -39,6 +39,32 @@ export const Message = ({
   )
 }
 
+export const H1 = styled.p`
+  font-size: 2rem;
+  font-weight: bold;
+`
+export const H2 = styled.p`
+  font-size: 1.5rem;
+  font-weight: bold;
+`
+export const H3 = styled.p`
+  font-size: 1.25rem;
+  font-weight: bold;
+`
+export const H4 = styled.p`
+  font-size: 1rem;
+  font-weight: bold;
+`
+export const H5 = styled.p`
+  font-size: 0.875rem;
+  font-weight: bold;
+`
+export const H6 = styled.p`
+  font-size: 0.85rem;
+  font-weight: bold;
+  ${({ theme }) => theme.theme.markdown.h6Text};
+`
+
 const Wrap = styled.div`
   display: grid;
   grid-template-areas: 'icon header' 'icon content' '... content' '... stamps';
