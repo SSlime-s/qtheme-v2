@@ -1,4 +1,5 @@
 import styled from '@emotion/styled'
+import { useEffect, useRef } from 'react'
 
 export interface Props {
   before?: React.ReactNode
@@ -12,6 +13,38 @@ export const TextBox: React.FC<
       {before != null && <Before>{before}</Before>}
       <Input {...props} />
       {after != null && <After>{after}</After>}
+    </Wrap>
+  )
+}
+
+export const ReadOnlyTextBox: React.FC<
+  Props & React.HTMLAttributes<HTMLTextAreaElement>
+> = ({ before, after, className, ...props }) => {
+  const textAreaRef = useRef<HTMLTextAreaElement>(null)
+
+  useEffect(() => {
+    if (textAreaRef.current === null) return
+    const textArea = textAreaRef.current
+    const selectAll = () => {
+      textArea.focus()
+      textArea.select()
+    }
+    textArea.addEventListener('focus', selectAll)
+
+    return () => {
+      textArea.removeEventListener('focus', selectAll)
+    }
+  }, [])
+
+  return (
+    <Wrap className={className}>
+      {before != null && <Before>{before}</Before>}
+      <Input ref={textAreaRef} {...props} readOnly rows={1} />
+      {after != null && (
+        <After>
+          <AfterContent>{after}</AfterContent>
+        </After>
+      )}
     </Wrap>
   )
 }
@@ -41,7 +74,7 @@ const Input = styled.textarea`
   max-height: 160px;
   &[readonly] {
     color: ${({ theme }) => theme.theme.basic.ui.secondary.inactive};
-    cursor: wait;
+    cursor: default;
   }
   border-radius: 8px 0 0 8px;
   &:last-child {
@@ -54,15 +87,20 @@ const Input = styled.textarea`
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 1;
-    overflow: hidden;
-    height: 40px;
+    height: unset;
   }
+  height: 40px;
+  overflow: hidden;
   resize: none;
 `
 const After = styled.div`
   grid-column: 3;
   background: ${({ theme }) => theme.theme.basic.background.primary.default};
   border-radius: 0 8px 8px 0;
+  display: grid;
+  height: 100%;
+`
+const AfterContent = styled.div`
   height: 40px;
   align-self: end;
 `
