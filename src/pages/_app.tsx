@@ -1,7 +1,7 @@
 import '@/styles/globals.css'
 import '@/styles/reset.css'
 import type { AppProps } from 'next/app'
-import { Roboto, Roboto_Mono } from '@next/font/google'
+import { Inter, M_PLUS_1p } from '@next/font/google'
 import { ReactElement, ReactNode } from 'react'
 import { NextPage } from 'next'
 import { useCurrentTheme } from '@/lib/theme/hooks'
@@ -18,14 +18,13 @@ type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout
 }
 
-export const roboto = Roboto({
+export const inter = Inter({
   weight: ['400', '700'],
   subsets: ['latin'],
 })
 
-export const robotoMono = Roboto_Mono({
+export const mPlus1p = M_PLUS_1p({
   weight: ['400', '700'],
-  subsets: ['latin'],
 })
 
 export default function App({ Component, pageProps }: AppPropsWithLayout) {
@@ -36,11 +35,15 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
     <>
       <style jsx global>{`
         html {
-          font-family: ${roboto.style.fontFamily};
+          font-family: ${inter.style.fontFamily}, ${mPlus1p.style.fontFamily},
+            'Avenir', 'Helvetica Neue', 'Helvetica', 'Arial', 'Hiragino Sans',
+            'ヒラギノ角ゴシック', YuGothic, 'Yu Gothic', 'メイリオ', Meiryo,
+            'ＭＳ Ｐゴシック', 'MS PGothic', sans-serif;
         }
 
         .mono {
-          font-family: ${robotoMono.style.fontFamily};
+          font-family: SFMono-Regular, Consolas, Liberation Mono, Menlo,
+            monospace;
         }
       `}</style>
       <ThemeProvider theme={{ theme: currentTheme }}>
