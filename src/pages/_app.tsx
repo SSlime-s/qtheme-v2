@@ -39,6 +39,9 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
             'Avenir', 'Helvetica Neue', 'Helvetica', 'Arial', 'Hiragino Sans',
             'ヒラギノ角ゴシック', YuGothic, 'Yu Gothic', 'メイリオ', Meiryo,
             'ＭＳ Ｐゴシック', 'MS PGothic', sans-serif;
+
+          -webkit-font-smoothing: antialiased;
+          text-rendering: optimizeLegibility;
         }
 
         .mono {
