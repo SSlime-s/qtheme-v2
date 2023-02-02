@@ -64,7 +64,7 @@ export const ChannelAccordion: React.FC<PropsWithChildren<Props>> = ({
           aria-expanded={isOpen}
           data-selected={selected}
         >
-          <BsHash height={22} width={22} />
+          <BsHash />
         </ToggleButton>
         <ChannelLink href={to}>{name}</ChannelLink>
       </ChannelWrap>
@@ -101,8 +101,9 @@ const ToggleButton = styled.button<{
 }>`
   display: grid;
   place-self: center;
-  height: 22px;
-  width: 22px;
+  height: 26px;
+  width: 26px;
+  font-size: 22px;
   place-items: center;
   padding: 0;
   cursor: pointer;
@@ -187,7 +188,7 @@ export const Channel: React.FC<Props> = ({ name, to, selected }) => {
     <div>
       <Link href={to}>
         <ChannelWrap data-selected={selected}>
-          <CenteredBsHash height={22} width={22} />
+          <CenteredBsHash />
           <ChannelText selected={selected}>{name}</ChannelText>
         </ChannelWrap>
       </Link>
@@ -196,6 +197,7 @@ export const Channel: React.FC<Props> = ({ name, to, selected }) => {
 }
 const CenteredBsHash = styled(BsHash)`
   place-self: center;
+  font-size: 24px;
 `
 const ChannelText = styled.div<{
   selected?: boolean
