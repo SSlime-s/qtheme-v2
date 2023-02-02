@@ -46,7 +46,7 @@ const Container = styled.div`
   & * {
     scrollbar-color: ${({ theme }) =>
       `${theme.theme.browser.scrollbarThumb} ${theme.theme.browser.scrollbarTrack}`};
-    transition: scrollbar-color 0.3s;
+    /* transition: scrollbar-color 0.3s; */
     &:hover,
     &:active {
       scrollbar-color: ${({ theme }) =>
