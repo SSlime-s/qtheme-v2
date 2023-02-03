@@ -3,7 +3,7 @@ import styled from '@emotion/styled'
 import { useRouter } from 'next/router'
 import path from 'path'
 import { useMemo } from 'react'
-import { Channel, ChannelAccordion } from './components/ChannelAccordion'
+import { Channel, ChannelAccordion } from '../components/ChannelAccordion'
 
 const lightDark = [
   {
@@ -33,8 +33,11 @@ const channels = [
 export const Navbar: React.FC = () => {
   return (
     <Wrap>
-      <ChannelGroup name='ホーム' channelNames={loginHome} />
-      <ChannelGroup name='チャンネル' channelNames={channels} />
+      <div>Controls</div>
+      <div>
+        <ChannelGroup name='ホーム' channelNames={loginHome} />
+        <ChannelGroup name='チャンネル' channelNames={channels} />
+      </div>
     </Wrap>
   )
 }
@@ -42,6 +45,8 @@ export const Navbar: React.FC = () => {
 const Wrap = styled.div`
   grid-area: nav;
   background: ${({ theme }) => theme.theme.basic.background.secondary.default};
+  display: grid;
+  grid-template-columns: 60px 1fr;
 `
 
 interface ChannelInfo {
