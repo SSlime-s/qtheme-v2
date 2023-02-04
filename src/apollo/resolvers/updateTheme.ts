@@ -31,8 +31,9 @@ export const updateTheme = async (
     if (old === null) {
       throw new GraphQLError('Not found')
     }
-    assertIsObject(old)
-    if (old.author !== userId) {
+    const oldTheme = old.theme
+    assertIsObject(oldTheme)
+    if (oldTheme.author !== userId) {
       throw new GraphQLError('Forbidden')
     }
     const sql = `
@@ -56,7 +57,7 @@ export const updateTheme = async (
       id,
       userId,
     ])
-    if (theme !== old.theme) {
+    if (theme !== oldTheme.theme) {
       const version_id = ulid()
       const sql = `
         INSERT INTO theme_versions (
@@ -71,14 +72,14 @@ export const updateTheme = async (
       await connection.execute(sql, [
         version_id,
         id,
-        z.string().parse(old.version) + 1,
+        z.string().parse(oldTheme.version) + 1,
         theme,
       ])
     }
     await connection.commit()
 
     return {
-      ...old,
+      ...oldTheme,
       title,
       description,
       visibility,
