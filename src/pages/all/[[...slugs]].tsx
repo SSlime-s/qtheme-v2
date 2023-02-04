@@ -106,4 +106,5 @@ const Wrap = styled.div`
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 16px;
   padding: 32px;
+  justify-items: center;
 `
