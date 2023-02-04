@@ -35,12 +35,17 @@ const channels = [
 
 export const NavbarChannels: React.FC = () => {
   return (
-    <div>
+    <Wrap>
       <ChannelGroup name='ホーム' channelNames={loginHome} />
       <ChannelGroup name='チャンネル' channelNames={channels} />
-    </div>
+    </Wrap>
   )
 }
+const Wrap = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+`
 
 interface ChannelInfo {
   name: string
