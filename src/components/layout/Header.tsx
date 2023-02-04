@@ -95,7 +95,7 @@ const Separator: React.FC = () => {
   return <SeparatorWrap>/</SeparatorWrap>
 }
 
-const Wrap = styled.div`
+const Wrap = styled.header`
   grid-area: header;
   background: ${({ theme }) => theme.theme.basic.background.primary.default};
   border-bottom: solid 2px

@@ -81,7 +81,7 @@ const Container = styled.div`
   }
 `
 
-const Main = styled.div`
+const Main = styled.main`
   grid-area: main;
   overflow: auto;
   contain: strict;
