@@ -44,7 +44,8 @@ export const ChannelAccordion: React.FC<PropsWithChildren<Props>> = ({
 
     const content = ref.current
     const setHeight = () => {
-      setContentHeight(content.clientHeight)
+      // margin の分だけ足す
+      setContentHeight(content.clientHeight + 8)
     }
     setHeight()
     const observer = new ResizeObserver(setHeight)
@@ -56,7 +57,7 @@ export const ChannelAccordion: React.FC<PropsWithChildren<Props>> = ({
   }, [])
 
   return (
-    <div>
+    <Wrap>
       <ChannelWrap data-selected={selected}>
         <ToggleButton
           onClick={toggleOpen}
@@ -77,9 +78,12 @@ export const ChannelAccordion: React.FC<PropsWithChildren<Props>> = ({
           {children}
         </div>
       </ContentWrap>
-    </div>
+    </Wrap>
   )
 }
+const Wrap = styled.div`
+  margin: 4px 0;
+`
 const ChannelWrap = styled.div<{
   'data-selected'?: boolean
 }>`
@@ -151,10 +155,10 @@ const ChannelTextStyle = ({
     opacity: 0.1;
     background: transparent;
     position: absolute;
-    top: 0;
+    top: -2px;
+    bottom: -2px;
     left: 0;
     width: 100%;
-    height: 100%;
     pointer-events: none;
   }
 
@@ -185,14 +189,14 @@ const ContentWrap = styled.div<{
 
 export const Channel: React.FC<Props> = ({ name, to, selected }) => {
   return (
-    <div>
+    <Wrap>
       <Link href={to}>
         <ChannelWrap data-selected={selected}>
           <CenteredBsHash />
           <ChannelText selected={selected}>{name}</ChannelText>
         </ChannelWrap>
       </Link>
-    </div>
+    </Wrap>
   )
 }
 const CenteredBsHash = styled(BsHash)`
