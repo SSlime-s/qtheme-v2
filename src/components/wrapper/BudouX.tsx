@@ -1,5 +1,5 @@
 import { IWrapper, WrapResolver } from '@/lib/wrapper'
-import styled from '@emotion/styled'
+import { css } from '@emotion/react'
 import { loadDefaultJapaneseParser } from 'budoux'
 import React, { PropsWithChildren, useMemo } from 'react'
 
@@ -28,9 +28,9 @@ export const BudouJa: React.FC<PropsWithChildren<Props>> = ({
     })
   }, [Wrapper, children])
 
-  return <Wrap>{parsed}</Wrap>
+  return <>{parsed}</>
 }
-const Wrap = styled.div`
+export const BreakStyle = css`
   word-break: keep-all;
   overflow-wrap: break-word;
 `

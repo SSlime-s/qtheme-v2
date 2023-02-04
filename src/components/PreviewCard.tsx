@@ -8,7 +8,7 @@ import { FavoriteButton } from './FavoriteButton'
 import { GlassmorphismStyle } from './Glassmorphism'
 import { SmallPreview } from './preview'
 import { Tag } from './Tag'
-import { BudouJa } from './wrapper/BudouX'
+import { BreakStyle, BudouJa } from './wrapper/BudouX'
 import { ReplaceNewLine } from './wrapper/ReplaceNewLine'
 
 interface Props {
@@ -109,6 +109,8 @@ const Author = styled.h2`
   text-align: right;
 `
 const Description = styled.p`
+  ${BreakStyle}
+
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
