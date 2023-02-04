@@ -88,7 +88,7 @@ const ChannelWrap = styled.div<{
   'data-selected'?: boolean
 }>`
   display: grid;
-  grid-template-columns: 32px 1fr;
+  grid-template-columns: 29px 1fr;
   height: 32px;
   align-items: center;
   color: ${({ theme, ...props }) =>
@@ -104,7 +104,7 @@ const ToggleButton = styled.button<{
   'data-selected'?: boolean
 }>`
   display: grid;
-  place-self: center;
+  justify-self: end;
   height: 26px;
   width: 26px;
   font-size: 22px;
@@ -147,7 +147,7 @@ const ChannelTextStyle = ({
   theme: { theme: ResolvedTheme }
 }) => css`
   width: 100%;
-  padding-left: 8px;
+  padding-left: calc(8px + 3px);
 
   &:after {
     content: '';
@@ -201,6 +201,7 @@ export const Channel: React.FC<Props> = ({ name, to, selected }) => {
 }
 const CenteredBsHash = styled(BsHash)`
   place-self: center;
+  justify-self: end;
   font-size: 24px;
 `
 const ChannelText = styled.div<{
