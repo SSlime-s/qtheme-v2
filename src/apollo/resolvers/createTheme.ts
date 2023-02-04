@@ -3,6 +3,7 @@ import { connectDb } from '@/model/db'
 import { ContextValue } from '.'
 import { getTheme } from './getTheme'
 import { ulid } from 'ulid'
+import { Connection } from 'mysql2/promise'
 
 export const createTheme = async (
   _: unknown,
@@ -20,8 +21,9 @@ export const createTheme = async (
   }
   const { title, description, visibility, type, theme } = args
   const id = ulid()
+  let connection: Connection | undefined
   try {
-    const connection = await connectDb()
+    connection = await connectDb()
     const sql = `
           INSERT INTO themes (
             id,
@@ -50,6 +52,8 @@ export const createTheme = async (
       throw err
     }
     throw new GraphQLError(`Internal server error: ${err}`)
+  } finally {
+    await connection?.end()
   }
   return getTheme(_, { id }, { userId })
 }

@@ -28,6 +28,7 @@ export const getThemes = async (
   if (limit == undefined && offset != undefined) {
     throw new GraphQLError('Invalid offset')
   }
+  const needCloseConnection = connection === undefined
   try {
     connection = connection ?? (await connectDb())
     const sql = `
@@ -108,5 +109,9 @@ export const getThemes = async (
       throw err
     }
     throw new GraphQLError(`Internal server error: ${err}`)
+  } finally {
+    if (needCloseConnection) {
+      connection?.end()
+    }
   }
 }

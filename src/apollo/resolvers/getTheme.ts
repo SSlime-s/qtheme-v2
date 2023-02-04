@@ -9,6 +9,7 @@ export const getTheme = async (
   { userId, connection }: ContextValue
 ) => {
   const { id } = args
+  const needCloseConnection = connection === undefined
   try {
     connection = connection ?? (await connectDb())
     const sql = `
@@ -66,5 +67,9 @@ export const getTheme = async (
       throw err
     }
     throw new GraphQLError(`Internal server error: ${err}`)
+  } finally {
+    if (needCloseConnection) {
+      connection?.end()
+    }
   }
 }

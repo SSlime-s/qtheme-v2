@@ -18,6 +18,7 @@ export const getRandomTheme = async (
   if (visibility === 'private' && userId === undefined) {
     throw new GraphQLError('Forbidden')
   }
+  const needCloseConnection = connection === undefined
   try {
     connection = connection ?? (await connectDb())
     if (userId === undefined) {
@@ -106,5 +107,9 @@ export const getRandomTheme = async (
       throw err
     }
     throw new GraphQLError(`Internal server error: ${err}`)
+  } finally {
+    if (needCloseConnection) {
+      connection?.end()
+    }
   }
 }
