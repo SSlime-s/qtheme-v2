@@ -4,6 +4,7 @@ import { useCallback, useId, useMemo } from 'react'
 import { NavbarChannels } from './Channels'
 import { MdHome } from 'react-icons/md'
 import { FaUser, FaWrench } from 'react-icons/fa'
+import { NavbarCustom } from './Custom'
 
 type NavbarState = 'channel' | 'user' | 'custom'
 const states = [
@@ -125,22 +126,24 @@ const NavPanel: React.FC<NavPanelProps> = ({ state, idPrefix }) => {
       role='tabpanel'
       id={id}
       aria-labelledby={id}
+      hasRPad={state !== 'channel'}
       hidden={current !== state}
     >
       <Title>{title}</Title>
       {state === 'channel' ? (
         <NavbarChannels />
       ) : state === 'user' ? (
-        <div>user</div>
+        <div>ユーザー</div>
       ) : (
-        <div>custom</div>
+        <NavbarCustom />
       )}
     </Panel>
   )
 }
-const Panel = styled.div`
+const Panel = styled.div<{ hasRPad: boolean }>`
   display: grid;
   padding: 24px 0 0 8px;
+  padding-right: ${({ hasRPad }) => (hasRPad ? '24px' : '0px')};
   grid-template-rows: max-content 1fr;
   gap: 24px;
 
