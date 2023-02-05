@@ -226,6 +226,7 @@ const currentThemeInfoAtom = atom(get => {
   const { theme: _, ...info } = currentThemeWhole
   return info
 })
+const currentThemeTmpAtom = atom<Theme | null>(null)
 
 export const useCurrentTheme = () => {
   const client = useClient()
@@ -235,10 +236,11 @@ export const useCurrentTheme = () => {
   const [_currentThemeWhole, setCurrentThemeWhole] = useAtom(
     currentThemeWholeAtom
   )
+  const [currentThemeTmp, setCurrentThemeTmp] = useAtom(currentThemeTmpAtom)
 
   const currentResolvedTheme = useMemo(() => {
-    return resolveTheme(currentTheme ?? lightTheme)
-  }, [currentTheme])
+    return resolveTheme(currentThemeTmp ?? currentTheme ?? lightTheme)
+  }, [currentTheme, currentThemeTmp])
 
   const changeToDefaultTheme = useCallback(() => {
     setCurrentThemeWhole(null)
@@ -259,6 +261,16 @@ export const useCurrentTheme = () => {
     [client, setCurrentThemeWhole]
   )
 
+  const changeTmpTheme = useCallback(
+    (theme: Theme) => {
+      setCurrentThemeTmp(theme)
+    },
+    [setCurrentThemeTmp]
+  )
+  const resetTmpTheme = useCallback(() => {
+    setCurrentThemeTmp(null)
+  }, [setCurrentThemeTmp])
+
   return {
     currentTheme: currentResolvedTheme,
     currentRawTheme: currentTheme,
@@ -266,6 +278,8 @@ export const useCurrentTheme = () => {
     mutate: {
       changeTheme,
       changeToDefaultTheme,
+      changeTmpTheme,
+      resetTmpTheme,
     },
   }
 }
