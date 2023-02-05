@@ -17,7 +17,13 @@ export const Layout: React.FC<PropsWithChildren<Props>> = ({
   const isMobile = useIsMobile()
   const router = useRouter()
   const nowChannelPath = useMemo(() => {
-    const path = router.asPath.split('/').filter(p => p !== '')
+    const path = router.asPath
+      .split('/')
+      .filter(p => p !== '')
+      .map(p => {
+        const split = p.split('?')
+        return split[0]
+      })
     return path
   }, [router])
 
