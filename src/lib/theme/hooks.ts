@@ -261,6 +261,7 @@ export const useCurrentTheme = () => {
 
   return {
     currentTheme: currentResolvedTheme,
+    currentRawTheme: currentTheme,
     currentThemeInfo,
     mutate: {
       changeTheme,
