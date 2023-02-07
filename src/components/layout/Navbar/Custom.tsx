@@ -3,15 +3,33 @@ import styled from '@emotion/styled'
 import { BiImport } from 'react-icons/bi'
 import { TbNewSection } from 'react-icons/tb'
 import { css } from '@emotion/react'
+import { useCurrentTheme } from '@/lib/theme/hooks'
 
 export const NavbarCustom: React.FC = () => {
+  const { currentRawTheme } = useCurrentTheme()
+
   return (
     <Wrap>
-      <BigButton href=''>
+      <BigButton
+        href={{
+          pathname: '/edit',
+          query: {
+            new: '',
+          },
+        }}
+      >
         <TbNewSection css={IconStyle} />
         新規テーマ作成
       </BigButton>
-      <BigButton href=''>
+      <BigButton
+        href={{
+          pathname: '/edit',
+          query: {
+            init: JSON.stringify(currentRawTheme),
+            new: '',
+          },
+        }}
+      >
         <BiImport css={IconStyle} />
         現在のテーマから作成
       </BigButton>
