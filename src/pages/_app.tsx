@@ -6,6 +6,7 @@ import { ReactElement, ReactNode } from 'react'
 import { NextPage } from 'next'
 import { useCurrentTheme } from '@/lib/theme/hooks'
 import { ThemeProvider } from '@emotion/react'
+import { useRouter } from 'next/router'
 
 export type NextPageWithLayout<P = Record<string, unknown>, IP = P> = NextPage<
   P,
@@ -30,6 +31,8 @@ export const mPlus1p = M_PLUS_1p({
 export default function App({ Component, pageProps }: AppPropsWithLayout) {
   const getLayout = Component.getLayout ?? (x => x)
   const { currentTheme } = useCurrentTheme()
+  const router = useRouter()
+  const key = router.pathname !== '/edit' ? 'default' : `edit ${router.asPath}`
 
   return (
     <>
@@ -50,7 +53,7 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
         }
       `}</style>
       <ThemeProvider theme={{ theme: currentTheme }}>
-        {getLayout(<Component {...pageProps} />)}
+        {getLayout(<Component key={key} {...pageProps} />)}
       </ThemeProvider>
     </>
   )
