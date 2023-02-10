@@ -14,96 +14,106 @@ export const SmallPreview: React.FC<Props> = props => {
     <div
       style={{
         display: 'flex',
+        background: 'white',
       }}
     >
-      <FixRatioBox
-        ratio='16:9'
+      <div
         style={{
-          height: '100%',
-          width: '100%',
-          // aspectRatio: '16 / 9',
-          position: 'relative',
           display: 'flex',
-          flexDirection: 'row',
-          borderRadius: '2px',
-          overflow: 'hidden',
-          userSelect: 'none',
+          width: '100%',
+          background: props.theme.basic.background.secondary.default,
         }}
       >
-        <div
+        <FixRatioBox
+          ratio='16:9'
           style={{
-            width: '3.3%',
             height: '100%',
+            width: '100%',
+            // aspectRatio: '16 / 9',
+            position: 'relative',
             display: 'flex',
-          }}
-        >
-          <Nav {...props} />
-        </div>
-        <div
-          style={{
-            width: '16.5%',
-            height: '100%',
-            display: 'flex',
-          }}
-        >
-          <Channel {...props} />
-        </div>
-        <div
-          style={{
-            width: '80.2%',
-            display: 'flex',
-            flexDirection: 'column',
+            flexDirection: 'row',
+            borderRadius: '2px',
+            overflow: 'hidden',
+            userSelect: 'none',
+            background: props.theme.basic.background.tertiary.default,
           }}
         >
           <div
             style={{
-              height: '11.1%',
-              width: '100%',
+              width: '3.3%',
+              height: '100%',
               display: 'flex',
             }}
           >
-            <Header {...props} />
+            <Nav {...props} />
           </div>
           <div
             style={{
-              height: '88.9%',
+              width: '16.5%',
+              height: '100%',
               display: 'flex',
-              flexDirection: 'row',
+            }}
+          >
+            <Channel {...props} />
+          </div>
+          <div
+            style={{
+              width: '80.2%',
+              display: 'flex',
+              flexDirection: 'column',
             }}
           >
             <div
               style={{
-                width: '75%',
-                height: '100%',
+                height: '11.1%',
+                width: '100%',
                 display: 'flex',
               }}
             >
-              <Main {...props} />
+              <Header {...props} />
             </div>
             <div
               style={{
-                height: '100%',
-                width: '25%',
+                height: '88.9%',
                 display: 'flex',
+                flexDirection: 'row',
               }}
             >
-              <Sidebar {...props} />
+              <div
+                style={{
+                  width: '75%',
+                  height: '100%',
+                  display: 'flex',
+                }}
+              >
+                <Main {...props} />
+              </div>
+              <div
+                style={{
+                  height: '100%',
+                  width: '25%',
+                  display: 'flex',
+                }}
+              >
+                <Sidebar {...props} />
+              </div>
             </div>
           </div>
-        </div>
-        <div
-          style={{
-            position: 'absolute',
-            bottom: '0',
-            left: '2.5%',
-            width: '20%',
-            height: '100%',
-            display: 'flex',
-          }}
-        >
-          <NotificationWrap {...props} />
-        </div>
-      </FixRatioBox>
+          <div
+            style={{
+              position: 'absolute',
+              bottom: '0',
+              left: '2.5%',
+              width: '20%',
+              height: '100%',
+              display: 'flex',
+            }}
+          >
+            <NotificationWrap {...props} />
+          </div>
+        </FixRatioBox>
+      </div>
     </div>
   )
 }
