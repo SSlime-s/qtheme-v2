@@ -38,7 +38,7 @@ const mustConvertHex = (hex: string) => {
 /**
  * The RGB hexadecimal notations
  */
-const parseHexNotationColor = (str: string): RGBColor | null => {
+export const parseHexNotationColor = (str: string): RGBColor | null => {
   const len = str.length
   /* eslint-disable @typescript-eslint/no-non-null-assertion */
   if (len === 4 || len === 5) {
