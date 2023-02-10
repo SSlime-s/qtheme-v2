@@ -1,3 +1,4 @@
+import { useAccordion } from '@/lib/accordion'
 import { ResolvedTheme } from '@/lib/theme'
 import { css } from '@emotion/react'
 import styled from '@emotion/styled'
@@ -24,58 +25,19 @@ export const ChannelAccordion: React.FC<PropsWithChildren<Props>> = ({
   to,
   children,
 }) => {
-  const contentsId = useId()
-
-  const ref = useRef<HTMLDivElement>(null)
-
-  const [isOpen, setIsOpen] = useState(false)
-  const [contentHeight, setContentHeight] = useState<number | undefined>(
-    undefined
-  )
-
-  const toggleOpen = useCallback(() => {
-    setIsOpen(isOpen => !isOpen)
-  }, [])
-
-  useEffect(() => {
-    if (ref.current === null) {
-      return
-    }
-
-    const content = ref.current
-    const setHeight = () => {
-      // margin の分だけ足す
-      setContentHeight(content.clientHeight + 8)
-    }
-    setHeight()
-    const observer = new ResizeObserver(setHeight)
-    observer.observe(content)
-
-    return () => {
-      observer.disconnect()
-    }
-  }, [])
+  const { toggle, contentRef, contentHeight, ariaToggle, ariaContent } =
+    useAccordion<HTMLDivElement>(8)
 
   return (
     <Wrap>
       <ChannelWrap data-selected={selected}>
-        <ToggleButton
-          onClick={toggleOpen}
-          aria-controls={contentsId}
-          aria-expanded={isOpen}
-          data-selected={selected}
-        >
+        <ToggleButton onClick={toggle} data-selected={selected} {...ariaToggle}>
           <BsHash />
         </ToggleButton>
         <ChannelLink href={to}>{name}</ChannelLink>
       </ChannelWrap>
-      <ContentWrap
-        data-height={contentHeight}
-        // FIXME: ページ内検索で引っかからないように hidden もつけるべき
-        aria-hidden={!isOpen}
-        id={contentsId}
-      >
-        <div ref={ref}>{children}</div>
+      <ContentWrap data-height={contentHeight} {...ariaContent}>
+        <div ref={contentRef}>{children}</div>
       </ContentWrap>
     </Wrap>
   )
