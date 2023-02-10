@@ -1,10 +1,16 @@
 import styled from '@emotion/styled'
 import { atom, useAtom } from 'jotai'
-import { useCallback, useId, useMemo } from 'react'
+import {
+  ButtonHTMLAttributes,
+  HTMLAttributes,
+  useCallback,
+  useMemo,
+} from 'react'
 import { NavbarChannels } from './Channels'
 import { MdHome } from 'react-icons/md'
 import { FaUser, FaWrench } from 'react-icons/fa'
 import { NavbarCustom } from './Custom'
+import { useControlledNamedTabList } from '@/lib/tablist'
 
 type NavbarState = 'channel' | 'user' | 'custom'
 const states = [
@@ -19,28 +25,19 @@ const titlesMap = {
 } as const satisfies Record<NavbarState, string>
 const NavbarAtom = atom<NavbarState>('channel')
 export const Navbar: React.FC = () => {
-  const tabIdPrefix = useId()
-  const panelIdPrefix = useId()
+  const [state, setState] = useAtom(NavbarAtom)
+  const { ariaTabListProps, ariaTabProps, ariaPanelProps } =
+    useControlledNamedTabList(states, state, setState)
 
   return (
-    <Wrap>
+    <Wrap {...ariaTabListProps}>
       <TabList role='tablist'>
         {states.map(s => (
-          <Button
-            key={s}
-            state={s}
-            tabIdPrefix={tabIdPrefix}
-            panelIdPrefix={panelIdPrefix}
-          />
+          <Button key={s} state={s} {...ariaTabProps[s]} />
         ))}
       </TabList>
       {states.map(s => (
-        <NavPanel
-          key={s}
-          state={s}
-          tabIdPrefix={tabIdPrefix}
-          panelIdPrefix={panelIdPrefix}
-        />
+        <NavPanel key={s} state={s} {...ariaPanelProps[s]} />
       ))}
     </Wrap>
   )
@@ -58,32 +55,17 @@ const TabList = styled.div`
 
 interface ButtonProps {
   state: NavbarState
-  tabIdPrefix: string
-  panelIdPrefix: string
 }
-const Button: React.FC<ButtonProps> = ({
-  state,
-  tabIdPrefix,
-  panelIdPrefix,
-}) => {
-  const [current, setCurrent] = useAtom(NavbarAtom)
+const Button: React.FC<
+  ButtonProps & ButtonHTMLAttributes<HTMLButtonElement>
+> = ({ state, ...props }) => {
+  const [_, setCurrent] = useAtom(NavbarAtom)
   const changeCurrent = useCallback(() => {
     setCurrent(state)
   }, [setCurrent, state])
-  const tabId = `${tabIdPrefix}-${state}`
-  const panelId = `${panelIdPrefix}-${state}`
-  const isSelected = current === state
 
   return (
-    <IconButton
-      role='tab'
-      id={tabId}
-      aria-controls={panelId}
-      aria-selected={isSelected}
-      tabIndex={isSelected ? 0 : -1}
-      onClick={changeCurrent}
-      title={titlesMap[state]}
-    >
+    <IconButton {...props} onClick={changeCurrent} title={titlesMap[state]}>
       {state === 'channel' ? (
         <MdHome />
       ) : state === 'user' ? (
@@ -132,27 +114,15 @@ const IconButton = styled.button`
 
 interface NavPanelProps {
   state: NavbarState
-  tabIdPrefix: string
-  panelIdPrefix: string
 }
-const NavPanel: React.FC<NavPanelProps> = ({
+const NavPanel: React.FC<NavPanelProps & HTMLAttributes<HTMLDivElement>> = ({
   state,
-  tabIdPrefix,
-  panelIdPrefix,
+  ...props
 }) => {
-  const [current] = useAtom(NavbarAtom)
-  const tabId = `${tabIdPrefix}-${state}`
-  const panelId = `${panelIdPrefix}-${state}`
   const title = useMemo(() => titlesMap[state], [state])
 
   return (
-    <Panel
-      role='tabpanel'
-      id={panelId}
-      aria-labelledby={tabId}
-      hasRPad={state !== 'channel'}
-      hidden={current !== state}
-    >
+    <Panel {...props} hasRPad={state !== 'channel'}>
       <Title>{title}</Title>
       {state === 'channel' ? (
         <NavbarChannels />
