@@ -89,7 +89,9 @@ const Container = styled.div`
 
 const Main = styled.main`
   grid-area: main;
+  /* HACK: overflow: overlay が無効なブラウザ用の fallback */
   overflow: auto;
+  overflow: overlay;
   contain: strict;
   height: 100%;
   background: ${({ theme }) => theme.theme.specific.mainViewBackground};
