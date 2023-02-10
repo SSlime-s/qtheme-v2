@@ -2,7 +2,7 @@ import { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react'
 
 export const useControlledAccordion = <E extends HTMLElement = HTMLDivElement>(
   isOpen: boolean,
-  onToggle: (isOpen: boolean) => void,
+  onToggle?: (isOpen: boolean) => void,
   contentMargin = 0
 ) => {
   const contentId = useId()
@@ -11,13 +11,13 @@ export const useControlledAccordion = <E extends HTMLElement = HTMLDivElement>(
   const [contentHeight, setContentHeight] = useState<number>()
 
   const toggle = useCallback(() => {
-    onToggle(!isOpen)
+    onToggle?.(!isOpen)
   }, [isOpen, onToggle])
   const open = useCallback(() => {
-    onToggle(true)
+    onToggle?.(true)
   }, [onToggle])
   const close = useCallback(() => {
-    onToggle(false)
+    onToggle?.(false)
   }, [onToggle])
 
   useEffect(() => {
