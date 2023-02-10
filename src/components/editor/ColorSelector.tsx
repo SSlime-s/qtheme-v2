@@ -72,7 +72,7 @@ export const ColorSelector: React.FC<Props> = ({
     useControlledAccordion<HTMLDivElement>(isExpanded, setExpanded, 2)
 
   return (
-    <Wrap>
+    <Wrap className='mono'>
       <ColorPreview onClick={toggle} {...ariaToggle}>
         <ColorPreviewColor color={value} />
         <ColorPreviewText>{value}</ColorPreviewText>
