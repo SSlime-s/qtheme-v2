@@ -4,6 +4,7 @@ import { css } from '@emotion/react'
 import styled from '@emotion/styled'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { SketchPicker } from 'react-color'
+import { TransparentCheckerStyle } from '../TransparentChecker'
 
 interface Props {
   allowText?: boolean
@@ -114,9 +115,23 @@ const ColorPreview = styled.button`
 const ColorPreviewColor = styled.div<{
   color: string
 }>`
-  background: ${({ color }) => color};
   aspect-ratio: 1 / 1;
   height: calc(1.5rem + 8px);
+
+  position: relative;
+  &:before {
+    ${TransparentCheckerStyle}
+
+    content: '';
+    position: absolute;
+    inset: 0;
+  }
+  &:after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: ${({ color }) => color};
+  }
 `
 const ColorPreviewText = styled.div`
   line-height: 1.5;
