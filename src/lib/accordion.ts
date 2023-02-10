@@ -1,23 +1,24 @@
 import { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react'
 
-export const useAccordion = <E extends HTMLElement = HTMLDivElement>(
+export const useControlledAccordion = <E extends HTMLElement = HTMLDivElement>(
+  isOpen: boolean,
+  onToggle: (isOpen: boolean) => void,
   contentMargin = 0
 ) => {
-  const [isOpen, setIsOpen] = useState(false)
   const contentId = useId()
   const ref = useRef<E>(null)
 
   const [contentHeight, setContentHeight] = useState<number>()
 
   const toggle = useCallback(() => {
-    setIsOpen(isOpen => !isOpen)
-  }, [])
+    onToggle(!isOpen)
+  }, [isOpen, onToggle])
   const open = useCallback(() => {
-    setIsOpen(true)
-  }, [])
+    onToggle(true)
+  }, [onToggle])
   const close = useCallback(() => {
-    setIsOpen(false)
-  }, [])
+    onToggle(false)
+  }, [onToggle])
 
   useEffect(() => {
     if (ref.current === null) {
@@ -62,4 +63,11 @@ export const useAccordion = <E extends HTMLElement = HTMLDivElement>(
     ariaToggle,
     ariaContent,
   }
+}
+
+export const useAccordion = <E extends HTMLElement = HTMLDivElement>(
+  contentMargin = 0
+) => {
+  const [isOpen, setIsOpen] = useState(false)
+  return useControlledAccordion<E>(isOpen, setIsOpen, contentMargin)
 }
