@@ -44,7 +44,10 @@ export const ColorSelector: React.FC<Props> = ({
   )
   const onChangeComplete = useCallback(
     (color: { hex: string; rgb: { a?: number } }) => {
-      console.log(color)
+      if (color.rgb.a === undefined || color.rgb.a === 1) {
+        onChange(color.hex)
+        return
+      }
       const trimmedHex = color.hex.replace(/^#/, '')
       if (trimmedHex.length === 3) {
         const alphaHex = Math.round((color.rgb.a ?? 1) * 15).toString(16)
