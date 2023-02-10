@@ -20,16 +20,27 @@ const titlesMap = {
 const NavbarAtom = atom<NavbarState>('channel')
 export const Navbar: React.FC = () => {
   const tabIdPrefix = useId()
+  const panelIdPrefix = useId()
 
   return (
     <Wrap>
       <TabList role='tablist'>
         {states.map(s => (
-          <Button key={s} state={s} idPrefix={tabIdPrefix} />
+          <Button
+            key={s}
+            state={s}
+            tabIdPrefix={tabIdPrefix}
+            panelIdPrefix={panelIdPrefix}
+          />
         ))}
       </TabList>
       {states.map(s => (
-        <NavPanel key={s} state={s} idPrefix={tabIdPrefix} />
+        <NavPanel
+          key={s}
+          state={s}
+          tabIdPrefix={tabIdPrefix}
+          panelIdPrefix={panelIdPrefix}
+        />
       ))}
     </Wrap>
   )
@@ -47,20 +58,27 @@ const TabList = styled.div`
 
 interface ButtonProps {
   state: NavbarState
-  idPrefix: string
+  tabIdPrefix: string
+  panelIdPrefix: string
 }
-const Button: React.FC<ButtonProps> = ({ state, idPrefix }) => {
+const Button: React.FC<ButtonProps> = ({
+  state,
+  tabIdPrefix,
+  panelIdPrefix,
+}) => {
   const [current, setCurrent] = useAtom(NavbarAtom)
   const changeCurrent = useCallback(() => {
     setCurrent(state)
   }, [setCurrent, state])
-  const id = `${idPrefix}-${state}`
+  const tabId = `${tabIdPrefix}-${state}`
+  const panelId = `${panelIdPrefix}-${state}`
   const isSelected = current === state
 
   return (
     <IconButton
       role='tab'
-      id={id}
+      id={tabId}
+      aria-controls={panelId}
       aria-selected={isSelected}
       tabIndex={isSelected ? 0 : -1}
       onClick={changeCurrent}
@@ -114,18 +132,24 @@ const IconButton = styled.button`
 
 interface NavPanelProps {
   state: NavbarState
-  idPrefix: string
+  tabIdPrefix: string
+  panelIdPrefix: string
 }
-const NavPanel: React.FC<NavPanelProps> = ({ state, idPrefix }) => {
+const NavPanel: React.FC<NavPanelProps> = ({
+  state,
+  tabIdPrefix,
+  panelIdPrefix,
+}) => {
   const [current] = useAtom(NavbarAtom)
-  const id = `${idPrefix}-${state}`
+  const tabId = `${tabIdPrefix}-${state}`
+  const panelId = `${panelIdPrefix}-${state}`
   const title = useMemo(() => titlesMap[state], [state])
 
   return (
     <Panel
       role='tabpanel'
-      id={id}
-      aria-labelledby={id}
+      id={panelId}
+      aria-labelledby={tabId}
       hasRPad={state !== 'channel'}
       hidden={current !== state}
     >
