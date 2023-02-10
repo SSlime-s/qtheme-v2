@@ -73,10 +73,9 @@ export const ChannelAccordion: React.FC<PropsWithChildren<Props>> = ({
         data-height={contentHeight}
         // FIXME: ページ内検索で引っかからないように hidden もつけるべき
         aria-hidden={!isOpen}
+        id={contentsId}
       >
-        <div ref={ref} id={contentsId}>
-          {children}
-        </div>
+        <div ref={ref}>{children}</div>
       </ContentWrap>
     </Wrap>
   )
