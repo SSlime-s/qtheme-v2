@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "fix": "next lint --fix && prettier --write './src/**/*' --cache",
+    "type-check": "tsc --noEmit",
     "storybook": "start-storybook -p 6006 -s ./src",
     "build-storybook": "build-storybook"
   },
