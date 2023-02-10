@@ -2,9 +2,17 @@ import { useControlledAccordion } from '@/lib/accordion'
 import { parseHexNotationColor } from '@/model/color'
 import { css } from '@emotion/react'
 import styled from '@emotion/styled'
+import dynamic from 'next/dynamic'
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { SketchPicker } from 'react-color'
 import { TransparentCheckerStyle } from '../TransparentChecker'
+
+// NOTE: react color が SSR で動かないので、SSR では動かないようにする
+const SketchPicker = dynamic(
+  () => import('react-color').then(mod => mod.SketchPicker),
+  {
+    ssr: false,
+  }
+)
 
 interface Props {
   allowText?: boolean
