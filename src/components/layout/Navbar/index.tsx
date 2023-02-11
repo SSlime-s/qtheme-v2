@@ -30,19 +30,23 @@ export const Navbar: React.FC = () => {
     useControlledNamedTabList(states, state, setState)
 
   return (
-    <Wrap {...ariaTabListProps}>
-      <TabList role='tablist'>
+    <>
+      <DummyWrap />
+      <Wrap {...ariaTabListProps}>
+        <TabList role='tablist'>
+          {states.map(s => (
+            <Button key={s} state={s} {...ariaTabProps[s]} />
+          ))}
+        </TabList>
         {states.map(s => (
-          <Button key={s} state={s} {...ariaTabProps[s]} />
+          <NavPanel key={s} state={s} {...ariaPanelProps[s]} />
         ))}
-      </TabList>
-      {states.map(s => (
-        <NavPanel key={s} state={s} {...ariaPanelProps[s]} />
-      ))}
-    </Wrap>
+      </Wrap>
+    </>
   )
 }
 const TabList = styled.div`
+  grid-area: list;
   display: grid;
   width: 100%;
   grid-auto-flow: column;
@@ -51,6 +55,14 @@ const TabList = styled.div`
   grid-template-columns: 1fr;
   grid-template-rows: repeat(auto-fill, 60px);
   place-items: center;
+
+  @media (max-width: 992px) {
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: 1fr;
+    background: ${({ theme }) =>
+      theme.theme.basic.background.secondary.default};
+    border-radius: 4px;
+  }
 `
 
 interface ButtonProps {
@@ -135,6 +147,7 @@ const NavPanel: React.FC<NavPanelProps & HTMLAttributes<HTMLDivElement>> = ({
   )
 }
 const Panel = styled.div<{ hasRPad: boolean }>`
+  grid-area: panel;
   display: grid;
   padding: 24px 0 0 8px;
   padding-right: ${({ hasRPad }) => (hasRPad ? '24px' : '0px')};
@@ -143,6 +156,12 @@ const Panel = styled.div<{ hasRPad: boolean }>`
 
   &[hidden] {
     display: none;
+  }
+
+  @media (max-width: 992px) {
+    background: ${({ theme }) =>
+      theme.theme.basic.background.secondary.default};
+    border-radius: 4px;
   }
 `
 const Title = styled.h2`
@@ -156,4 +175,27 @@ const Wrap = styled.nav`
   background: ${({ theme }) => theme.theme.basic.background.secondary.default};
   display: grid;
   grid-template-columns: 60px 1fr;
+  grid-template-areas: 'list panel';
+
+  @media (max-width: 992px) {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 60px;
+    grid-template-areas: 'panel' 'list';
+    gap: 16px;
+    position: sticky;
+    left: 0;
+    background: ${({ theme }) =>
+      theme.theme.specific.navigationBarMobileBackground};
+    padding: 16px;
+  }
+`
+const DummyWrap = styled.div`
+  grid-area: nav;
+  display: hidden;
+
+  @media (max-width: 992px) {
+    display: block;
+    pointer-events: none;
+    scroll-snap-align: start;
+  }
 `

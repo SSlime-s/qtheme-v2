@@ -1,7 +1,8 @@
+import { useIsMobile } from '@/lib/isMobile'
 import styled from '@emotion/styled'
 import Link from 'next/link'
 import path from 'path'
-import { useMemo } from 'react'
+import { useCallback, useMemo, useRef } from 'react'
 
 interface Props {
   /**
@@ -16,6 +17,7 @@ interface Path {
 }
 
 export const Header: React.FC<Props> = ({ channelPath }) => {
+  const isMobile = useIsMobile()
   const now: Path | undefined = useMemo(() => {
     const name = channelPath[channelPath.length - 1]
     if (name === undefined) return undefined
@@ -58,37 +60,51 @@ export const Header: React.FC<Props> = ({ channelPath }) => {
     return channelPath.length === 1
   }, [channelPath])
 
+  const ref = useRef<HTMLDivElement>(null)
+  const scrollToSelf = useCallback(() => {
+    if (!isMobile) {
+      return
+    }
+    ref.current?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+    })
+  }, [isMobile])
+
   // return <Wrap>#favorite/path</Wrap>
   return (
-    <Wrap>
-      <PathWrap>
-        {isRoot ? (
-          <NowPath>
-            <HashWrap>#</HashWrap>
-            {now?.name}
-          </NowPath>
-        ) : (
-          <>
-            <RestPath>
-              <RootLink href={root?.href ?? '/'}>
-                <HashWrap>#</HashWrap>
-                {root?.name}
-              </RootLink>
-              <Separator />
-            </RestPath>
-            {rest.map(path => {
-              return (
-                <RestPath key={path.href}>
-                  <Link href={path.href}>{path.name}</Link>
-                  <Separator />
-                </RestPath>
-              )
-            })}
-            <NowPath>{now?.name}</NowPath>
-          </>
-        )}
-      </PathWrap>
-    </Wrap>
+    <>
+      <DummyWrap ref={ref} />
+      <Wrap onClickCapture={scrollToSelf}>
+        <PathWrap>
+          {isRoot ? (
+            <NowPath>
+              <HashWrap>#</HashWrap>
+              {now?.name}
+            </NowPath>
+          ) : (
+            <>
+              <RestPath>
+                <RootLink href={root?.href ?? '/'}>
+                  <HashWrap>#</HashWrap>
+                  {root?.name}
+                </RootLink>
+                <Separator />
+              </RestPath>
+              {rest.map(path => {
+                return (
+                  <RestPath key={path.href}>
+                    <Link href={path.href}>{path.name}</Link>
+                    <Separator />
+                  </RestPath>
+                )
+              })}
+              <NowPath>{now?.name}</NowPath>
+            </>
+          )}
+        </PathWrap>
+      </Wrap>
+    </>
   )
 }
 const Separator: React.FC = () => {
@@ -103,6 +119,22 @@ const Wrap = styled.header`
   display: grid;
   align-items: center;
   padding: 16px;
+
+  @media (max-width: 992px) {
+    position: sticky;
+    left: 0;
+    z-index: 20;
+  }
+`
+const DummyWrap = styled.div`
+  grid-area: header;
+  display: hidden;
+
+  @media (max-width: 992px) {
+    display: block;
+    pointer-events: none;
+    scroll-snap-align: start;
+  }
 `
 const PathWrap = styled.div`
   color: ${({ theme }) => theme.theme.basic.ui.primary.default};

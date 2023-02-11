@@ -1,18 +1,21 @@
+import { useIsMobile } from '@/lib/isMobile'
 import styled from '@emotion/styled'
 import { useEffect, useRef, useState } from 'react'
 
 export const Sidebar: React.FC = () => {
+  const isMobile = useIsMobile()
   const ref = useRef<HTMLDivElement>(null)
   const [isOpen, setIsOpen] = useState(false)
   useEffect(() => {
     if (ref.current === null) return
+    if (!isMobile) return
 
+    setIsOpen(false)
     const observer = new IntersectionObserver(
       entries => {
         const entry = entries[0]
-        console.log(entry)
         if (entry.isIntersecting) {
-          if (entry.intersectionRatio >= 0.8) {
+          if (entry.intersectionRatio >= 0.6) {
             setIsOpen(true)
           } else {
             setIsOpen(false)
@@ -21,14 +24,14 @@ export const Sidebar: React.FC = () => {
       },
       {
         root: null,
-        threshold: [0.2, 0.8],
+        threshold: [0, 0.4, 0.6],
       }
     )
     observer.observe(ref.current)
     return () => {
       observer.disconnect()
     }
-  }, [ref])
+  }, [isMobile, ref])
 
   return (
     <>

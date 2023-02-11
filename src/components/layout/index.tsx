@@ -1,7 +1,13 @@
 import { useIsMobile } from '@/lib/isMobile'
 import styled from '@emotion/styled'
 import { useRouter } from 'next/router'
-import { PropsWithChildren, useMemo } from 'react'
+import {
+  PropsWithChildren,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+} from 'react'
 import { Header } from './Header'
 import { Navbar } from './Navbar'
 import { Sidebar } from './Sidebar'
@@ -27,11 +33,33 @@ export const Layout: React.FC<PropsWithChildren<Props>> = ({
     return path
   }, [router])
 
+  const mainRef = useRef<HTMLDivElement>(null)
+  const scrollToSelf = useCallback(() => {
+    if (!isMobile) {
+      return
+    }
+    mainRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }, [isMobile])
+
+  useEffect(() => {
+    if (!isMobile) {
+      return
+    }
+    mainRef.current?.scrollIntoView({ behavior: 'auto', block: 'start' })
+  }, [isMobile, scrollToSelf])
+  useEffect(() => {
+    if (!isMobile) {
+      return
+    }
+    scrollToSelf()
+  }, [isMobile, scrollToSelf, router.asPath])
+
   return (
     <Container>
       <Navbar />
       <Header channelPath={nowChannelPath} />
-      <Main>{children}</Main>
+      <DummyMain ref={mainRef} />
+      <Main onClickCapture={scrollToSelf}>{children}</Main>
       <Sidebar />
     </Container>
   )
@@ -47,6 +75,15 @@ const Container = styled.div`
 
   position: relative;
   overflow: hidden;
+
+  @media (max-width: 992px) {
+    grid-template-areas: 'nav header side' 'nav main side';
+    grid-template-columns: 320px 100vw 320px;
+    grid-template-rows: 80px 1fr;
+    width: calc(100vw + 640px);
+    overflow: visible;
+  }
+
   background: ${({ theme }) => theme.theme.basic.background.primary.default};
 
   & * {
@@ -103,4 +140,20 @@ const Main = styled.main`
   contain: strict;
   height: 100%;
   background: ${({ theme }) => theme.theme.specific.mainViewBackground};
+
+  @media (max-width: 992px) {
+    position: sticky;
+    left: 0;
+    z-index: 20;
+    scroll-snap-align: start;
+  }
+`
+const DummyMain = styled.div`
+  grid-area: main;
+  display: none;
+
+  @media (max-width: 992px) {
+    display: block;
+    pointer-events: none;
+  }
 `
