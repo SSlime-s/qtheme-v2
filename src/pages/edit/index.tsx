@@ -32,7 +32,7 @@ import { ColorSelector } from '@/components/editor/ColorSelector'
 import React from 'react'
 import { css } from '@emotion/react'
 import { useNamedTabList } from '@/lib/tablist'
-import { useControlledAccordion } from '@/lib/accordion'
+import { AdvancedSelectors } from '@/components/editor/AdvancedSelectors'
 
 export const getServerSideProps = async ({
   req,
@@ -70,7 +70,7 @@ export const getServerSideProps = async ({
 type Props = NonNullable<
   Awaited<ReturnType<typeof getServerSideProps>>['props']
 >
-type Form = Pick<
+export type Form = Pick<
   ThemeInfo,
   'title' | 'description' | 'type' | 'visibility' | 'theme'
 >
@@ -463,142 +463,4 @@ const Selector = styled.div`
 const SelectorLabel = styled.div`
   color: #333;
   margin-bottom: 4px;
-`
-
-const AdvancedKeys = {
-  browser: [
-    'themeColor',
-    // 'colorScheme',
-    'selectionText',
-    'selectionBackground',
-    'caret',
-    'scrollbarThumb',
-    'scrollbarTrack',
-  ] as const,
-  specific: [
-    'waveformColor',
-    'waveformGradation',
-
-    'navigationBarDesktopBackground',
-    'navigationBarMobileBackground',
-    'mainViewBackground',
-    'sideBarBackground',
-
-    'stampEdgeEnable',
-  ] as const,
-} as const
-const AdvancedKeysKeys = [
-  'browser',
-  'specific',
-] as const satisfies ReadonlyArray<keyof typeof AdvancedKeys>
-const AdvancedSelectors: React.FC = () => {
-  const { control, setValue, getValues } = useFormContext<Form>()
-  const theme = useWatch({ control, name: 'theme' })
-
-  return (
-    <div>
-      <SelectorGroup>
-        <SelectorGroupLabel>Browser</SelectorGroupLabel>
-        <OptionalSelectors label='Browser' />
-        {AdvancedKeys.browser.map(key => (
-          <Selector key={key}>
-            <SelectorLabel>{key}</SelectorLabel>
-          </Selector>
-        ))}
-
-        <SelectorGroupLabel>Specific</SelectorGroupLabel>
-        {AdvancedKeys.specific.map(key => (
-          <Selector key={key}>
-            <SelectorLabel>{key}</SelectorLabel>
-          </Selector>
-        ))}
-      </SelectorGroup>
-    </div>
-  )
-}
-
-interface OptionalSelectorsProps {
-  label: string
-}
-const OptionalSelectors: React.FC<OptionalSelectorsProps> = ({ label }) => {
-  const [valid, setValid] = useState(false)
-  const { toggle, ariaContent, ariaToggle, contentHeight, contentRef } =
-    useControlledAccordion(valid, setValid)
-
-  return (
-    <OptionalSelectorWrap valid={valid}>
-      <OptionalSelectorsLabel {...ariaToggle} onClick={toggle}>
-        <OptionalSelectorsIcon />
-        {label}
-        <OptionalSelectorsDisableText>無効化中</OptionalSelectorsDisableText>
-      </OptionalSelectorsLabel>
-      <OptionalSelectorsContent {...ariaContent} height={contentHeight ?? 0}>
-        <div ref={contentRef}>
-          <div>test</div>
-        </div>
-      </OptionalSelectorsContent>
-    </OptionalSelectorWrap>
-  )
-}
-const OptionalSelectorWrap = styled.div<{ valid: boolean }>`
-  transition: all 0.2s ease-out;
-  transform: ${({ valid }) => (valid ? 'none' : 'translateX(16px)')};
-`
-const OptionalSelectorsLabel = styled.button`
-  display: flex;
-  cursor: pointer;
-  align-items: center;
-  gap: 8px;
-`
-const OptionalSelectorsIcon = styled.div`
-  width: 16px;
-  height: 16px;
-  position: relative;
-
-  &::before,
-  &::after {
-    content: '';
-    position: absolute;
-    border-radius: 1px;
-    background-color: #333;
-    transform-origin: center;
-    transition: all 0.2s ease-out, transform 0.2s ease-out;
-  }
-  &::before {
-    width: 16px;
-    height: 2px;
-    top: 7px;
-    left: 0;
-  }
-  &::after {
-    width: 2px;
-    height: 16px;
-    top: 0;
-    left: 7px;
-  }
-
-  [aria-expanded='true'] > &::before {
-    transform: rotate(225deg) scale(1.4, 1);
-  }
-  [aria-expanded='true'] > &::after {
-    transform: rotate(225deg) scale(1, 1.4);
-  }
-`
-const OptionalSelectorsDisableText = styled.span`
-  color: #333;
-  font-size: 12px;
-  transition: color 0.2s ease-out;
-
-  [aria-expanded='true'] > & {
-    color: transparent;
-  }
-`
-const OptionalSelectorsContent = styled.div<{ height: number }>`
-  overflow: hidden;
-  transition: height 0.2s ease-out;
-  height: ${({ height }) => height}px;
-
-  &[aria-hidden='true'] {
-    height: 0;
-  }
 `
