@@ -85,6 +85,14 @@ const Container = styled.div`
       display: none;
     }
   }
+
+  & *::selection {
+    color: ${({ theme }) => theme.theme.browser.selectionText};
+    background: ${({ theme }) => theme.theme.browser.selectionBackground};
+  }
+  & * {
+    caret-color: ${({ theme }) => theme.theme.browser.caret};
+  }
 `
 
 const Main = styled.main`
