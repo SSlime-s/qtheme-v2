@@ -1,11 +1,10 @@
-import '@/styles/globals.css'
 import '@/styles/reset.css'
 import type { AppProps } from 'next/app'
 import { Inter, M_PLUS_1p } from '@next/font/google'
 import { ReactElement, ReactNode } from 'react'
 import { NextPage } from 'next'
 import { useCurrentTheme } from '@/lib/theme/hooks'
-import { ThemeProvider } from '@emotion/react'
+import { css, Global, ThemeProvider } from '@emotion/react'
 import { useRouter } from 'next/router'
 
 export type NextPageWithLayout<P = Record<string, unknown>, IP = P> = NextPage<
@@ -37,25 +36,42 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
 
   return (
     <>
-      <style jsx global>{`
-        html {
-          font-family: ${inter.style.fontFamily}, ${mPlus1p.style.fontFamily},
-            'Avenir', 'Helvetica Neue', 'Helvetica', 'Arial', 'Hiragino Sans',
-            'ヒラギノ角ゴシック', YuGothic, 'Yu Gothic', 'メイリオ', Meiryo,
-            'ＭＳ Ｐゴシック', 'MS PGothic', sans-serif;
-
-          -webkit-font-smoothing: antialiased;
-          text-rendering: optimizeLegibility;
-        }
-
-        .mono {
-          font-family: SFMono-Regular, Consolas, Liberation Mono, Menlo,
-            monospace;
-        }
-      `}</style>
+      <Global styles={GlobalStyle} />
       <ThemeProvider theme={{ theme: currentTheme }}>
         {getLayout(<Component key={key} {...pageProps} />)}
       </ThemeProvider>
     </>
   )
 }
+const GlobalStyle = css`
+  html {
+    font-family: ${inter.style.fontFamily}, ${mPlus1p.style.fontFamily},
+      'Avenir', 'Helvetica Neue', 'Helvetica', 'Arial', 'Hiragino Sans',
+      'ヒラギノ角ゴシック', YuGothic, 'Yu Gothic', 'メイリオ', Meiryo,
+      'ＭＳ Ｐゴシック', 'MS PGothic', sans-serif;
+
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  .mono {
+    font-family: SFMono-Regular, Consolas, Liberation Mono, Menlo, monospace;
+  }
+
+  html,
+  body {
+    max-width: 100vw;
+    overflow-x: hidden;
+    height: 100%;
+
+    @media (max-width: 992px) {
+      overflow-x: auto;
+      overflow-x: overlay;
+      scroll-snap-type: x mandatory;
+    }
+  }
+
+  #__next {
+    height: 100%;
+  }
+`
