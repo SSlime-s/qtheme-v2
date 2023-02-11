@@ -85,6 +85,14 @@ body {
   overflow-x: hidden;
   height: 100%;
 }
+@media (max-width: 992px) {
+  html,
+  body {
+    overflow-x: auto;
+    overflow-x: overlay;
+    scroll-snap-type: x mandatory;
+  }
+}
 
 div#__next {
   height: 100%;
