@@ -119,6 +119,11 @@ const ColorPreview = styled.button`
   width: 100%;
   gap: 8px;
   cursor: pointer;
+
+  transition: all 0.2s ease-out;
+  &:hover {
+    border-color: #a8b0b5;
+  }
 `
 const ColorPreviewColor = styled.div<{
   color: string
