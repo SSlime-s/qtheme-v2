@@ -27,6 +27,8 @@ import React from 'react'
 import { css } from '@emotion/react'
 import { useNamedTabList } from '@/lib/tablist'
 import { AdvancedSelectors } from '@/components/editor/AdvancedSelectors'
+import { pageTitle } from '@/lib/title'
+import Head from 'next/head'
 
 export const getServerSideProps = async ({
   req,
@@ -116,46 +118,51 @@ const Editor: NextPageWithLayout<Props> = ({ defaultTheme, userId }) => {
   }, [])
 
   return (
-    <FormProvider {...methods}>
-      <Layout sidebar={<>Editor</>}>
-        <Wrap ref={containerRef} isWide={isWide}>
-          <Controls>
-            <Title />
-            <Description />
-          </Controls>
-          <PreviewBox>
-            <Preview userId={userId} />
-            <Sync />
-          </PreviewBox>
+    <>
+      <Head>
+        <title>{pageTitle('#edit')}</title>
+      </Head>
+      <FormProvider {...methods}>
+        <Layout sidebar={<>Editor</>}>
+          <Wrap ref={containerRef} isWide={isWide}>
+            <Controls>
+              <Title />
+              <Description />
+            </Controls>
+            <PreviewBox>
+              <Preview userId={userId} />
+              <Sync />
+            </PreviewBox>
 
-          <Colors>
-            <Tabs {...ariaTabListProps}>
-              <Tab
-                {...ariaTabProps.Basic}
-                onClick={selectBasicTab}
-                title='Basic'
-              >
-                Basic
-              </Tab>
-              <Tab
-                {...ariaTabProps.Advanced}
-                onClick={selectAdvancedTab}
-                title='Advanced'
-              >
-                Advanced
-              </Tab>
-            </Tabs>
+            <Colors>
+              <Tabs {...ariaTabListProps}>
+                <Tab
+                  {...ariaTabProps.Basic}
+                  onClick={selectBasicTab}
+                  title='Basic'
+                >
+                  Basic
+                </Tab>
+                <Tab
+                  {...ariaTabProps.Advanced}
+                  onClick={selectAdvancedTab}
+                  title='Advanced'
+                >
+                  Advanced
+                </Tab>
+              </Tabs>
 
-            <TabPanel {...ariaPanelProps.Basic}>
-              <BasicSelectors />
-            </TabPanel>
-            <TabPanel {...ariaPanelProps.Advanced}>
-              <AdvancedSelectors />
-            </TabPanel>
-          </Colors>
-        </Wrap>
-      </Layout>
-    </FormProvider>
+              <TabPanel {...ariaPanelProps.Basic}>
+                <BasicSelectors />
+              </TabPanel>
+              <TabPanel {...ariaPanelProps.Advanced}>
+                <AdvancedSelectors />
+              </TabPanel>
+            </Colors>
+          </Wrap>
+        </Layout>
+      </FormProvider>
+    </>
   )
 }
 export default Editor

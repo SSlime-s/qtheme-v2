@@ -8,6 +8,7 @@ import { GetServerSidePropsContext } from 'next'
 import { NextPageWithLayout } from '@/pages/_app'
 import Head from 'next/head'
 import { useMemo } from 'react'
+import { pageTitle } from '@/lib/title'
 
 export const getServerSideProps = async ({
   req,
@@ -71,10 +72,18 @@ const AllPage: NextPageWithLayout<Props> = ({ userId, filter }) => {
     return url.toString()
   }, [themes])
 
+  const title = useMemo(() => {
+    if (filter === 'all') {
+      return '#all'
+    } else {
+      return `#all/${filter}`
+    }
+  }, [filter])
+
   return (
     <>
       <Head>
-        <title>all themes: {total} themes</title>
+        <title>{pageTitle(title)}</title>
         <meta name='description' content='all themes' />
         <meta name='og:title' content='all themes' />
         <meta name='og:description' content='all themes' />
