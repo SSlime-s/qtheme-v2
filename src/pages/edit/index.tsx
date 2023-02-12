@@ -349,7 +349,7 @@ const Sync: React.FC = () => {
   }, [setAlwaysSync])
 
   return (
-    <div>
+    <SyncWrap>
       <SyncButton onClick={sync} disabled={isSynced}>
         <Dummy hidden>Synced</Dummy>
         <Real>{isSynced ? 'Synced' : 'Sync '}</Real>
@@ -362,9 +362,15 @@ const Sync: React.FC = () => {
         />
         Always Sync
       </Label>
-    </div>
+    </SyncWrap>
   )
 }
+const SyncWrap = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px 16px;
+  flex-wrap: wrap;
+`
 const SyncButton = styled.button`
   ${ColoredGlassmorphismStyle(
     'rgba(0, 91, 172, 0.3)',
@@ -408,7 +414,7 @@ const Label = styled.label`
   align-items: center;
 `
 const ToggleSwitch = styled.input`
-  margin-right: 4px;
+  margin-right: 2px;
 
   height: 16px;
   width: 32px;
