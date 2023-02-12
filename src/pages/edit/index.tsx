@@ -252,15 +252,15 @@ const Title: React.FC = () => {
 const TitleInput = styled.input`
   display: block;
   width: 100%;
-  border: 1px solid ${({ theme }) => theme.theme.basic.ui.tertiary.default};
+  border: 1px solid ${lightTheme.basic.ui.tertiary};
   border-radius: 4px;
   backdrop-filter: blur(4px);
 
   &:focus {
-    border-color: ${({ theme }) => theme.theme.basic.accent.primary.default};
+    border-color: ${lightTheme.basic.accent.primary};
   }
   &::placeholder {
-    color: ${({ theme }) => theme.theme.basic.ui.tertiary.default};
+    color: ${lightTheme.basic.ui.tertiary};
   }
 `
 const Description: React.FC = () => {
@@ -281,16 +281,16 @@ const Description: React.FC = () => {
 const DescriptionInput = styled.textarea`
   display: block;
   width: 100%;
-  border: 1px solid ${({ theme }) => theme.theme.basic.ui.tertiary.default};
+  border: 1px solid ${lightTheme.basic.ui.tertiary};
   border-radius: 4px;
   backdrop-filter: blur(4px);
   resize: vertical;
 
   &:focus {
-    border-color: ${({ theme }) => theme.theme.basic.accent.primary.default};
+    border-color: ${lightTheme.basic.accent.primary};
   }
   &::placeholder {
-    color: ${({ theme }) => theme.theme.basic.ui.tertiary.default};
+    color: ${lightTheme.basic.ui.tertiary};
   }
 `
 
