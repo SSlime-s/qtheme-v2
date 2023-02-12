@@ -12,7 +12,7 @@ import {
 import { NextPageWithLayout } from '@/pages/_app'
 import { Layout } from '@/components/layout'
 import { extractShowcaseUser } from '@/lib/extractUser'
-import { useCallback, useEffect, useId, useMemo, useState } from 'react'
+import { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react'
 import { resolveTheme } from '@/lib/theme'
 import { SmallPreview } from '@/components/preview'
 import {
@@ -96,15 +96,36 @@ const Editor: NextPageWithLayout<Props> = ({ defaultTheme, userId }) => {
     [switchTab]
   )
 
+  const [isWide, setIsWide] = useState(false)
+  const containerRef = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    const container = containerRef.current
+    if (container === null) {
+      return
+    }
+    const observer = new ResizeObserver(entries => {
+      for (const entry of entries) {
+        const { width } = entry.contentRect
+        setIsWide(width > 450 + 300 + 16 * 3)
+      }
+    })
+    observer.observe(container)
+    return () => {
+      observer.disconnect()
+    }
+  }, [])
+
   return (
     <FormProvider {...methods}>
       <Layout sidebar={<>Editor</>}>
-        <Wrap>
-          <Rest>
+        <Wrap ref={containerRef} isWide={isWide}>
+          <Controls>
             <Title />
+          </Controls>
+          <PreviewBox>
             <Preview userId={userId} />
             <Sync />
-          </Rest>
+          </PreviewBox>
           <Colors>
             <Tabs {...ariaTabListProps}>
               <Tab
@@ -136,41 +157,57 @@ const Editor: NextPageWithLayout<Props> = ({ defaultTheme, userId }) => {
 }
 export default Editor
 
-const Wrap = styled.div`
-  display: flex;
-  flex-wrap: wrap;
+const Wrap = styled.div<{ isWide: boolean }>`
+  display: grid;
+  ${({ isWide }) =>
+    isWide
+      ? css`
+          grid-template-areas: 'controls colors' 'preview colors';
+          grid-template-columns: 1fr 300px;
+          grid-template-rows: max-content 1fr;
+        `
+      : css`
+          grid-template-areas: 'controls' 'preview' 'colors';
+        `}
   min-height: 100%;
   gap: 16px;
   padding: 16px;
   position: relative;
 `
-const Rest = styled.div`
+const Controls = styled.div`
+  grid-area: controls;
   ${GlassmorphismStyle}
-
-  flex: 1e10 1 450px;
   padding: 16px;
+`
+const PreviewBox = styled.div`
+  grid-area: preview;
+  ${GlassmorphismStyle}
+  padding: 16px;
+
   display: flex;
   flex-direction: column;
   gap: 8px;
-  height: max-content;
   position: sticky;
   top: 16px;
   z-index: 10;
+  margin-bottom: auto;
 `
 const Colors = styled.div`
+  grid-area: colors;
   ${GlassmorphismStyle}
 
-  flex: 1 1 300px;
   padding: 16px;
 `
 const Tabs = styled.div`
-  display: grid;
+  display: flex;
   background-color: rgba(230, 230, 230, 0.5);
   backdrop-filter: blur(8px);
   grid-template-columns: 1fr 1fr;
   gap: 8px;
   margin: -16px -16px 16px;
   padding: 16px 16px 0;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
 `
 const Tab = styled.button`
   transition: all 0.2s ease-out;
@@ -178,14 +215,13 @@ const Tab = styled.button`
   border-bottom: 2px solid;
   border-color: transparent;
   padding: 4px 16px;
-  margin-bottom: -1px;
   width: max-content;
   cursor: pointer;
   &:first-of-type {
-    justify-self: end;
+    margin-left: auto;
   }
   &:last-of-type {
-    justify-self: start;
+    margin-right: auto;
   }
   &[aria-selected='true'],
   &[aria-selected='true']:hover {
