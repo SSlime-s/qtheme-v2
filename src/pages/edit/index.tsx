@@ -20,7 +20,7 @@ import {
   GlassmorphismStyle,
 } from '@/components/Glassmorphism'
 import { useRouter } from 'next/router'
-import { useCurrentTheme } from '@/lib/theme/hooks'
+import { useCurrentTheme, useThemeList } from '@/lib/theme/hooks'
 import { atom, useAtom } from 'jotai'
 import { ColorSelector } from '@/components/editor/ColorSelector'
 import React from 'react'
@@ -29,6 +29,7 @@ import { useNamedTabList } from '@/lib/tablist'
 import { AdvancedSelectors } from '@/components/editor/AdvancedSelectors'
 import { pageTitle } from '@/lib/title'
 import Head from 'next/head'
+import { BlockStyle } from '@/components/layout/Sidebar'
 
 export const getServerSideProps = async ({
   req,
@@ -81,7 +82,7 @@ const Editor: NextPageWithLayout<Props> = ({ defaultTheme, userId }) => {
       theme: defaultTheme,
     },
   })
-  const { replace, asPath } = useRouter()
+  const { replace, asPath, push } = useRouter()
   useEffect(() => {
     if (!asPath.includes('?')) {
       return
@@ -117,13 +118,45 @@ const Editor: NextPageWithLayout<Props> = ({ defaultTheme, userId }) => {
     }
   }, [])
 
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const {
+    mutate: { createTheme, updateTheme },
+  } = useThemeList(null, null, null)
+  const onSubmit = useCallback(
+    async (data: Form) => {
+      if (isSubmitting) {
+        return
+      }
+      setIsSubmitting(true)
+      try {
+        const newData = await createTheme(data)
+        push(`/theme/${newData.id}`)
+      } catch (e) {
+        console.error(e)
+      } finally {
+        setIsSubmitting(false)
+      }
+    },
+    [createTheme, isSubmitting, push]
+  )
+  const submit = useCallback(
+    () => methods.handleSubmit(onSubmit)(),
+    [methods, onSubmit]
+  )
+
   return (
     <>
       <Head>
         <title>{pageTitle('#edit')}</title>
       </Head>
       <FormProvider {...methods}>
-        <Layout sidebar={<>Editor</>}>
+        <Layout
+          sidebar={
+            <>
+              <SubmitButton onClick={submit}>Submit</SubmitButton>
+            </>
+          }
+        >
           <Wrap ref={containerRef} isWide={isWide}>
             <Controls>
               <Title />
@@ -167,6 +200,10 @@ const Editor: NextPageWithLayout<Props> = ({ defaultTheme, userId }) => {
 }
 export default Editor
 
+const SubmitButton = styled.button`
+  ${BlockStyle}
+  cursor: pointer;
+`
 const Wrap = styled.div<{ isWide: boolean }>`
   display: grid;
   ${({ isWide }) =>
