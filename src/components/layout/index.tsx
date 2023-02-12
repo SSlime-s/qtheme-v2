@@ -149,6 +149,7 @@ const Main = styled.main`
     left: 0;
     z-index: 20;
     scroll-snap-align: start;
+    scroll-snap-stop: always;
   }
 `
 const DummyMain = styled.div`

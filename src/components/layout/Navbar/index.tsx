@@ -197,5 +197,6 @@ const DummyWrap = styled.div`
     display: block;
     pointer-events: none;
     scroll-snap-align: start;
+    scroll-snap-stop: always;
   }
 `

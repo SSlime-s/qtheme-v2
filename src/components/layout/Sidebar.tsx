@@ -105,6 +105,7 @@ const Wrap = styled.aside`
     position: relative;
     z-index: 30;
     scroll-snap-align: end;
+    scroll-snap-stop: always;
   }
 `
 export const BlockStyle = ({ theme }: { theme: { theme: ResolvedTheme } }) => css`
