@@ -1,8 +1,38 @@
 import { useIsMobile } from '@/lib/isMobile'
+import { ResolvedTheme } from '@/lib/theme'
+import { useCurrentTheme } from '@/lib/theme/hooks'
+import { css } from '@emotion/react'
 import styled from '@emotion/styled'
-import { useEffect, useRef, useState } from 'react'
+import Link from 'next/link'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { RxReset } from 'react-icons/rx'
 
 export const Sidebar: React.FC = () => {
+  const {
+    currentThemeInfo,
+    mutate: { changeToDefaultTheme },
+  } = useCurrentTheme()
+  const [isConfirm, setIsConfirm] = useState(false)
+  const [confirmTimeoutId, setConfirmTimeoutId] = useState<NodeJS.Timeout>()
+  const confirmedToDefaultTheme = useCallback(() => {
+    if (isConfirm) {
+      changeToDefaultTheme()
+      setIsConfirm(false)
+      if (confirmTimeoutId) {
+        clearTimeout(confirmTimeoutId)
+        setConfirmTimeoutId(undefined)
+      }
+      return
+    }
+
+    setIsConfirm(true)
+    const timeoutId = setTimeout(() => {
+      setIsConfirm(false)
+      setConfirmTimeoutId(undefined)
+    }, 2000)
+    setConfirmTimeoutId(timeoutId)
+  }, [changeToDefaultTheme, confirmTimeoutId, isConfirm])
+
   const isMobile = useIsMobile()
   const ref = useRef<HTMLDivElement>(null)
   const [isOpen, setIsOpen] = useState(false)
@@ -36,7 +66,20 @@ export const Sidebar: React.FC = () => {
   return (
     <>
       <Cover hidden={!isOpen} />
-      <Wrap ref={ref}>Sidebar</Wrap>
+      <Wrap ref={ref}>
+        <LinkBlock href={`/theme/${currentThemeInfo?.id}`}>
+          <Title>現在のテーマ</Title>
+          <p>{currentThemeInfo?.title}</p>
+        </LinkBlock>
+        <Block>
+          <Title>詳細</Title>
+          <p>{currentThemeInfo?.description}</p>
+        </Block>
+        <ResetButton onClick={confirmedToDefaultTheme}>
+          {isConfirm ? 'もう一度クリックで確定' : 'デフォルトテーマに戻す'}
+          <RxReset />
+        </ResetButton>
+      </Wrap>
     </>
   )
 }
@@ -44,12 +87,47 @@ export const Sidebar: React.FC = () => {
 const Wrap = styled.aside`
   grid-area: side;
   background: ${({ theme }) => theme.theme.basic.background.secondary.default};
+  padding: 32px;
 
   @media (max-width: 992px) {
     position: relative;
     z-index: 30;
     scroll-snap-align: end;
   }
+`
+const BlockStyle = ({ theme }: { theme: { theme: ResolvedTheme } }) => css`
+  background: ${theme.theme.basic.background.primary.default};
+  color: ${theme.theme.basic.ui.secondary.default};
+  width: 100%;
+  padding: 12px;
+  border-radius: 4px;
+  margin-bottom: 16px;
+  display: block;
+`
+const Block = styled.div`
+  ${BlockStyle}
+`
+const LinkBlock = styled(Link)`
+  ${BlockStyle}
+`
+const ResetButton = styled.button`
+  ${BlockStyle}
+
+  cursor: pointer;
+  display: grid;
+  grid-template-columns: 1fr max-content;
+  align-items: start;
+  font-weight: bold;
+  gap: 4px;
+
+  & > svg {
+    font-size: 1.5rem;
+    margin-top: 2px;
+  }
+`
+const Title = styled.p`
+  font-weight: bold;
+  margin-bottom: 8px;
 `
 
 const Cover = styled.div`
