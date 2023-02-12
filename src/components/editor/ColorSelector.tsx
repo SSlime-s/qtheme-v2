@@ -93,18 +93,19 @@ export const ColorSelector: React.FC<Props> = ({
     if (!isExpanded) {
       return
     }
-    if (contentRef.current === null) {
+    const content = contentRef.current
+    if (content === null) {
       return
     }
     const abortController = new AbortController()
-    const signal = abortController.signal
-    contentRef.current.addEventListener('touchstart', onTouchStart, {
+    const { signal } = abortController
+    content.addEventListener('touchstart', onTouchStart, {
       signal,
     })
-    contentRef.current.addEventListener('touchend', onTouchEnd, {
+    content.addEventListener('touchend', onTouchEnd, {
       signal,
     })
-    contentRef.current.addEventListener('touchcancel', onTouchEnd, {
+    content.addEventListener('touchcancel', onTouchEnd, {
       signal,
     })
     return () => {
