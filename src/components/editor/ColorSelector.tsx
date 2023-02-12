@@ -3,8 +3,10 @@ import { parseHexNotationColor } from '@/model/color'
 import { css } from '@emotion/react'
 import styled from '@emotion/styled'
 import dynamic from 'next/dynamic'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { TransparentCheckerStyle } from '../TransparentChecker'
+import { fixLayoutAtom } from '@/pages/_app'
+import { useAtom } from 'jotai'
 
 // NOTE: react color が SSR で動かないので、SSR では動かないようにする
 const SketchPicker = dynamic(
@@ -32,6 +34,7 @@ export const ColorSelector: React.FC<Props> = ({
   isExpanded,
   setExpanded,
 }) => {
+  const [_, setIsFixed] = useAtom(fixLayoutAtom)
   const rgbValue = useMemo(() => {
     const ret = parseHexNotationColor(value)
     if (ret === null) {
@@ -79,6 +82,35 @@ export const ColorSelector: React.FC<Props> = ({
 
   const { toggle, contentRef, contentHeight, ariaToggle, ariaContent } =
     useControlledAccordion<HTMLDivElement>(isExpanded, setExpanded, 2)
+
+  const onTouchStart = useCallback(() => {
+    setIsFixed(true)
+  }, [setIsFixed])
+  const onTouchEnd = useCallback(() => {
+    setIsFixed(false)
+  }, [setIsFixed])
+  useEffect(() => {
+    if (!isExpanded) {
+      return
+    }
+    if (contentRef.current === null) {
+      return
+    }
+    const abortController = new AbortController()
+    const signal = abortController.signal
+    contentRef.current.addEventListener('touchstart', onTouchStart, {
+      signal,
+    })
+    contentRef.current.addEventListener('touchend', onTouchEnd, {
+      signal,
+    })
+    contentRef.current.addEventListener('touchcancel', onTouchEnd, {
+      signal,
+    })
+    return () => {
+      abortController.abort()
+    }
+  }, [isExpanded, onTouchStart, onTouchEnd, contentRef])
 
   return (
     <Wrap className='mono'>

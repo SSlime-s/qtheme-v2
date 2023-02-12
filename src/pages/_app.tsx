@@ -6,6 +6,7 @@ import { NextPage } from 'next'
 import { useCurrentTheme } from '@/lib/theme/hooks'
 import { css, Global, ThemeProvider } from '@emotion/react'
 import { useRouter } from 'next/router'
+import { atom, useAtom } from 'jotai'
 
 export type NextPageWithLayout<P = Record<string, unknown>, IP = P> = NextPage<
   P,
@@ -28,22 +29,25 @@ export const mPlus1p = M_PLUS_1p({
   subsets: ['latin', 'japanese'],
 })
 
+export const fixLayoutAtom = atom<boolean>(false)
 export default function App({ Component, pageProps }: AppPropsWithLayout) {
   const getLayout = Component.getLayout ?? (x => x)
   const { currentTheme } = useCurrentTheme()
   const router = useRouter()
   const key = router.pathname !== '/edit' ? 'default' : `edit ${router.asPath}`
 
+  const [isFixed] = useAtom(fixLayoutAtom)
+
   return (
     <>
-      <Global styles={GlobalStyle} />
+      <Global styles={isFixed ? GlobalStyleFixed : GlobalStyleNotFixed} />
       <ThemeProvider theme={{ theme: currentTheme }}>
         {getLayout(<Component key={key} {...pageProps} />)}
       </ThemeProvider>
     </>
   )
 }
-const GlobalStyle = css`
+const GlobalStyle = (isFixed: boolean) => css`
   html {
     font-family: ${inter.style.fontFamily}, ${mPlus1p.style.fontFamily},
       'Avenir', 'Helvetica Neue', 'Helvetica', 'Arial', 'Hiragino Sans',
@@ -65,8 +69,14 @@ const GlobalStyle = css`
     height: 100%;
 
     @media (max-width: 992px) {
-      overflow-x: auto;
-      overflow-x: overlay;
+      ${isFixed
+        ? css`
+            overflow-x: hidden;
+          `
+        : css`
+            overflow-x: auto;
+            overflow-x: overlay;
+          `}
       scroll-snap-type: x mandatory;
     }
   }
@@ -75,3 +85,5 @@ const GlobalStyle = css`
     height: 100%;
   }
 `
+const GlobalStyleFixed = GlobalStyle(true)
+const GlobalStyleNotFixed = GlobalStyle(false)
