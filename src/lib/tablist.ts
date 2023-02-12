@@ -19,12 +19,11 @@ const useControlledTabListAbstract = <T extends string | number>(
     )
   }, [names, panelIdPrefix])
 
-  const ariaTabListProps = useMemo(
-    () => ({
+  const ariaTabListProps = useMemo(() => {
+    return {
       role: 'tablist',
-    }),
-    []
-  )
+    } as const
+  }, [])
   const ariaTabProps = useMemo(() => {
     return Object.fromEntries(
       names.map(name => [
@@ -35,7 +34,7 @@ const useControlledTabListAbstract = <T extends string | number>(
           'aria-controls': panelIds[name],
           'aria-selected': name === activeTab,
           tabIndex: name === activeTab ? 0 : -1,
-        },
+        } as const,
       ])
     )
   }, [activeTab, names, panelIds, tabIds])
@@ -48,7 +47,7 @@ const useControlledTabListAbstract = <T extends string | number>(
           id: panelIds[name],
           'aria-labelledby': tabIds[name],
           hidden: name !== activeTab,
-        },
+        } as const,
       ])
     )
   }, [activeTab, names, panelIds, tabIds])
