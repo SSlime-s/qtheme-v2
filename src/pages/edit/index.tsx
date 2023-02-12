@@ -12,13 +12,7 @@ import {
 import { NextPageWithLayout } from '@/pages/_app'
 import { Layout } from '@/components/layout'
 import { extractShowcaseUser } from '@/lib/extractUser'
-import {
-  useCallback,
-  useEffect,
-  useId,
-  useMemo,
-  useState,
-} from 'react'
+import { useCallback, useEffect, useId, useMemo, useState } from 'react'
 import { resolveTheme } from '@/lib/theme'
 import { SmallPreview } from '@/components/preview'
 import {
@@ -104,37 +98,42 @@ const Editor: NextPageWithLayout<Props> = ({ defaultTheme, userId }) => {
 
   return (
     <FormProvider {...methods}>
-      <Wrap>
-        <Rest>
-          <Title />
-          <Preview userId={userId} />
-          <Sync />
-        </Rest>
-        <Colors>
-          <Tabs {...ariaTabListProps}>
-            <Tab {...ariaTabProps.Basic} onClick={selectBasicTab} title='Basic'>
-              Basic
-            </Tab>
-            <Tab
-              {...ariaTabProps.Advanced}
-              onClick={selectAdvancedTab}
-              title='Advanced'
-            >
-              Advanced
-            </Tab>
-          </Tabs>
-          <TabPanel {...ariaPanelProps.Basic}>
-            <BasicSelectors />
-          </TabPanel>
-          <TabPanel {...ariaPanelProps.Advanced}>
-            <AdvancedSelectors />
-          </TabPanel>
-        </Colors>
-      </Wrap>
+      <Layout sidebar={<>Editor</>}>
+        <Wrap>
+          <Rest>
+            <Title />
+            <Preview userId={userId} />
+            <Sync />
+          </Rest>
+          <Colors>
+            <Tabs {...ariaTabListProps}>
+              <Tab
+                {...ariaTabProps.Basic}
+                onClick={selectBasicTab}
+                title='Basic'
+              >
+                Basic
+              </Tab>
+              <Tab
+                {...ariaTabProps.Advanced}
+                onClick={selectAdvancedTab}
+                title='Advanced'
+              >
+                Advanced
+              </Tab>
+            </Tabs>
+            <TabPanel {...ariaPanelProps.Basic}>
+              <BasicSelectors />
+            </TabPanel>
+            <TabPanel {...ariaPanelProps.Advanced}>
+              <AdvancedSelectors />
+            </TabPanel>
+          </Colors>
+        </Wrap>
+      </Layout>
     </FormProvider>
   )
 }
-Editor.getLayout = page => <Layout>{page}</Layout>
 export default Editor
 
 const Wrap = styled.div`

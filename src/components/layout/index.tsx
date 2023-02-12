@@ -10,16 +10,19 @@ import {
 } from 'react'
 import { Header } from './Header'
 import { Navbar } from './Navbar'
-import { Sidebar } from './Sidebar'
+import { DefaultSidebarContent, Sidebar } from './Sidebar'
 
 interface Props {
   userId?: string
+  sidebar?: React.ReactNode
 }
 
 export const Layout: React.FC<PropsWithChildren<Props>> = ({
   userId: _u,
   children,
+  sidebar: rawSidebar,
 }) => {
+  const sidebar = rawSidebar ?? <DefaultSidebarContent />
   const isMobile = useIsMobile()
   const router = useRouter()
   const nowChannelPath = useMemo(() => {
@@ -60,7 +63,7 @@ export const Layout: React.FC<PropsWithChildren<Props>> = ({
       <Header channelPath={nowChannelPath} />
       <DummyMain ref={mainRef} />
       <Main onClickCapture={scrollToSelf}>{children}</Main>
-      <Sidebar />
+      <Sidebar>{sidebar}</Sidebar>
     </Container>
   )
 }

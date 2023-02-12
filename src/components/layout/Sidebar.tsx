@@ -4,35 +4,17 @@ import { useCurrentTheme } from '@/lib/theme/hooks'
 import { css } from '@emotion/react'
 import styled from '@emotion/styled'
 import Link from 'next/link'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import {
+  PropsWithChildren,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react'
 import { RxReset } from 'react-icons/rx'
 
-export const Sidebar: React.FC = () => {
-  const {
-    currentThemeInfo,
-    mutate: { changeToDefaultTheme },
-  } = useCurrentTheme()
-  const [isConfirm, setIsConfirm] = useState(false)
-  const [confirmTimeoutId, setConfirmTimeoutId] = useState<NodeJS.Timeout>()
-  const confirmedToDefaultTheme = useCallback(() => {
-    if (isConfirm) {
-      changeToDefaultTheme()
-      setIsConfirm(false)
-      if (confirmTimeoutId) {
-        clearTimeout(confirmTimeoutId)
-        setConfirmTimeoutId(undefined)
-      }
-      return
-    }
-
-    setIsConfirm(true)
-    const timeoutId = setTimeout(() => {
-      setIsConfirm(false)
-      setConfirmTimeoutId(undefined)
-    }, 2000)
-    setConfirmTimeoutId(timeoutId)
-  }, [changeToDefaultTheme, confirmTimeoutId, isConfirm])
-
+// eslint-disable-next-line @typescript-eslint/ban-types
+export const Sidebar: React.FC<PropsWithChildren<{}>> = ({ children }) => {
   const isMobile = useIsMobile()
   const ref = useRef<HTMLDivElement>(null)
   const [isOpen, setIsOpen] = useState(false)
@@ -66,20 +48,50 @@ export const Sidebar: React.FC = () => {
   return (
     <>
       <Cover hidden={!isOpen} />
-      <Wrap ref={ref}>
-        <LinkBlock href={`/theme/${currentThemeInfo?.id}`}>
-          <Title>現在のテーマ</Title>
-          <p>{currentThemeInfo?.title}</p>
-        </LinkBlock>
-        <Block>
-          <Title>詳細</Title>
-          <p>{currentThemeInfo?.description}</p>
-        </Block>
-        <ResetButton onClick={confirmedToDefaultTheme}>
-          {isConfirm ? 'もう一度クリックで確定' : 'デフォルトテーマに戻す'}
-          <RxReset />
-        </ResetButton>
-      </Wrap>
+      <Wrap ref={ref}>{children}</Wrap>
+    </>
+  )
+}
+export const DefaultSidebarContent: React.FC = () => {
+  const {
+    currentThemeInfo,
+    mutate: { changeToDefaultTheme },
+  } = useCurrentTheme()
+  const [isConfirm, setIsConfirm] = useState(false)
+  const [confirmTimeoutId, setConfirmTimeoutId] = useState<NodeJS.Timeout>()
+  const confirmedToDefaultTheme = useCallback(() => {
+    if (isConfirm) {
+      changeToDefaultTheme()
+      setIsConfirm(false)
+      if (confirmTimeoutId) {
+        clearTimeout(confirmTimeoutId)
+        setConfirmTimeoutId(undefined)
+      }
+      return
+    }
+
+    setIsConfirm(true)
+    const timeoutId = setTimeout(() => {
+      setIsConfirm(false)
+      setConfirmTimeoutId(undefined)
+    }, 2000)
+    setConfirmTimeoutId(timeoutId)
+  }, [changeToDefaultTheme, confirmTimeoutId, isConfirm])
+
+  return (
+    <>
+      <LinkBlock href={`/theme/${currentThemeInfo?.id}`}>
+        <Title>現在のテーマ</Title>
+        <p>{currentThemeInfo?.title}</p>
+      </LinkBlock>
+      <Block>
+        <Title>詳細</Title>
+        <p>{currentThemeInfo?.description}</p>
+      </Block>
+      <ResetButton onClick={confirmedToDefaultTheme}>
+        {isConfirm ? 'もう一度クリックで確定' : 'デフォルトテーマに戻す'}
+        <RxReset />
+      </ResetButton>
     </>
   )
 }
@@ -95,7 +107,7 @@ const Wrap = styled.aside`
     scroll-snap-align: end;
   }
 `
-const BlockStyle = ({ theme }: { theme: { theme: ResolvedTheme } }) => css`
+export const BlockStyle = ({ theme }: { theme: { theme: ResolvedTheme } }) => css`
   background: ${theme.theme.basic.background.primary.default};
   color: ${theme.theme.basic.ui.secondary.default};
   width: 100%;
@@ -104,13 +116,13 @@ const BlockStyle = ({ theme }: { theme: { theme: ResolvedTheme } }) => css`
   margin-bottom: 16px;
   display: block;
 `
-const Block = styled.div`
+export const Block = styled.div`
   ${BlockStyle}
 `
-const LinkBlock = styled(Link)`
+export const LinkBlock = styled(Link)`
   ${BlockStyle}
 `
-const ResetButton = styled.button`
+export const ResetButton = styled.button`
   ${BlockStyle}
 
   cursor: pointer;
