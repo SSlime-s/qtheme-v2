@@ -3,14 +3,7 @@ import { ResolvedTheme } from '@/lib/theme'
 import { css } from '@emotion/react'
 import styled from '@emotion/styled'
 import Link from 'next/link'
-import {
-  PropsWithChildren,
-  useCallback,
-  useEffect,
-  useId,
-  useRef,
-  useState,
-} from 'react'
+import { PropsWithChildren } from 'react'
 import { BsHash } from 'react-icons/bs'
 
 interface Props {
