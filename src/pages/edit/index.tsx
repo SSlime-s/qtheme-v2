@@ -121,6 +121,7 @@ const Editor: NextPageWithLayout<Props> = ({ defaultTheme, userId }) => {
         <Wrap ref={containerRef} isWide={isWide}>
           <Controls>
             <Title />
+            <Description />
           </Controls>
           <PreviewBox>
             <Preview userId={userId} />
@@ -254,6 +255,36 @@ const TitleInput = styled.input`
   border: 1px solid ${({ theme }) => theme.theme.basic.ui.tertiary.default};
   border-radius: 4px;
   backdrop-filter: blur(4px);
+
+  &:focus {
+    border-color: ${({ theme }) => theme.theme.basic.accent.primary.default};
+  }
+  &::placeholder {
+    color: ${({ theme }) => theme.theme.basic.ui.tertiary.default};
+  }
+`
+const Description: React.FC = () => {
+  const id = useId()
+  const { register } = useFormContext<Form>()
+
+  return (
+    <div>
+      <label htmlFor={id}>Description</label>
+      <DescriptionInput
+        id={id}
+        {...register('description')}
+        placeholder='Description'
+      />
+    </div>
+  )
+}
+const DescriptionInput = styled.textarea`
+  display: block;
+  width: 100%;
+  border: 1px solid ${({ theme }) => theme.theme.basic.ui.tertiary.default};
+  border-radius: 4px;
+  backdrop-filter: blur(4px);
+  resize: vertical;
 
   &:focus {
     border-color: ${({ theme }) => theme.theme.basic.accent.primary.default};
