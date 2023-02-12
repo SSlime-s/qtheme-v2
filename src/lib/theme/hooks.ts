@@ -129,7 +129,18 @@ export const createThemeMutation = gql`
       visibility: $visibility
       type: $type
       theme: $theme
-    )
+    ) {
+      author
+      createdAt
+      description
+      id
+      isLike
+      likes
+      theme
+      title
+      type
+      visibility
+    }
   }
 `
 export interface CreateThemeInput {
@@ -138,6 +149,9 @@ export interface CreateThemeInput {
   visibility: 'public' | 'private' | 'draft'
   type: 'light' | 'dark' | 'other'
   theme: Theme
+}
+export interface CreateThemeRes {
+  createTheme: ThemeRes
 }
 
 export const updateThemeMutation = gql`
@@ -156,11 +170,25 @@ export const updateThemeMutation = gql`
       visibility: $visibility
       type: $type
       theme: $theme
-    )
+    ) {
+      author
+      createdAt
+      description
+      id
+      isLike
+      likes
+      theme
+      title
+      type
+      visibility
+    }
   }
 `
 export interface UpdateThemeInput extends CreateThemeInput {
   id: string
+}
+export interface UpdateThemeRes {
+  updateTheme: ThemeRes
 }
 
 export const deleteThemeMutation = gql`
@@ -453,9 +481,12 @@ export const useThemeList = (
         'title' | 'description' | 'theme' | 'type' | 'visibility'
       >
     ) => {
-      const { createTheme } = await client.request(createThemeMutation, {
-        theme,
-      })
+      const { createTheme } = await client.request<CreateThemeRes>(
+        createThemeMutation,
+        {
+          theme,
+        }
+      )
       mutate(data => {
         if (!data) {
           return data
@@ -466,6 +497,7 @@ export const useThemeList = (
         return newData
       }, false)
       setDelta(delta => delta + 1)
+      return createTheme
     },
     [client, mutate]
   )
@@ -478,10 +510,13 @@ export const useThemeList = (
         'title' | 'description' | 'theme' | 'type' | 'visibility'
       >
     ) => {
-      const { updateTheme } = await client.request(updateThemeMutation, {
-        id,
-        theme,
-      })
+      const { updateTheme } = await client.request<UpdateThemeRes>(
+        updateThemeMutation,
+        {
+          id,
+          theme,
+        }
+      )
       mutate(data => {
         if (!data) {
           return data
