@@ -253,7 +253,7 @@ const TitleInput = styled.input`
   width: 100%;
   border: 1px solid ${({ theme }) => theme.theme.basic.ui.tertiary.default};
   border-radius: 4px;
-  backdrop-filter: blur(8px);
+  backdrop-filter: blur(4px);
 
   &:focus {
     border-color: ${({ theme }) => theme.theme.basic.accent.primary.default};
