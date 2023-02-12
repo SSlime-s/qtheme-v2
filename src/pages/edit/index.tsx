@@ -126,6 +126,7 @@ const Editor: NextPageWithLayout<Props> = ({ defaultTheme, userId }) => {
             <Preview userId={userId} />
             <Sync />
           </PreviewBox>
+
           <Colors>
             <Tabs {...ariaTabListProps}>
               <Tab
@@ -143,6 +144,7 @@ const Editor: NextPageWithLayout<Props> = ({ defaultTheme, userId }) => {
                 Advanced
               </Tab>
             </Tabs>
+
             <TabPanel {...ariaPanelProps.Basic}>
               <BasicSelectors />
             </TabPanel>
