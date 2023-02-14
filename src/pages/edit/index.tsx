@@ -226,6 +226,9 @@ const Controls = styled.div`
   grid-area: controls;
   ${GlassmorphismStyle}
   padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 `
 const PreviewBox = styled.div`
   grid-area: preview;
@@ -289,11 +292,15 @@ const Title: React.FC = () => {
 
   return (
     <div>
-      <label htmlFor={id}>Title</label>
+      <TitleLabel htmlFor={id}>Title</TitleLabel>
       <TitleInput id={id} {...register('title')} placeholder='Title' />
     </div>
   )
 }
+const TitleLabel = styled.label`
+  display: block;
+  margin-bottom: 4px;
+`
 const TitleInput = styled.input`
   display: block;
   width: 100%;
@@ -315,7 +322,7 @@ const Description: React.FC = () => {
 
   return (
     <div>
-      <label htmlFor={id}>Description</label>
+      <DescriptionLabel htmlFor={id}>Description</DescriptionLabel>
       <DescriptionInput
         id={id}
         {...register('description')}
@@ -324,6 +331,7 @@ const Description: React.FC = () => {
     </div>
   )
 }
+const DescriptionLabel = TitleLabel
 const DescriptionInput = styled(AutoResizeTextarea)`
   width: 100%;
   border: 1px solid ${lightTheme.basic.ui.tertiary};
