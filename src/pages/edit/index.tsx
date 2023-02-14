@@ -162,6 +162,7 @@ const Editor: NextPageWithLayout<Props> = ({ defaultTheme, userId }) => {
             <Controls>
               <Title />
               <Description />
+              <Selects />
             </Controls>
             <PreviewBox>
               <Preview userId={userId} />
@@ -345,6 +346,56 @@ const DescriptionInput = styled(AutoResizeTextarea)`
   &::placeholder {
     color: ${lightTheme.basic.ui.tertiary};
   }
+`
+const visibilityDescription = {
+  public: 'traP 外の人でも見ることができます',
+  private: 'traP 内の人だけが見ることができます',
+  draft: 'あなただけが見ることができます',
+} as const satisfies Record<'public' | 'private' | 'draft', string>
+const Selects: React.FC = () => {
+  const { control, register } = useFormContext<Form>()
+  const visibility = useWatch({
+    control,
+    name: 'visibility',
+  })
+
+  return (
+    <>
+      <SelectsWrap>
+        <Select {...register('type')}>
+          <option value='light'>Light</option>
+          <option value='dark'>Dark</option>
+        </Select>
+        <Select {...register('visibility')}>
+          <option value='public'>Public</option>
+          <option value='private'>Private</option>
+          <option value='draft'>Draft</option>
+        </Select>
+      </SelectsWrap>
+      <span>{visibilityDescription[visibility]}</span>
+    </>
+  )
+}
+const SelectsWrap = styled.div`
+  display: flex;
+  gap: 16px;
+`
+const Select = styled.select`
+  padding: 4px 8px;
+  border-radius: 4px;
+  border: 1px solid ${lightTheme.basic.ui.tertiary};
+  backdrop-filter: blur(4px);
+  appearance: menulist;
+  transition: all 0.2s ease-out;
+
+  &:hover {
+    border-color: ${lightTheme.basic.ui.secondary};
+  }
+  &:focus {
+    border-color: ${lightTheme.basic.accent.primary};
+  }
+
+  cursor: pointer;
 `
 
 const Preview: React.FC<{ userId: string | null }> = ({ userId }) => {
