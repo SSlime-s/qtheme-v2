@@ -163,6 +163,8 @@ const Panel = styled.div<{ hasRPad: boolean }>`
     background: ${({ theme }) =>
       theme.theme.basic.background.secondary.default};
     border-radius: 4px;
+    padding-left: 16px;
+    padding-right: ${({ hasRPad }) => (hasRPad ? '16px' : '0px')};
   }
 `
 const Title = styled.h2`
