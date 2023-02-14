@@ -7,6 +7,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { TransparentCheckerStyle } from '../TransparentChecker'
 import { fixLayoutAtom } from '@/pages/_app'
 import { useSetAtom } from 'jotai'
+import { lightTheme } from '@/lib/theme/default'
 
 // NOTE: react color が SSR で動かないので、SSR では動かないようにする
 const SketchPicker = dynamic(
@@ -156,6 +157,9 @@ const ColorPreview = styled.button`
   transition: all 0.2s ease-out;
   &:hover {
     border-color: #a8b0b5;
+  }
+  &:focus {
+    border-color: ${lightTheme.basic.accent.focus};
   }
 `
 const ColorPreviewColor = styled.div<{
