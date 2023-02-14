@@ -30,6 +30,7 @@ import { AdvancedSelectors } from '@/components/editor/AdvancedSelectors'
 import { pageTitle } from '@/lib/title'
 import Head from 'next/head'
 import { BlockStyle } from '@/components/layout/Sidebar'
+import { AutoResizeTextarea } from '@/components/AutoResizeTextarea'
 
 export const getServerSideProps = async ({
   req,
@@ -299,6 +300,7 @@ const TitleInput = styled.input`
   border: 1px solid ${lightTheme.basic.ui.tertiary};
   border-radius: 4px;
   backdrop-filter: blur(4px);
+  padding: 4px 8px;
 
   &:focus {
     border-color: ${lightTheme.basic.accent.primary};
@@ -322,13 +324,12 @@ const Description: React.FC = () => {
     </div>
   )
 }
-const DescriptionInput = styled.textarea`
-  display: block;
+const DescriptionInput = styled(AutoResizeTextarea)`
   width: 100%;
   border: 1px solid ${lightTheme.basic.ui.tertiary};
   border-radius: 4px;
   backdrop-filter: blur(4px);
-  resize: vertical;
+  padding: 4px 8px;
 
   &:focus {
     border-color: ${lightTheme.basic.accent.primary};
