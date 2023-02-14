@@ -130,7 +130,7 @@ const DummyWrap = styled.div`
   grid-area: header;
   display: hidden;
 
-  ${isMobile}  {
+  ${isMobile} {
     display: block;
     pointer-events: none;
     scroll-snap-align: start;

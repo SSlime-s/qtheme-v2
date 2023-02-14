@@ -101,14 +101,18 @@ const Wrap = styled.aside`
   background: ${({ theme }) => theme.theme.basic.background.secondary.default};
   padding: 32px;
 
-  ${isMobile}  {
+  ${isMobile} {
     position: relative;
     z-index: 30;
     scroll-snap-align: end;
     scroll-snap-stop: always;
   }
 `
-export const BlockStyle = ({ theme }: { theme: { theme: ResolvedTheme } }) => css`
+export const BlockStyle = ({
+  theme,
+}: {
+  theme: { theme: ResolvedTheme }
+}) => css`
   background: ${theme.theme.basic.background.primary.default};
   color: ${theme.theme.basic.ui.secondary.default};
   width: 100%;
@@ -155,7 +159,7 @@ const Cover = styled.div`
   z-index: 29;
   display: none;
 
-  ${isMobile}  {
+  ${isMobile} {
     display: block;
     opacity: 1;
 

@@ -57,7 +57,7 @@ const TabList = styled.div`
   grid-template-rows: repeat(auto-fill, 60px);
   place-items: center;
 
-  ${isMobile}  {
+  ${isMobile} {
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: 1fr;
     background: ${({ theme }) =>
@@ -159,7 +159,7 @@ const Panel = styled.div<{ hasRPad: boolean }>`
     display: none;
   }
 
-  ${isMobile}  {
+  ${isMobile} {
     background: ${({ theme }) =>
       theme.theme.basic.background.secondary.default};
     border-radius: 4px;
@@ -178,7 +178,7 @@ const Wrap = styled.nav`
   grid-template-columns: 60px 1fr;
   grid-template-areas: 'list panel';
 
-  ${isMobile}  {
+  ${isMobile} {
     grid-template-columns: 1fr;
     grid-template-rows: 1fr 60px;
     grid-template-areas: 'panel' 'list';
@@ -194,7 +194,7 @@ const DummyWrap = styled.div`
   grid-area: nav;
   display: hidden;
 
-  ${isMobile}  {
+  ${isMobile} {
     display: block;
     pointer-events: none;
     scroll-snap-align: start;
