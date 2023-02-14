@@ -1,5 +1,5 @@
 import styled from '@emotion/styled'
-import { atom, useAtom } from 'jotai'
+import { atom, useAtom, useSetAtom } from 'jotai'
 import {
   ButtonHTMLAttributes,
   HTMLAttributes,
@@ -72,7 +72,7 @@ interface ButtonProps {
 const Button: React.FC<
   ButtonProps & ButtonHTMLAttributes<HTMLButtonElement>
 > = ({ state, ...props }) => {
-  const [_, setCurrent] = useAtom(NavbarAtom)
+  const setCurrent = useSetAtom(NavbarAtom)
   const changeCurrent = useCallback(() => {
     setCurrent(state)
   }, [setCurrent, state])

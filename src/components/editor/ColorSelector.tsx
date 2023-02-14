@@ -6,7 +6,7 @@ import dynamic from 'next/dynamic'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { TransparentCheckerStyle } from '../TransparentChecker'
 import { fixLayoutAtom } from '@/pages/_app'
-import { useAtom } from 'jotai'
+import { useSetAtom } from 'jotai'
 
 // NOTE: react color が SSR で動かないので、SSR では動かないようにする
 const SketchPicker = dynamic(
@@ -34,7 +34,7 @@ export const ColorSelector: React.FC<Props> = ({
   isExpanded,
   setExpanded,
 }) => {
-  const [_, setIsFixed] = useAtom(fixLayoutAtom)
+  const setIsFixed = useSetAtom(fixLayoutAtom)
   const rgbValue = useMemo(() => {
     const ret = parseHexNotationColor(value)
     if (ret === null) {
