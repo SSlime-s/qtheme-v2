@@ -30,6 +30,7 @@ export const AutoResizeTextarea: React.FC<Props> = ({ onChange, ...props }) => {
         value={dummyValue}
         className={props.className}
         aria-hidden='true'
+        readOnly
       />
     </>
   )
