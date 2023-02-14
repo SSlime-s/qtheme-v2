@@ -7,6 +7,7 @@ import { useCurrentTheme } from '@/lib/theme/hooks'
 import { css, Global, ThemeProvider } from '@emotion/react'
 import { useRouter } from 'next/router'
 import { atom, useAtom } from 'jotai'
+import { isMobile } from '@/lib/isMobile'
 
 export type NextPageWithLayout<P = Record<string, unknown>, IP = P> = NextPage<
   P,
@@ -68,7 +69,7 @@ const GlobalStyle = (isFixed: boolean) => css`
     overflow-x: hidden;
     height: 100%;
 
-    @media (max-width: 992px) {
+    ${isMobile} {
       ${isFixed
         ? css`
             overflow-x: hidden;

@@ -1,4 +1,4 @@
-import { useIsMobile } from '@/lib/isMobile'
+import { isMobile, useIsMobile } from '@/lib/isMobile'
 import styled from '@emotion/styled'
 import Link from 'next/link'
 import path from 'path'
@@ -120,7 +120,7 @@ const Wrap = styled.header`
   align-items: center;
   padding: 16px;
 
-  @media (max-width: 992px) {
+  ${isMobile} {
     position: sticky;
     left: 0;
     z-index: 20;
@@ -130,7 +130,7 @@ const DummyWrap = styled.div`
   grid-area: header;
   display: hidden;
 
-  @media (max-width: 992px) {
+  ${isMobile}  {
     display: block;
     pointer-events: none;
     scroll-snap-align: start;

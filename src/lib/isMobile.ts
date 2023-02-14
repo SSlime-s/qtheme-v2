@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react'
 
+const mobileBreakpoint = 992
 export const useIsMobile = () => {
   const matchQuery: MediaQueryList | undefined =
     typeof window !== 'undefined'
-      ? window.matchMedia('(max-width: 992px)')
+      ? window.matchMedia(`(max-width: ${mobileBreakpoint}px)`)
       : undefined
 
   const [isMobile, setIsMobile] = useState(matchQuery?.matches ?? false)
@@ -17,3 +18,4 @@ export const useIsMobile = () => {
 
   return isMobile
 }
+export const isMobile = `@media (max-width: ${mobileBreakpoint}px)` as const

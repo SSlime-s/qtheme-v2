@@ -11,6 +11,7 @@ import { MdHome } from 'react-icons/md'
 import { FaUser, FaWrench } from 'react-icons/fa'
 import { NavbarCustom } from './Custom'
 import { useControlledNamedTabList } from '@/lib/tablist'
+import { isMobile } from '@/lib/isMobile'
 
 type NavbarState = 'channel' | 'user' | 'custom'
 const states = [
@@ -56,7 +57,7 @@ const TabList = styled.div`
   grid-template-rows: repeat(auto-fill, 60px);
   place-items: center;
 
-  @media (max-width: 992px) {
+  ${isMobile}  {
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: 1fr;
     background: ${({ theme }) =>
@@ -158,7 +159,7 @@ const Panel = styled.div<{ hasRPad: boolean }>`
     display: none;
   }
 
-  @media (max-width: 992px) {
+  ${isMobile}  {
     background: ${({ theme }) =>
       theme.theme.basic.background.secondary.default};
     border-radius: 4px;
@@ -177,7 +178,7 @@ const Wrap = styled.nav`
   grid-template-columns: 60px 1fr;
   grid-template-areas: 'list panel';
 
-  @media (max-width: 992px) {
+  ${isMobile}  {
     grid-template-columns: 1fr;
     grid-template-rows: 1fr 60px;
     grid-template-areas: 'panel' 'list';
@@ -193,7 +194,7 @@ const DummyWrap = styled.div`
   grid-area: nav;
   display: hidden;
 
-  @media (max-width: 992px) {
+  ${isMobile}  {
     display: block;
     pointer-events: none;
     scroll-snap-align: start;

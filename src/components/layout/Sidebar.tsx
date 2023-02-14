@@ -1,4 +1,4 @@
-import { useIsMobile } from '@/lib/isMobile'
+import { isMobile, useIsMobile } from '@/lib/isMobile'
 import { ResolvedTheme } from '@/lib/theme'
 import { useCurrentTheme } from '@/lib/theme/hooks'
 import { css } from '@emotion/react'
@@ -101,7 +101,7 @@ const Wrap = styled.aside`
   background: ${({ theme }) => theme.theme.basic.background.secondary.default};
   padding: 32px;
 
-  @media (max-width: 992px) {
+  ${isMobile}  {
     position: relative;
     z-index: 30;
     scroll-snap-align: end;
@@ -155,7 +155,7 @@ const Cover = styled.div`
   z-index: 29;
   display: none;
 
-  @media (max-width: 992px) {
+  ${isMobile}  {
     display: block;
     opacity: 1;
 

@@ -1,4 +1,4 @@
-import { useIsMobile } from '@/lib/isMobile'
+import { isMobile, useIsMobile } from '@/lib/isMobile'
 import styled from '@emotion/styled'
 import { useRouter } from 'next/router'
 import {
@@ -79,7 +79,7 @@ const Container = styled.div`
   position: relative;
   overflow: hidden;
 
-  @media (max-width: 992px) {
+  ${isMobile}  {
     grid-template-areas: 'nav header side' 'nav main side';
     grid-template-columns: 320px 100vw 320px;
     grid-template-rows: 80px 1fr;
@@ -144,7 +144,7 @@ const Main = styled.main`
   height: 100%;
   background: ${({ theme }) => theme.theme.specific.mainViewBackground};
 
-  @media (max-width: 992px) {
+  ${isMobile}  {
     position: sticky;
     left: 0;
     z-index: 20;
@@ -156,7 +156,7 @@ const DummyMain = styled.div`
   grid-area: main;
   display: none;
 
-  @media (max-width: 992px) {
+  ${isMobile}  {
     display: block;
     pointer-events: none;
   }
