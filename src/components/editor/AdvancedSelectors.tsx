@@ -1,4 +1,4 @@
-import { useControlledAccordion } from '@/lib/accordion'
+import { useControlledAccordion, useHiddenTransition } from '@/lib/accordion'
 import { Form } from '@/pages/edit'
 import styled from '@emotion/styled'
 import { useCallback, useEffect, useState } from 'react'
@@ -121,6 +121,7 @@ const OptionalSelectors: React.FC<
       return !valid
     })
   }, [])
+  const { ref: wrapRef, style: hiddenStyle } = useHiddenTransition(valid)
 
   const { control, setValue, getValues } = useFormContext<Form>()
   const [innerColor, setInnerColor] = useState(
@@ -173,7 +174,12 @@ const OptionalSelectors: React.FC<
         {label}
         <OptionalSelectorsDisableText>無効化中</OptionalSelectorsDisableText>
       </OptionalSelectorsLabel>
-      <OptionalSelectorsContent {...ariaContent} height={contentHeight ?? 0}>
+      <OptionalSelectorsContent
+        ref={wrapRef}
+        {...ariaContent}
+        height={contentHeight ?? 0}
+        css={hiddenStyle}
+      >
         <div ref={contentRef}>
           <Description>
             {

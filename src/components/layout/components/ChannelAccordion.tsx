@@ -1,4 +1,4 @@
-import { useAccordion } from '@/lib/accordion'
+import { useAccordion, useHiddenTransition } from '@/lib/accordion'
 import { ResolvedTheme } from '@/lib/theme'
 import { css } from '@emotion/react'
 import styled from '@emotion/styled'
@@ -18,8 +18,9 @@ export const ChannelAccordion: React.FC<PropsWithChildren<Props>> = ({
   to,
   children,
 }) => {
-  const { toggle, contentRef, contentHeight, ariaToggle, ariaContent } =
+  const { isOpen, toggle, contentRef, contentHeight, ariaToggle, ariaContent } =
     useAccordion<HTMLDivElement>(8)
+  const { ref: wrapRef, style: hiddenStyle } = useHiddenTransition(isOpen)
 
   return (
     <Wrap>
@@ -32,7 +33,12 @@ export const ChannelAccordion: React.FC<PropsWithChildren<Props>> = ({
         </ToggleButton>
         <ChannelLink href={to}>{name}</ChannelLink>
       </ChannelWrap>
-      <ContentWrap data-height={contentHeight} {...ariaContent}>
+      <ContentWrap
+        ref={wrapRef}
+        data-height={contentHeight}
+        {...ariaContent}
+        css={hiddenStyle}
+      >
         <div ref={contentRef}>{children}</div>
       </ContentWrap>
     </Wrap>
