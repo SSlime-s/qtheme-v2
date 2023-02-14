@@ -23,8 +23,11 @@ export const ChannelAccordion: React.FC<PropsWithChildren<Props>> = ({
 
   return (
     <Wrap>
-      <ChannelWrap data-selected={selected}>
-        <ToggleButton onClick={toggle} data-selected={selected} {...ariaToggle}>
+      <ChannelWrap
+        aria-current={selected === true ? 'page' : 'false'}
+        selected={selected}
+      >
+        <ToggleButton onClick={toggle} selected={selected} {...ariaToggle}>
           <BsHash />
         </ToggleButton>
         <ChannelLink href={to}>{name}</ChannelLink>
@@ -39,23 +42,22 @@ const Wrap = styled.div`
   margin: 4px 0;
 `
 const ChannelWrap = styled.div<{
-  'data-selected'?: boolean
+  selected?: boolean
 }>`
   display: grid;
   grid-template-columns: 29px 1fr;
   height: 32px;
   align-items: center;
   color: ${({ theme, ...props }) =>
-    props['data-selected'] === true
+    props.selected === true
       ? theme.theme.basic.accent.primary.default
       : theme.theme.basic.ui.primary.default};
-  font-weight: ${props =>
-    props['data-selected'] === true ? 'bold' : 'normal'};
+  font-weight: ${props => (props.selected === true ? 'bold' : 'normal')};
   position: relative;
   padding-left: 8px;
 `
 const ToggleButton = styled.button<{
-  'data-selected'?: boolean
+  selected?: boolean
 }>`
   display: grid;
   justify-self: end;
@@ -66,7 +68,7 @@ const ToggleButton = styled.button<{
   padding: 0;
   cursor: pointer;
   border: ${({ theme, ...props }) =>
-      props['data-selected'] === true
+      props.selected === true
         ? theme.theme.basic.accent.primary.default
         : theme.theme.basic.ui.primary.default}
     2px solid;
@@ -77,7 +79,7 @@ const ToggleButton = styled.button<{
 
   &[aria-expanded='true'] {
     background: ${({ theme, ...props }) =>
-      props['data-selected'] === true
+      props.selected === true
         ? theme.theme.basic.accent.primary.default
         : theme.theme.basic.ui.primary.default};
     color: ${({ theme }) => theme.theme.specific.channelHashOpened};
@@ -85,7 +87,7 @@ const ToggleButton = styled.button<{
 
   &:hover::before {
     background: ${({ theme, ...props }) =>
-      props['data-selected'] === true
+      props.selected === true
         ? theme.theme.basic.accent.primary.default
         : theme.theme.basic.ui.primary.default};
     opacity: 0.2;
