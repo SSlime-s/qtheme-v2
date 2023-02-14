@@ -1,21 +1,21 @@
-import { useEffect, useState } from 'react'
+import { atom, useAtomValue } from 'jotai'
 
 const mobileBreakpoint = 992
-export const useIsMobile = () => {
-  const matchQuery: MediaQueryList | undefined =
-    typeof window !== 'undefined'
-      ? window.matchMedia(`(max-width: ${mobileBreakpoint}px)`)
-      : undefined
 
-  const [isMobile, setIsMobile] = useState(matchQuery?.matches ?? false)
-
-  useEffect(() => {
-    if (matchQuery === undefined) return
-    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches)
-    matchQuery.addEventListener('change', handler)
-    return () => matchQuery.removeEventListener('change', handler)
-  }, [matchQuery])
-
-  return isMobile
+const isMobileAtom = atom(false)
+isMobileAtom.onMount = setAtom => {
+  const matchQuery = window.matchMedia(`(max-width: ${mobileBreakpoint}px)`)
+  const handler = (e: MediaQueryListEvent) => {
+    setAtom(e.matches)
+  }
+  matchQuery.addEventListener('change', handler)
+  setAtom(matchQuery.matches)
+  return () => {
+    matchQuery.removeEventListener('change', handler)
+  }
 }
+export const useIsMobile = () => {
+  return useAtomValue(isMobileAtom)
+}
+
 export const isMobile = `@media (max-width: ${mobileBreakpoint}px)` as const
