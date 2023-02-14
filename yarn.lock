@@ -10989,46 +10989,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jotai@npm:^1.13.1":
-  version: 1.13.1
-  resolution: "jotai@npm:1.13.1"
+"jotai@npm:^2.0.1":
+  version: 2.0.1
+  resolution: "jotai@npm:2.0.1"
   peerDependencies:
-    "@babel/core": "*"
-    "@babel/template": "*"
-    jotai-devtools: "*"
-    jotai-immer: "*"
-    jotai-optics: "*"
-    jotai-redux: "*"
-    jotai-tanstack-query: "*"
-    jotai-urql: "*"
-    jotai-valtio: "*"
-    jotai-xstate: "*"
-    jotai-zustand: "*"
-    react: ">=16.8"
+    react: ">=17.0.0"
   peerDependenciesMeta:
-    "@babel/core":
+    react:
       optional: true
-    "@babel/template":
-      optional: true
-    jotai-devtools:
-      optional: true
-    jotai-immer:
-      optional: true
-    jotai-optics:
-      optional: true
-    jotai-redux:
-      optional: true
-    jotai-tanstack-query:
-      optional: true
-    jotai-urql:
-      optional: true
-    jotai-valtio:
-      optional: true
-    jotai-xstate:
-      optional: true
-    jotai-zustand:
-      optional: true
-  checksum: bc1f88ec1d52dda7c2aa39d278b15c128a6babc91fe9294862feb1b2d8467e47fc37cd193fd1358107212b9a4e5f5a8ae9a5a5ed1e845b74421d4476ce5d9efd
+  checksum: a04c601b4983e68526dd9170549ab062da7808ef950dabe9100124638e648cf32ce69291de153f18a3178cae52a2fe7e471a33ff59e9e2606b040fd83dff8948
   languageName: node
   linkType: hard
 
@@ -13723,7 +13692,7 @@ __metadata:
     eslint-plugin-storybook: ^0.6.8
     graphql: ^16.6.0
     graphql-request: ^5.1.0
-    jotai: ^1.13.1
+    jotai: ^2.0.1
     micro: ^10.0.1
     mysql: ^2.18.1
     mysql2: ^2.3.3
