@@ -1,3 +1,4 @@
+import { css } from '@emotion/react'
 import { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react'
 
 export const useControlledAccordion = <E extends HTMLElement = HTMLDivElement>(
@@ -70,4 +71,46 @@ export const useAccordion = <E extends HTMLElement = HTMLDivElement>(
 ) => {
   const [isOpen, setIsOpen] = useState(false)
   return useControlledAccordion<E>(isOpen, setIsOpen, contentMargin)
+}
+
+export const useHiddenTransition = (isOpen: boolean) => {
+  const [isHidden, setIsHidden] = useState(!isOpen)
+  const ref = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (isOpen) {
+      setIsHidden(false)
+    }
+  }, [isOpen])
+
+  useEffect(() => {
+    const { current } = ref
+    if (current === null) {
+      return
+    }
+    const onTransitionEnd = () => {
+      if (!isOpen) {
+        setIsHidden(true)
+      }
+    }
+    current.addEventListener('transitionend', onTransitionEnd)
+    return () => {
+      current.removeEventListener('transitionend', onTransitionEnd)
+    }
+  }, [isOpen])
+
+  const style = useMemo(() => {
+    if (isHidden) {
+      return css`
+        display: none;
+      `
+    }
+    return undefined
+  }, [isHidden])
+
+  return {
+    ref,
+    isHidden,
+    style,
+  }
 }

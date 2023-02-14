@@ -1,9 +1,9 @@
-import { useControlledAccordion } from '@/lib/accordion'
+import { useControlledAccordion, useHiddenTransition } from '@/lib/accordion'
 import { parseHexNotationColor } from '@/model/color'
 import { css } from '@emotion/react'
 import styled from '@emotion/styled'
 import dynamic from 'next/dynamic'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { TransparentCheckerStyle } from '../TransparentChecker'
 import { fixLayoutAtom } from '@/pages/_app'
 import { useSetAtom } from 'jotai'
@@ -114,13 +114,20 @@ export const ColorSelector: React.FC<Props> = ({
     }
   }, [isExpanded, onTouchStart, onTouchEnd, contentRef])
 
+  const { ref: wrapRef, style: hiddenStyle } = useHiddenTransition(isExpanded)
+
   return (
     <Wrap className='mono'>
       <ColorPreview onClick={toggle} {...ariaToggle}>
         <ColorPreviewColor color={value} />
         <ColorPreviewText>{value}</ColorPreviewText>
       </ColorPreview>
-      <ContentWrap height={contentHeight} {...ariaContent}>
+      <ContentWrap
+        ref={wrapRef}
+        height={contentHeight}
+        {...ariaContent}
+        css={hiddenStyle}
+      >
         <div ref={contentRef}>
           <SketchPicker
             color={innerColor}
