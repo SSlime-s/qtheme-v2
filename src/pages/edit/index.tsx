@@ -395,7 +395,7 @@ const Sync: React.FC = () => {
 
   return (
     <SyncWrap>
-      <SyncButton onClick={sync} disabled={isSynced}>
+      <SyncButton onClick={sync} disabled={isSynced} aria-pressed={isSynced}>
         <Dummy hidden>Synced</Dummy>
         <Real>{isSynced ? 'Synced' : 'Sync '}</Real>
       </SyncButton>
@@ -429,6 +429,12 @@ const SyncButton = styled.button`
   padding: 2px 4px;
   position: relative;
 
+  &:hover {
+    box-shadow: 0 0 4px rgba(0, 91, 172, 0.3);
+  }
+  &:focus {
+    box-shadow: 0 0 0 2px rgba(0, 91, 172, 0.3);
+  }
   &:disabled {
     ${ColoredGlassmorphismStyle(
       'rgba(255, 255, 255, 0.3)',
@@ -494,6 +500,13 @@ const ToggleSwitch = styled.input`
   &:checked:after {
     transform: translateX(16px);
     background-color: rgba(0, 91, 172);
+  }
+
+  &:hover:after {
+    box-shadow: 0 0 4px rgba(0, 91, 172, 0.3);
+  }
+  &:focus:after {
+    box-shadow: 0 0 0 2px rgba(0, 91, 172, 0.3);
   }
 `
 
