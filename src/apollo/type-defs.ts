@@ -43,6 +43,11 @@ export const typeDefs: Config['typeDefs'] = gql`
     total: Int!
   }
 
+  type Author {
+    name: String!
+    count: Int!
+  }
+
   type Query {
     getRandomTheme(visibility: Visibility, type: Type): Theme!
     getTheme(id: ID!): ThemeWithVersions
@@ -54,6 +59,7 @@ export const typeDefs: Config['typeDefs'] = gql`
       only_like: Boolean
       author: String
     ): Themes
+    getAuthors: [Author!]!
   }
 
   type Mutation {

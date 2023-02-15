@@ -2,6 +2,7 @@ import { Config } from 'apollo-server-micro'
 import { Connection } from 'mysql2/promise'
 import { createTheme } from './createTheme'
 import { deleteTheme } from './deleteTheme'
+import { getAuthors } from './getAuthors'
 import { getRandomTheme } from './getRandomTheme'
 import { getTheme } from './getTheme'
 import { getThemes } from './getThemes'
@@ -28,6 +29,7 @@ export const resolvers: Config['resolvers'] = {
     getRandomTheme,
     getTheme,
     getThemes,
+    getAuthors,
   },
 
   Mutation: {
