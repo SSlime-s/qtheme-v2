@@ -4,11 +4,6 @@ CREATE DATABASE `qtheme`;
 
 USE `qtheme`;
 
-CREATE TABLE IF NOT EXISTS `users` (
-  `id` VARCHAR(32) NOT NULL PRIMARY KEY,
-  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
-
 CREATE TABLE IF NOT EXISTS `theme_types` (`name` VARCHAR(32) NOT NULL PRIMARY KEY) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
 
 INSERT INTO
@@ -47,6 +42,15 @@ CREATE TABLE IF NOT EXISTS `themes` (
     FOREIGN KEY (`visibility`) REFERENCES `visibility_types` (`name`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
 
+CREATE VIEW `users` AS
+SELECT
+  `author_user_id` AS `id`,
+  COUNT(*) AS `count`
+FROM
+  `themes`
+GROUP BY
+  `author_user_id`;
+
 CREATE TABLE IF NOT EXISTS `theme_versions` (
   `id` CHAR(26) NOT NULL PRIMARY KEY,
   `theme_id` CHAR(26) NOT NULL,
@@ -71,6 +75,5 @@ CREATE TABLE IF NOT EXISTS `likes` (
   `theme_id` CHAR(26) NOT NULL,
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`user_id`, `theme_id`),
-  FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   FOREIGN KEY (`theme_id`) REFERENCES `themes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
