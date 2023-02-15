@@ -588,8 +588,11 @@ export const useRandomTheme = (type: 'light' | 'dark' | 'other' | null) => {
       },
     ],
     async ([query, variables]) => {
-      const { randomTheme } = await client.request(query, variables)
-      return randomTheme
+      const { getRandomTheme } = await client.request<RandomQueryRes>(
+        query,
+        variables
+      )
+      return themeFromRaw(getRandomTheme)
     },
     {
       revalidateOnFocus: false,
