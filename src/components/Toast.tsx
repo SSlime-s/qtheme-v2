@@ -1,5 +1,5 @@
 import { ToastOptions, useToastList } from '@/lib/toast'
-import { css, Theme } from '@emotion/react'
+import { css, keyframes, Theme } from '@emotion/react'
 import styled from '@emotion/styled'
 import dynamic from 'next/dynamic'
 import { useMemo } from 'react'
@@ -19,6 +19,18 @@ const Toast: React.FC<Props> = ({ type, content, toastKey, onClick }) => {
     </Wrap>
   )
 }
+const slideIn = keyframes`
+  from {
+    transform: translateX(-50%);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  to {
+    transform: translateX(0);
+  }
+`
 const WrapStyle = ({ theme: { theme } }: { theme: Theme }) => css`
   filter: drop-shadow(0 2px 4px rgba(33, 63, 99, 0.3));
   color: #fff;
@@ -40,6 +52,8 @@ const WrapStyle = ({ theme: { theme } }: { theme: Theme }) => css`
   &[data-type='info'] {
     background: ${theme.basic.ui.secondary.default};
   }
+
+  animation: ${slideIn} 0.3s ease-out;
 `
 const WrapDiv = styled.div<{ 'data-type': ToastOptions['type'] }>`
   ${WrapStyle}
