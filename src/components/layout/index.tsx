@@ -8,6 +8,7 @@ import {
   useMemo,
   useRef,
 } from 'react'
+import { ToastContainer } from '@/components/Toast'
 import { Header } from './Header'
 import { Navbar } from './Navbar'
 import { DefaultSidebarContent, Sidebar } from './Sidebar'
@@ -64,6 +65,7 @@ export const Layout: React.FC<PropsWithChildren<Props>> = ({
       <DummyMain ref={mainRef} />
       <Main onClickCapture={scrollToSelf}>{children}</Main>
       <Sidebar>{sidebar}</Sidebar>
+      <ToastContainer />
     </Container>
   )
 }

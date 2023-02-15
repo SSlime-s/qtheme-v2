@@ -7,8 +7,9 @@ import styled from '@emotion/styled'
 import { GetServerSidePropsContext } from 'next'
 import { NextPageWithLayout } from '@/pages/_app'
 import Head from 'next/head'
-import { useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 import { pageTitle } from '@/lib/title'
+import { useToast } from '@/lib/toast'
 
 export const getServerSideProps = async ({
   req,
@@ -60,6 +61,21 @@ const AllPage: NextPageWithLayout<Props> = ({ userId, filter }) => {
   const {
     mutate: { changeTheme },
   } = useCurrentTheme()
+  const { addToast } = useToast()
+
+  const toggleLikeWithAuth = useCallback(
+    (id: string, isLike: boolean) => {
+      if (userId === null) {
+        addToast({
+          content: <>favorite は部員限定です</>,
+          type: 'error',
+        })
+        return
+      }
+      toggleLike(id, isLike)
+    },
+    [addToast, toggleLike, userId]
+  )
 
   // TODO: そのうち消す テスト用
   const ogUrl = useMemo(() => {
@@ -95,7 +111,7 @@ const AllPage: NextPageWithLayout<Props> = ({ userId, filter }) => {
             <PreviewCard
               key={theme.id}
               themeInfo={theme}
-              onFavorite={toggleLike}
+              onFavorite={toggleLikeWithAuth}
               changeTheme={changeTheme}
             />
           )
