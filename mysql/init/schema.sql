@@ -45,7 +45,21 @@ CREATE TABLE IF NOT EXISTS `themes` (
 CREATE VIEW `users` AS
 SELECT
   `author_user_id` AS `id`,
-  COUNT(*) AS `count`
+  COUNT(
+    CASE
+      WHEN `visibility` = 'public' THEN 1
+    END
+  ) AS `public_count`,
+  COUNT(
+    CASE
+      WHEN `visibility` = 'private' THEN 1
+    END
+  ) AS `private_count`,
+  COUNT(
+    CASE
+      WHEN `visibility` = 'draft' THEN 1
+    END
+  ) AS `draft_count`
 FROM
   `themes`
 GROUP BY
