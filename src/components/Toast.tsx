@@ -70,6 +70,7 @@ export const ToastContainer = dynamic(
 )
 const Container = styled.div`
   position: absolute;
+  z-index: 1000;
   left: 20px;
   bottom: 20px;
   display: flex;
