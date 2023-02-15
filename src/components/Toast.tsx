@@ -5,14 +5,16 @@ import dynamic from 'next/dynamic'
 import { useMemo } from 'react'
 import ReactDOM from 'react-dom'
 
-type Props = Omit<ToastOptions, 'durationMs'>
-const Toast: React.FC<Props> = ({ type, content, key, onClick }) => {
+type Props = Omit<ToastOptions, 'durationMs' | 'key'> & {
+  toastKey: string
+}
+const Toast: React.FC<Props> = ({ type, content, toastKey, onClick }) => {
   const Wrap = useMemo(() => {
     return onClick ? WrapButton : WrapDiv
   }, [onClick])
 
   return (
-    <Wrap onClick={onClick} key={key} data-type={type}>
+    <Wrap onClick={onClick} key={toastKey} data-type={type}>
       {content}
     </Wrap>
   )
@@ -54,7 +56,7 @@ const RawToastContainer: React.FC = () => {
   return ReactDOM.createPortal(
     <Container>
       {toasts.map(({ key, ...t }) => (
-        <Toast key={key} {...t} />
+        <Toast key={key} toastKey={key} {...t} />
       ))}
     </Container>,
     document.getElementById('toast') as HTMLElement
