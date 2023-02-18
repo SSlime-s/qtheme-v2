@@ -25,7 +25,7 @@ const config: CodegenConfig = {
     afterAllFileWrite: ['prettier --write'],
   },
   generates: {
-    'src/apollo/generated/graphql.ts': {
+    'src/apollo/generated/resolvers.ts': {
       plugins: ['typescript', 'typescript-resolvers', ...defaultAdd],
       config: {
         enumsAsConst: true,
@@ -46,6 +46,18 @@ const config: CodegenConfig = {
             DARK: 'dark',
             OTHER: 'other',
           },
+        },
+      },
+    },
+    'src/apollo/generated/graphql.ts': {
+      plugins: ['typescript', ...defaultAdd],
+      config: {
+        enumsAsConst: true,
+        avoidOptionals: {
+          field: true,
+          input: false,
+          object: true,
+          defaultValue: false,
         },
       },
     },

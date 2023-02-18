@@ -2,7 +2,7 @@ import { GraphQLError } from 'graphql'
 import { assertIsArray, assertIsArrayObject } from '@/lib/typeUtils'
 import { connectDb } from '@/model/db'
 import { ContextValue } from '.'
-import { QueryResolvers, Theme } from '@/apollo/generated/graphql'
+import { QueryResolvers, Theme } from '@/apollo/generated/resolvers'
 
 export const getThemes: QueryResolvers<ContextValue>['getThemes'] = async (
   _,

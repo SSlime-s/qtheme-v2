@@ -2,14 +2,12 @@ import { GraphQLError } from 'graphql'
 import { assertIsArray } from '@/lib/typeUtils'
 import { connectDb } from '@/model/db'
 import { ContextValue } from '.'
-import {
-  QueryResolvers,
-  Theme,
-} from '@/apollo/generated/graphql'
+import { QueryResolvers, Theme } from '@/apollo/generated/resolvers'
 
 export const getRandomTheme: QueryResolvers<ContextValue>['getRandomTheme'] =
   async (_parent, args, { userId, connection }) => {
     const { visibility, type } = args
+    console.log(visibility, type)
     if (visibility === 'draft') {
       throw new GraphQLError('Invalid visibility')
     }

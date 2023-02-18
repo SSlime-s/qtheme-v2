@@ -4,7 +4,7 @@ import { ContextValue } from '.'
 import { getTheme } from './getTheme'
 import { ulid } from 'ulid'
 import { Connection } from 'mysql2/promise'
-import { MutationResolvers } from '@/apollo/generated/graphql'
+import { MutationResolvers } from '@/apollo/generated/resolvers'
 
 export const createTheme: MutationResolvers<ContextValue>['createTheme'] =
   async (_, args, { userId }) => {

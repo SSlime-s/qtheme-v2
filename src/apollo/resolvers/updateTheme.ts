@@ -6,7 +6,7 @@ import { getTheme } from './getTheme'
 import { Connection } from 'mysql2/promise'
 import { ulid } from 'ulid'
 import { z } from 'zod'
-import { MutationResolvers, Theme } from '@/apollo/generated/graphql'
+import { MutationResolvers, Theme } from '@/apollo/generated/resolvers'
 
 export const updateTheme: MutationResolvers<ContextValue>['updateTheme'] =
   async (_, args, { userId }) => {

@@ -4,7 +4,7 @@ import { GraphQLError } from 'graphql'
 import { Connection } from 'mysql2/promise'
 import { getTheme } from './getTheme'
 import { ContextValue } from '.'
-import { MutationResolvers } from '@/apollo/generated/graphql'
+import { MutationResolvers } from '@/apollo/generated/resolvers'
 
 export const toggleLike: MutationResolvers<ContextValue>['toggleLike'] = async (
   _,

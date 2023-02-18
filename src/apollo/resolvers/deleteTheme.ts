@@ -3,7 +3,7 @@ import { Connection } from 'mysql2/promise'
 import { assertIsArrayObject } from '@/lib/typeUtils'
 import { connectDb } from '@/model/db'
 import { ContextValue } from '.'
-import { MutationResolvers } from '@/apollo/generated/graphql'
+import { MutationResolvers } from '@/apollo/generated/resolvers'
 
 export const deleteTheme: MutationResolvers<ContextValue>['deleteTheme'] =
   async (_, args, { userId }) => {

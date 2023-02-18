@@ -1,5 +1,5 @@
 import { Connection } from 'mysql2/promise'
-import { Resolvers } from '@/apollo/generated/graphql'
+import { Resolvers } from '@/apollo/generated/resolvers'
 import { createTheme } from './createTheme'
 import { deleteTheme } from './deleteTheme'
 import { getAuthors } from './getAuthors'

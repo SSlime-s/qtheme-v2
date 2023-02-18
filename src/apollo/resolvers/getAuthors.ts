@@ -2,7 +2,7 @@ import { assertIsArray, assertIsObject } from '@/lib/typeUtils'
 import { connectDb } from '@/model/db'
 import { GraphQLError } from 'graphql'
 import { ContextValue } from '.'
-import { QueryResolvers } from '@/apollo/generated/graphql'
+import { QueryResolvers } from '@/apollo/generated/resolvers'
 
 interface Row {
   id: string
