@@ -10,7 +10,9 @@
     "fix": "next lint --fix && prettier --write './src/**/*' --cache",
     "type-check": "tsc --noEmit",
     "storybook": "start-storybook -p 6006 -s ./src",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "generate": "graphql-codegen --config codegen.ts",
+    "postinstall": "yarn generate"
   },
   "dependencies": {
     "@emotion/react": "^11.10.5",

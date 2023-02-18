@@ -34,7 +34,7 @@ module.exports = {
     'react/jsx-uses-react': 'off',
     'react/react-in-jsx-scope': 'off',
   },
-  ignorePatterns: ['node_modules', '.yarn'],
+  ignorePatterns: ['node_modules', '.yarn', 'generated'],
   settings: {
     react: {
       version: 'detect',
