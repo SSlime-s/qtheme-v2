@@ -3,9 +3,7 @@ import { assertIsArray } from '@/lib/typeUtils'
 import { connectDb } from '@/model/db'
 import { ContextValue } from '.'
 import {
-  QueryGetRandomThemeArgs,
   QueryResolvers,
-  Resolvers,
   Theme,
 } from '@/apollo/generated/graphql'
 
