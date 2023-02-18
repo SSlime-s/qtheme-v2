@@ -20,9 +20,10 @@ const Template: ComponentStory<typeof PreviewCard> = (
 )
 
 const Wrap = styled.div`
-  height: 100%;
+  min-height: 100%;
   width: 100%;
   background: linear-gradient(116.36deg, #156cee 0%, #f04545 100%);
+  padding: 32px;
 `
 
 export const LightDefault: ComponentStory<typeof PreviewCard> = Template.bind(
