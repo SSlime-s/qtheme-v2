@@ -9558,7 +9558,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"graphql-tag@npm:^2.11.0":
+"graphql-tag@npm:^2.11.0, graphql-tag@npm:^2.12.6":
   version: 2.12.6
   resolution: "graphql-tag@npm:2.12.6"
   dependencies:
@@ -13692,6 +13692,7 @@ __metadata:
     eslint-plugin-storybook: ^0.6.8
     graphql: ^16.6.0
     graphql-request: ^5.1.0
+    graphql-tag: ^2.12.6
     jotai: ^2.0.1
     micro: ^10.0.1
     mysql: ^2.18.1

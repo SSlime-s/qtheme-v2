@@ -1,7 +1,7 @@
 import { ApolloServer } from 'apollo-server-micro'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { resolvers } from '@/apollo/resolvers'
-import { typeDefs } from '@/apollo/type-defs'
+import typeDefs from '@/apollo/schema.graphql'
 import { extractShowcaseUser } from '@/lib/extractUser'
 
 export const config = {
