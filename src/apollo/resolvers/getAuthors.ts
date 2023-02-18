@@ -2,6 +2,7 @@ import { assertIsArray, assertIsObject } from '@/lib/typeUtils'
 import { connectDb } from '@/model/db'
 import { GraphQLError } from 'graphql'
 import { ContextValue } from '.'
+import { QueryResolvers } from '@/apollo/generated/graphql'
 
 interface Row {
   id: string
@@ -9,10 +10,10 @@ interface Row {
   privateCount: number
   draftCount: number
 }
-export const getAuthors = async (
-  _: unknown,
-  __: unknown,
-  { userId, connection }: ContextValue
+export const getAuthors: QueryResolvers<ContextValue>['getAuthors'] = async (
+  _,
+  __,
+  { userId, connection }
 ) => {
   const needCloseConnection = connection === undefined
   try {

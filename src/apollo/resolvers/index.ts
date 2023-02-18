@@ -1,5 +1,5 @@
-import { Config } from 'apollo-server-micro'
 import { Connection } from 'mysql2/promise'
+import { Resolvers } from '@/apollo/generated/graphql'
 import { createTheme } from './createTheme'
 import { deleteTheme } from './deleteTheme'
 import { getAuthors } from './getAuthors'
@@ -14,7 +14,7 @@ export interface ContextValue {
   connection?: Connection
 }
 
-export const resolvers: Config['resolvers'] = {
+export const resolvers: Resolvers<ContextValue> = {
   Visibility: {
     PUBLIC: 'public',
     PRIVATE: 'private',
