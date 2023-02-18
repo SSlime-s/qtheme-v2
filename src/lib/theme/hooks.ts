@@ -225,8 +225,8 @@ export const themeFromRaw = (raw: ThemeWholeRaw): ThemeWhole => {
   return {
     ...raw,
     theme: themeSchema.parse(JSON.parse(raw.theme)),
-    type: raw.type.toLowerCase() as 'light' | 'dark' | 'other',
-    visibility: raw.visibility.toLowerCase() as 'public' | 'private' | 'draft',
+    type: raw.type.toLowerCase(),
+    visibility: raw.visibility.toLowerCase(),
     createdAt: dayjs.unix(Number(raw.createdAt) / 1000).format('YYYY/MM/DD'),
   }
 }
@@ -234,7 +234,7 @@ export const themeToRaw = (theme: ThemeWhole): ThemeWholeRaw => {
   return {
     ...theme,
     theme: JSON.stringify(theme.theme),
-    type: theme.type.toUpperCase() as 'LIGHT' | 'DARK' | 'OTHER',
+    type: theme.type.toUpperCase(),
     visibility: theme.visibility.toUpperCase() as
       | 'PUBLIC'
       | 'PRIVATE'
