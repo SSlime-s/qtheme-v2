@@ -84,5 +84,12 @@
     "eslint-plugin-storybook": "^0.6.8",
     "micro": "^10.0.1",
     "prettier": "^2.8.1"
+  },
+  "pnpm": {
+    "overrides": {
+      "glob-parent@<5.1.2": ">=5.1.2",
+      "trim-newlines@<3.0.1": ">=3.0.1",
+      "trim@<0.0.3": ">=0.0.3"
+    }
   }
 }
