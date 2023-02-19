@@ -1,3 +1,0 @@
-mutation DeleteTheme($id: ID!) {
-  deleteTheme(id: $id)
-}
