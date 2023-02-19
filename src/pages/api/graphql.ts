@@ -1,19 +1,17 @@
-import { ApolloServer } from 'apollo-server-micro'
-import { NextApiRequest, NextApiResponse } from 'next'
-import { resolvers } from '@/apollo/resolvers'
+import { ApolloServer } from '@apollo/server'
+import { startServerAndCreateNextHandler } from '@as-integrations/next'
+import { NextApiHandler } from 'next'
+import { ContextValue, resolvers } from '@/apollo/resolvers'
 import typeDefs from '@/apollo/schema.graphql'
 import { extractShowcaseUser } from '@/lib/extractUser'
 
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-}
-
-const apolloServer = new ApolloServer({
+const server = new ApolloServer<ContextValue>({
   typeDefs,
   resolvers,
-  context: ({ req, res }) => {
+})
+
+const handler = startServerAndCreateNextHandler(server, {
+  context: async (req, res) => {
     const userId = extractShowcaseUser(req)
 
     return {
@@ -24,11 +22,7 @@ const apolloServer = new ApolloServer({
   },
 })
 
-const handler = apolloServer
-  .start()
-  .then(() => apolloServer.createHandler({ path: '/api/graphql' }))
-
-const res = async (req: NextApiRequest, res: NextApiResponse) => {
+const res: NextApiHandler = async (req, res) => {
   if (process.env.NODE_ENV === 'development') {
     res.setHeader('Access-Control-Allow-Origin', '*')
     res.setHeader(
@@ -42,12 +36,6 @@ const res = async (req: NextApiRequest, res: NextApiResponse) => {
     }
   }
 
-  await (
-    await handler
-  )(req, res)
+  await handler(req, res)
 }
 export default res
-
-// export default apolloServer
-//   .start()
-//   .then(() => apolloServer.createHandler({ path: '/api/graphql' }))
