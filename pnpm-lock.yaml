@@ -18,7 +18,7 @@ specifiers:
   '@graphql-codegen/typescript-graphql-request': ^4.5.8
   '@graphql-codegen/typescript-operations': ^3.0.0
   '@graphql-codegen/typescript-resolvers': ^3.0.0
-  '@mdx-js/react': ^1.6.22
+  '@mdx-js/react': ^2.3.0
   '@next/font': 13.1.1
   '@storybook/addon-actions': ^6.5.15
   '@storybook/addon-docs': ^6.5.15
@@ -112,7 +112,7 @@ devDependencies:
   '@graphql-codegen/typescript-graphql-request': 4.5.8_f45c35xnr66et7kv43kezet7ie
   '@graphql-codegen/typescript-operations': 3.0.0_graphql@16.6.0
   '@graphql-codegen/typescript-resolvers': 3.0.0_graphql@16.6.0
-  '@mdx-js/react': 1.6.22_react@18.2.0
+  '@mdx-js/react': 2.3.0_react@18.2.0
   '@storybook/addon-actions': 6.5.15_biqbaboplfbrettd7655fr4n2y
   '@storybook/addon-docs': 6.5.15_fi4aqgmyxx6g5c5h7mjyx7uqhi
   '@storybook/addon-essentials': 6.5.15_z5whyyu6n3lw5tgkvntrvyoayu
@@ -2962,6 +2962,16 @@ packages:
       react: 18.2.0
     dev: true
 
+  /@mdx-js/react/2.3.0_react@18.2.0:
+    resolution: {integrity: sha512-zQH//gdOmuu7nt2oJR29vFhDv88oGPmVw6BggmrHeMI+xgEkp1B2dX9/bMBSYtK0dyLX/aOmesKS09g222K1/g==}
+    peerDependencies:
+      react: '>=16'
+    dependencies:
+      '@types/mdx': 2.0.3
+      '@types/react': 18.0.26
+      react: 18.2.0
+    dev: true
+
   /@mdx-js/util/1.6.22:
     resolution: {integrity: sha512-H1rQc1ZOHANWBvPcW+JpGwr+juXSxM8Q8YCkm3GhZd8REu1fHR3z99CErO1p9pkcfcxZnMdIZdIsXkOHY0NilA==}
     dev: true
@@ -4912,6 +4922,10 @@ packages:
     resolution: {integrity: sha512-W864tg/Osz1+9f4lrGTZpCSO5/z4608eUp19tbozkq2HJK6i3z1kT0H9tlADXuYIb1YYOBByU4Jsqkk75q48qA==}
     dependencies:
       '@types/unist': 2.0.6
+    dev: true
+
+  /@types/mdx/2.0.3:
+    resolution: {integrity: sha512-IgHxcT3RC8LzFLhKwP3gbMPeaK7BM9eBH46OdapPA7yvuIUJ8H6zHZV53J8hGZcTSnt95jANt+rTBNUUc22ACQ==}
     dev: true
 
   /@types/mime/3.0.1:
