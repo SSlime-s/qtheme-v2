@@ -45,3 +45,6 @@ next-env.d.ts
 
 .env
 mysql/data
+
+/**/generated
+/**/*.generated.ts

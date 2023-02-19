@@ -1,0 +1,41 @@
+mutation CreateTheme(
+  $title: String!
+  $description: String!
+  $visibility: Visibility!
+  $type: Type!
+  $theme: String!
+) {
+  createTheme(
+    title: $title
+    description: $description
+    visibility: $visibility
+    type: $type
+    theme: $theme
+  ) {
+    ...ThemeFragment
+  }
+}
+
+mutation UpdateTheme(
+  $id: ID!
+  $title: String!
+  $description: String!
+  $visibility: Visibility!
+  $type: Type!
+  $theme: String!
+) {
+  updateTheme(
+    id: $id
+    title: $title
+    description: $description
+    visibility: $visibility
+    type: $type
+    theme: $theme
+  ) {
+    ...ThemeFragment
+  }
+}
+
+mutation DeleteTheme($id: ID!) {
+  deleteTheme(id: $id)
+}

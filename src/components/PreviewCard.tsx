@@ -1,5 +1,5 @@
 import { resolveTheme } from '@/lib/theme'
-import { ThemeWhole } from '@/lib/theme/hooks'
+import { FormattedTheme } from '@/lib/theme/hooks'
 import { ThemeProvider } from '@emotion/react'
 import styled from '@emotion/styled'
 import Link from 'next/link'
@@ -12,8 +12,8 @@ import { BreakStyle, BudouJa } from './wrapper/BudouX'
 import { ReplaceNewLine } from './wrapper/ReplaceNewLine'
 
 interface Props {
-  themeInfo: ThemeWhole
-  changeTheme?: (id: string, theme: ThemeWhole) => void
+  themeInfo: FormattedTheme
+  changeTheme?: (id: string, theme: FormattedTheme) => void
   onFavorite?: (id: string, isFavorite: boolean) => void
 }
 

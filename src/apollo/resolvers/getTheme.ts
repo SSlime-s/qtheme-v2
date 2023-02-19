@@ -2,11 +2,12 @@ import { GraphQLError } from 'graphql'
 import { assertIsArray } from '@/lib/typeUtils'
 import { connectDb } from '@/model/db'
 import { ContextValue } from '.'
+import { QueryResolvers, Theme } from '@/apollo/generated/resolvers'
 
-export const getTheme = async (
-  _: unknown,
-  args: { id: string },
-  { userId, connection }: ContextValue
+export const getTheme: QueryResolvers<ContextValue>['getTheme'] = async (
+  _,
+  args,
+  { userId, connection }
 ) => {
   const { id } = args
   const needCloseConnection = connection === undefined
@@ -57,7 +58,7 @@ export const getTheme = async (
       return null
     }
     return {
-      theme: rows[0],
+      theme: rows[0] as Theme,
       // TODO: あとで実装する
       versions: [],
     }

@@ -10,7 +10,9 @@
     "fix": "next lint --fix && prettier --write './src/**/*' --cache",
     "type-check": "tsc --noEmit",
     "storybook": "start-storybook -p 6006 -s ./src",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "generate": "graphql-codegen --config codegen.ts",
+    "postinstall": "yarn generate"
   },
   "dependencies": {
     "@emotion/react": "^11.10.5",
@@ -27,6 +29,7 @@
     "eslint-config-next": "13.1.1",
     "graphql": "^16.6.0",
     "graphql-request": "^5.1.0",
+    "graphql-tag": "^2.12.6",
     "jotai": "^2.0.1",
     "mysql": "^2.18.1",
     "mysql2": "^2.3.3",
@@ -50,6 +53,13 @@
   },
   "devDependencies": {
     "@babel/core": "^7.20.12",
+    "@graphql-codegen/add": "^4.0.0",
+    "@graphql-codegen/cli": "^3.0.0",
+    "@graphql-codegen/near-operation-file-preset": "^2.5.0",
+    "@graphql-codegen/typescript": "^3.0.0",
+    "@graphql-codegen/typescript-graphql-request": "^4.5.8",
+    "@graphql-codegen/typescript-operations": "^3.0.0",
+    "@graphql-codegen/typescript-resolvers": "^3.0.0",
     "@mdx-js/react": "^1.6.22",
     "@storybook/addon-actions": "^6.5.15",
     "@storybook/addon-docs": "^6.5.15",

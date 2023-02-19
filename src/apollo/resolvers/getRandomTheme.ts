@@ -2,27 +2,23 @@ import { GraphQLError } from 'graphql'
 import { assertIsArray } from '@/lib/typeUtils'
 import { connectDb } from '@/model/db'
 import { ContextValue } from '.'
+import { QueryResolvers, Theme } from '@/apollo/generated/resolvers'
 
-export const getRandomTheme = async (
-  _parent: unknown,
-  args: {
-    visibility?: 'public' | 'private' | 'draft' | null
-    type?: 'light' | 'dark' | 'other' | null
-  },
-  { userId, connection }: ContextValue
-) => {
-  const { visibility, type } = args
-  if (visibility === 'draft') {
-    throw new GraphQLError('Invalid visibility')
-  }
-  if (visibility === 'private' && userId === undefined) {
-    throw new GraphQLError('Forbidden')
-  }
-  const needCloseConnection = connection === undefined
-  try {
-    connection = connection ?? (await connectDb())
-    if (userId === undefined) {
-      const sql = `
+export const getRandomTheme: QueryResolvers<ContextValue>['getRandomTheme'] =
+  async (_parent, args, { userId, connection }) => {
+    const { visibility, type } = args
+    console.log(visibility, type)
+    if (visibility === 'draft') {
+      throw new GraphQLError('Invalid visibility')
+    }
+    if (visibility === 'private' && userId === undefined) {
+      throw new GraphQLError('Forbidden')
+    }
+    const needCloseConnection = connection === undefined
+    try {
+      connection = connection ?? (await connectDb())
+      if (userId === undefined) {
+        const sql = `
             SELECT
               themes.id AS id,
               themes.title,
@@ -46,17 +42,17 @@ export const getRandomTheme = async (
             ORDER BY RAND()
             LIMIT 1
           `
-      const [rows] = await connection.execute(sql, [
-        ...(type != undefined ? [type] : []),
-      ])
-      console.log(rows)
-      assertIsArray(rows)
-      if (rows.length === 0) {
-        throw new GraphQLError('Not found')
-      }
-      return rows[0]
-    } else {
-      const sql = `
+        const [rows] = await connection.execute(sql, [
+          ...(type != undefined ? [type] : []),
+        ])
+        console.log(rows)
+        assertIsArray(rows)
+        if (rows.length === 0) {
+          throw new GraphQLError('Not found')
+        }
+        return rows[0] as Theme
+      } else {
+        const sql = `
             SELECT
               themes.id AS id,
               themes.title,
@@ -89,27 +85,27 @@ export const getRandomTheme = async (
             ORDER BY RAND()
             LIMIT 1
           `
-      const [rows] = await connection.execute(sql, [
-        userId,
-        ...(visibility != undefined ? [visibility] : []),
-        ...(type != undefined ? [type] : []),
-      ])
-      console.log(rows)
-      assertIsArray(rows)
-      if (rows.length === 0) {
-        throw new GraphQLError('Not found')
+        const [rows] = await connection.execute(sql, [
+          userId,
+          ...(visibility != undefined ? [visibility] : []),
+          ...(type != undefined ? [type] : []),
+        ])
+        console.log(rows)
+        assertIsArray(rows)
+        if (rows.length === 0) {
+          throw new GraphQLError('Not found')
+        }
+        return rows[0] as Theme
       }
-      return rows[0]
-    }
-  } catch (err: unknown) {
-    console.error(err)
-    if (err instanceof GraphQLError) {
-      throw err
-    }
-    throw new GraphQLError(`Internal server error: ${err}`)
-  } finally {
-    if (needCloseConnection) {
-      connection?.end()
+    } catch (err: unknown) {
+      console.error(err)
+      if (err instanceof GraphQLError) {
+        throw err
+      }
+      throw new GraphQLError(`Internal server error: ${err}`)
+    } finally {
+      if (needCloseConnection) {
+        connection?.end()
+      }
     }
   }
-}

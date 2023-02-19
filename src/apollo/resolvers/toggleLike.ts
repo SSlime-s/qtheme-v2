@@ -4,14 +4,12 @@ import { GraphQLError } from 'graphql'
 import { Connection } from 'mysql2/promise'
 import { getTheme } from './getTheme'
 import { ContextValue } from '.'
+import { MutationResolvers } from '@/apollo/generated/resolvers'
 
-export const toggleLike = async (
-  _: unknown,
-  args: {
-    id: string
-    isLike: boolean
-  },
-  { userId }: ContextValue
+export const toggleLike: MutationResolvers<ContextValue>['toggleLike'] = async (
+  _,
+  args,
+  { userId }
 ) => {
   if (userId === undefined) {
     throw new GraphQLError('Forbidden')
@@ -60,5 +58,6 @@ export const toggleLike = async (
   } finally {
     await connection?.end()
   }
+  // @ts-expect-error: 実装上は呼び出し可能
   return getTheme(_, { id }, { userId })
 }

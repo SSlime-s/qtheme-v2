@@ -2,18 +2,12 @@ import { GraphQLError } from 'graphql'
 import { assertIsArray, assertIsArrayObject } from '@/lib/typeUtils'
 import { connectDb } from '@/model/db'
 import { ContextValue } from '.'
+import { QueryResolvers, Theme } from '@/apollo/generated/resolvers'
 
-export const getThemes = async (
-  _: unknown,
-  args: {
-    limit?: number | null
-    offset?: number | null
-    visibility?: 'public' | 'private' | 'draft' | null
-    type?: 'light' | 'dark' | 'other' | null
-    only_like?: boolean | null
-    author?: string | null
-  },
-  { userId, connection }: ContextValue
+export const getThemes: QueryResolvers<ContextValue>['getThemes'] = async (
+  _,
+  args,
+  { userId, connection }
 ) => {
   const { limit, offset, visibility, type, only_like, author } = args
   if (visibility === 'draft') {
@@ -100,7 +94,7 @@ export const getThemes = async (
     const [count] = await connection.execute('SELECT FOUND_ROWS() AS count')
     assertIsArrayObject(count)
     return {
-      themes: rows,
+      themes: rows as Theme[],
       total: count[0].count,
     }
   } catch (err: unknown) {
