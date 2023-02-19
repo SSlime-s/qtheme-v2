@@ -1,0 +1,7 @@
+query Theme($id: ID!) {
+  getTheme(id: $id) {
+    theme {
+      ...ThemeFragment
+    }
+  }
+}

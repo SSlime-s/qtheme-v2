@@ -1,0 +1,22 @@
+query Themes(
+  $limit: Int
+  $offset: Int
+  $visibility: Visibility
+  $type: Type
+  $only_like: Boolean
+  $author: String
+) {
+  getThemes(
+    limit: $limit
+    offset: $offset
+    visibility: $visibility
+    type: $type
+    only_like: $only_like
+    author: $author
+  ) {
+    themes {
+      ...ThemeFragment
+    }
+    total
+  }
+}

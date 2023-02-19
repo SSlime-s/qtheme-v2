@@ -1,0 +1,5 @@
+query Random($visibility: Visibility, $type: Type) {
+  getRandomTheme(visibility: $visibility, type: $type) {
+    ...ThemeFragment
+  }
+}

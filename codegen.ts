@@ -17,6 +17,16 @@ const defaultAdd = [
   },
 ] as const
 
+const defaultConfig: CodegenConfig['config'] = {
+  enumsAsConst: true,
+  // avoidOptionals: {
+  //   field: true,
+  //   inputValue: false,
+  //   object: true,
+  //   defaultValue: false,
+  // },
+}
+
 const config: CodegenConfig = {
   overwrite: true,
   schema: 'src/apollo/schema.graphql',
@@ -28,13 +38,7 @@ const config: CodegenConfig = {
     'src/apollo/generated/resolvers.ts': {
       plugins: ['typescript', 'typescript-resolvers', ...defaultAdd],
       config: {
-        enumsAsConst: true,
-        avoidOptionals: {
-          field: true,
-          input: false,
-          object: true,
-          defaultValue: false,
-        },
+        ...defaultConfig,
         enumValues: {
           Visibility: {
             PUBLIC: 'public',
@@ -52,13 +56,7 @@ const config: CodegenConfig = {
     'src/apollo/generated/graphql.ts': {
       plugins: ['typescript', ...defaultAdd],
       config: {
-        enumsAsConst: true,
-        avoidOptionals: {
-          field: true,
-          input: false,
-          object: true,
-          defaultValue: false,
-        },
+        ...defaultConfig,
       },
     },
     './src/': {
@@ -71,6 +69,9 @@ const config: CodegenConfig = {
       presetConfig: {
         extension: '.generated.ts',
         baseTypesPath: '~@/apollo/generated/graphql',
+      },
+      config: {
+        ...defaultConfig,
       },
     },
   },

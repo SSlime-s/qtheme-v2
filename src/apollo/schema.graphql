@@ -45,6 +45,19 @@ type Author {
   count: Int!
 }
 
+fragment ThemeFragment on Theme {
+  id
+  title
+  description
+  author
+  visibility
+  type
+  createdAt
+  theme
+  likes
+  isLike
+}
+
 type Query {
   getRandomTheme(visibility: Visibility, type: Type): Theme!
   getTheme(id: ID!): ThemeWithVersions

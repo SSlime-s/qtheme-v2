@@ -1,227 +1,41 @@
 import useSWR from 'swr'
 import useSWRInfinite from 'swr/infinite'
 import { useClient } from '@/lib/api'
-import { gql } from 'graphql-request'
 import { useCallback, useMemo, useState } from 'react'
 import { Theme, themeSchema } from '@/model/theme'
 import { resolveTheme } from '@/lib/theme'
 import { lightTheme } from './default'
 import { atom, useAtom } from 'jotai'
 import dayjs from 'dayjs'
+import { print } from 'graphql'
+
+import { Theme as ThemeRes } from '@/apollo/generated/graphql'
+import {
+  getSdk as getSdkRandom,
+  RandomDocument,
+} from '@/lib/graphql/getRandom.generated'
+import {
+  getSdk as getSdkGetTheme,
+  ThemeDocument,
+} from '@/lib/graphql/getTheme.generated'
+import { getSdk as getSdkToggleLike } from '@/lib/graphql/toggleLike.generated'
+import {
+  getSdk as getSdkGetThemes,
+  ThemesDocument,
+} from '@/lib/graphql/getThemes.generated'
+import { getSdk as getSdkEditTheme } from '@/lib/graphql/editTheme.generated'
 
 const THEMES_PER_PAGE = 20
 
-interface ThemeRes {
-  author: string
-  createdAt: string
-  description: string
-  id: string
-  isLike: boolean
-  likes: number
-  theme: string
-  title: string
-  type: 'LIGHT' | 'DARK' | 'OTHER'
-  visibility: 'PUBLIC' | 'PRIVATE' | 'DRAFT'
-}
-const randomQuery = gql`
-  query Random($visibility: Visibility, $type: Type) {
-    getRandomTheme(visibility: $visibility, type: $type) {
-      author
-      createdAt
-      description
-      id
-      isLike
-      likes
-      theme
-      title
-      type
-      visibility
-    }
-  }
-`
-interface RandomQueryRes {
-  getRandomTheme: ThemeRes
-}
-
-const getThemeQuery = gql`
-  query GetTheme($id: ID!) {
-    getTheme(id: $id) {
-      theme {
-        author
-        createdAt
-        description
-        id
-        isLike
-        likes
-        theme
-        title
-        type
-        visibility
-      }
-    }
-  }
-`
-interface GetThemeQueryRes {
-  getTheme: {
-    theme: ThemeRes
-  }
-}
-
-const getThemeListQuery = gql`
-  query GetThemes(
-    $limit: Int
-    $offset: Int
-    $visibility: Visibility
-    $type: Type
-    $only_like: Boolean
-    $author: String
-  ) {
-    getThemes(
-      limit: $limit
-      offset: $offset
-      visibility: $visibility
-      type: $type
-      only_like: $only_like
-      author: $author
-    ) {
-      themes {
-        author
-        createdAt
-        description
-        id
-        isLike
-        likes
-        theme
-        title
-        type
-        visibility
-      }
-      total
-    }
-  }
-`
-interface GetThemeListQueryRes {
-  getThemes: {
-    themes: ThemeRes[]
-    total: number
-  }
-}
-
-const toggleLikeMutation = gql`
-  mutation ToggleLike($id: ID!, $isLike: Boolean!) {
-    toggleLike(id: $id, isLike: $isLike) {
-      isLike
-    }
-  }
-`
-
-export const createThemeMutation = gql`
-  mutation CreateTheme(
-    $title: String!
-    $description: String!
-    $visibility: Visibility!
-    $type: Type!
-    $theme: String!
-  ) {
-    createTheme(
-      title: $title
-      description: $description
-      visibility: $visibility
-      type: $type
-      theme: $theme
-    ) {
-      author
-      createdAt
-      description
-      id
-      isLike
-      likes
-      theme
-      title
-      type
-      visibility
-    }
-  }
-`
-export interface CreateThemeInput {
-  title: string
-  description: string
-  visibility: 'public' | 'private' | 'draft'
-  type: 'light' | 'dark' | 'other'
+export interface FormattedTheme
+  extends Omit<ThemeRes, 'theme' | 'type' | 'visibility'> {
   theme: Theme
+  type: Lowercase<ThemeRes['type']>
+  visibility: Lowercase<ThemeRes['visibility']>
 }
-export interface CreateThemeRes {
-  createTheme: ThemeRes
-}
+export type ThemeInfo = Omit<FormattedTheme, 'theme'>
 
-export const updateThemeMutation = gql`
-  mutation UpdateTheme(
-    id: ID!
-    $title: String!
-    $description: String!
-    $visibility: Visibility!
-    $type: Type!
-    $theme: String!
-  ) {
-    updateTheme(
-      id: $id
-      title: $title
-      description: $description
-      visibility: $visibility
-      type: $type
-      theme: $theme
-    ) {
-      author
-      createdAt
-      description
-      id
-      isLike
-      likes
-      theme
-      title
-      type
-      visibility
-    }
-  }
-`
-export interface UpdateThemeInput extends CreateThemeInput {
-  id: string
-}
-export interface UpdateThemeRes {
-  updateTheme: ThemeRes
-}
-
-export const deleteThemeMutation = gql`
-  mutation DeleteTheme($id: ID!) {
-    deleteTheme(id: $id)
-  }
-`
-export interface DeleteThemeInput {
-  id: string
-}
-
-export interface ThemeInfo {
-  id: string
-  author: string
-  title: string
-  description: string
-  type: 'light' | 'dark' | 'other'
-  visibility: 'public' | 'private' | 'draft'
-  createdAt: string
-  likes: number
-  isLike: boolean
-}
-
-export interface ThemeWhole extends ThemeInfo {
-  theme: Theme
-}
-export interface ThemeWholeRaw
-  extends Omit<ThemeWhole, 'theme' | 'type' | 'visibility'> {
-  theme: string
-  type: 'LIGHT' | 'DARK' | 'OTHER'
-  visibility: 'PUBLIC' | 'PRIVATE' | 'DRAFT'
-}
-export const themeFromRaw = (raw: ThemeWholeRaw): ThemeWhole => {
+export const themeFromRaw = (raw: ThemeRes): FormattedTheme => {
   return {
     ...raw,
     theme: themeSchema.parse(JSON.parse(raw.theme)),
@@ -230,20 +44,17 @@ export const themeFromRaw = (raw: ThemeWholeRaw): ThemeWhole => {
     createdAt: dayjs.unix(Number(raw.createdAt) / 1000).format('YYYY/MM/DD'),
   }
 }
-export const themeToRaw = (theme: ThemeWhole): ThemeWholeRaw => {
+export const themeToRaw = (theme: FormattedTheme): ThemeRes => {
   return {
     ...theme,
     theme: JSON.stringify(theme.theme),
     type: theme.type.toUpperCase(),
-    visibility: theme.visibility.toUpperCase() as
-      | 'PUBLIC'
-      | 'PRIVATE'
-      | 'DRAFT',
+    visibility: theme.visibility.toUpperCase(),
     createdAt: (dayjs(theme.createdAt).unix() * 1000).toString(),
   }
 }
 
-const currentThemeWholeAtom = atom<ThemeWhole | null>(null)
+const currentThemeWholeAtom = atom<FormattedTheme | null>(null)
 const currentThemeAtom = atom(get => {
   const currentThemeWhole = get(currentThemeWholeAtom)
   return currentThemeWhole?.theme ?? null
@@ -275,14 +86,17 @@ export const useCurrentTheme = () => {
   }, [setCurrentThemeWhole])
 
   const changeTheme = useCallback(
-    async (id: string, fallback?: ThemeWhole) => {
+    async (id: string, fallback?: FormattedTheme) => {
       if (fallback) {
         setCurrentThemeWhole(fallback)
       }
-      const { getTheme } = await client.request<GetThemeQueryRes>(
-        getThemeQuery,
-        { id }
-      )
+      const sdk = getSdkGetTheme(client)
+      const { getTheme } = await sdk.Theme({ id })
+
+      if (getTheme === null || getTheme === undefined) {
+        throw new Error('Theme not found')
+      }
+
       const themeWhole = themeFromRaw(getTheme.theme)
       setCurrentThemeWhole(themeWhole)
     },
@@ -315,12 +129,16 @@ export const useCurrentTheme = () => {
 export const useTheme = (id: string) => {
   const client = useClient()
 
-  const { data, error, isLoading, mutate } = useSWR<ThemeWhole, Error>(
-    [getThemeQuery, { id }],
-    async ([query, variables]) => {
-      const { getTheme } = await client.request<GetThemeQueryRes>(query, {
-        ...variables,
-      })
+  const { data, error, isLoading, mutate } = useSWR(
+    [print(ThemeDocument), { id }],
+    async ([_, variables]) => {
+      const sdk = getSdkGetTheme(client)
+      const { getTheme } = await sdk.Theme(variables)
+
+      if (getTheme === null || getTheme === undefined) {
+        throw new Error('Theme not found')
+      }
+
       return themeFromRaw(getTheme.theme)
     }
   )
@@ -332,13 +150,19 @@ export const useTheme = (id: string) => {
   const toggleLike = useCallback(
     async (isLike: boolean) => {
       if (data === undefined) return
-      await client.request(toggleLikeMutation, { id: data.id, isLike })
+      const sdk = getSdkToggleLike(client)
+      const {
+        toggleLike: { isLike: isLikeNew },
+      } = await sdk.ToggleLike({ id: data.id, isLike })
       mutate(data => {
         if (data === undefined) return data
         return {
           ...data,
-          likes: isLike ? data.likes + 1 : data.likes - 1,
-          isLike,
+          likes:
+            isLikeNew === data.isLike
+              ? data.likes
+              : data.likes + (isLikeNew ? 1 : -1),
+          isLike: isLikeNew,
         }
       })
     },
@@ -366,17 +190,14 @@ export const useThemeList = (
 
   const [delta, setDelta] = useState(0)
 
-  const { data, error, isLoading, mutate, setSize } = useSWRInfinite<{
-    themes: ThemeWholeRaw[]
-    total: number
-  }>(
+  const { data, error, isLoading, mutate, setSize } = useSWRInfinite(
     (index, previousPageData) => {
       if (previousPageData !== null && previousPageData.themes.length === 0) {
         return null
       }
 
       return [
-        getThemeListQuery,
+        print(ThemesDocument),
         {
           limit: pageSize,
           offset: index * pageSize + delta,
@@ -384,13 +205,15 @@ export const useThemeList = (
           visibility: visibility?.toUpperCase() ?? null,
           filter: filter?.toUpperCase() ?? null,
         },
-      ]
+      ] as const
     },
-    async ([query, variables]) => {
-      const { getThemes } = await client.request<GetThemeListQueryRes>(
-        query,
-        variables
-      )
+    async ([_, variables]) => {
+      const sdk = getSdkGetThemes(client)
+      const { getThemes } = await sdk.Themes(variables)
+      if (getThemes === null || getThemes === undefined) {
+        throw new Error('Theme not found')
+      }
+
       return getThemes
     }
   )
@@ -417,21 +240,28 @@ export const useThemeList = (
 
   const toggleLike = useCallback(
     async (id: string, isLike: boolean) => {
-      await client.request(toggleLikeMutation, { id, isLike })
+      const sdk = getSdkToggleLike(client)
+      const {
+        toggleLike: { isLike: isLikeNew },
+      } = await sdk.ToggleLike({ id, isLike })
+
       mutate(data => {
         if (!data) {
           return data
         }
-        const newData = [...data]
-        return newData.map(page => {
+
+        return data.map(page => {
           return {
             ...page,
             themes: page.themes.map(theme => {
               if (theme.id === id) {
                 return {
                   ...theme,
-                  isLike,
-                  likes: isLike ? theme.likes + 1 : theme.likes - 1,
+                  isLike: isLikeNew,
+                  likes:
+                    isLikeNew === theme.isLike
+                      ? theme.likes
+                      : theme.likes + (isLikeNew ? 1 : -1),
                 }
               }
               return theme
@@ -442,10 +272,11 @@ export const useThemeList = (
 
       // SWR の mutate の更新に任せると全部ロードされなおされちゃうので自前でロード
       void (async () => {
-        const { getTheme } = await client.request<GetThemeQueryRes>(
-          getThemeQuery,
-          { id }
-        )
+        const sdk = getSdkGetTheme(client)
+        const { getTheme } = await sdk.Theme({ id })
+        if (getTheme === null || getTheme === undefined) {
+          throw new Error('Theme not found')
+        }
         mutate(data => {
           if (!data) {
             return data
@@ -467,7 +298,7 @@ export const useThemeList = (
             }
           })
         })
-      })
+      })()
 
       return
     },
@@ -477,23 +308,28 @@ export const useThemeList = (
   const createTheme = useCallback(
     async (
       theme: Pick<
-        ThemeWhole,
+        FormattedTheme,
         'title' | 'description' | 'theme' | 'type' | 'visibility'
       >
     ) => {
-      const { createTheme } = await client.request<CreateThemeRes>(
-        createThemeMutation,
-        {
-          theme,
-        }
-      )
+      const sdk = getSdkEditTheme(client)
+      const { createTheme } = await sdk.CreateTheme({
+        ...theme,
+        type: theme.type.toUpperCase(),
+        visibility: theme.visibility.toUpperCase(),
+        theme: JSON.stringify(theme.theme),
+      })
+
       mutate(data => {
         if (!data) {
           return data
         }
         const newData = [...data]
-        newData[0].themes.unshift(createTheme)
-        newData[0].total += 1
+        newData[0] = {
+          ...newData[0],
+          themes: [createTheme, ...newData[0].themes],
+          total: newData[0].total + 1,
+        }
         return newData
       }, false)
       setDelta(delta => delta + 1)
@@ -506,17 +342,18 @@ export const useThemeList = (
     async (
       id: string,
       theme: Pick<
-        ThemeWhole,
+        FormattedTheme,
         'title' | 'description' | 'theme' | 'type' | 'visibility'
       >
     ) => {
-      const { updateTheme } = await client.request<UpdateThemeRes>(
-        updateThemeMutation,
-        {
-          id,
-          theme,
-        }
-      )
+      const sdk = getSdkEditTheme(client)
+      const { updateTheme } = await sdk.UpdateTheme({
+        id,
+        ...theme,
+        type: theme.type.toUpperCase(),
+        visibility: theme.visibility.toUpperCase(),
+        theme: JSON.stringify(theme.theme),
+      })
       mutate(data => {
         if (!data) {
           return data
@@ -543,7 +380,8 @@ export const useThemeList = (
 
   const deleteTheme = useCallback(
     async (id: string) => {
-      await client.request(deleteThemeMutation, { id })
+      const sdk = getSdkEditTheme(client)
+      await sdk.DeleteTheme({ id })
       mutate(data => {
         if (!data) {
           return data
@@ -580,18 +418,17 @@ export const useThemeList = (
 export const useRandomTheme = (type: 'light' | 'dark' | 'other' | null) => {
   const client = useClient()
 
-  const { data, error, isLoading, mutate } = useSWR<ThemeWhole>(
+  const { data, error, isLoading, mutate } = useSWR(
     [
-      randomQuery,
+      print(RandomDocument),
       {
         type: type?.toUpperCase() ?? null,
       },
     ],
-    async ([query, variables]) => {
-      const { getRandomTheme } = await client.request<RandomQueryRes>(
-        query,
-        variables
-      )
+    async ([_, variables]) => {
+      const sdk = getSdkRandom(client)
+      const { getRandomTheme } = await sdk.Random(variables)
+
       return themeFromRaw(getRandomTheme)
     },
     {
@@ -617,21 +454,32 @@ export const useRandomTheme = (type: 'light' | 'dark' | 'other' | null) => {
         return
       }
       const id = data.id
-      await client.request(toggleLikeMutation, { id, isLike })
+      const sdk = getSdkToggleLike(client)
+      const {
+        toggleLike: { isLike: isLikeNew },
+      } = await sdk.ToggleLike({ id, isLike })
       mutate(data => {
         if (!data) {
           return data
         }
         return {
           ...data,
-          isLike,
-          likes: isLike ? data.likes + 1 : data.likes - 1,
+          isLike: isLikeNew,
+          likes:
+            data.isLike === isLikeNew
+              ? data.likes
+              : data.likes + (isLikeNew ? 1 : -1),
         }
       }, false)
 
       // SWR の mutate の更新に任せると違うテーマになっちゃうので自前でロード
       void (async () => {
-        const { getTheme } = await client.request(getThemeQuery, { id })
+        const sdk = getSdkGetTheme(client)
+        const { getTheme } = await sdk.Theme({ id })
+
+        if (getTheme === null || getTheme === undefined) {
+          throw new Error('Theme not found')
+        }
 
         mutate(data => {
           if (!data) {
@@ -643,7 +491,7 @@ export const useRandomTheme = (type: 'light' | 'dark' | 'other' | null) => {
             likes: getTheme.theme.likes,
           }
         })
-      })
+      })()
     },
     [client, data, mutate]
   )
