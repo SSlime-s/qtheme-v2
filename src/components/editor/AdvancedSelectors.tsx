@@ -1,5 +1,5 @@
 import { useControlledAccordion, useHiddenTransition } from '@/lib/accordion'
-import { Form } from '@/pages/edit'
+import { Form } from '@/pages/edit/index.page'
 import styled from '@emotion/styled'
 import { useCallback, useEffect, useState } from 'react'
 import { useFormContext, useWatch } from 'react-hook-form'

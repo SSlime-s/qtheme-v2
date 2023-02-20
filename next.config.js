@@ -4,6 +4,7 @@ const nextConfig = {
   compiler: {
     emotion: true,
   },
+  pageExtensions: ['page.tsx', 'page.ts', 'page.jsx', 'page.js'],
 
   webpack: (config, options) => {
     config.module.rules.push({

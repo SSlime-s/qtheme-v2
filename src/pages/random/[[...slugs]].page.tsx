@@ -4,7 +4,7 @@ import { extractShowcaseUser } from '@/lib/extractUser'
 import { useCurrentTheme } from '@/lib/theme/hooks'
 import { assertIsArray } from '@/lib/typeUtils'
 import { GetServerSidePropsContext } from 'next'
-import { NextPageWithLayout } from '../_app'
+import { NextPageWithLayout } from '../_app.page'
 import { useRandomTheme } from './hooks'
 
 export const getServerSideProps = async ({

@@ -9,7 +9,7 @@ import {
   useFormContext,
   useWatch,
 } from 'react-hook-form'
-import { NextPageWithLayout } from '@/pages/_app'
+import { NextPageWithLayout } from '@/pages/_app.page'
 import { Layout } from '@/components/layout'
 import { extractShowcaseUser } from '@/lib/extractUser'
 import { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react'

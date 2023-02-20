@@ -5,7 +5,7 @@ import styled from '@emotion/styled'
 import dynamic from 'next/dynamic'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { TransparentCheckerStyle } from '../TransparentChecker'
-import { fixLayoutAtom } from '@/pages/_app'
+import { fixLayoutAtom } from '@/pages/_app.page'
 import { useSetAtom } from 'jotai'
 import { lightTheme } from '@/lib/theme/default'
 
