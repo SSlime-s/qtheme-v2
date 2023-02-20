@@ -31,6 +31,7 @@ module.exports = {
     ],
     '@typescript-eslint/consistent-type-definitions': ['error', 'interface'],
     '@typescript-eslint/strict-boolean-expressions': ['error'],
+    '@typescript-eslint/no-floating-promises': ['error'],
     'react/jsx-uses-react': 'off',
     'react/react-in-jsx-scope': 'off',
   },

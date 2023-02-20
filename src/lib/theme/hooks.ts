@@ -150,7 +150,7 @@ export const useTheme = (id: string) => {
       const {
         toggleLike: { isLike: isLikeNew },
       } = await sdk.ToggleLike({ id: data.id, isLike })
-      mutate(data => {
+      await mutate(data => {
         if (data === undefined) return data
         return {
           ...data,
@@ -222,8 +222,8 @@ export const useThemeList = (
     return data ? data[data.length - 1].total : 0
   }, [data])
 
-  const loadMore = useCallback(() => {
-    setSize(size => size + 1)
+  const loadMore = useCallback(async () => {
+    await setSize(size => size + 1)
   }, [setSize])
 
   const isEmpty = useMemo(() => {
@@ -241,7 +241,7 @@ export const useThemeList = (
         toggleLike: { isLike: isLikeNew },
       } = await sdk.ToggleLike({ id, isLike })
 
-      mutate(data => {
+      await mutate(data => {
         if (!data) {
           return data
         }
@@ -273,7 +273,7 @@ export const useThemeList = (
         if (getTheme === null || getTheme === undefined) {
           throw new Error('Theme not found')
         }
-        mutate(data => {
+        await mutate(data => {
           if (!data) {
             return data
           }
@@ -316,7 +316,7 @@ export const useThemeList = (
         theme: JSON.stringify(theme.theme),
       })
 
-      mutate(data => {
+      void mutate(data => {
         if (!data) {
           return data
         }
@@ -350,7 +350,7 @@ export const useThemeList = (
         visibility: theme.visibility.toUpperCase(),
         theme: JSON.stringify(theme.theme),
       })
-      mutate(data => {
+      void mutate(data => {
         if (!data) {
           return data
         }
@@ -378,7 +378,7 @@ export const useThemeList = (
     async (id: string) => {
       const sdk = getSdkEditTheme(client)
       await sdk.DeleteTheme({ id })
-      mutate(data => {
+      void mutate(data => {
         if (!data) {
           return data
         }

@@ -29,7 +29,7 @@ export const CopyButton: React.FC<
 
   const handleClick = useCallback(() => {
     onClick?.()
-    copy()
+    void copy()
   }, [copy, onClick])
 
   return (

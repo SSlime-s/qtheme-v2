@@ -105,7 +105,7 @@ export const getRandomTheme: QueryResolvers<ContextValue>['getRandomTheme'] =
       throw new GraphQLError(`Internal server error: ${err}`)
     } finally {
       if (needCloseConnection) {
-        connection?.end()
+        await connection?.end()
       }
     }
   }

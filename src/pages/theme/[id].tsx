@@ -46,7 +46,7 @@ const ThemePage: NextPageWithLayout = () => {
                 <SmallPreview theme={resolvedTheme} author={theme.author} />
                 <button
                   onClick={() => {
-                    changeTheme(theme.id, theme)
+                    void changeTheme(theme.id, theme)
                   }}
                 >
                   change to this

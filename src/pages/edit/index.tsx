@@ -88,7 +88,7 @@ const Editor: NextPageWithLayout<Props> = ({ defaultTheme, userId }) => {
     if (!asPath.includes('?')) {
       return
     }
-    replace('/edit', undefined, { shallow: true })
+    void replace('/edit', undefined, { shallow: true })
   }, [asPath, replace])
 
   const { ariaPanelProps, ariaTabListProps, ariaTabProps, switchTab } =
@@ -131,7 +131,7 @@ const Editor: NextPageWithLayout<Props> = ({ defaultTheme, userId }) => {
       setIsSubmitting(true)
       try {
         const newData = await createTheme(data)
-        push(`/theme/${newData.id}`)
+        await push(`/theme/${newData.id}`)
       } catch (e) {
         console.error(e)
       } finally {

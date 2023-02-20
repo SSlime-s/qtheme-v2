@@ -17,7 +17,7 @@ export const updateTheme: MutationResolvers<ContextValue>['updateTheme'] =
     let connection: Connection | undefined
     try {
       connection = await connectDb()
-      connection.beginTransaction()
+      await connection.beginTransaction()
       // @ts-expect-error: 実装上は呼び出し可能
       const old = await getTheme(_, { id }, { userId, connection })
       if (old === null) {

@@ -70,7 +70,7 @@ export const getTheme: QueryResolvers<ContextValue>['getTheme'] = async (
     throw new GraphQLError(`Internal server error: ${err}`)
   } finally {
     if (needCloseConnection) {
-      connection?.end()
+      await connection?.end()
     }
   }
 }

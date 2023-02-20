@@ -72,7 +72,7 @@ const AllPage: NextPageWithLayout<Props> = ({ userId, filter }) => {
         })
         return
       }
-      toggleLike(id, isLike)
+      void toggleLike(id, isLike)
     },
     [addToast, toggleLike, userId]
   )
