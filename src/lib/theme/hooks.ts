@@ -11,10 +11,6 @@ import { print } from 'graphql'
 
 import { Theme as ThemeRes } from '@/apollo/generated/graphql'
 import {
-  getSdk as getSdkRandom,
-  RandomDocument,
-} from '@/lib/graphql/getRandom.generated'
-import {
   getSdk as getSdkGetTheme,
   ThemeDocument,
 } from '@/lib/graphql/getTheme.generated'
@@ -409,99 +405,6 @@ export const useThemeList = (
       createTheme,
       updateTheme,
       deleteTheme,
-    },
-    error,
-    isLoading,
-  }
-}
-
-export const useRandomTheme = (type: 'light' | 'dark' | 'other' | null) => {
-  const client = useClient()
-
-  const { data, error, isLoading, mutate } = useSWR(
-    [
-      print(RandomDocument),
-      {
-        type: type?.toUpperCase() ?? null,
-      },
-    ],
-    async ([_, variables]) => {
-      const sdk = getSdkRandom(client)
-      const { getRandomTheme } = await sdk.Random(variables)
-
-      return themeFromRaw(getRandomTheme)
-    },
-    {
-      revalidateOnFocus: false,
-    }
-  )
-
-  const randomTheme = useMemo(() => {
-    return data ? resolveTheme(data.theme) : null
-  }, [data])
-
-  const randomThemeInfo = useMemo((): ThemeInfo | null => {
-    return data ? data : null
-  }, [data])
-
-  const changeNext = useCallback(async () => {
-    mutate()
-  }, [mutate])
-
-  const toggleLike = useCallback(
-    async (isLike: boolean) => {
-      if (!data) {
-        return
-      }
-      const id = data.id
-      const sdk = getSdkToggleLike(client)
-      const {
-        toggleLike: { isLike: isLikeNew },
-      } = await sdk.ToggleLike({ id, isLike })
-      mutate(data => {
-        if (!data) {
-          return data
-        }
-        return {
-          ...data,
-          isLike: isLikeNew,
-          likes:
-            data.isLike === isLikeNew
-              ? data.likes
-              : data.likes + (isLikeNew ? 1 : -1),
-        }
-      }, false)
-
-      // SWR の mutate の更新に任せると違うテーマになっちゃうので自前でロード
-      void (async () => {
-        const sdk = getSdkGetTheme(client)
-        const { getTheme } = await sdk.Theme({ id })
-
-        if (getTheme === null || getTheme === undefined) {
-          throw new Error('Theme not found')
-        }
-
-        mutate(data => {
-          if (!data) {
-            return data
-          }
-          return {
-            ...data,
-            isLike: getTheme.theme.isLike,
-            likes: getTheme.theme.likes,
-          }
-        })
-      })()
-    },
-    [client, data, mutate]
-  )
-
-  return {
-    randomTheme,
-    randomThemeInfo,
-    mutate: {
-      changeNext,
-      toggleLike,
     },
     error,
     isLoading,
