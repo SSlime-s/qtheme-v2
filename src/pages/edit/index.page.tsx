@@ -29,6 +29,8 @@ import { SyncControls } from './SyncControls'
 import { ColorSelector } from './ColorSelector'
 import { AdvancedSelectors } from './AdvancedSelectors'
 import { BasicSelectors } from './BasicSelectors'
+import { Title } from './InfoEditor/Title'
+import { Description } from './InfoEditor/Description'
 
 export const getServerSideProps = async ({
   req,
@@ -285,66 +287,6 @@ const Tab = styled.button`
 `
 const TabPanel = styled.div``
 
-const Title: React.FC = () => {
-  const id = useId()
-  const { register } = useFormContext<Form>()
-
-  return (
-    <div>
-      <TitleLabel htmlFor={id}>Title</TitleLabel>
-      <TitleInput id={id} {...register('title')} placeholder='Title' />
-    </div>
-  )
-}
-const TitleLabel = styled.label`
-  display: block;
-  margin-bottom: 4px;
-`
-const TitleInput = styled.input`
-  display: block;
-  width: 100%;
-  border: 1px solid ${lightTheme.basic.ui.tertiary};
-  border-radius: 4px;
-  backdrop-filter: blur(4px);
-  padding: 4px 8px;
-
-  &:focus {
-    border-color: ${lightTheme.basic.accent.primary};
-  }
-  &::placeholder {
-    color: ${lightTheme.basic.ui.tertiary};
-  }
-`
-const Description: React.FC = () => {
-  const id = useId()
-  const { register } = useFormContext<Form>()
-
-  return (
-    <div>
-      <DescriptionLabel htmlFor={id}>Description</DescriptionLabel>
-      <DescriptionInput
-        id={id}
-        {...register('description')}
-        placeholder='Description'
-      />
-    </div>
-  )
-}
-const DescriptionLabel = TitleLabel
-const DescriptionInput = styled(AutoResizeTextarea)`
-  width: 100%;
-  border: 1px solid ${lightTheme.basic.ui.tertiary};
-  border-radius: 4px;
-  backdrop-filter: blur(4px);
-  padding: 4px 8px;
-
-  &:focus {
-    border-color: ${lightTheme.basic.accent.primary};
-  }
-  &::placeholder {
-    color: ${lightTheme.basic.ui.tertiary};
-  }
-`
 const visibilityDescription = {
   public: 'traP 外の人でも見ることができます',
   private: 'traP 内の人だけが見ることができます',
