@@ -10,16 +10,16 @@ export const Title: React.FC = () => {
 
   return (
     <div>
-      <TitleLabel htmlFor={id}>Title</TitleLabel>
-      <TitleInput id={id} {...register('title')} placeholder='Title' />
+      <Label htmlFor={id}>Title</Label>
+      <Input id={id} {...register('title')} placeholder='Title' />
     </div>
   )
 }
-const TitleLabel = styled.label`
+const Label = styled.label`
   display: block;
   margin-bottom: 4px;
 `
-const TitleInput = styled.input`
+const Input = styled.input`
   display: block;
   width: 100%;
   border: 1px solid ${lightTheme.basic.ui.tertiary};

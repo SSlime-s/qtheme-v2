@@ -11,8 +11,8 @@ export const Description: React.FC = () => {
 
   return (
     <div>
-      <DescriptionLabel htmlFor={id}>Description</DescriptionLabel>
-      <DescriptionInput
+      <Label htmlFor={id}>Description</Label>
+      <Input
         id={id}
         {...register('description')}
         placeholder='Description'
@@ -20,11 +20,11 @@ export const Description: React.FC = () => {
     </div>
   )
 }
-const DescriptionLabel = styled.label`
+const Label = styled.label`
   display: block;
   margin-bottom: 4px;
 `
-const DescriptionInput = styled(AutoResizeTextarea)`
+const Input = styled(AutoResizeTextarea)`
   width: 100%;
   border: 1px solid ${lightTheme.basic.ui.tertiary};
   border-radius: 4px;
