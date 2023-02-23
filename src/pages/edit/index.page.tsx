@@ -23,12 +23,12 @@ import { css } from '@emotion/react'
 import { useNamedTabList } from '@/lib/tablist'
 import { pageTitle } from '@/lib/title'
 import Head from 'next/head'
-import { BlockStyle } from '@/components/layout/Sidebar'
 import { SyncControls } from './SyncControls'
 import { AdvancedSelectors } from './AdvancedSelectors'
 import { BasicSelectors } from './BasicSelectors'
 import { Title } from './InfoEditor/Title'
 import { Description } from './InfoEditor/Description'
+import { Sidebar } from './Sidebar'
 
 export const getServerSideProps = async ({
   req,
@@ -149,13 +149,7 @@ const Editor: NextPageWithLayout<Props> = ({ defaultTheme, userId }) => {
         <title>{pageTitle('#edit')}</title>
       </Head>
       <FormProvider {...methods}>
-        <Layout
-          sidebar={
-            <>
-              <SubmitButton onClick={submit}>Submit</SubmitButton>
-            </>
-          }
-        >
+        <Layout sidebar={<Sidebar submit={submit} />}>
           <Wrap ref={containerRef} isWide={isWide}>
             <Controls>
               <Title />
@@ -200,10 +194,6 @@ const Editor: NextPageWithLayout<Props> = ({ defaultTheme, userId }) => {
 }
 export default Editor
 
-const SubmitButton = styled.button`
-  ${BlockStyle}
-  cursor: pointer;
-`
 const Wrap = styled.div<{ isWide: boolean }>`
   display: grid;
   ${({ isWide }) =>
