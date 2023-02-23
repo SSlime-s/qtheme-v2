@@ -43,7 +43,7 @@ export const SyncControls: React.FC = () => {
   }, [setAlwaysSync])
 
   return (
-    <SyncWrap>
+    <Wrap>
       <SyncButton onClick={sync} disabled={isSynced} aria-pressed={isSynced}>
         <Dummy hidden>Synced</Dummy>
         <Real>{isSynced ? 'Synced' : 'Sync '}</Real>
@@ -56,10 +56,10 @@ export const SyncControls: React.FC = () => {
         />
         Always Sync
       </Label>
-    </SyncWrap>
+    </Wrap>
   )
 }
-const SyncWrap = styled.div`
+const Wrap = styled.div`
   display: flex;
   align-items: center;
   gap: 8px 16px;
