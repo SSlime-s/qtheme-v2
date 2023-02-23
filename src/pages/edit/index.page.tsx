@@ -20,16 +20,16 @@ import {
 } from '@/components/Glassmorphism'
 import { useRouter } from 'next/router'
 import { useThemeList } from '@/lib/theme/hooks'
-import { ColorSelector } from '@/components/editor/ColorSelector'
 import React from 'react'
 import { css } from '@emotion/react'
 import { useNamedTabList } from '@/lib/tablist'
-import { AdvancedSelectors } from '@/components/editor/AdvancedSelectors'
 import { pageTitle } from '@/lib/title'
 import Head from 'next/head'
 import { BlockStyle } from '@/components/layout/Sidebar'
 import { AutoResizeTextarea } from '@/components/AutoResizeTextarea'
 import { SyncControls } from './SyncControls'
+import { ColorSelector } from './ColorSelector'
+import { AdvancedSelectors } from './AdvancedSelectors'
 
 export const getServerSideProps = async ({
   req,
