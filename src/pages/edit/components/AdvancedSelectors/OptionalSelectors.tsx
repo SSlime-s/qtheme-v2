@@ -6,16 +6,16 @@ import { AdvancedKeys, DescriptionMap } from "."
 import { Form } from "../../index.page"
 import { ColorSelector } from "../ColorSelector"
 
-interface OptionalSelectorsProps<K extends keyof typeof AdvancedKeys> {
+interface Props<K extends keyof typeof AdvancedKeys> {
   key1: K
   label: (typeof AdvancedKeys)[K][number]
 }
 export const OptionalSelectors: React.FC<
-  OptionalSelectorsProps<keyof typeof AdvancedKeys>
+  Props<keyof typeof AdvancedKeys>
 > = <K extends keyof typeof AdvancedKeys>({
   key1,
   label,
-}: OptionalSelectorsProps<K>) => {
+}: Props<K>) => {
   const [valid, setValid] = useState(false)
   const { ariaContent, ariaToggle, contentHeight, contentRef } =
     useControlledAccordion(valid, setValid)
@@ -75,12 +75,12 @@ export const OptionalSelectors: React.FC<
   }, [getValues, key1, label])
 
   return (
-    <OptionalSelectorWrap valid={valid}>
-      <OptionalSelectorsLabel {...ariaToggle} onClick={toggle}>
-        <OptionalSelectorsIcon />
+    <Wrap valid={valid}>
+      <Label {...ariaToggle} onClick={toggle}>
+        <Icon />
         {label}
-        <OptionalSelectorsDisableText>無効化中</OptionalSelectorsDisableText>
-      </OptionalSelectorsLabel>
+        <DisableText>無効化中</DisableText>
+      </Label>
       <OptionalSelectorsContent
         ref={wrapRef}
         {...ariaContent}
@@ -103,14 +103,14 @@ export const OptionalSelectors: React.FC<
           />
         </div>
       </OptionalSelectorsContent>
-    </OptionalSelectorWrap>
+    </Wrap>
   )
 }
-const OptionalSelectorWrap = styled.div<{ valid: boolean }>`
+const Wrap = styled.div<{ valid: boolean }>`
   transition: all 0.2s ease-out;
   transform: ${({ valid }) => (valid ? 'none' : 'translateX(16px)')};
 `
-const OptionalSelectorsLabel = styled.button`
+const Label = styled.button`
   display: flex;
   cursor: pointer;
   align-items: center;
@@ -126,7 +126,7 @@ const OptionalSelectorsLabel = styled.button`
 const Description = styled.p`
   color: #333;
 `
-const OptionalSelectorsIcon = styled.div`
+const Icon = styled.div`
   width: 16px;
   height: 16px;
   position: relative;
@@ -165,7 +165,7 @@ const OptionalSelectorsIcon = styled.div`
     transform: rotate(225deg) scale(1, 1.4);
   }
 `
-const OptionalSelectorsDisableText = styled.span`
+const DisableText = styled.span`
   color: #333;
   font-size: 12px;
   transition: color 0.2s ease-out;
