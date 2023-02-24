@@ -3,7 +3,7 @@ import { Form } from '@/pages/edit/index.page'
 import styled from '@emotion/styled'
 import { useCallback, useEffect, useState } from 'react'
 import { useFormContext, useWatch } from 'react-hook-form'
-import { ColorSelector } from './ColorSelector'
+import { ColorSelector } from '../components/ColorSelector'
 
 const AdvancedKeys = {
   browser: [

@@ -3,7 +3,7 @@ import { lightTheme } from '@/lib/theme/default'
 import styled from '@emotion/styled'
 import { useId } from 'react'
 import { useFormContext } from 'react-hook-form'
-import { Form } from '../index.page'
+import { Form } from '../../index.page'
 
 export const Description: React.FC = () => {
   const id = useId()

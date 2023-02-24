@@ -4,7 +4,7 @@ import styled from "@emotion/styled"
 import { useCallback, useMemo, useState } from "react"
 import { useFormContext, useWatch } from "react-hook-form"
 import { ColorSelector } from "./ColorSelector"
-import { Form } from "./index.page"
+import { Form } from "../index.page"
 
 const BasicKeys = {
   accent: ['primary', 'notification', 'online', 'error', 'focus'] as const,

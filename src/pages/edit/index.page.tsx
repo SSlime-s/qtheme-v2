@@ -23,12 +23,12 @@ import { css } from '@emotion/react'
 import { useNamedTabList } from '@/lib/tablist'
 import { pageTitle } from '@/lib/title'
 import Head from 'next/head'
-import { SyncControls } from './SyncControls'
-import { AdvancedSelectors } from './AdvancedSelectors'
-import { BasicSelectors } from './BasicSelectors'
-import { Title } from './InfoEditor/Title'
-import { Description } from './InfoEditor/Description'
-import { Sidebar } from './Sidebar'
+import { SyncControls } from './components/SyncControls'
+import { AdvancedSelectors } from './components/AdvancedSelectors'
+import { BasicSelectors } from './components/BasicSelectors'
+import { Title } from './components/InfoEditor/Title'
+import { Description } from './components/InfoEditor/Description'
+import { Sidebar } from './components/Sidebar'
 
 export const getServerSideProps = async ({
   req,
