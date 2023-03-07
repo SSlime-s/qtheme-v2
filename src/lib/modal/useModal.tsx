@@ -1,9 +1,11 @@
-import { useCallback, useId, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react'
 
 export const useModal = <
   TitleElement extends HTMLElement = HTMLHeadingElement,
   TriggerElement extends HTMLElement = HTMLButtonElement
->() => {
+>(
+  id: string
+) => {
   const titleRef = useRef<TitleElement>(null)
   const triggerRef = useRef<TriggerElement>(null)
 
@@ -13,8 +15,29 @@ export const useModal = <
   const open = useCallback(() => {
     setIsOpen(true)
     titleRef?.current?.focus()
-  }, [])
-  const close = useCallback(() => {
+
+    history.pushState(
+      {
+        ...history.state,
+        modalId: id,
+      },
+      ''
+    )
+  }, [id])
+  const close = useCallback(async () => {
+    history.back()
+
+    await new Promise<void>(resolve => {
+      window.addEventListener(
+        'popstate',
+        e => {
+          console.log('35', e, e.state.modalId)
+          resolve()
+        },
+        { once: true }
+      )
+    })
+
     setIsOpen(false)
     triggerRef?.current?.focus()
   }, [])
@@ -43,6 +66,21 @@ export const useModal = <
       id: titleId,
     }
   }, [titleId])
+
+  useEffect(() => {
+    const handlePopState = (e: PopStateEvent) => {
+      if (e.state?.modalId === id) {
+        setIsOpen(true)
+        return
+      }
+      setIsOpen(false)
+    }
+
+    window.addEventListener('popstate', handlePopState)
+    return () => {
+      window.removeEventListener('popstate', handlePopState)
+    }
+  }, [close, id])
 
   return {
     isOpen,
