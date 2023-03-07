@@ -1,4 +1,5 @@
 import { atom, useAtom, useAtomValue } from 'jotai'
+import { useCallback } from 'react'
 import { getFocus } from './focus'
 
 // window が focus を持っている間、1秒ごとに clipboard の値を同期する
@@ -43,4 +44,27 @@ export const useClipboard = (): [
   setValue: (value: string) => void
 ] => {
   return useAtom(clipboardAtom)
+}
+export const useCheckedClipboard = (): [
+  value: string,
+  setValue: (value: string) => Promise<boolean>
+] => {
+  const [value, setValue] = useAtom(clipboardRawAtom)
+
+  const copy = useCallback(
+    async (value: string): Promise<boolean> => {
+      try {
+        await navigator.clipboard.writeText(value)
+        return true
+      } catch (e) {
+        console.error(e)
+        return false
+      } finally {
+        setValue(value)
+      }
+    },
+    [setValue]
+  )
+
+  return [value, copy]
 }
