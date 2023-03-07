@@ -31,6 +31,7 @@ export const PreviewCard: React.FC<Props> = ({
 
   const changeToCurrent = useCallback(() => {
     changeTheme?.(themeInfo.id, themeInfo)
+    void navigator.clipboard.writeText(JSON.stringify(themeInfo.theme))
   }, [changeTheme, themeInfo])
   const handleFavorite = useCallback(() => {
     onFavorite?.(themeInfo.id, !themeInfo.isLike)
