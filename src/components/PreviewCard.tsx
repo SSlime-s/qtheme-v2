@@ -1,5 +1,6 @@
 import { resolveTheme } from '@/lib/theme'
 import { FormattedTheme } from '@/lib/theme/hooks'
+import { lineClamp } from '@/styles/lineClamp'
 import { ThemeProvider } from '@emotion/react'
 import styled from '@emotion/styled'
 import Link from 'next/link'
@@ -111,12 +112,7 @@ const Author = styled.h2`
 `
 const Description = styled.p`
   ${BreakStyle}
-
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  display: -webkit-box;
-  text-overflow: ellipsis;
+  ${lineClamp(2)}
 `
 const PreviewWrap = styled.button`
   ${GlassmorphismStyle}

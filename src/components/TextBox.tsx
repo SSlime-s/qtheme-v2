@@ -1,3 +1,4 @@
+import { lineClamp } from '@/styles/lineClamp'
 import styled from '@emotion/styled'
 import { useEffect, useRef } from 'react'
 
@@ -84,9 +85,7 @@ const Input = styled.textarea`
     color: ${({ theme }) => theme.theme.basic.ui.secondary.inactive};
   }
   &:placeholder-shown {
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 1;
+    ${lineClamp(1)}
     height: unset;
   }
   height: 40px;
