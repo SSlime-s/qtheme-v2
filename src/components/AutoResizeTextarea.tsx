@@ -41,7 +41,9 @@ const Textarea = styled.textarea<{ height: number | null }>`
   overflow: hidden;
 `
 const Dummy = styled.textarea`
-  position: absolute !important;
+  position: fixed !important;
+  top: 0;
+  left: 0;
   visibility: hidden;
   height: auto;
   overflow: hidden;
