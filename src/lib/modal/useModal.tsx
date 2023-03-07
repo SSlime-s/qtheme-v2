@@ -4,12 +4,24 @@ export const useModal = <
   TitleElement extends HTMLElement = HTMLHeadingElement,
   TriggerElement extends HTMLElement = HTMLButtonElement
 >(
-  id: string
+  id: string,
+  // 閉じる前に呼び出される関数
+  beforeClose?: () => Promise<boolean> | boolean
 ) => {
   const titleRef = useRef<TitleElement>(null)
   const triggerRef = useRef<TriggerElement>(null)
 
   const titleId = useId()
+
+  // beforeClose を呼び出し、閉じていい場合は true を返す
+  const checkClose = useCallback(async (): Promise<boolean> => {
+    if (beforeClose === undefined) {
+      return true
+    }
+
+    const success = await beforeClose()
+    return success
+  }, [beforeClose])
 
   const [isOpen, setIsOpen] = useState(false)
   const open = useCallback(() => {
@@ -25,22 +37,18 @@ export const useModal = <
     )
   }, [id])
   const close = useCallback(async () => {
+    if (!(await checkClose())) {
+      return
+    }
     history.back()
 
-    await new Promise<void>(resolve => {
-      window.addEventListener(
-        'popstate',
-        e => {
-          console.log('35', e, e.state.modalId)
-          resolve()
-        },
-        { once: true }
-      )
+    await new Promise(resolve => {
+      window.addEventListener('popstate', resolve, { once: true })
     })
 
     setIsOpen(false)
     triggerRef?.current?.focus()
-  }, [])
+  }, [checkClose])
   const toggle = useCallback(() => {
     setIsOpen(prev => {
       if (prev) {
@@ -68,9 +76,14 @@ export const useModal = <
   }, [titleId])
 
   useEffect(() => {
-    const handlePopState = (e: PopStateEvent) => {
+    const handlePopState = async (e: PopStateEvent) => {
       if (e.state?.modalId === id) {
         setIsOpen(true)
+        return
+      }
+
+      if (!(await checkClose())) {
+        open()
         return
       }
       setIsOpen(false)
@@ -80,7 +93,7 @@ export const useModal = <
     return () => {
       window.removeEventListener('popstate', handlePopState)
     }
-  }, [close, id])
+  }, [checkClose, close, id, open])
 
   return {
     isOpen,
