@@ -5,7 +5,7 @@ export const useModal = <
   TriggerElement extends HTMLElement = HTMLButtonElement
 >(
   id: string,
-  // 閉じる前に呼び出される関数
+  /** 閉じる前に呼び出される関数 false を返すと閉じない */
   beforeClose?: () => Promise<boolean> | boolean
 ) => {
   const titleRef = useRef<TitleElement>(null)
