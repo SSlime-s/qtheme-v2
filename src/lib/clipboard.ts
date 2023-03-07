@@ -38,6 +38,9 @@ export const useClipboardValue = (): string => {
   const value = useAtomValue(clipboardAtom)
   return value
 }
-export const useClipboard = (): [string, (value: string) => void] => {
+export const useClipboard = (): [
+  value: string,
+  setValue: (value: string) => void
+] => {
   return useAtom(clipboardAtom)
 }
