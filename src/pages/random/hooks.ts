@@ -24,11 +24,11 @@ export const useRandomTheme = (type: Lowercase<Type> | null) => {
     },
     {
       revalidateOnFocus: false,
-      suspense: true,
     }
   )
 
   const resolvedTheme = useMemo(() => {
+    if (data === undefined) return null
     return resolveTheme(data.theme)
   }, [data])
 
@@ -38,6 +38,7 @@ export const useRandomTheme = (type: Lowercase<Type> | null) => {
 
   const toggleLike = useCallback(
     async (isLike: boolean) => {
+      if (data === undefined) return
       const id = data.id
 
       const {
@@ -80,14 +81,15 @@ export const useRandomTheme = (type: Lowercase<Type> | null) => {
 
   return useMemo(
     () => ({
-      theme: data,
+      theme: data ?? null,
       resolvedTheme,
+      isLoading,
       error,
       mutate: {
         changeNext,
         toggleLike,
       },
     }),
-    [changeNext, data, error, resolvedTheme, toggleLike]
+    [changeNext, data, error, isLoading, resolvedTheme, toggleLike]
   )
 }

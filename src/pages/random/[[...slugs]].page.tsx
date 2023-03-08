@@ -4,7 +4,6 @@ import { extractShowcaseUser, useSetUserId } from '@/utils/extractUser'
 import { useCurrentTheme } from '@/utils/theme/hooks'
 import { assertIsArray } from '@/utils/typeUtils'
 import { GetServerSidePropsContext } from 'next'
-import { Suspense } from 'react'
 import { NextPageWithLayout } from '../_app.page'
 import { useRandomTheme } from './hooks'
 
@@ -54,6 +53,7 @@ const RandomPage: NextPageWithLayout<Props> = ({ userId, filter }) => {
 
   const {
     theme,
+    isLoading,
     error,
     mutate: { changeNext },
   } = useRandomTheme(filter === 'all' ? null : filter)
@@ -64,12 +64,15 @@ const RandomPage: NextPageWithLayout<Props> = ({ userId, filter }) => {
   if (error !== undefined) {
     return <div>Error: {error.message}</div>
   }
+  if (isLoading || theme === null) {
+    return <div>Loading...</div>
+  }
 
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <>
       <button onClick={changeNext}>Next</button>
       <PreviewCard themeInfo={theme} changeTheme={changeTheme} />
-    </Suspense>
+    </>
   )
 }
 export default RandomPage
