@@ -1,5 +1,6 @@
 import { GlassmorphismStyle } from '@/components/Glassmorphism'
 import { Modal } from '@/utils/modal/Modal'
+import { ModalTemplate } from '@/utils/modal/ModalTemplate'
 import { lightTheme } from '@/utils/theme/default'
 import { keyframes } from '@emotion/react'
 import styled from '@emotion/styled'
@@ -19,16 +20,14 @@ export const ConfirmModal: React.FC<Props> = ({
   ...props
 }) => {
   return (
-    <CenteredModal>
-      <Wrap {...props}>
-        <Title {...titleProps}>変更を保存せずに閉じますか？</Title>
+    <Wrap glass {...props}>
+      <Title {...titleProps}>変更を保存せずに閉じますか？</Title>
 
-        <ControlsWrap>
-          <Button onClick={onCancel}>戻る</Button>
-          <WarningButton onClick={onOk}>保存せず閉じる</WarningButton>
-        </ControlsWrap>
-      </Wrap>
-    </CenteredModal>
+      <ControlsWrap>
+        <Button onClick={onCancel}>戻る</Button>
+        <WarningButton onClick={onOk}>保存せず閉じる</WarningButton>
+      </ControlsWrap>
+    </Wrap>
   )
 }
 
@@ -45,19 +44,11 @@ const popupKeyframes = keyframes`
     opacity: 1;
   }
 `
-const Wrap = styled.div`
-  ${GlassmorphismStyle}
-
+const Wrap = styled(ModalTemplate)`
   padding: 24px;
   display: grid;
   gap: 32px;
   animation: ${popupKeyframes} 0.2s ease-out;
-`
-const CenteredModal = styled(Modal)`
-  display: grid;
-  place-items: center;
-  padding: 16px;
-  overflow: auto;
 `
 
 const Title = styled.h1`
