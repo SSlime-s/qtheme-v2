@@ -11,7 +11,7 @@ import {
 } from 'react-hook-form'
 import { NextPageWithLayout } from '@/pages/_app.page'
 import { Layout } from '@/components/layout'
-import { extractShowcaseUser } from '@/utils/extractUser'
+import { extractShowcaseUser, useSetUserId } from '@/utils/extractUser'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { resolveTheme } from '@/utils/theme'
 import { SmallPreview } from '@/components/preview'
@@ -73,6 +73,8 @@ export type Form = Pick<
 >
 const ColorsTab = ['Basic', 'Advanced'] as const
 const Editor: NextPageWithLayout<Props> = ({ defaultTheme, userId }) => {
+  useSetUserId(userId)
+
   const methods = useForm<Form>({
     defaultValues: {
       title: '',

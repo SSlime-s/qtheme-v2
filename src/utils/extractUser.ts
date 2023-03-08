@@ -1,5 +1,7 @@
 import { IncomingMessage } from 'http'
+import { atom, useAtomValue, useSetAtom } from 'jotai'
 import { NextRequest } from 'next/server'
+import { useEffect } from 'react'
 
 const showcaseUserKey = 'x-showcase-user'
 export const extractShowcaseUser = (req: IncomingMessage | NextRequest) => {
@@ -15,4 +17,15 @@ export const extractShowcaseUser = (req: IncomingMessage | NextRequest) => {
     }
   }
   return userId === '-' ? undefined : userId ?? undefined
+}
+
+const userIdAtom = atom<string | null>(null)
+export const useSetUserId = (userId: string | null) => {
+  const setUserId = useSetAtom(userIdAtom)
+  useEffect(() => {
+    setUserId(userId)
+  }, [setUserId, userId])
+}
+export const useUserId = () => {
+  return useAtomValue(userIdAtom)
 }

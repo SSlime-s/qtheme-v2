@@ -1,6 +1,6 @@
 import { Layout } from '@/components/layout'
 import { PreviewCard } from '@/components/PreviewCard'
-import { extractShowcaseUser } from '@/utils/extractUser'
+import { extractShowcaseUser, useSetUserId } from '@/utils/extractUser'
 import { useCurrentTheme } from '@/utils/theme/hooks'
 import { assertIsArray } from '@/utils/typeUtils'
 import { GetServerSidePropsContext } from 'next'
@@ -50,6 +50,8 @@ type Props = NonNullable<
 >
 
 const RandomPage: NextPageWithLayout<Props> = ({ userId, filter }) => {
+  useSetUserId(userId)
+
   const {
     theme,
     error,

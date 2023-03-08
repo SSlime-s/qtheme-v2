@@ -10,8 +10,27 @@ import { ReadOnlyTextBox } from '@/components/TextBox'
 import { CopyButton } from '@/components/CopyButton'
 import { FavoriteButton } from '@/components/FavoriteButton'
 import { useMemo } from 'react'
+import { GetServerSidePropsContext } from 'next'
+import { extractShowcaseUser, useSetUserId } from '@/utils/extractUser'
 
-const ThemePage: NextPageWithLayout = () => {
+export const getServerSideProps = async ({
+  req,
+}: GetServerSidePropsContext) => {
+  const userId = extractShowcaseUser(req)
+
+  return {
+    props: {
+      userId: userId ?? null,
+    },
+  }
+}
+
+type Props = NonNullable<
+  Awaited<ReturnType<typeof getServerSideProps>>['props']
+>
+const ThemePage: NextPageWithLayout<Props> = ({ userId }) => {
+  useSetUserId(userId)
+
   const { id } = useRouter().query as { id: string }
   const {
     theme,

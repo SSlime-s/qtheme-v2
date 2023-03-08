@@ -13,6 +13,7 @@ import { NavbarCustom } from './Custom'
 import { useControlledNamedTabList } from '@/utils/tablist'
 import { isMobile } from '@/utils/isMobile'
 import { UserIcon } from './UserIcon'
+import { useUserId } from '@/utils/extractUser'
 
 type NavbarState = 'channel' | 'user' | 'custom'
 const states = [
@@ -31,6 +32,8 @@ export const Navbar: React.FC = () => {
   const { ariaTabListProps, ariaTabProps, ariaPanelProps } =
     useControlledNamedTabList(states, state, setState)
 
+  const userId = useUserId()
+
   return (
     <>
       <DummyWrap />
@@ -41,7 +44,7 @@ export const Navbar: React.FC = () => {
           ))}
         </TabList>
         <Selector>
-          <UserIcon userId='SSlime' />
+          <UserIcon userId={userId ?? undefined} />
         </Selector>
         {states.map(s => (
           <NavPanel key={s} state={s} {...ariaPanelProps[s]} />

@@ -1,6 +1,6 @@
 import { Layout } from '@/components/layout'
 import { PreviewCard } from '@/components/PreviewCard'
-import { extractShowcaseUser } from '@/utils/extractUser'
+import { extractShowcaseUser, useSetUserId } from '@/utils/extractUser'
 import { useCurrentTheme, useThemeList } from '@/utils/theme/hooks'
 import { assertIsArray } from '@/utils/typeUtils'
 import styled from '@emotion/styled'
@@ -53,6 +53,8 @@ type Props = NonNullable<
 >
 
 const AllPage: NextPageWithLayout<Props> = ({ userId, filter }) => {
+  useSetUserId(userId)
+
   const {
     themes,
     total,
