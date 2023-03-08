@@ -17,8 +17,7 @@ import { ReplaceNewLine } from '@/utils/wrapper/ReplaceNewLine'
 import { Linkify } from '@/utils/wrapper/Linkify'
 import { WrapResolver } from '@/utils/wrapper'
 
-// eslint-disable-next-line @typescript-eslint/ban-types
-export const Sidebar: React.FC<PropsWithChildren<{}>> = ({ children }) => {
+export const Sidebar: React.FC<PropsWithChildren> = ({ children }) => {
   const isMobile = useIsMobile()
   const ref = useRef<HTMLDivElement>(null)
   const [isOpen, setIsOpen] = useState(false)
