@@ -26,7 +26,7 @@ export const useModal = <
   const [isOpen, setIsOpen] = useState(false)
   const open = useCallback(() => {
     setIsOpen(true)
-    titleRef?.current?.focus()
+    titleRef.current?.focus()
 
     history.pushState(
       {
@@ -47,14 +47,14 @@ export const useModal = <
     })
 
     setIsOpen(false)
-    triggerRef?.current?.focus()
+    triggerRef.current?.focus()
   }, [checkClose])
   const toggle = useCallback(() => {
     setIsOpen(prev => {
       if (prev) {
-        triggerRef?.current?.focus()
+        triggerRef.current?.focus()
       } else {
-        titleRef?.current?.focus()
+        titleRef.current?.focus()
       }
 
       return !prev
