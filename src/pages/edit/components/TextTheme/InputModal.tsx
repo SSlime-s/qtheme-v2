@@ -1,5 +1,4 @@
 import { AutoResizeTextarea } from '@/components/AutoResizeTextarea'
-import { GlassmorphismStyle } from '@/components/Glassmorphism'
 import { useAutoRestoreState } from '@/utils/autoRestoreState'
 import { ModalTemplate } from '@/utils/modal/ModalTemplate'
 import { lightTheme } from '@/utils/theme/default'
