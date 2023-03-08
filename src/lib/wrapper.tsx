@@ -9,6 +9,13 @@ export interface IWrapper {
     | React.FC<IWrapper>[]
 }
 
+/**
+ * IWrapper を Props に取るような Wrapper を順に適用する
+ * 複数の Wrapper が指定されているときは、最初の Wrapper に生の children が渡される
+ *
+ * ただし、ここで言う適用とは、文字列を適切に (これは Wrapper の実装による) 分割し、
+ * 分割された文字列それぞれに (存在すれば) 次の Wrapper を適用したものを wrap もしくは 間に何かを挿入することを指す
+ */
 export const WrapResolver: React.FC<IWrapper> = ({ children, Wrapper }) => {
   const MainWrapper = useMemo(() => {
     if (Wrapper === undefined) {
