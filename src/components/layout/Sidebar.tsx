@@ -12,9 +12,9 @@ import {
   useState,
 } from 'react'
 import { RxReset } from 'react-icons/rx'
-import { BreakStyle, BudouJa } from '@/components/wrapper/BudouX'
-import { ReplaceNewLine } from '@/components/wrapper/ReplaceNewLine'
-import { Linkify } from '@/components/wrapper/Linkify'
+import { BreakStyle, BudouJa } from '@/utils/wrapper/BudouX'
+import { ReplaceNewLine } from '@/utils/wrapper/ReplaceNewLine'
+import { Linkify } from '@/utils/wrapper/Linkify'
 import { WrapResolver } from '@/utils/wrapper'
 
 // eslint-disable-next-line @typescript-eslint/ban-types

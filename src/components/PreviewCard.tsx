@@ -9,8 +9,8 @@ import { FavoriteButton } from './FavoriteButton'
 import { GlassmorphismStyle } from './Glassmorphism'
 import { SmallPreview } from './preview'
 import { Tag } from './Tag'
-import { BreakStyle, BudouJa } from './wrapper/BudouX'
-import { ReplaceNewLine } from './wrapper/ReplaceNewLine'
+import { BreakStyle, BudouJa } from '@/utils/wrapper/BudouX'
+import { ReplaceNewLine } from '@/utils/wrapper/ReplaceNewLine'
 
 interface Props {
   themeInfo: FormattedTheme
