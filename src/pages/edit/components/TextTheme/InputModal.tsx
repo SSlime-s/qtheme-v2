@@ -1,7 +1,7 @@
 import { AutoResizeTextarea } from '@/components/AutoResizeTextarea'
 import { GlassmorphismStyle } from '@/components/Glassmorphism'
 import { useAutoRestoreState } from '@/utils/autoRestoreState'
-import { DefaultModal } from '@/utils/modal/DefaultModal'
+import { ModalTemplate } from '@/utils/modal/ModalTemplate'
 import { lightTheme } from '@/utils/theme/default'
 import { css, keyframes } from '@emotion/react'
 import styled from '@emotion/styled'
@@ -91,7 +91,7 @@ export const InputModal: React.FC<Props> = ({
   }, [innerValue, setFormatState])
 
   return (
-    <Wrap {...props}>
+    <Wrap {...props} glass defaultSize>
       <Inner>
         <Title {...titleProps}>テーマを入力</Title>
         <TextAreaWrap>
@@ -130,9 +130,7 @@ const popupKeyframes = keyframes`
     transform: scale(1);
   }
 `
-const Wrap = styled(DefaultModal)`
-  ${GlassmorphismStyle}
-
+const Wrap = styled(ModalTemplate)`
   padding: 16px;
   animation: ${popupKeyframes} 0.3s ease-out;
 `
