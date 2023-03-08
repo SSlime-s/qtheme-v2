@@ -12,6 +12,7 @@ import { FavoriteButton } from '@/components/FavoriteButton'
 import { useMemo } from 'react'
 import { GetServerSidePropsContext } from 'next'
 import { extractShowcaseUser, useSetUserId } from '@/utils/extractUser'
+import { lightTheme } from '@/utils/theme/default'
 
 export const getServerSideProps = async ({
   req,
@@ -62,14 +63,16 @@ const ThemePage: NextPageWithLayout<Props> = ({ userId }) => {
             <>
               <H1>{theme.title}</H1>
               <Card>
-                <SmallPreview theme={resolvedTheme} author={theme.author} />
-                <button
-                  onClick={() => {
-                    void changeTheme(theme.id, theme)
-                  }}
-                >
-                  change to this
-                </button>
+                <CardInner>
+                  <SmallPreview theme={resolvedTheme} author={theme.author} />
+                  <ChangeCurrentButton
+                    onClick={() => {
+                      void changeTheme(theme.id, theme)
+                    }}
+                  >
+                    <span>change current to this</span>
+                  </ChangeCurrentButton>
+                </CardInner>
               </Card>
             </>
           }
@@ -120,11 +123,32 @@ const MainWrap = styled.div`
 const Card = styled.div`
   ${GlassmorphismStyle}
 
-  padding: 1rem;
+  padding: 32px;
   margin: 32px auto;
   max-width: 600px;
   /* width: calc(100% - 32px); */
   width: 100%;
+`
+const CardInner = styled.div`
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid ${lightTheme.basic.ui.tertiary};
+`
+const ChangeCurrentButton = styled.button`
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  padding: 8px 0;
+  border-radius: 0 0 8px 8px;
+  border-top: 1px solid ${lightTheme.basic.ui.tertiary};
+
+  & > span {
+    transition: transform 0.2s;
+  }
+  &:hover > span {
+    transform: scale(1.05);
+  }
 `
 const CopyBox = styled(ReadOnlyTextBox)`
   margin: 0 32px 20px;
