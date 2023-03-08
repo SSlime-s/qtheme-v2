@@ -1,5 +1,5 @@
 import { GraphQLError } from 'graphql'
-import { assertIsArray } from '@/lib/typeUtils'
+import { assertIsArray } from '@/utils/typeUtils'
 import { connectDb } from '@/model/db'
 import { ContextValue } from '.'
 import { QueryResolvers, Theme } from '@/apollo/generated/resolvers'

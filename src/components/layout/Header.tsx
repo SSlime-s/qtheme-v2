@@ -1,4 +1,4 @@
-import { isMobile, useIsMobile } from '@/lib/isMobile'
+import { isMobile, useIsMobile } from '@/utils/isMobile'
 import styled from '@emotion/styled'
 import Link from 'next/link'
 import path from 'path'

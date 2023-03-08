@@ -1,4 +1,4 @@
-import { assertIsArray, assertIsObject } from '@/lib/typeUtils'
+import { assertIsArray, assertIsObject } from '@/utils/typeUtils'
 import { connectDb } from '@/model/db'
 import { GraphQLError } from 'graphql'
 import { ContextValue } from '.'

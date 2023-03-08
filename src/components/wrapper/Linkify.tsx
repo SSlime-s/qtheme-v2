@@ -1,4 +1,4 @@
-import { IWrapper, WrapResolver } from '@/lib/wrapper'
+import { IWrapper, WrapResolver } from '@/utils/wrapper'
 import React from 'react'
 import { PropsWithChildren } from 'react'
 import LinkifyIt from 'linkify-it'

@@ -1,5 +1,5 @@
-import { resolveTheme } from '@/lib/theme'
-import { FormattedTheme } from '@/lib/theme/hooks'
+import { resolveTheme } from '@/utils/theme'
+import { FormattedTheme } from '@/utils/theme/hooks'
 import { lineClamp } from '@/styles/lineClamp'
 import { ThemeProvider } from '@emotion/react'
 import styled from '@emotion/styled'

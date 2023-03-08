@@ -1,5 +1,5 @@
 import { GraphQLError } from 'graphql'
-import { assertIsObject } from '@/lib/typeUtils'
+import { assertIsObject } from '@/utils/typeUtils'
 import { connectDb } from '@/model/db'
 import { ContextValue } from '.'
 import { getTheme } from './getTheme'

@@ -3,7 +3,7 @@ import styled from '@emotion/styled'
 import { BiImport } from 'react-icons/bi'
 import { TbNewSection } from 'react-icons/tb'
 import { css } from '@emotion/react'
-import { useCurrentTheme } from '@/lib/theme/hooks'
+import { useCurrentTheme } from '@/utils/theme/hooks'
 
 export const NavbarCustom: React.FC = () => {
   const { currentRawTheme } = useCurrentTheme()

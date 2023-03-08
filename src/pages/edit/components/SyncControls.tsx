@@ -1,5 +1,5 @@
 import { ColoredGlassmorphismStyle } from '@/components/Glassmorphism'
-import { useCurrentTheme } from '@/lib/theme/hooks'
+import { useCurrentTheme } from '@/utils/theme/hooks'
 import styled from '@emotion/styled'
 import { atom, useAtom } from 'jotai'
 import { useState, useEffect, useCallback } from 'react'

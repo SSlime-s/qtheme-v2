@@ -1,4 +1,4 @@
-import { ToastOptions, useToastList } from '@/lib/toast'
+import { ToastOptions, useToastList } from '@/utils/toast'
 import { css, keyframes, Theme } from '@emotion/react'
 import styled from '@emotion/styled'
 import dynamic from 'next/dynamic'

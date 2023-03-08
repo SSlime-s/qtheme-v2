@@ -1,5 +1,5 @@
 import { AutoResizeTextarea } from '@/components/AutoResizeTextarea'
-import { lightTheme } from '@/lib/theme/default'
+import { lightTheme } from '@/utils/theme/default'
 import styled from '@emotion/styled'
 import { useId } from 'react'
 import { useFormContext } from 'react-hook-form'

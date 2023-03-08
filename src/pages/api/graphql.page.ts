@@ -3,7 +3,7 @@ import { startServerAndCreateNextHandler } from '@as-integrations/next'
 import { NextApiHandler } from 'next'
 import { ContextValue, resolvers } from '@/apollo/resolvers'
 import typeDefs from '@/apollo/schema.graphql'
-import { extractShowcaseUser } from '@/lib/extractUser'
+import { extractShowcaseUser } from '@/utils/extractUser'
 
 const server = new ApolloServer<ContextValue>({
   typeDefs,

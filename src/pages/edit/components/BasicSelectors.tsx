@@ -1,4 +1,4 @@
-import { resolveTheme } from "@/lib/theme"
+import { resolveTheme } from "@/utils/theme"
 import { Theme } from "@/model/theme"
 import styled from "@emotion/styled"
 import { useCallback, useMemo, useState } from "react"

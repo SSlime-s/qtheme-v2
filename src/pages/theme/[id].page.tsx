@@ -1,7 +1,7 @@
 import { GlassmorphismStyle } from '@/components/Glassmorphism'
 import { Layout } from '@/components/layout'
 import { SmallPreview } from '@/components/preview'
-import { useCurrentTheme, useTheme } from '@/lib/theme/hooks'
+import { useCurrentTheme, useTheme } from '@/utils/theme/hooks'
 import styled from '@emotion/styled'
 import { useRouter } from 'next/router'
 import { NextPageWithLayout } from '@/pages/_app.page'

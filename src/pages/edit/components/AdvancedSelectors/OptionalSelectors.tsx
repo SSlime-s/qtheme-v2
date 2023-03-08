@@ -1,4 +1,4 @@
-import { useControlledAccordion, useHiddenTransition } from '@/lib/accordion'
+import { useControlledAccordion, useHiddenTransition } from '@/utils/accordion'
 import styled from '@emotion/styled'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useFormContext, useWatch } from 'react-hook-form'

@@ -1,4 +1,4 @@
-import { userIconUrl } from '@/lib/api'
+import { userIconUrl } from '@/utils/api'
 import styled from '@emotion/styled'
 import Image from 'next/image'
 import Link from 'next/link'

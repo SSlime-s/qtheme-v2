@@ -1,6 +1,6 @@
-import { isMobile, useIsMobile } from '@/lib/isMobile'
-import { ResolvedTheme } from '@/lib/theme'
-import { useCurrentTheme } from '@/lib/theme/hooks'
+import { isMobile, useIsMobile } from '@/utils/isMobile'
+import { ResolvedTheme } from '@/utils/theme'
+import { useCurrentTheme } from '@/utils/theme/hooks'
 import { css } from '@emotion/react'
 import styled from '@emotion/styled'
 import Link from 'next/link'
@@ -15,7 +15,7 @@ import { RxReset } from 'react-icons/rx'
 import { BreakStyle, BudouJa } from '@/components/wrapper/BudouX'
 import { ReplaceNewLine } from '@/components/wrapper/ReplaceNewLine'
 import { Linkify } from '@/components/wrapper/Linkify'
-import { WrapResolver } from '@/lib/wrapper'
+import { WrapResolver } from '@/utils/wrapper'
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 export const Sidebar: React.FC<PropsWithChildren<{}>> = ({ children }) => {

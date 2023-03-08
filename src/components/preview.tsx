@@ -1,5 +1,5 @@
-import { userIconUrl } from '@/lib/api'
-import { ResolvedTheme } from '@/lib/theme'
+import { userIconUrl } from '@/utils/api'
+import { ResolvedTheme } from '@/utils/theme'
 import React from 'react'
 
 interface Props {

@@ -1,6 +1,6 @@
 import { GlassmorphismStyle } from '@/components/Glassmorphism'
-import { Modal } from '@/lib/modal/Modal'
-import { lightTheme } from '@/lib/theme/default'
+import { Modal } from '@/utils/modal/Modal'
+import { lightTheme } from '@/utils/theme/default'
 import { keyframes } from '@emotion/react'
 import styled from '@emotion/styled'
 

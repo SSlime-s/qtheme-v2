@@ -1,4 +1,4 @@
-import { useControlledAccordion, useHiddenTransition } from '@/lib/accordion'
+import { useControlledAccordion, useHiddenTransition } from '@/utils/accordion'
 import { parseHexNotationColor } from '@/model/color'
 import { css } from '@emotion/react'
 import styled from '@emotion/styled'
@@ -7,7 +7,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { TransparentCheckerStyle } from '@/components/TransparentChecker'
 import { fixLayoutAtom } from '@/pages/_app.page'
 import { useSetAtom } from 'jotai'
-import { lightTheme } from '@/lib/theme/default'
+import { lightTheme } from '@/utils/theme/default'
 
 // NOTE: react color が SSR で動かないので、SSR では動かないようにする
 const SketchPicker = dynamic(

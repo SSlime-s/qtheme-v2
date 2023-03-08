@@ -1,5 +1,5 @@
-import { useAccordion, useHiddenTransition } from '@/lib/accordion'
-import { ResolvedTheme } from '@/lib/theme'
+import { useAccordion, useHiddenTransition } from '@/utils/accordion'
+import { ResolvedTheme } from '@/utils/theme'
 import { css } from '@emotion/react'
 import styled from '@emotion/styled'
 import Link from 'next/link'

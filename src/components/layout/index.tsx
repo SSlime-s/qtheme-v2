@@ -1,4 +1,4 @@
-import { isMobile, useIsMobile } from '@/lib/isMobile'
+import { isMobile, useIsMobile } from '@/utils/isMobile'
 import styled from '@emotion/styled'
 import { useRouter } from 'next/router'
 import {

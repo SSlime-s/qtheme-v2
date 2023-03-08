@@ -10,8 +10,8 @@ import { NavbarChannels } from './Channels'
 import { MdHome } from 'react-icons/md'
 import { FaUser, FaWrench } from 'react-icons/fa'
 import { NavbarCustom } from './Custom'
-import { useControlledNamedTabList } from '@/lib/tablist'
-import { isMobile } from '@/lib/isMobile'
+import { useControlledNamedTabList } from '@/utils/tablist'
+import { isMobile } from '@/utils/isMobile'
 
 type NavbarState = 'channel' | 'user' | 'custom'
 const states = [

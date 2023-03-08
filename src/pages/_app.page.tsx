@@ -3,11 +3,11 @@ import type { AppProps } from 'next/app'
 import { Inter, M_PLUS_1p } from '@next/font/google'
 import { ReactElement, ReactNode } from 'react'
 import { NextPage } from 'next'
-import { useCurrentTheme } from '@/lib/theme/hooks'
+import { useCurrentTheme } from '@/utils/theme/hooks'
 import { css, Global, ThemeProvider } from '@emotion/react'
 import { useRouter } from 'next/router'
 import { atom, useAtom } from 'jotai'
-import { isMobile } from '@/lib/isMobile'
+import { isMobile } from '@/utils/isMobile'
 
 export type NextPageWithLayout<P = Record<string, unknown>, IP = P> = NextPage<
   P,

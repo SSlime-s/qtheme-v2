@@ -1,6 +1,6 @@
 import { GraphQLError } from 'graphql'
 import { Connection } from 'mysql2/promise'
-import { assertIsArrayObject } from '@/lib/typeUtils'
+import { assertIsArrayObject } from '@/utils/typeUtils'
 import { connectDb } from '@/model/db'
 import { ContextValue } from '.'
 import { MutationResolvers } from '@/apollo/generated/resolvers'

@@ -1,4 +1,4 @@
-import { IWrapper, WrapResolver } from '@/lib/wrapper'
+import { IWrapper, WrapResolver } from '@/utils/wrapper'
 import { css } from '@emotion/react'
 import { loadDefaultJapaneseParser } from 'budoux'
 import React, { PropsWithChildren, useMemo } from 'react'

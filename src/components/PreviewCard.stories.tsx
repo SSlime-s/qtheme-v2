@@ -1,4 +1,4 @@
-import { darkTheme, lightTheme } from '@/lib/theme/default'
+import { darkTheme, lightTheme } from '@/utils/theme/default'
 import styled from '@emotion/styled'
 import { ComponentMeta, ComponentStory } from '@storybook/react'
 import { PreviewCard } from './PreviewCard'

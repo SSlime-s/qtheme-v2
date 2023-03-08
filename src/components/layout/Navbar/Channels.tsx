@@ -2,7 +2,7 @@ import {
   Channel,
   ChannelAccordion,
 } from '@/components/layout/components/ChannelAccordion'
-import { ReadonlyTree, Tree } from '@/lib/typeUtils'
+import { ReadonlyTree, Tree } from '@/utils/typeUtils'
 import styled from '@emotion/styled'
 import { useRouter } from 'next/router'
 import path from 'path'

@@ -1,5 +1,5 @@
-import { resolveTheme } from '@/lib/theme'
-import { lightTheme } from '@/lib/theme/default'
+import { resolveTheme } from '@/utils/theme'
+import { lightTheme } from '@/utils/theme/default'
 import { ThemeProvider } from '@emotion/react'
 import { ComponentMeta, ComponentStory } from '@storybook/react'
 import { Message } from './Message'

@@ -1,5 +1,5 @@
-import { ResolvedTheme, resolveTheme } from '@/lib/theme'
-import { lightTheme, darkTheme } from '@/lib/theme/default'
+import { ResolvedTheme, resolveTheme } from '@/utils/theme'
+import { lightTheme, darkTheme } from '@/utils/theme/default'
 import { ThemeProvider } from '@emotion/react'
 import styled from '@emotion/styled'
 import { ComponentMeta, ComponentStory } from '@storybook/react'

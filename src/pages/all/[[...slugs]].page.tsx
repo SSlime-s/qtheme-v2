@@ -1,15 +1,15 @@
 import { Layout } from '@/components/layout'
 import { PreviewCard } from '@/components/PreviewCard'
-import { extractShowcaseUser } from '@/lib/extractUser'
-import { useCurrentTheme, useThemeList } from '@/lib/theme/hooks'
-import { assertIsArray } from '@/lib/typeUtils'
+import { extractShowcaseUser } from '@/utils/extractUser'
+import { useCurrentTheme, useThemeList } from '@/utils/theme/hooks'
+import { assertIsArray } from '@/utils/typeUtils'
 import styled from '@emotion/styled'
 import { GetServerSidePropsContext } from 'next'
 import { NextPageWithLayout } from '@/pages/_app.page'
 import Head from 'next/head'
 import { useCallback, useMemo } from 'react'
-import { pageTitle } from '@/lib/title'
-import { useToast } from '@/lib/toast'
+import { pageTitle } from '@/utils/title'
+import { useToast } from '@/utils/toast'
 
 export const getServerSideProps = async ({
   req,
