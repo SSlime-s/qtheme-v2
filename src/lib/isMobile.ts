@@ -19,3 +19,25 @@ export const useIsMobile = () => {
 }
 
 export const isMobile = `@media (max-width: ${mobileBreakpoint}px)` as const
+
+const isHoverableAtom = atom(false)
+isHoverableAtom.onMount = setAtom => {
+  const matchQuery = window.matchMedia('(hover: hover)')
+  const handler = (e: MediaQueryListEvent) => {
+    setAtom(e.matches)
+  }
+  matchQuery.addEventListener('change', handler)
+  setAtom(matchQuery.matches)
+  return () => {
+    matchQuery.removeEventListener('change', handler)
+  }
+}
+export const useIsHoverable = () => {
+  return useAtomValue(isHoverableAtom)
+}
+
+const mobileAgent =
+  /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i
+export const isMobileAgent = (userAgent: string): boolean => {
+  return mobileAgent.test(userAgent)
+}
