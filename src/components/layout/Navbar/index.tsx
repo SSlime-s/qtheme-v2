@@ -46,6 +46,42 @@ export const Navbar: React.FC = () => {
     </>
   )
 }
+const Wrap = styled.nav`
+  grid-area: nav;
+  background: ${({ theme }) => theme.theme.basic.background.secondary.default};
+  display: grid;
+  grid-template-columns: 60px 1fr;
+  grid-template-areas: 'list panel';
+
+  ${isMobile} {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 60px;
+    grid-template-areas: 'panel' 'list';
+    gap: 16px;
+    position: sticky;
+    left: 0;
+    background: ${({ theme }) =>
+      theme.theme.specific.navigationBarMobileBackground};
+    padding: 16px;
+  }
+`
+const DummyWrap = styled.div`
+  grid-area: nav;
+  display: hidden;
+
+  ${isMobile} {
+    display: block;
+    pointer-events: none;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
+`
+
+const Selector = styled.div`
+  grid-area: list;
+  display: flex;
+  justify-content: between;
+`
 const TabList = styled.div`
   grid-area: list;
   display: grid;
@@ -171,35 +207,4 @@ const Title = styled.h2`
   font-size: 1.25rem;
   font-weight: 700;
   color: ${({ theme }) => theme.theme.basic.ui.primary.default};
-`
-
-const Wrap = styled.nav`
-  grid-area: nav;
-  background: ${({ theme }) => theme.theme.basic.background.secondary.default};
-  display: grid;
-  grid-template-columns: 60px 1fr;
-  grid-template-areas: 'list panel';
-
-  ${isMobile} {
-    grid-template-columns: 1fr;
-    grid-template-rows: 1fr 60px;
-    grid-template-areas: 'panel' 'list';
-    gap: 16px;
-    position: sticky;
-    left: 0;
-    background: ${({ theme }) =>
-      theme.theme.specific.navigationBarMobileBackground};
-    padding: 16px;
-  }
-`
-const DummyWrap = styled.div`
-  grid-area: nav;
-  display: hidden;
-
-  ${isMobile} {
-    display: block;
-    pointer-events: none;
-    scroll-snap-align: start;
-    scroll-snap-stop: always;
-  }
 `
