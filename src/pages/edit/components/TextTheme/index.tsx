@@ -197,6 +197,9 @@ const InputButtonContent = styled.div`
   overflow-wrap: normal;
 
   border: 1px solid ${lightTheme.basic.ui.tertiary};
+  *:focus > & {
+    border-color: ${lightTheme.basic.accent.primary};
+  }
   border-radius: 4px;
   backdrop-filter: blur(4px);
   padding: 4px 8px;
@@ -250,6 +253,10 @@ const CopyButton = styled.button<{ status: CopyStatus }>`
     css`
       animation: ${FailKeyframe} 0.3s ease-out;
     `}
+
+  &:focus {
+    border-color: ${lightTheme.basic.accent.primary};
+  }
 `
 const LogicalHidden = styled.span`
   grid-area: 1 / 1;
