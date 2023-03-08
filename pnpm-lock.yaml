@@ -29,6 +29,7 @@ specifiers:
   '@storybook/manager-webpack5': ^6.5.16
   '@storybook/react': ^6.5.16
   '@storybook/testing-library': ^0.0.13
+  '@types/linkify-it': ^3.0.2
   '@types/mysql': ^2.15.21
   '@types/node': 18.11.18
   '@types/react': 18.0.26
@@ -52,6 +53,7 @@ specifiers:
   graphql-request: ^5.1.0
   graphql-tag: ^2.12.6
   jotai: ^2.0.2
+  linkify-it: ^4.0.1
   mysql: ^2.18.1
   mysql2: ^2.3.3
   next: 13.1.1
@@ -88,6 +90,7 @@ dependencies:
   graphql-request: 5.1.0_graphql@16.6.0
   graphql-tag: 2.12.6_graphql@16.6.0
   jotai: 2.0.2_react@18.2.0
+  linkify-it: 4.0.1
   mysql: 2.18.1
   mysql2: 2.3.3
   next: 13.1.1_pjwopsidmaokadturxaafygjp4
@@ -122,6 +125,7 @@ devDependencies:
   '@storybook/manager-webpack5': 6.5.16_ezwbcwsuf2bqvxzlg3s7mwruqi
   '@storybook/react': 6.5.16_cqxort74uqhfvfv5v6mgw3ncnq
   '@storybook/testing-library': 0.0.13_biqbaboplfbrettd7655fr4n2y
+  '@types/linkify-it': 3.0.2
   '@types/mysql': 2.15.21
   '@types/react-color': 3.0.6
   '@typescript-eslint/eslint-plugin': 5.52.0_2gizdvcxemmrgpzydve524azum
@@ -4890,6 +4894,10 @@ packages:
     resolution: {integrity: sha512-c5ltxazpWabia/4UzhIoaDcIza4KViOQhdbjRlfcIGVnsE3c3brkz9Z+F/EeJIECOQP7W7US2hNE930cWWkPiw==}
     dependencies:
       '@types/node': 18.11.18
+    dev: true
+
+  /@types/linkify-it/3.0.2:
+    resolution: {integrity: sha512-HZQYqbiFVWufzCwexrvh694SOim8z2d+xJl5UNamcvQFejLY/2YUtzXHYi3cHdI7PMlS8ejH2slRAOJQ32aNbA==}
     dev: true
 
   /@types/lodash/4.14.191:
@@ -10464,6 +10472,12 @@ packages:
 
   /linkify-it/2.2.0:
     resolution: {integrity: sha512-GnAl/knGn+i1U/wjBz3akz2stz+HrHLsxMwHQGofCDfPvlf+gDKN58UtfmUquTY4/MXeE2x7k19KQmeoZi94Iw==}
+    dependencies:
+      uc.micro: 1.0.6
+    dev: false
+
+  /linkify-it/4.0.1:
+    resolution: {integrity: sha512-C7bfi1UZmoj8+PQx22XyeXCuBlokoyWQL5pWSP+EI6nzRylyThouddufc2c1NDIcP9k5agmN9fLpA7VNJfIiqw==}
     dependencies:
       uc.micro: 1.0.6
     dev: false
