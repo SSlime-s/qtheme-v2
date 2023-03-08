@@ -21,6 +21,9 @@ export const AutoResizeTextarea: React.FC<Props> = ({ onChange, ...props }) => {
     const { scrollHeight } = ref.current
     setHeight(scrollHeight)
   }, [dummyValue])
+  useEffect(() => {
+    setDummyValue(props.value ?? '')
+  }, [props.value])
 
   return (
     <>
