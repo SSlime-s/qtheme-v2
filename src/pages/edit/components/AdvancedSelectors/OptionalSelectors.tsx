@@ -1,78 +1,87 @@
-import { useControlledAccordion, useHiddenTransition } from "@/lib/accordion"
-import styled from "@emotion/styled"
-import { useCallback, useEffect, useState } from "react"
-import { useFormContext } from "react-hook-form"
-import { AdvancedKeys, DescriptionMap } from "."
-import { Form } from "../../index.page"
-import { ColorSelector } from "../ColorSelector"
+import { useControlledAccordion, useHiddenTransition } from '@/lib/accordion'
+import styled from '@emotion/styled'
+import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useFormContext, useWatch } from 'react-hook-form'
+import { AdvancedKeys, DescriptionMap } from '.'
+import { Form } from '../../index.page'
+import { ColorSelector } from '../ColorSelector'
 
 interface Props<K extends keyof typeof AdvancedKeys> {
   key1: K
   label: (typeof AdvancedKeys)[K][number]
 }
-export const OptionalSelectors: React.FC<
-  Props<keyof typeof AdvancedKeys>
-> = <K extends keyof typeof AdvancedKeys>({
+export const OptionalSelectors: React.FC<Props<keyof typeof AdvancedKeys>> = <
+  K extends keyof typeof AdvancedKeys
+>({
   key1,
   label,
 }: Props<K>) => {
-  const [valid, setValid] = useState(false)
-  const { ariaContent, ariaToggle, contentHeight, contentRef } =
-    useControlledAccordion(valid, setValid)
-  const [isExpanded, setIsExpanded] = useState(false)
-  const toggle = useCallback(() => {
-    setValid(valid => {
-      if (valid) {
-        setIsExpanded(false)
-      }
-      return !valid
-    })
-  }, [])
-  const { ref: wrapRef, style: hiddenStyle } = useHiddenTransition(valid)
-
   const { control, setValue, getValues } = useFormContext<Form>()
   const [innerColor, setInnerColor] = useState(
     getValues('theme')?.[key1]?.[
       label as keyof (typeof DescriptionMap)[keyof typeof DescriptionMap]
     ] ?? '#000000'
   )
-  useEffect(() => {
+
+  const theme = useWatch({ name: 'theme', control })
+  const valid = useMemo(() => {
+    return (
+      theme?.[key1]?.[
+        label as keyof (typeof DescriptionMap)[keyof typeof DescriptionMap]
+      ] !== undefined
+    )
+  }, [theme, key1, label])
+  const setValid = useCallback(
+    (valid: boolean) => {
+      if (valid) {
+        setValue('theme', {
+          ...getValues('theme'),
+          [key1]: {
+            ...getValues('theme')?.[key1],
+            [label]: innerColor,
+          },
+        })
+        return
+      }
+      const newVal = { ...getValues('theme')?.[key1] }
+      if (newVal === undefined) {
+        return
+      }
+      // @ts-expect-error: label と key の対応がうまくいかない
+      delete newVal[label]
+      if (Object.keys(newVal).length === 0) {
+        setValue('theme', {
+          ...getValues('theme'),
+          [key1]: undefined,
+        })
+        return
+      }
+      setValue('theme', {
+        ...getValues('theme'),
+        [key1]: newVal,
+      })
+    },
+    [getValues, innerColor, key1, label, setValue]
+  )
+
+  const { ariaContent, ariaToggle, contentHeight, contentRef } =
+    useControlledAccordion(valid, setValid)
+  const [isExpanded, setIsExpanded] = useState(false)
+  const toggle = useCallback(() => {
     if (valid) {
-      setValue('theme', {
-        ...getValues('theme'),
-        [key1]: {
-          ...getValues('theme')?.[key1],
-          [label]: innerColor,
-        },
-      })
-      return
+      setIsExpanded(false)
     }
-    const newVal = { ...getValues('theme')?.[key1] }
-    if (newVal === undefined) {
-      return
-    }
-    // @ts-expect-error: label と key の対応がうまくいかない
-    delete newVal[label]
-    if (Object.keys(newVal).length === 0) {
-      setValue('theme', {
-        ...getValues('theme'),
-        [key1]: undefined,
-      })
-      return
-    }
-    setValue('theme', {
-      ...getValues('theme'),
-      [key1]: newVal,
-    })
-  }, [getValues, innerColor, key1, label, setValue, valid])
+    setValid(!valid)
+  }, [setValid, valid])
+  const { ref: wrapRef, style: hiddenStyle } = useHiddenTransition(valid)
 
   useEffect(() => {
     setInnerColor(
-      getValues('theme')?.[key1]?.[
+      theme?.[key1]?.[
         label as keyof (typeof DescriptionMap)[keyof typeof DescriptionMap]
       ] ?? '#000000'
     )
-  }, [getValues, key1, label])
+  }, [theme, key1, label])
 
   return (
     <Wrap valid={valid}>
