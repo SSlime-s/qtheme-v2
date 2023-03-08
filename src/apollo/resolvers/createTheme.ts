@@ -48,5 +48,5 @@ export const createTheme: MutationResolvers<ContextValue>['createTheme'] =
       await connection?.end()
     }
     // @ts-expect-error: 実装上は呼び出し可能
-    return getTheme(_, { id }, { userId })
+    return getTheme(_, { id }, { userId })?.theme
   }
