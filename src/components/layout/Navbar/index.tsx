@@ -12,6 +12,7 @@ import { FaUser, FaWrench } from 'react-icons/fa'
 import { NavbarCustom } from './Custom'
 import { useControlledNamedTabList } from '@/utils/tablist'
 import { isMobile } from '@/utils/isMobile'
+import { UserIcon } from './UserIcon'
 
 type NavbarState = 'channel' | 'user' | 'custom'
 const states = [
@@ -39,6 +40,9 @@ export const Navbar: React.FC = () => {
             <Button key={s} state={s} {...ariaTabProps[s]} />
           ))}
         </TabList>
+        <Selector>
+          <UserIcon userId='SSlime' />
+        </Selector>
         {states.map(s => (
           <NavPanel key={s} state={s} {...ariaPanelProps[s]} />
         ))}
@@ -51,12 +55,18 @@ const Wrap = styled.nav`
   background: ${({ theme }) => theme.theme.basic.background.secondary.default};
   display: grid;
   grid-template-columns: 60px 1fr;
-  grid-template-areas: 'list panel';
+  grid-template-rows: 1fr max-content;
+  grid-template-areas:
+    'list panel'
+    'selector panel';
 
   ${isMobile} {
-    grid-template-columns: 1fr;
-    grid-template-rows: 1fr 60px;
-    grid-template-areas: 'panel' 'list';
+    grid-template-columns: 1fr max-content;
+    grid-template-rows: 32px 1fr 60px;
+    grid-template-areas:
+      '... selector'
+      'panel panel'
+      'list list';
     gap: 16px;
     position: sticky;
     left: 0;
@@ -78,9 +88,21 @@ const DummyWrap = styled.div`
 `
 
 const Selector = styled.div`
-  grid-area: list;
-  display: flex;
-  justify-content: between;
+  grid-area: selector;
+  display: grid;
+  width: 100%;
+  grid-auto-flow: column;
+  grid-auto-columns: 60px;
+  grid-auto-rows: 60px;
+  grid-template-columns: 1fr;
+  grid-template-rows: repeat(auto-fill, 60px);
+  place-items: center;
+  font-size: 32px;
+
+  ${isMobile} {
+    grid-template-columns: repeat(auto-fill, 60px);
+    grid-template-rows: 1fr;
+  }
 `
 const TabList = styled.div`
   grid-area: list;
