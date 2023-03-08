@@ -2,10 +2,10 @@ import styled from '@emotion/styled'
 import { PropsWithChildren, useCallback } from 'react'
 import { Modal } from './Modal'
 
-interface DefaultModalProps extends React.ComponentProps<'div'> {
+interface Props extends React.ComponentProps<'div'> {
   onOutsideClick?: () => void
 }
-export const DefaultModal: React.FC<PropsWithChildren<DefaultModalProps>> = ({
+export const DefaultModal: React.FC<PropsWithChildren<Props>> = ({
   children,
   onOutsideClick,
   ...props
@@ -20,18 +20,18 @@ export const DefaultModal: React.FC<PropsWithChildren<DefaultModalProps>> = ({
   )
 
   return (
-    <DefaultModalWrap onClick={handleOutsideClick}>
-      <DefaultWrap {...props}>{children}</DefaultWrap>
-    </DefaultModalWrap>
+    <WrapModal onClick={handleOutsideClick}>
+      <Wrap {...props}>{children}</Wrap>
+    </WrapModal>
   )
 }
-const DefaultModalWrap = styled(Modal)`
+const WrapModal = styled(Modal)`
   display: grid;
   place-items: center;
   padding: 16px;
   overflow: auto;
 `
-const DefaultWrap = styled.div`
+const Wrap = styled.div`
   width: calc(100% - 32px);
   height: 80%;
   max-width: 640px;
