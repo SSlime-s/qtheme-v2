@@ -34,6 +34,12 @@ export const Layout: React.FC<PropsWithChildren<Props>> = ({
         const split = p.split('?')
         return split[0]
       })
+
+    // theme は下に uuid が来て、さらにチャンネル一覧にも出ないため theme のみ表示する
+    if (path[0] === 'theme') {
+      return ['theme']
+    }
+
     return path
   }, [router])
 
