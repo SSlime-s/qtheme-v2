@@ -29,6 +29,7 @@ import { BasicSelectors } from './components/BasicSelectors'
 import { Title } from './components/InfoEditor/Title'
 import { Description } from './components/InfoEditor/Description'
 import { Sidebar } from './components/Sidebar'
+import { TextTheme } from './components/TextTheme'
 
 export const getServerSideProps = async ({
   req,
@@ -160,6 +161,9 @@ const Editor: NextPageWithLayout<Props> = ({ defaultTheme, userId }) => {
               <Preview userId={userId} />
               <SyncControls />
             </PreviewBox>
+            <TextThemeBox>
+              <TextTheme />
+            </TextThemeBox>
 
             <Colors>
               <Tabs {...ariaTabListProps}>
@@ -199,12 +203,12 @@ const Wrap = styled.div<{ isWide: boolean }>`
   ${({ isWide }) =>
     isWide
       ? css`
-          grid-template-areas: 'controls colors' 'preview colors';
+          grid-template-areas: 'controls colors' 'preview colors' 'text-theme colors';
           grid-template-columns: 1fr 300px;
-          grid-template-rows: max-content 1fr;
+          grid-template-rows: max-content max-content 1fr;
         `
       : css`
-          grid-template-areas: 'controls' 'preview' 'colors';
+          grid-template-areas: 'controls' 'preview' 'text-theme' 'colors';
         `}
   min-height: 100%;
   gap: 16px;
@@ -230,6 +234,12 @@ const PreviewBox = styled.div`
   position: sticky;
   top: 16px;
   z-index: 10;
+  margin-bottom: auto;
+`
+const TextThemeBox = styled.div`
+  grid-area: text-theme;
+  ${GlassmorphismStyle}
+  padding: 16px;
   margin-bottom: auto;
 `
 const Colors = styled.div`
