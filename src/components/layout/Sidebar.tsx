@@ -12,6 +12,10 @@ import {
   useState,
 } from 'react'
 import { RxReset } from 'react-icons/rx'
+import { BreakStyle, BudouJa } from '@/components/wrapper/BudouX'
+import { ReplaceNewLine } from '@/components/wrapper/ReplaceNewLine'
+import { Linkify } from '@/components/wrapper/Linkify'
+import { WrapResolver } from '@/lib/wrapper'
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 export const Sidebar: React.FC<PropsWithChildren<{}>> = ({ children }) => {
@@ -86,7 +90,11 @@ export const DefaultSidebarContent: React.FC = () => {
       </LinkBlock>
       <Block>
         <Title>詳細</Title>
-        <p>{currentThemeInfo?.description}</p>
+        <BreakP>
+          <WrapResolver Wrapper={[Linkify, BudouJa, ReplaceNewLine]}>
+            {currentThemeInfo?.description ?? 'undefined'}
+          </WrapResolver>
+        </BreakP>
       </Block>
       <ResetButton onClick={confirmedToDefaultTheme}>
         {isConfirm ? 'もう一度クリックで確定' : 'デフォルトテーマに戻す'}
@@ -126,6 +134,9 @@ export const Block = styled.div`
 `
 export const LinkBlock = styled(Link)`
   ${BlockStyle}
+`
+export const BreakP = styled.p`
+  ${BreakStyle}
 `
 export const ResetButton = styled.button`
   ${BlockStyle}
