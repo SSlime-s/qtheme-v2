@@ -6,7 +6,7 @@ import styled from '@emotion/styled'
 import { useRouter } from 'next/router'
 import { NextPageWithLayout } from '@/pages/_app.page'
 import { H1, H2, Message } from '@/components/Message'
-import { ReadOnlyTextBox } from '@/components/TextBox'
+import { TextBox } from '@/components/TextBox'
 import { CopyButton } from '@/components/CopyButton'
 import { FavoriteButton } from '@/components/FavoriteButton'
 import { useMemo } from 'react'
@@ -104,6 +104,7 @@ const ThemePage: NextPageWithLayout<Props> = ({ userId }) => {
       <CopyBox
         defaultValue={themeString}
         after={<After text={themeString} />}
+        readOnly
       />
     </Wrap>
   )
@@ -151,7 +152,7 @@ const ChangeCurrentButton = styled.button`
     transform: scale(1.05);
   }
 `
-const CopyBox = styled(ReadOnlyTextBox)`
+const CopyBox = styled(TextBox)`
   margin: 0 32px 20px;
   & textarea {
     white-space: nowrap;

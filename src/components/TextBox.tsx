@@ -5,20 +5,28 @@ import { useEffect, useRef } from 'react'
 export interface Props {
   before?: React.ReactNode
   after?: React.ReactNode
+
+  readOnly?: boolean
 }
 export const TextBox: React.FC<
   Props & React.HTMLAttributes<HTMLTextAreaElement>
-> = ({ before, after, ...props }) => {
+> = ({ readOnly, ...props }) => {
+  if (readOnly === true) {
+    return <ReadOnlyTextBox {...props} />
+  }
+
+  const { before, after, ...restProps } = props
+
   return (
     <Wrap>
       {before != null && <Before>{before}</Before>}
-      <Input {...props} />
+      <Input {...restProps} />
       {after != null && <After>{after}</After>}
     </Wrap>
   )
 }
 
-export const ReadOnlyTextBox: React.FC<
+const ReadOnlyTextBox: React.FC<
   Props & React.HTMLAttributes<HTMLTextAreaElement>
 > = ({ before, after, className, ...props }) => {
   const textAreaRef = useRef<HTMLTextAreaElement>(null)
