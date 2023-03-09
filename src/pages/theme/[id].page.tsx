@@ -13,6 +13,7 @@ import { useMemo } from 'react'
 import { GetServerSidePropsContext } from 'next'
 import { extractShowcaseUser, useSetUserId } from '@/utils/extractUser'
 import { lightTheme } from '@/utils/theme/default'
+import { isMobile } from '@/utils/isMobile'
 
 export const getServerSideProps = async ({
   req,
@@ -154,6 +155,10 @@ const CopyBox = styled(ReadOnlyTextBox)`
   margin: 0 32px 20px;
   & textarea {
     white-space: nowrap;
+  }
+  ${isMobile} {
+    border-radius: 0;
+    margin: 0;
   }
 `
 
