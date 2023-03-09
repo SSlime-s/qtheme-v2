@@ -6,13 +6,14 @@ import styled from '@emotion/styled'
 import { useRouter } from 'next/router'
 import { NextPageWithLayout } from '@/pages/_app.page'
 import { H1, H2, Message } from '@/components/Message'
-import { ReadOnlyTextBox } from '@/components/TextBox'
+import { TextBox } from '@/components/TextBox'
 import { CopyButton } from '@/components/CopyButton'
 import { FavoriteButton } from '@/components/FavoriteButton'
 import { useMemo } from 'react'
 import { GetServerSidePropsContext } from 'next'
 import { extractShowcaseUser, useSetUserId } from '@/utils/extractUser'
 import { lightTheme } from '@/utils/theme/default'
+import { isMobile } from '@/utils/isMobile'
 
 export const getServerSideProps = async ({
   req,
@@ -103,6 +104,7 @@ const ThemePage: NextPageWithLayout<Props> = ({ userId }) => {
       <CopyBox
         defaultValue={themeString}
         after={<After text={themeString} />}
+        readOnly
       />
     </Wrap>
   )
@@ -150,10 +152,14 @@ const ChangeCurrentButton = styled.button`
     transform: scale(1.05);
   }
 `
-const CopyBox = styled(ReadOnlyTextBox)`
+const CopyBox = styled(TextBox)`
   margin: 0 32px 20px;
   & textarea {
     white-space: nowrap;
+  }
+  ${isMobile} {
+    border-radius: 0;
+    margin: 0;
   }
 `
 
