@@ -25,8 +25,7 @@ export const Message = ({
   return (
     <Wrap>
       <Icon href={/* TODO */ '#'}>
-        {/* <Image src={userIconUrl(iconUser)} alt={name} width={40} height={40} /> */}
-        <img src={userIconUrl(iconUser)} alt={name} width={40} height={40} />
+        <Image src={userIconUrl(iconUser)} alt={name} width={40} height={40} />
       </Icon>
       <Header>
         <NameWrap>{name}</NameWrap>

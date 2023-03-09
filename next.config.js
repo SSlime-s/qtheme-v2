@@ -5,6 +5,9 @@ const nextConfig = {
     emotion: true,
   },
   pageExtensions: ['page.tsx', 'page.ts', 'page.jsx', 'page.js'],
+  images: {
+    domains: ['q.trap.jp'],
+  },
 
   webpack: (config, options) => {
     config.module.rules.push({
