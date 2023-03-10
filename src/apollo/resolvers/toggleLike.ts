@@ -58,6 +58,10 @@ export const toggleLike: MutationResolvers<ContextValue>['toggleLike'] = async (
   } finally {
     await connection?.end()
   }
-  // @ts-expect-error: 実装上は呼び出し可能
-  return getTheme(_, { id }, { userId })
+  // TODO: ほんとは DB から取ってきたほうがいい
+  return {
+    isLike: args.isLike,
+    // TODO: 今はどこにも使われてないため一旦は仮置き
+    likes: 0
+  }
 }
