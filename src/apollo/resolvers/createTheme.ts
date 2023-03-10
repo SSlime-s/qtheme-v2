@@ -1,10 +1,10 @@
 import { GraphQLError } from 'graphql'
 import { connectDb } from '@/model/db'
 import { ContextValue } from '.'
-import { getTheme } from './getTheme'
 import { ulid } from 'ulid'
 import { Connection } from 'mysql2/promise'
 import { MutationResolvers } from '@/apollo/generated/resolvers'
+import { assertIsArrayObject } from '@/utils/typeUtils'
 
 export const createTheme: MutationResolvers<ContextValue>['createTheme'] =
   async (_, args, { userId }) => {
@@ -38,6 +38,26 @@ export const createTheme: MutationResolvers<ContextValue>['createTheme'] =
         type,
         theme,
       ])
+      const sql2 = `
+        SELECT
+          created_at
+        FROM themes
+        WHERE id = ?
+      `
+      const [rows] = await connection.execute(sql2, [id])
+      assertIsArrayObject(rows)
+      if (rows.length === 0) {
+        throw new GraphQLError('Internal server error')
+      }
+      const { created_at } = rows[0]
+      return {
+        id,
+        ...args,
+        author: userId,
+        createdAt: created_at,
+        likes: 0,
+        isLike: false,
+      }
     } catch (err: unknown) {
       console.error(err)
       if (err instanceof GraphQLError) {
@@ -47,6 +67,4 @@ export const createTheme: MutationResolvers<ContextValue>['createTheme'] =
     } finally {
       await connection?.end()
     }
-    // @ts-expect-error: 実装上は呼び出し可能
-    return getTheme(_, { id }, { userId })?.theme
   }
