@@ -37,7 +37,7 @@ export const themeFromRaw = (raw: ThemeRes): FormattedTheme => {
     theme: themeSchema.parse(JSON.parse(raw.theme)),
     type: raw.type.toLowerCase(),
     visibility: raw.visibility.toLowerCase(),
-    createdAt: dayjs.unix(Number(raw.createdAt) / 1000).format('YYYY/MM/DD'),
+    createdAt: dayjs(raw.createdAt).format('YYYY/MM/DD'),
   }
 }
 export const themeToRaw = (theme: FormattedTheme): ThemeRes => {
@@ -46,7 +46,7 @@ export const themeToRaw = (theme: FormattedTheme): ThemeRes => {
     theme: JSON.stringify(theme.theme),
     type: theme.type.toUpperCase(),
     visibility: theme.visibility.toUpperCase(),
-    createdAt: (dayjs(theme.createdAt).unix() * 1000).toString(),
+    createdAt: dayjs(theme.createdAt).format(),
   }
 }
 

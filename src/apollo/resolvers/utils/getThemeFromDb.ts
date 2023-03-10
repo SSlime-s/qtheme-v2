@@ -4,7 +4,7 @@ import { Connection } from 'mysql2/promise'
 export const getThemeFromDb = async (
   connection: Connection,
   id: string,
-  userId?: string,
+  userId?: string
 ) => {
   const sql = `
     SELECT
@@ -57,7 +57,7 @@ export const getThemeFromDb = async (
       author: string
       visibility: 'public' | 'private' | 'draft'
       type: 'light' | 'dark'
-      createdAt: string
+      createdAt: Date
       theme: string
       likes: number
       isLike: boolean
