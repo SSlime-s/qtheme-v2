@@ -14,6 +14,7 @@ export const getHistoryFromDb = async (connection: Connection, id: string) => {
       created_at AS createdAt
     FROM theme_versions
     WHERE theme_id = ?
+    ORDER BY created_at DESC
   `
   try {
     const [rows] = await connection.execute(sql, [id])
