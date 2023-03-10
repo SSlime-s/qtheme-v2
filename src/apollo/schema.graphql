@@ -45,6 +45,11 @@ type Author {
   count: Int!
 }
 
+type LikeStatus {
+  isLike: Boolean!
+  likes: Int!
+}
+
 fragment ThemeFragment on Theme {
   id
   title
@@ -89,5 +94,5 @@ type Mutation {
     theme: String!
   ): Theme!
   deleteTheme(id: ID!): Boolean
-  toggleLike(id: ID!, isLike: Boolean!): Theme!
+  toggleLike(id: ID!, isLike: Boolean!): LikeStatus!
 }

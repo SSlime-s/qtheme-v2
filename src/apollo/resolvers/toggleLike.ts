@@ -2,7 +2,6 @@ import { assertIsArrayObject } from '@/utils/typeUtils'
 import { connectDb } from '@/model/db'
 import { GraphQLError } from 'graphql'
 import { Connection } from 'mysql2/promise'
-import { getTheme } from './getTheme'
 import { ContextValue } from '.'
 import { MutationResolvers } from '@/apollo/generated/resolvers'
 
@@ -58,6 +57,10 @@ export const toggleLike: MutationResolvers<ContextValue>['toggleLike'] = async (
   } finally {
     await connection?.end()
   }
-  // @ts-expect-error: 実装上は呼び出し可能
-  return getTheme(_, { id }, { userId })
+  // TODO: ほんとは DB から取ってきたほうがいい
+  return {
+    isLike: args.isLike,
+    // TODO: 今はどこにも使われてないため一旦は仮置き
+    likes: 0
+  }
 }
