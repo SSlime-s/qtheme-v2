@@ -1,5 +1,12 @@
-import { assertIsArrayObject } from '@/utils/typeUtils'
-import { Connection } from 'mysql2/promise'
+import { Connection, RowDataPacket } from 'mysql2/promise'
+
+interface IHistory extends RowDataPacket {
+  id: string
+  themeId: string
+  version: string
+  theme: string
+  createdAt: Date
+}
 
 /**
  * **WARNING**: この関数では閲覧権限の確認は行わない
@@ -17,15 +24,8 @@ export const getHistoryFromDb = async (connection: Connection, id: string) => {
     ORDER BY created_at DESC
   `
   try {
-    const [rows] = await connection.execute(sql, [id])
-    assertIsArrayObject(rows)
-    return rows as {
-      id: string
-      themeId: string
-      version: string
-      theme: string
-      createdAt: Date
-    }[]
+    const [rows] = await connection.execute<IHistory[]>(sql, [id])
+    return rows
   } catch (error) {
     console.error(error)
     throw error
@@ -52,18 +52,11 @@ export const getLatestHistoryFromDb = async (
     LIMIT 1
   `
   try {
-    const [rows] = await connection.execute(sql, [id])
-    assertIsArrayObject(rows)
+    const [rows] = await connection.execute<IHistory[]>(sql, [id])
     if (rows.length === 0) {
       return null
     }
-    return rows[0] as {
-      id: string
-      themeId: string
-      version: string
-      theme: string
-      createdAt: Date
-    }
+    return rows[0]
   } catch (error) {
     console.error(error)
     throw error

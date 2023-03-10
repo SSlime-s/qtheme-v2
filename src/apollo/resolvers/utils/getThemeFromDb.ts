@@ -1,5 +1,17 @@
-import { assertIsArrayObject } from '@/utils/typeUtils'
-import { Connection } from 'mysql2/promise'
+import { Connection, RowDataPacket } from 'mysql2/promise'
+
+interface ITheme extends RowDataPacket {
+  id: string
+  title: string
+  description: string
+  author: string
+  visibility: 'public' | 'private' | 'draft'
+  type: 'light' | 'dark'
+  createdAt: Date
+  theme: string
+  likes: number
+  isLike: boolean
+}
 
 export const getThemeFromDb = async (
   connection: Connection,
@@ -42,26 +54,14 @@ export const getThemeFromDb = async (
     WHERE themes.id = ?
   `
   try {
-    const [rows] = await connection.execute(sql, [
+    const [rows] = await connection.execute<ITheme[]>(sql, [
       ...(userId !== undefined ? [userId] : []),
       id,
     ])
-    assertIsArrayObject(rows)
     if (rows.length === 0) {
       return null
     }
-    return rows[0] as {
-      id: string
-      title: string
-      description: string
-      author: string
-      visibility: 'public' | 'private' | 'draft'
-      type: 'light' | 'dark'
-      createdAt: Date
-      theme: string
-      likes: number
-      isLike: boolean
-    }
+    return rows[0]
   } catch (error) {
     console.error(error)
     throw error
