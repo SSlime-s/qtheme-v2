@@ -17,7 +17,7 @@ export const createTheme: MutationResolvers<ContextValue>['createTheme'] =
     let connection: Connection | undefined
     try {
       connection = await connectDb()
-      connection.beginTransaction()
+      await connection.beginTransaction()
       const sql = `
           INSERT INTO themes (
             id,
