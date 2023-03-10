@@ -83,6 +83,7 @@ export const createTheme: MutationResolvers<ContextValue>['createTheme'] =
       }
     } catch (err: unknown) {
       console.error(err)
+      await connection?.rollback()
       if (err instanceof GraphQLError) {
         throw err
       }
