@@ -1,12 +1,12 @@
 import { GraphQLError } from 'graphql'
-import { assertIsObject } from '@/utils/typeUtils'
 import { connectDb } from '@/model/db'
 import { ContextValue } from '.'
-import { getTheme } from './getTheme'
 import { Connection } from 'mysql2/promise'
 import { ulid } from 'ulid'
-import { z } from 'zod'
 import { MutationResolvers, Theme } from '@/apollo/generated/resolvers'
+import { getThemeFromDb } from './utils/getThemeFromDb'
+import { getLatestHistoryFromDb } from './utils/getHistoryFromDb'
+import { bumpVersion } from './utils/bumpVersion'
 
 export const updateTheme: MutationResolvers<ContextValue>['updateTheme'] =
   async (_, args, { userId }) => {
@@ -18,13 +18,10 @@ export const updateTheme: MutationResolvers<ContextValue>['updateTheme'] =
     try {
       connection = await connectDb()
       await connection.beginTransaction()
-      // @ts-expect-error: 実装上は呼び出し可能
-      const old = await getTheme(_, { id }, { userId, connection })
-      if (old === null) {
+      const oldTheme = await getThemeFromDb(connection, id, userId)
+      if (oldTheme === null) {
         throw new GraphQLError('Not found')
       }
-      const oldTheme = old.theme
-      assertIsObject(oldTheme)
       if (oldTheme.author !== userId) {
         throw new GraphQLError('Forbidden')
       }
@@ -50,23 +47,26 @@ export const updateTheme: MutationResolvers<ContextValue>['updateTheme'] =
         userId,
       ])
       if (theme !== oldTheme.theme) {
+        const latestVersion = await getLatestHistoryFromDb(connection, id)
+        if (latestVersion === null) {
+          throw new GraphQLError('Internal server error')
+        }
+        const newVersion = bumpVersion(latestVersion.version)
+        if (newVersion === null) {
+          throw new GraphQLError('Internal server error')
+        }
         const version_id = ulid()
         const sql = `
-        INSERT INTO theme_versions (
-          id,
-          theme_id,
-          version,
-          theme
-        ) VALUES (
-          ?, ?, ?, ?
-        )
-      `
-        await connection.execute(sql, [
-          version_id,
-          id,
-          z.string().parse(oldTheme.version) + 1,
-          theme,
-        ])
+          INSERT INTO theme_versions (
+            id,
+            theme_id,
+            version,
+            theme
+          ) VALUES (
+            ?, ?, ?, ?
+          )
+        `
+        await connection.execute(sql, [version_id, id, newVersion, theme])
       }
       await connection.commit()
 
