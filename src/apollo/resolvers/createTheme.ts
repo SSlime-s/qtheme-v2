@@ -5,6 +5,7 @@ import { ulid } from 'ulid'
 import { Connection } from 'mysql2/promise'
 import { MutationResolvers } from '@/apollo/generated/resolvers'
 import { assertIsArrayObject } from '@/utils/typeUtils'
+import { bumpVersion } from './utils/bumpVersion'
 
 export const createTheme: MutationResolvers<ContextValue>['createTheme'] =
   async (_, args, { userId }) => {
@@ -16,6 +17,7 @@ export const createTheme: MutationResolvers<ContextValue>['createTheme'] =
     let connection: Connection | undefined
     try {
       connection = await connectDb()
+      connection.beginTransaction()
       const sql = `
           INSERT INTO themes (
             id,
@@ -38,6 +40,27 @@ export const createTheme: MutationResolvers<ContextValue>['createTheme'] =
         type,
         theme,
       ])
+      // version にも入れる
+      {
+        const version_id = ulid()
+        const version = bumpVersion()
+        if (version === null) {
+          throw new GraphQLError('Internal server error')
+        }
+
+        const sql = `
+          INSERT INTO theme_versions (
+            id,
+            theme_id,
+            version,
+            theme
+          ) VALUES (
+            ?, ?, ?, ?
+          )
+        `
+        await connection.execute(sql, [version_id, id, version, theme])
+      }
+      await connection.commit()
       const sql2 = `
         SELECT
           created_at
