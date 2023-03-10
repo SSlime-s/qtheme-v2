@@ -24,7 +24,7 @@ export const getHistoryFromDb = async (connection: Connection, id: string) => {
       themeId: string
       version: string
       theme: string
-      createdAt: string
+      createdAt: Date
     }[]
   } catch (error) {
     console.error(error)
@@ -62,7 +62,7 @@ export const getLatestHistoryFromDb = async (
       themeId: string
       version: string
       theme: string
-      createdAt: string
+      createdAt: Date
     }
   } catch (error) {
     console.error(error)

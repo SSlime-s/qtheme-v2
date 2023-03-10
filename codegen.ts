@@ -25,6 +25,7 @@ const defaultConfig: CodegenConfig['config'] = {
   //   object: true,
   //   defaultValue: false,
   // },
+  strictScalars: true,
 }
 
 const config: CodegenConfig = {
@@ -51,12 +52,18 @@ const config: CodegenConfig = {
             OTHER: 'other',
           },
         },
+        scalars: {
+          DateTime: 'Date',
+        },
       },
     },
     'src/apollo/generated/graphql.ts': {
       plugins: ['typescript', ...defaultAdd],
       config: {
         ...defaultConfig,
+        scalars: {
+          DateTime: 'string',
+        },
       },
     },
     './src/': {
@@ -72,6 +79,9 @@ const config: CodegenConfig = {
       },
       config: {
         ...defaultConfig,
+        scalars: {
+          DateTime: 'string',
+        },
       },
     },
   },

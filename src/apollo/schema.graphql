@@ -1,3 +1,5 @@
+scalar DateTime
+
 enum Visibility {
   PUBLIC
   PRIVATE
@@ -17,7 +19,7 @@ type Theme {
   author: String!
   visibility: Visibility!
   type: Type!
-  createdAt: String!
+  createdAt: DateTime!
   theme: String!
   likes: Int!
   isLike: Boolean!
@@ -26,7 +28,7 @@ type Theme {
 type Version {
   id: ID!
   version: String!
-  createdAt: String!
+  createdAt: DateTime!
   theme: String!
 }
 
