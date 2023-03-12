@@ -15,15 +15,14 @@ import { DefaultSidebarContent, Sidebar } from './Sidebar'
 
 interface Props {
   userId?: string
-  sidebar?: React.ReactNode
+  noSidebar?: boolean
 }
 
 export const Layout: React.FC<PropsWithChildren<Props>> = ({
   userId: _u,
   children,
-  sidebar: rawSidebar,
+  noSidebar = false,
 }) => {
-  const sidebar = rawSidebar ?? <DefaultSidebarContent />
   const isMobile = useIsMobile()
   const router = useRouter()
   const nowChannelPath = useMemo(() => {
@@ -70,7 +69,11 @@ export const Layout: React.FC<PropsWithChildren<Props>> = ({
       <Header channelPath={nowChannelPath} />
       <DummyMain ref={mainRef} />
       <Main onClickCapture={scrollToSelf}>{children}</Main>
-      <Sidebar>{sidebar}</Sidebar>
+      {!noSidebar && (
+        <Sidebar>
+          <DefaultSidebarContent />
+        </Sidebar>
+      )}
       <ToastContainer />
     </Container>
   )

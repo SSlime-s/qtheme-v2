@@ -29,6 +29,7 @@ import { BasicSelectors } from './components/BasicSelectors'
 import { Title } from './components/InfoEditor/Title'
 import { Description } from './components/InfoEditor/Description'
 import { Sidebar } from './components/Sidebar'
+import { Sidebar as SidebarWrap } from '@/components/layout/Sidebar'
 import { TextTheme } from './components/TextTheme'
 
 export const getServerSideProps = async ({
@@ -152,52 +153,55 @@ const Editor: NextPageWithLayout<Props> = ({ defaultTheme, userId }) => {
         <title>{pageTitle('#edit')}</title>
       </Head>
       <FormProvider {...methods}>
-        <Layout sidebar={<Sidebar submit={submit} />}>
-          <Wrap ref={containerRef} isWide={isWide}>
-            <Controls>
-              <Title />
-              <Description />
-              <Selects />
-            </Controls>
-            <PreviewBox>
-              <Preview userId={userId} />
-              <SyncControls />
-            </PreviewBox>
-            <TextThemeBox>
-              <TextTheme />
-            </TextThemeBox>
+        <Wrap ref={containerRef} isWide={isWide}>
+          <Controls>
+            <Title />
+            <Description />
+            <Selects />
+          </Controls>
+          <PreviewBox>
+            <Preview userId={userId} />
+            <SyncControls />
+          </PreviewBox>
+          <TextThemeBox>
+            <TextTheme />
+          </TextThemeBox>
 
-            <Colors>
-              <Tabs {...ariaTabListProps}>
-                <Tab
-                  {...ariaTabProps.Basic}
-                  onClick={selectBasicTab}
-                  title='Basic'
-                >
-                  Basic
-                </Tab>
-                <Tab
-                  {...ariaTabProps.Advanced}
-                  onClick={selectAdvancedTab}
-                  title='Advanced'
-                >
-                  Advanced
-                </Tab>
-              </Tabs>
+          <Colors>
+            <Tabs {...ariaTabListProps}>
+              <Tab
+                {...ariaTabProps.Basic}
+                onClick={selectBasicTab}
+                title='Basic'
+              >
+                Basic
+              </Tab>
+              <Tab
+                {...ariaTabProps.Advanced}
+                onClick={selectAdvancedTab}
+                title='Advanced'
+              >
+                Advanced
+              </Tab>
+            </Tabs>
 
-              <TabPanel {...ariaPanelProps.Basic}>
-                <BasicSelectors />
-              </TabPanel>
-              <TabPanel {...ariaPanelProps.Advanced}>
-                <AdvancedSelectors />
-              </TabPanel>
-            </Colors>
-          </Wrap>
-        </Layout>
+            <TabPanel {...ariaPanelProps.Basic}>
+              <BasicSelectors />
+            </TabPanel>
+            <TabPanel {...ariaPanelProps.Advanced}>
+              <AdvancedSelectors />
+            </TabPanel>
+          </Colors>
+        </Wrap>
+
+        <SidebarWrap>
+          <Sidebar submit={submit} />
+        </SidebarWrap>
       </FormProvider>
     </>
   )
 }
+Editor.getLayout = page => <Layout noSidebar>{page}</Layout>
 export default Editor
 
 const Wrap = styled.div<{ isWide: boolean }>`
