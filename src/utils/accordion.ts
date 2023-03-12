@@ -28,6 +28,9 @@ export const useControlledAccordion = <E extends HTMLElement = HTMLDivElement>(
 
     const content = ref.current
     const setHeight = () => {
+      if (content.scrollHeight === 0 && isOpen) {
+        return
+      }
       setContentHeight(content.scrollHeight + contentMargin)
     }
 
@@ -38,7 +41,7 @@ export const useControlledAccordion = <E extends HTMLElement = HTMLDivElement>(
     return () => {
       observer.disconnect()
     }
-  }, [contentMargin])
+  }, [contentMargin, isOpen])
 
   const ariaToggle = useMemo(() => {
     return {
