@@ -11,6 +11,7 @@ import { SmallPreview } from './preview'
 import { Tag } from './Tag'
 import { BreakStyle, BudouJa } from '@/utils/wrapper/BudouX'
 import { ReplaceNewLine } from '@/utils/wrapper/ReplaceNewLine'
+import { lightTheme } from '@/utils/theme/default'
 
 interface Props {
   themeInfo: FormattedTheme
@@ -126,6 +127,11 @@ const PreviewWrap = styled.button`
   &:hover {
     transform: scale(1.05);
   }
+
+  &:focus {
+    outline: 1px solid ${lightTheme.basic.accent.primary};
+    outline-offset: 1px;
+  }
 `
 const ButtonWrap = styled.div`
   text-align: center;
@@ -160,5 +166,10 @@ const DetailButton = styled(Link)`
 
   &:hover > span {
     transform: scale(1.05);
+  }
+
+  &:focus {
+    outline: 1px solid ${lightTheme.basic.accent.primary};
+    outline-offset: -2px;
   }
 `

@@ -3,6 +3,7 @@ import styled from '@emotion/styled'
 import React, { PropsWithChildren, useMemo } from 'react'
 import { ColoredGlassmorphismStyle } from './Glassmorphism'
 import Link, { LinkProps as RawLinkProps } from 'next/link'
+import { lightTheme } from '@/utils/theme/default'
 
 type Variant = 'light' | 'dark' | 'other' | 'private' | 'public' | 'draft'
 
@@ -107,6 +108,11 @@ export const Tag: React.FC<PropsWithChildren<Props>> = ({
             cursor: pointer;
             &:hover {
               transform: scale(1.05);
+            }
+
+            &:focus {
+              outline: 1px solid ${lightTheme.basic.accent.primary};
+              outline-offset: 1px;
             }
           `
         : ''}

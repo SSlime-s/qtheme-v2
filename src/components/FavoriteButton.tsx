@@ -3,6 +3,7 @@ import { useCallback } from 'react'
 import { ColoredGlassmorphismStyle } from './Glassmorphism'
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai'
 import { css } from '@emotion/react'
+import { lightTheme } from '@/utils/theme/default'
 
 interface Props {
   isFavorite: boolean
@@ -54,6 +55,11 @@ const Wrap = styled.button<{
     border-radius: 8px;
 
     transform: scale(1.05);
+  }
+
+  &:focus {
+    outline: 1px solid ${lightTheme.basic.accent.primary};
+    outline-offset: 1px;
   }
 
   ${({ 'is-favorite': isFavorite }) =>
