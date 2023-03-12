@@ -1,0 +1,6 @@
+query Authors {
+  getAuthors {
+    name
+    count
+  }
+}

@@ -7,6 +7,7 @@ import { useModal } from '@/utils/modal/useModal'
 import { ModalTemplate } from '@/utils/modal/ModalTemplate'
 import styled from '@emotion/styled'
 import { lightTheme } from '@/utils/theme/default'
+import { userIconUrl } from '@/utils/api'
 
 interface Props {
   userId?: string
@@ -17,7 +18,7 @@ export const UserIcon: React.FC<Props> = ({ userId }) => {
 
   if (userId !== undefined) {
     return (
-      <UserIconImage src={`https://q.trap.jp/api/1.0/public/icon/${userId}`} />
+      <UserIconImage src={userIconUrl(userId)} />
     )
   }
 
