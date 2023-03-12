@@ -85,6 +85,38 @@ const GlobalStyle = (isFixed: boolean) => css`
   #__next {
     height: 100%;
   }
+
+  scrollbar-color: rgba(107, 125, 138, 0.5) transparent;
+  &:hover,
+  &:active {
+    scrollbar-color: rgba(107, 125, 138, 0.8) transparent;
+  }
+
+  &::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  scrollbar-width: thin;
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+    &:hover {
+      background: transparent;
+    }
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba(107, 125, 138, 0.5);
+    transition: background 0.3s;
+    border-radius: 3px;
+    &:hover {
+      background: rgba(107, 125, 138, 0.8);
+    }
+  }
+  &::-webkit-scrollbar-corner {
+    visibility: hidden;
+    display: none;
+  }
 `
 const GlobalStyleFixed = GlobalStyle(true)
 const GlobalStyleNotFixed = GlobalStyle(false)
