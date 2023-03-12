@@ -83,10 +83,17 @@ export const DefaultSidebarContent: React.FC = () => {
 
   return (
     <>
-      <LinkBlock href={`/theme/${currentThemeInfo?.id}`}>
-        <Title>現在のテーマ</Title>
-        <p>{currentThemeInfo?.title ?? 'テーマが選択されていません'}</p>
-      </LinkBlock>
+      {currentThemeInfo === null ? (
+        <Block>
+          <Title>現在のテーマ</Title>
+          <p>テーマが選択されていません</p>
+        </Block>
+      ) : (
+        <LinkBlock href={`/theme/${currentThemeInfo?.id}`}>
+          <Title>現在のテーマ</Title>
+          <p>{currentThemeInfo.title}</p>
+        </LinkBlock>
+      )}
       {currentThemeInfo !== null && (
         <>
           <Block>
