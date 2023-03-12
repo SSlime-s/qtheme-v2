@@ -85,20 +85,25 @@ export const DefaultSidebarContent: React.FC = () => {
     <>
       <LinkBlock href={`/theme/${currentThemeInfo?.id}`}>
         <Title>現在のテーマ</Title>
-        <p>{currentThemeInfo?.title}</p>
+        <p>{currentThemeInfo?.title ?? 'テーマが選択されていません'}</p>
       </LinkBlock>
-      <Block>
-        <Title>詳細</Title>
-        <BreakP>
-          <WrapResolver Wrapper={[Linkify, BudouJa, ReplaceNewLine]}>
-            {currentThemeInfo?.description ?? 'undefined'}
-          </WrapResolver>
-        </BreakP>
-      </Block>
-      <ResetButton onClick={confirmedToDefaultTheme}>
-        {isConfirm ? 'もう一度クリックで確定' : 'デフォルトテーマに戻す'}
-        <RxReset />
-      </ResetButton>
+      {currentThemeInfo !== null && (
+        <>
+          <Block>
+            <Title>詳細</Title>
+            <BreakP>
+              <WrapResolver Wrapper={[Linkify, BudouJa, ReplaceNewLine]}>
+                {currentThemeInfo.description}
+              </WrapResolver>
+            </BreakP>
+          </Block>
+
+          <ResetButton onClick={confirmedToDefaultTheme}>
+            {isConfirm ? 'もう一度クリックで確定' : 'デフォルトテーマに戻す'}
+            <RxReset />
+          </ResetButton>
+        </>
+      )}
     </>
   )
 }
