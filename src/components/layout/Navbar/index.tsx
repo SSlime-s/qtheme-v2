@@ -14,6 +14,7 @@ import { useControlledNamedTabList } from '@/utils/tablist'
 import { isMobile } from '@/utils/isMobile'
 import { UserIcon } from './UserIcon'
 import { useUserId } from '@/utils/extractUser'
+import { NavbarUsers } from './Users'
 
 type NavbarState = 'channel' | 'user' | 'custom'
 const states = [
@@ -201,7 +202,7 @@ const NavPanel: React.FC<NavPanelProps & HTMLAttributes<HTMLDivElement>> = ({
       {state === 'channel' ? (
         <NavbarChannels />
       ) : state === 'user' ? (
-        <div>ユーザー</div>
+        <NavbarUsers />
       ) : (
         <NavbarCustom />
       )}
