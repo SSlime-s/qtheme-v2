@@ -84,7 +84,7 @@ const ThemePage: NextPageWithLayout<Props> = ({ userId }) => {
           content={
             <>
               <H2>詳細</H2>
-              {theme.description}
+              <p>{theme.description}</p>
             </>
           }
           date={theme.createdAt}
