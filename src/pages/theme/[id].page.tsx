@@ -38,7 +38,6 @@ const ThemePage: NextPageWithLayout<Props> = ({ userId }) => {
     mutate: { toggleLike },
   } = useTheme(id)
   const {
-    currentTheme,
     mutate: { changeTheme },
   } = useCurrentTheme()
 
