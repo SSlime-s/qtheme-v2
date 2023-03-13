@@ -105,6 +105,7 @@ const TagWrap = styled.div`
 const Title = styled.h1`
   font-size: 1.5rem;
   font-weight: bold;
+  margin-bottom: auto;
 `
 const Author = styled.h2`
   font-size: 1rem;

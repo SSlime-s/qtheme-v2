@@ -1,6 +1,4 @@
-import { GlassmorphismStyle } from '@/components/Glassmorphism'
 import { Layout } from '@/components/layout'
-import { SmallPreview } from '@/components/preview'
 import { useCurrentTheme, useTheme } from '@/utils/theme/hooks'
 import styled from '@emotion/styled'
 import { useRouter } from 'next/router'
@@ -12,8 +10,8 @@ import { FavoriteButton } from '@/components/FavoriteButton'
 import { useMemo } from 'react'
 import { GetServerSidePropsContext } from 'next'
 import { extractShowcaseUser, useSetUserId } from '@/utils/extractUser'
-import { lightTheme } from '@/utils/theme/default'
 import { isMobile } from '@/utils/isMobile'
+import { LargePreviewCard } from '@/components/LargePreviewCard'
 
 export const getServerSideProps = async ({
   req,
@@ -63,18 +61,11 @@ const ThemePage: NextPageWithLayout<Props> = ({ userId }) => {
           content={
             <>
               <H1>{theme.title}</H1>
-              <Card>
-                <CardInner>
-                  <SmallPreview theme={resolvedTheme} author={theme.author} />
-                  <ChangeCurrentButton
-                    onClick={() => {
-                      void changeTheme(theme.id, theme)
-                    }}
-                  >
-                    <span>change current to this</span>
-                  </ChangeCurrentButton>
-                </CardInner>
-              </Card>
+              <LargePreviewCard
+                theme={theme}
+                resolvedTheme={resolvedTheme}
+                changeTheme={changeTheme}
+              />
             </>
           }
           date={theme.createdAt}
@@ -93,7 +84,7 @@ const ThemePage: NextPageWithLayout<Props> = ({ userId }) => {
           content={
             <>
               <H2>詳細</H2>
-              {theme.description}
+              <p>{theme.description}</p>
             </>
           }
           date={theme.createdAt}
@@ -122,36 +113,6 @@ const MainWrap = styled.div`
   overflow-y: auto;
 `
 
-const Card = styled.div`
-  ${GlassmorphismStyle}
-
-  padding: 32px;
-  margin: 32px auto;
-  max-width: 600px;
-  /* width: calc(100% - 32px); */
-  width: 100%;
-`
-const CardInner = styled.div`
-  border-radius: 8px;
-  overflow: hidden;
-  border: 1px solid ${lightTheme.basic.ui.tertiary};
-`
-const ChangeCurrentButton = styled.button`
-  cursor: pointer;
-  display: grid;
-  place-items: center;
-  width: 100%;
-  padding: 8px 0;
-  border-radius: 0 0 8px 8px;
-  border-top: 1px solid ${lightTheme.basic.ui.tertiary};
-
-  & > span {
-    transition: transform 0.2s;
-  }
-  &:hover > span {
-    transform: scale(1.05);
-  }
-`
 const CopyBox = styled(TextBox)`
   margin: 0 32px 20px;
   & textarea {
