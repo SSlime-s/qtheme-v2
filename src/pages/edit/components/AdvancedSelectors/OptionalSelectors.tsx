@@ -1,20 +1,26 @@
 import { useControlledAccordion, useHiddenTransition } from '@/utils/accordion'
+import { css } from '@emotion/react'
 import styled from '@emotion/styled'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useFormContext, useWatch } from 'react-hook-form'
 import { AdvancedKeys, DescriptionMap } from '.'
 import { Form } from '../../index.page'
+import { ColorInput } from '../ColorInput'
 import { ColorSelector } from '../ColorSelector'
 
+type Type = 'color' | 'boolean' | 'text'
 interface Props<K extends keyof typeof AdvancedKeys> {
   key1: K
   label: (typeof AdvancedKeys)[K][number]
+
+  type?: Type
 }
 export const OptionalSelectors: React.FC<Props<keyof typeof AdvancedKeys>> = <
   K extends keyof typeof AdvancedKeys
 >({
   key1,
   label,
+  type = 'color',
 }: Props<K>) => {
   const { control, setValue, getValues } = useFormContext<Form>()
   const [innerColor, setInnerColor] = useState(
@@ -64,7 +70,7 @@ export const OptionalSelectors: React.FC<Props<keyof typeof AdvancedKeys>> = <
     [getValues, innerColor, key1, label, setValue]
   )
 
-  const { ariaContent, ariaToggle, contentHeight, contentRef } =
+  const { isOpen, ariaContent, ariaToggle, contentHeight, contentRef } =
     useControlledAccordion(valid, setValid)
   const [isExpanded, setIsExpanded] = useState(false)
   const toggle = useCallback(() => {
@@ -87,8 +93,10 @@ export const OptionalSelectors: React.FC<Props<keyof typeof AdvancedKeys>> = <
     <Wrap valid={valid}>
       <Label {...ariaToggle} onClick={toggle}>
         <Icon />
-        {label}
-        <DisableText>無効化中</DisableText>
+        <LabelInner>
+          {label}
+          <DisableText aria-hidden={isOpen}>無効化中</DisableText>
+        </LabelInner>
       </Label>
       <OptionalSelectorsContent
         ref={wrapRef}
@@ -104,12 +112,16 @@ export const OptionalSelectors: React.FC<Props<keyof typeof AdvancedKeys>> = <
               ]
             }
           </Description>
-          <ColorSelector
-            isExpanded={isExpanded}
-            setExpanded={setIsExpanded}
-            value={innerColor}
-            onChange={setInnerColor}
-          />
+          {type === 'color' ? (
+            <ColorSelector
+              isExpanded={isExpanded}
+              setExpanded={setIsExpanded}
+              value={innerColor}
+              onChange={setInnerColor}
+            />
+          ) : (
+            <ColorInput value={innerColor} onChange={setInnerColor} />
+          )}
         </div>
       </OptionalSelectorsContent>
     </Wrap>
@@ -139,6 +151,7 @@ const Icon = styled.div`
   width: 16px;
   height: 16px;
   position: relative;
+  margin-bottom: auto;
   /* transition: all 0.2s ease-out;
 
   *:hover > & {
@@ -174,12 +187,18 @@ const Icon = styled.div`
     transform: rotate(225deg) scale(1, 1.4);
   }
 `
+const LabelInner = styled.span`
+  display: flex;
+  align-items: center;
+  gap: 4px 8px;
+  flex-wrap: wrap;
+`
 const DisableText = styled.span`
   color: #333;
   font-size: 12px;
   transition: color 0.2s ease-out;
 
-  [aria-expanded='true'] > & {
+  &[aria-hidden='true'] {
     color: transparent;
   }
 `

@@ -22,7 +22,8 @@ export const AdvancedKeys = {
     'mainViewBackground',
     'sideBarBackground',
 
-    'stampEdgeEnable',
+    // TODO: boolean の実装が面倒なので後回し
+    // 'stampEdgeEnable',
   ] as const,
 } as const
 export const AdvancedKeysKeys = [
@@ -47,11 +48,11 @@ export const DescriptionMap = {
     mainViewBackground: 'メインビューの背景',
     sideBarBackground: 'サイドバーの背景',
 
-    stampEdgeEnable: 'スタンプの枠線を有効化するか',
+    // stampEdgeEnable: 'スタンプの枠線を有効化するか',
   },
 } as const satisfies {
   [K in keyof typeof AdvancedKeys]: Record<
-    typeof AdvancedKeys[K][number],
+    (typeof AdvancedKeys)[K][number],
     string
   >
 }
@@ -72,7 +73,12 @@ export const AdvancedSelectors: React.FC = () => {
         <SelectorGroupLabel>Specific</SelectorGroupLabel>
         {AdvancedKeys.specific.map(key => (
           <Selector key={key}>
-            <SelectorLabel>{key}</SelectorLabel>
+            <OptionalSelectors
+              key1='specific'
+              label={key}
+              // type={key === 'stampEdgeEnable' ? 'boolean' : 'text'}
+              type='text'
+            />
           </Selector>
         ))}
       </SelectorGroup>

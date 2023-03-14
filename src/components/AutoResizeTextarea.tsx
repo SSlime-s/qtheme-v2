@@ -28,6 +28,14 @@ export const AutoResizeTextarea = forwardRef<HTMLTextAreaElement, Props>(
       }
       const { scrollHeight } = ref.current
       setHeight(scrollHeight)
+      const observer = new ResizeObserver(entries => {
+        const entry = entries[0]
+        setHeight(entry.target.scrollHeight)
+      })
+      observer.observe(ref.current)
+      return () => {
+        observer.disconnect()
+      }
     }, [dummyValue])
     useEffect(() => {
       setDummyValue(props.value ?? '')
@@ -45,6 +53,7 @@ export const AutoResizeTextarea = forwardRef<HTMLTextAreaElement, Props>(
           ref={ref}
           value={dummyValue}
           className={props.className}
+          rows={props.rows}
           aria-hidden='true'
           readOnly
         />
