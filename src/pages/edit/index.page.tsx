@@ -10,7 +10,7 @@ import {
   useWatch,
 } from 'react-hook-form'
 import { NextPageWithLayout } from '@/pages/_app.page'
-import { Layout } from '@/components/layout'
+import { Layout, SidebarPortal } from '@/components/layout'
 import { extractShowcaseUser, useSetUserId } from '@/utils/extractUser'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { resolveTheme } from '@/utils/theme'
@@ -29,7 +29,6 @@ import { BasicSelectors } from './components/BasicSelectors'
 import { Title } from './components/InfoEditor/Title'
 import { Description } from './components/InfoEditor/Description'
 import { Sidebar } from './components/Sidebar'
-import { Sidebar as SidebarWrap } from '@/components/layout/Sidebar'
 import { TextTheme } from './components/TextTheme'
 
 export const getServerSideProps = async ({
@@ -194,9 +193,9 @@ const Editor: NextPageWithLayout<Props> = ({ defaultTheme, userId }) => {
           </Colors>
         </Wrap>
 
-        <SidebarWrap>
+        <SidebarPortal>
           <Sidebar submit={submit} />
-        </SidebarWrap>
+        </SidebarPortal>
       </FormProvider>
     </>
   )

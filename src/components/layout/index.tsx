@@ -12,6 +12,8 @@ import { ToastContainer } from '@/components/Toast'
 import { Header } from './Header'
 import { Navbar } from './Navbar'
 import { DefaultSidebarContent, Sidebar } from './Sidebar'
+import ReactDOM from 'react-dom'
+import dynamic from 'next/dynamic'
 
 interface Props {
   userId?: string
@@ -69,15 +71,22 @@ export const Layout: React.FC<PropsWithChildren<Props>> = ({
       <Header channelPath={nowChannelPath} />
       <DummyMain ref={mainRef} />
       <Main onClickCapture={scrollToSelf}>{children}</Main>
-      {!noSidebar && (
-        <Sidebar>
-          <DefaultSidebarContent />
-        </Sidebar>
-      )}
+      <Sidebar id='app-sidebar'>
+        {!noSidebar && <DefaultSidebarContent />}
+      </Sidebar>
       <ToastContainer />
     </Container>
   )
 }
+const SidebarPortalRaw: React.FC<PropsWithChildren> = ({ children }) => {
+  return ReactDOM.createPortal(
+    children,
+    document.getElementById('app-sidebar')!
+  )
+}
+export const SidebarPortal = dynamic(() => Promise.resolve(SidebarPortalRaw), {
+  ssr: false,
+})
 
 const Container = styled.div`
   display: grid;

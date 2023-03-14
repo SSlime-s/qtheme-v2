@@ -17,7 +17,13 @@ import { ReplaceNewLine } from '@/utils/wrapper/ReplaceNewLine'
 import { Linkify } from '@/utils/wrapper/Linkify'
 import { WrapResolver } from '@/utils/wrapper'
 
-export const Sidebar: React.FC<PropsWithChildren> = ({ children }) => {
+interface Props {
+  id?: string
+}
+export const Sidebar: React.FC<PropsWithChildren<Props>> = ({
+  children,
+  id,
+}) => {
   const isMobile = useIsMobile()
   const ref = useRef<HTMLDivElement>(null)
   const [isOpen, setIsOpen] = useState(false)
@@ -51,7 +57,9 @@ export const Sidebar: React.FC<PropsWithChildren> = ({ children }) => {
   return (
     <>
       <Cover hidden={!isOpen} />
-      <Wrap ref={ref}>{children}</Wrap>
+      <Wrap ref={ref} id={id}>
+        {children}
+      </Wrap>
     </>
   )
 }
