@@ -21,7 +21,7 @@ import {
 } from '@/utils/graphql/getThemes.generated'
 import { getSdk as getSdkEditTheme } from '@/utils/graphql/editTheme.generated'
 
-const THEMES_PER_PAGE = 20
+export const THEMES_PER_PAGE = 20
 
 export interface FormattedTheme
   extends Omit<ThemeRes, 'theme' | 'type' | 'visibility'> {
