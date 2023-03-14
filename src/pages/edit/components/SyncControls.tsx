@@ -9,7 +9,6 @@ import { Form } from '../index.page'
 const AlwaysSyncAtom = atom<boolean>(false)
 export const SyncControls: React.FC = () => {
   const {
-    currentTheme,
     mutate: { changeTmpTheme, resetTmpTheme },
   } = useCurrentTheme()
   const { control, getValues } = useFormContext<Form>()

@@ -11,6 +11,7 @@ export const NavbarUsers: React.FC = () => {
     return <Wrap>Loading</Wrap>
   }
 
+  // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
   if (error) {
     return <Wrap>Error</Wrap>
   }
