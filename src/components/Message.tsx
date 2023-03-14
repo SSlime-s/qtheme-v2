@@ -1,4 +1,5 @@
 import { userIconUrl } from '@/utils/api'
+import { css } from '@emotion/react'
 import styled from '@emotion/styled'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -10,6 +11,9 @@ interface Props {
   date: string
   content: React.ReactNode
   stamps?: React.ReactNode
+
+  nonHover?: boolean
+  className?: string
 }
 
 export const Message = ({
@@ -19,12 +23,14 @@ export const Message = ({
   date,
   content,
   stamps,
+  nonHover = false,
+  className,
 }: Props) => {
   const name = nameRaw ?? iconUser
 
   return (
-    <Wrap>
-      <Icon href={/* TODO */ '#'}>
+    <Wrap className={className} nonHover={nonHover}>
+      <Icon href={`/user/${name}`}>
         <Image src={userIconUrl(iconUser)} alt={name} width={40} height={40} />
       </Icon>
       <Header>
@@ -64,7 +70,7 @@ export const H6 = styled.p`
   ${({ theme }) => theme.theme.markdown.h6Text};
 `
 
-const Wrap = styled.div`
+const Wrap = styled.div<{ nonHover: boolean }>`
   display: grid;
   grid-template-areas: 'icon header' 'icon content' '... content' '... stamps';
   grid-template-columns: 40px 1fr;
@@ -74,9 +80,13 @@ const Wrap = styled.div`
   overflow: clip;
   width: 100%;
 
-  &:hover {
-    background: ${({ theme }) => theme.theme.specific.messageHoverBackground};
-  }
+  ${({ nonHover, theme }) =>
+    !nonHover &&
+    css`
+      &:hover {
+        background: ${theme.theme.specific.messageHoverBackground};
+      }
+    `}
 `
 const Icon = styled(Link)`
   grid-area: icon;

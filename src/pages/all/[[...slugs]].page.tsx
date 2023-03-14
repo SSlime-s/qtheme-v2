@@ -130,7 +130,7 @@ AllPage.getLayout = page => {
 const Wrap = styled.div`
   /* TODO: grid でいい感じに並べる */
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
   gap: 16px;
   padding: 32px;
   justify-items: center;

@@ -8,7 +8,7 @@ export const useAuthors = () => {
   const client = useClient()
   const sdk = useMemo(() => {
     return getSdk(client)
-  }, [])
+  }, [client])
 
   const { data, error, isLoading } = useSWR(
     print(AuthorsDocument),
