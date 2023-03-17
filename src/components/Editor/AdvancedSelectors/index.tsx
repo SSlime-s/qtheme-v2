@@ -1,4 +1,4 @@
-import { Form } from '@/pages/edit/index.page'
+import { Form } from '@/components/Editor'
 import styled from '@emotion/styled'
 import { useFormContext, useWatch } from 'react-hook-form'
 import { OptionalSelectors } from './OptionalSelectors'

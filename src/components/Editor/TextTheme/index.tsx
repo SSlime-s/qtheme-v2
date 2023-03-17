@@ -9,7 +9,7 @@ import styled from '@emotion/styled'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useFormContext, useWatch } from 'react-hook-form'
 import { BsCheckLg, BsXLg } from 'react-icons/bs'
-import { Form } from '../../index.page'
+import { Form } from '@/components/Editor'
 import { ConfirmModal } from './ConfirmModal'
 import { InputModal } from './InputModal'
 
