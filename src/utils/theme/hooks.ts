@@ -165,6 +165,32 @@ export const useTheme = (id: string) => {
     [client, data, mutate]
   )
 
+  const updateTheme = useCallback(
+    async (
+      theme: Pick<
+        FormattedTheme,
+        'title' | 'description' | 'theme' | 'type' | 'visibility'
+      >
+    ) => {
+      const sdk = getSdkEditTheme(client)
+      const { updateTheme } = await sdk.UpdateTheme({
+        id,
+        ...theme,
+        type: theme.type.toUpperCase(),
+        visibility: theme.visibility.toUpperCase(),
+        theme: JSON.stringify(theme.theme),
+      })
+      await mutate(data => {
+        if (data === undefined) return data
+        return {
+          ...data,
+          ...themeFromRaw(updateTheme),
+        }
+      })
+    },
+    [client, id, mutate]
+  )
+
   return {
     theme: data,
     resolvedTheme,
@@ -172,6 +198,7 @@ export const useTheme = (id: string) => {
     isLoading,
     mutate: {
       toggleLike,
+      updateTheme,
     },
   }
 }
