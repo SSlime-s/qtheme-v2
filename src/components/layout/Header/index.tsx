@@ -5,9 +5,6 @@ import { useCallback, useMemo, useRef } from 'react'
 import { ChannelPath } from './convertChannelPath'
 
 interface Props {
-  /**
-   *  #favorite/light なら ['favorite', 'light']
-   */
   channelPath: ChannelPath[]
 }
 
