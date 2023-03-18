@@ -95,7 +95,7 @@ export const TextTheme: React.FC = () => {
     return () => {
       window.removeEventListener('beforeunload', handleUnload)
     }
-  })
+  }, [isOpen])
 
   const handleChange = useCallback(
     (value: string): boolean => {
