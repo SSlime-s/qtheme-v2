@@ -89,7 +89,7 @@ const Wrap = styled.article`
   ${GlassmorphismStyle}
   width: 100%;
   max-width: 400px;
-  padding: 40px;
+  padding: 32px;
   padding-bottom: 0px;
   display: flex;
   flex-direction: column;
@@ -103,7 +103,7 @@ const TagWrap = styled.div`
   margin: 8px 0;
 `
 const Title = styled.h1`
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   font-weight: bold;
   margin-bottom: auto;
 `
@@ -118,7 +118,7 @@ const Description = styled.p`
 `
 const PreviewWrap = styled.button`
   ${GlassmorphismStyle}
-  width: 100%;
+  width: calc(100% + 20px * 2);
   align-self: center;
   cursor: pointer;
   margin: 16px 0;
@@ -142,6 +142,7 @@ const ControlWrap = styled.div`
   display: flex;
   justify-content: flex-end;
   margin-bottom: 16px;
+  margin-right: -20px;
 `
 
 const DetailButton = styled(Link)`
