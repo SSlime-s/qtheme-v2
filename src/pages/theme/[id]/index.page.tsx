@@ -3,7 +3,7 @@ import { FormattedTheme, useCurrentTheme, useTheme } from '@/utils/theme/hooks'
 import styled from '@emotion/styled'
 import { useRouter } from 'next/router'
 import { NextPageWithLayout } from '@/pages/_app.page'
-import { H1, H2, Message } from '@/components/Message'
+import { FullWidthContent, H1, H2, Message } from '@/components/Message'
 import { TextBox } from '@/components/TextBox'
 import { CopyButton } from '@/components/CopyButton'
 import { FavoriteButton } from '@/components/FavoriteButton'
@@ -66,23 +66,27 @@ const ThemePage: NextPageWithLayout<Props> = ({ userId }) => {
           content={
             <>
               <H1>{theme.title}</H1>
-              <LargePreviewCard
-                theme={theme}
-                resolvedTheme={resolvedTheme}
-                changeTheme={changeTheme}
-              />
+              <FullWidthContent>
+                <LargePreviewCard
+                  theme={theme}
+                  resolvedTheme={resolvedTheme}
+                  changeTheme={changeTheme}
+                />
+              </FullWidthContent>
             </>
           }
           date={theme.createdAt}
           tag={theme.type}
           name={theme.author}
           stamps={
-            <Controls
-              theme={theme}
-              toggleLike={toggleLike}
-              userId={userId}
-              deleteTheme={deleteTheme}
-            />
+            <FullWidthContent>
+              <Controls
+                theme={theme}
+                toggleLike={toggleLike}
+                userId={userId}
+                deleteTheme={deleteTheme}
+              />
+            </FullWidthContent>
           }
         />
         <Message
@@ -176,31 +180,30 @@ const Controls: React.FC<ControlsProps> = ({
         onClick={toggleLike}
         favoriteCount={theme.likes}
       />
-      {theme.author === userId ||
-        (true && (
-          <>
-            <UpdateButton href={`/theme/${theme.id}/edit`} title='編集'>
-              <AiFillEdit />
-              編集
-            </UpdateButton>
-            <DeleteButton onClick={handleDelete} ref={triggerRef}>
-              <AiFillDelete />
-              削除
-            </DeleteButton>
+      {theme.author === userId && (
+        <>
+          <UpdateButton href={`/theme/${theme.id}/edit`} title='編集'>
+            <AiFillEdit />
+            編集
+          </UpdateButton>
+          <DeleteButton onClick={handleDelete} ref={triggerRef}>
+            <AiFillDelete />
+            削除
+          </DeleteButton>
 
-            {isOpen && (
-              <ConfirmModal
-                {...modalProps}
-                titleProps={{
-                  ...titleProps,
-                  ref: titleRef,
-                }}
-                onCancel={cancel}
-                onOk={ok}
-              />
-            )}
-          </>
-        ))}
+          {isOpen && (
+            <ConfirmModal
+              {...modalProps}
+              titleProps={{
+                ...titleProps,
+                ref: titleRef,
+              }}
+              onCancel={cancel}
+              onOk={ok}
+            />
+          )}
+        </>
+      )}
     </ControlsWrap>
   )
 }

@@ -135,4 +135,9 @@ const Content = styled.div`
 const Stamps = styled.div`
   grid-area: stamps;
   margin-top: 8px;
+  margin-left: 8px;
+`
+
+export const FullWidthContent = styled.div`
+  margin-left: calc(-40px - 8px);
 `
