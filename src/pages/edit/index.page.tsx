@@ -1,16 +1,13 @@
 import { darkTheme, lightTheme } from '@/utils/theme/default'
 import { themeSchema } from '@/model/theme'
-import styled from '@emotion/styled'
 import { GetServerSidePropsContext } from 'next'
 import {
   useForm,
-  useFormContext,
-  useWatch,
 } from 'react-hook-form'
 import { NextPageWithLayout } from '@/pages/_app.page'
 import { Layout } from '@/components/layout'
 import { extractShowcaseUser, useSetUserId } from '@/utils/extractUser'
-import { useCallback, useEffect, useMemo } from 'react'
+import { useCallback, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { useThemeList } from '@/utils/theme/hooks'
 import React from 'react'

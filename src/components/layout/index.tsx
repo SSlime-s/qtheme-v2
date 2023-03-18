@@ -81,6 +81,7 @@ export const Layout: React.FC<PropsWithChildren<Props>> = ({
 const SidebarPortalRaw: React.FC<PropsWithChildren> = ({ children }) => {
   return ReactDOM.createPortal(
     children,
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     document.getElementById('app-sidebar')!
   )
 }
