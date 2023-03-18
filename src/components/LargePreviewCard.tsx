@@ -22,9 +22,9 @@ export const LargePreviewCard: React.FC<Props> = ({
 
   return (
     <Card>
-      <CardInner>
+      <CardInner onClick={changeHandler}>
         <SmallPreview theme={resolvedTheme} author={theme.author} />
-        <ChangeCurrentButton onClick={changeHandler}>
+        <ChangeCurrentButton>
           <span>change current to this</span>
         </ChangeCurrentButton>
       </CardInner>
@@ -35,31 +35,33 @@ export const LargePreviewCard: React.FC<Props> = ({
 const Card = styled.div`
   ${GlassmorphismStyle}
 
-  padding: 32px;
+  padding: 16px;
   margin: 32px auto;
-  max-width: 600px;
+  max-width: 800px;
   width: 100%;
 `
-const CardInner = styled.div`
+const CardInner = styled.button`
+  cursor: pointer;
   border-radius: 8px;
   overflow: hidden;
   border: 1px solid ${lightTheme.basic.ui.tertiary};
+  display: block;
+  width: 100%;
+
+  & > * > span {
+    transition: transform 0.2s;
+  }
+  &:hover > * > span {
+    transform: scale(1.05);
+  }
 `
-const ChangeCurrentButton = styled.button`
-  cursor: pointer;
+const ChangeCurrentButton = styled.div`
   display: grid;
   place-items: center;
   width: 100%;
-  padding: 8px 0;
+  padding: 4px 0;
   border-radius: 0 0 8px 8px;
   border-top: 1px solid ${lightTheme.basic.ui.tertiary};
   backdrop-filter: blur(2px);
   color: ${lightTheme.basic.text.primary};
-
-  & > span {
-    transition: transform 0.2s;
-  }
-  &:hover > span {
-    transform: scale(1.05);
-  }
 `
