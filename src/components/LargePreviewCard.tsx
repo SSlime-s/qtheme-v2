@@ -54,7 +54,7 @@ const ChangeCurrentButton = styled.button`
   border-radius: 0 0 8px 8px;
   border-top: 1px solid ${lightTheme.basic.ui.tertiary};
   backdrop-filter: blur(2px);
-  color: ${lightTheme.basic.ui.primary};
+  color: ${lightTheme.basic.text.primary};
 
   & > span {
     transition: transform 0.2s;
