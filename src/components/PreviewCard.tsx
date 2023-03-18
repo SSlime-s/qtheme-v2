@@ -87,6 +87,7 @@ export const PreviewCard: React.FC<Props> = ({
 
 const Wrap = styled.article`
   ${GlassmorphismStyle}
+  border-radius: 12px;
   width: 100%;
   max-width: 400px;
   padding: 32px;
@@ -118,6 +119,7 @@ const Description = styled.p`
 `
 const PreviewWrap = styled.button`
   ${GlassmorphismStyle}
+  border-radius: 8px;
   width: calc(100% + 20px * 2);
   align-self: center;
   cursor: pointer;
