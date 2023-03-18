@@ -14,6 +14,7 @@ import { Navbar } from './Navbar'
 import { DefaultSidebarContent, Sidebar } from './Sidebar'
 import ReactDOM from 'react-dom'
 import dynamic from 'next/dynamic'
+import { ChannelPath, convertChannelPath, extendChannelPath } from './Header/convertChannelPath'
 
 interface Props {
   userId?: string
@@ -27,7 +28,7 @@ export const Layout: React.FC<PropsWithChildren<Props>> = ({
 }) => {
   const isMobile = useIsMobile()
   const router = useRouter()
-  const nowChannelPath = useMemo(() => {
+  const nowChannelPath: ChannelPath[] = useMemo(() => {
     const path = router.asPath
       .split('/')
       .filter(p => p !== '')
@@ -36,12 +37,24 @@ export const Layout: React.FC<PropsWithChildren<Props>> = ({
         return split[0]
       })
 
-    // theme は下に uuid が来て、さらにチャンネル一覧にも出ないため theme のみ表示する
+    // theme は下に uuid が来るため、uuid まで込みで theme とする
     if (path[0] === 'theme') {
-      return ['theme']
+      if (path[1] === undefined) {
+        return [
+          {
+            name: 'theme',
+            href: '/theme',
+          },
+        ]
+      }
+      const root = {
+        name: 'theme',
+        href: `/theme/${path[1]}`,
+      }
+      return extendChannelPath([root], path.slice(2))
     }
 
-    return path
+    return convertChannelPath(path)
   }, [router])
 
   const mainRef = useRef<HTMLDivElement>(null)

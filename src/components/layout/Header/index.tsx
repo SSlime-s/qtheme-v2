@@ -1,59 +1,32 @@
 import { isMobile, useIsMobile } from '@/utils/isMobile'
 import styled from '@emotion/styled'
 import Link from 'next/link'
-import path from 'path'
 import { useCallback, useMemo, useRef } from 'react'
+import { ChannelPath } from './convertChannelPath'
 
 interface Props {
   /**
    *  #favorite/light なら ['favorite', 'light']
    */
-  channelPath: string[]
-}
-
-interface Path {
-  name: string
-  href: string
+  channelPath: ChannelPath[]
 }
 
 export const Header: React.FC<Props> = ({ channelPath }) => {
   const isMobile = useIsMobile()
-  const now: Path | undefined = useMemo(() => {
-    const name = channelPath[channelPath.length - 1]
-    if (name === undefined) return undefined
-    return {
-      name,
-      href: path.join('/', channelPath.join('/')),
-    }
+  const now: ChannelPath | undefined = useMemo(() => {
+    const pathElement = channelPath[channelPath.length - 1]
+    if (pathElement === undefined) return undefined
+    return pathElement
   }, [channelPath])
 
-  const root: Path | undefined = useMemo(() => {
-    const name = channelPath[0]
-    if (name === undefined) return undefined
-    return {
-      name,
-      href: path.join('/', name),
-    }
+  const root: ChannelPath | undefined = useMemo(() => {
+    const pathElement = channelPath[0]
+    if (pathElement === undefined) return undefined
+    return pathElement
   }, [channelPath])
 
-  const rest: Path[] = useMemo(() => {
-    const rest = channelPath.slice(1, -1)
-    const res: Path[] = []
-    rest.forEach((name, i) => {
-      if (i === 0) {
-        res.push({
-          name,
-          href: path.join('/', name),
-        })
-      } else {
-        res.push({
-          name,
-          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          href: path.join(res[res.length - 1].href, name),
-        })
-      }
-    })
-    return res
+  const rest: ChannelPath[] = useMemo(() => {
+    return channelPath.slice(1, -1)
   }, [channelPath])
 
   const isRoot = useMemo(() => {
