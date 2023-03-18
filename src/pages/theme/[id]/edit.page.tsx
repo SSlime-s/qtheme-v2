@@ -3,7 +3,9 @@ import { Layout } from '@/components/layout'
 import { NextPageWithLayout } from '@/pages/_app.page'
 import { extractShowcaseUser, useSetUserId } from '@/utils/extractUser'
 import { FormattedTheme, useTheme } from '@/utils/theme/hooks'
+import { pageTitle } from '@/utils/title'
 import { GetServerSidePropsContext } from 'next'
+import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useCallback } from 'react'
 import { useForm } from 'react-hook-form'
@@ -33,11 +35,21 @@ const ThemeEditPage: NextPageWithLayout<Props> = ({ userId }) => {
   } = useTheme(id)
 
   if (theme === undefined) {
-    return <div>Loading ...</div>
+    return (
+      <>
+        <Head>
+          <title>{pageTitle('#edit')}</title>
+        </Head>
+        <div>Loading ...</div>
+      </>
+    )
   }
 
   return (
     <>
+      <Head>
+        <title>{pageTitle(`#edit - ${theme.title}`)}</title>
+      </Head>
       <Edit defaultTheme={theme} updateTheme={updateTheme} userId={userId} />
     </>
   )
