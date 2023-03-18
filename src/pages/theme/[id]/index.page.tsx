@@ -176,7 +176,7 @@ const Controls: React.FC<ControlsProps> = ({
         onClick={toggleLike}
         favoriteCount={theme.likes}
       />
-      {theme.author === userId || (
+      {theme.author === userId && (
         <>
           <UpdateButton href={`/theme/${theme.id}/edit`} title='編集'>
             <AiFillEdit />
