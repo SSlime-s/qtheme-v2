@@ -2,6 +2,8 @@ import { HiOutlineExternalLink } from 'react-icons/hi'
 import { FaRegUserCircle, FaLock } from 'react-icons/fa'
 import { MdClose, MdFavorite, MdNavigateNext } from 'react-icons/md'
 import { BiWorld } from 'react-icons/bi'
+import NextLink from 'next/link'
+import Image from 'next/image'
 
 import { useModal } from '@/utils/modal/useModal'
 import { ModalTemplate } from '@/utils/modal/ModalTemplate'
@@ -18,7 +20,14 @@ export const UserIcon: React.FC<Props> = ({ userId }) => {
 
   if (userId !== undefined) {
     return (
-      <UserIconImage src={userIconUrl(userId)} />
+      <NextLink href={`/user/${userId}`}>
+        <UserIconImage
+          src={userIconUrl(userId)}
+          height={36}
+          width={36}
+          alt='My Page'
+        />
+      </NextLink>
     )
   }
 
@@ -79,7 +88,7 @@ export const UserIcon: React.FC<Props> = ({ userId }) => {
     </>
   )
 }
-const UserIconImage = styled.img`
+const UserIconImage = styled(Image)`
   height: 36px;
   width: 36px;
   border-radius: 9999px;
