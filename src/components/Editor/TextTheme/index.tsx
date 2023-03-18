@@ -9,7 +9,7 @@ import styled from '@emotion/styled'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useFormContext, useWatch } from 'react-hook-form'
 import { BsCheckLg, BsXLg } from 'react-icons/bs'
-import { Form } from '../../index.page'
+import { Form } from '@/components/Editor'
 import { ConfirmModal } from './ConfirmModal'
 import { InputModal } from './InputModal'
 
@@ -95,7 +95,7 @@ export const TextTheme: React.FC = () => {
     return () => {
       window.removeEventListener('beforeunload', handleUnload)
     }
-  })
+  }, [isOpen])
 
   const handleChange = useCallback(
     (value: string): boolean => {
@@ -113,7 +113,10 @@ export const TextTheme: React.FC = () => {
       }
 
       if (themeSchema.safeParse(parsedValue).success) {
-        setValue('theme', JSON.parse(value), { shouldValidate: true })
+        setValue('theme', JSON.parse(value), {
+          shouldValidate: true,
+          shouldDirty: true,
+        })
         isPreventCloseRef.current = false
         return true
       } else {

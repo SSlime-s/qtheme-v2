@@ -2,7 +2,7 @@ import { Layout } from '@/components/layout'
 import { Message } from '@/components/Message'
 import { PreviewCard } from '@/components/PreviewCard'
 import { extractShowcaseUser, useSetUserId } from '@/utils/extractUser'
-import { useCurrentTheme, useThemeList } from '@/utils/theme/hooks'
+import { useCurrentTheme } from '@/utils/theme/hooks'
 import styled from '@emotion/styled'
 import { GetServerSidePropsContext } from 'next'
 import { useRouter } from 'next/router'
@@ -42,6 +42,8 @@ const UserPage: NextPageWithLayout<Props> = ({ userId }) => {
   if (isLoading) {
     return <div>loading...</div>
   }
+
+  // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
   if (error) {
     return <div>error</div>
   }

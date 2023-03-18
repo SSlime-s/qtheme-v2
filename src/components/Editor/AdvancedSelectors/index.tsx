@@ -1,6 +1,4 @@
-import { Form } from '@/pages/edit/index.page'
 import styled from '@emotion/styled'
-import { useFormContext, useWatch } from 'react-hook-form'
 import { OptionalSelectors } from './OptionalSelectors'
 
 export const AdvancedKeys = {
@@ -57,9 +55,6 @@ export const DescriptionMap = {
   >
 }
 export const AdvancedSelectors: React.FC = () => {
-  const { control, setValue, getValues } = useFormContext<Form>()
-  const theme = useWatch({ control, name: 'theme' })
-
   return (
     <div>
       <SelectorGroup>
@@ -97,8 +92,4 @@ const SelectorGroupLabel = styled.div`
 const Selector = styled.div`
   margin-bottom: 8px;
   padding-left: 8px;
-`
-const SelectorLabel = styled.div`
-  color: #333;
-  margin-bottom: 4px;
 `

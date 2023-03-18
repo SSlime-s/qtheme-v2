@@ -1,5 +1,5 @@
 import { Layout } from '@/components/layout'
-import { useCurrentTheme, useTheme } from '@/utils/theme/hooks'
+import { FormattedTheme, useCurrentTheme, useTheme } from '@/utils/theme/hooks'
 import styled from '@emotion/styled'
 import { useRouter } from 'next/router'
 import { NextPageWithLayout } from '@/pages/_app.page'
@@ -7,11 +7,17 @@ import { H1, H2, Message } from '@/components/Message'
 import { TextBox } from '@/components/TextBox'
 import { CopyButton } from '@/components/CopyButton'
 import { FavoriteButton } from '@/components/FavoriteButton'
-import { useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 import { GetServerSidePropsContext } from 'next'
 import { extractShowcaseUser, useSetUserId } from '@/utils/extractUser'
 import { isMobile } from '@/utils/isMobile'
 import { LargePreviewCard } from '@/components/LargePreviewCard'
+import { ColoredGlassmorphismStyle } from '@/components/Glassmorphism'
+import { css } from '@emotion/react'
+import { AiFillDelete, AiFillEdit } from 'react-icons/ai'
+import Link from 'next/link'
+import { useConfirmModal } from '@/utils/modal/ConfirmModal/hooks'
+import { ConfirmModal } from './ConfirmModal'
 
 export const getServerSideProps = async ({
   req,
@@ -35,7 +41,7 @@ const ThemePage: NextPageWithLayout<Props> = ({ userId }) => {
   const {
     theme,
     resolvedTheme,
-    mutate: { toggleLike },
+    mutate: { toggleLike, deleteTheme },
   } = useTheme(id)
   const {
     mutate: { changeTheme },
@@ -71,10 +77,11 @@ const ThemePage: NextPageWithLayout<Props> = ({ userId }) => {
           tag={theme.type}
           name={theme.author}
           stamps={
-            <FavoriteButton
-              isFavorite={theme.isLike}
-              onClick={toggleLike}
-              favoriteCount={theme.likes}
+            <Controls
+              theme={theme}
+              toggleLike={toggleLike}
+              userId={userId}
+              deleteTheme={deleteTheme}
             />
           }
         />
@@ -121,6 +128,116 @@ const CopyBox = styled(TextBox)`
     border-radius: 0;
     margin: 0;
   }
+`
+
+interface ControlsProps {
+  theme: FormattedTheme
+  toggleLike: (isLike: boolean) => Promise<void>
+  deleteTheme: () => Promise<void>
+  userId: string | null
+}
+const Controls: React.FC<ControlsProps> = ({
+  theme,
+  toggleLike,
+  userId,
+  deleteTheme,
+}) => {
+  const {
+    modalProps,
+    cancel,
+    isOpen,
+    ok,
+    titleProps,
+    titleRef,
+    triggerRef,
+    waitConfirm,
+  } = useConfirmModal('theme/[id]/delete')
+
+  const router = useRouter()
+  const handleDelete = useCallback(async () => {
+    const confirmed = await waitConfirm()
+    if (!confirmed) {
+      return
+    }
+    if (confirmed) {
+      try {
+        await deleteTheme()
+        await router.push(`/user/${theme.author}`)
+      } catch (e) {
+        console.error(e)
+      }
+    }
+  }, [deleteTheme, router, theme.author, waitConfirm])
+
+  return (
+    <ControlsWrap>
+      <FavoriteButton
+        isFavorite={theme.isLike}
+        onClick={toggleLike}
+        favoriteCount={theme.likes}
+      />
+      {theme.author === userId ||
+        (true && (
+          <>
+            <UpdateButton href={`/theme/${theme.id}/edit`} title='編集'>
+              <AiFillEdit />
+              編集
+            </UpdateButton>
+            <DeleteButton onClick={handleDelete} ref={triggerRef}>
+              <AiFillDelete />
+              削除
+            </DeleteButton>
+
+            {isOpen && (
+              <ConfirmModal
+                {...modalProps}
+                titleProps={{
+                  ...titleProps,
+                  ref: titleRef,
+                }}
+                onCancel={cancel}
+                onOk={ok}
+              />
+            )}
+          </>
+        ))}
+    </ControlsWrap>
+  )
+}
+const ControlsWrap = styled.div`
+  display: flex;
+`
+const ControlButtonStyle = css`
+  ${ColoredGlassmorphismStyle(
+    'rgba(255, 255, 255, 0.5)',
+    'rgba(255, 255, 255, 0.3)'
+  )}
+  border-radius: 8px;
+
+  display: flex;
+  align-items: center;
+  padding: 4px 8px;
+  gap: 4px;
+  cursor: pointer;
+  color: #333;
+
+  transition: all 0.1s ease-in;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+`
+const UpdateButton = styled(Link)`
+  ${ControlButtonStyle}
+  margin-left: auto;
+`
+const DeleteButton = styled.button`
+  ${ControlButtonStyle}
+  ${ColoredGlassmorphismStyle('rgba(255, 0, 0, 0.5)', 'rgba(255, 0, 0, 0.3)')}
+  border-radius: 8px;
+  margin-left: 16px;
+
+  color: #fff;
 `
 
 interface AfterProps {
