@@ -113,7 +113,10 @@ export const TextTheme: React.FC = () => {
       }
 
       if (themeSchema.safeParse(parsedValue).success) {
-        setValue('theme', JSON.parse(value), { shouldValidate: true })
+        setValue('theme', JSON.parse(value), {
+          shouldValidate: true,
+          shouldDirty: true,
+        })
         isPreventCloseRef.current = false
         return true
       } else {
