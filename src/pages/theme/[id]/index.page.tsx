@@ -176,31 +176,30 @@ const Controls: React.FC<ControlsProps> = ({
         onClick={toggleLike}
         favoriteCount={theme.likes}
       />
-      {theme.author === userId ||
-        (true && (
-          <>
-            <UpdateButton href={`/theme/${theme.id}/edit`} title='編集'>
-              <AiFillEdit />
-              編集
-            </UpdateButton>
-            <DeleteButton onClick={handleDelete} ref={triggerRef}>
-              <AiFillDelete />
-              削除
-            </DeleteButton>
+      {theme.author === userId || (
+        <>
+          <UpdateButton href={`/theme/${theme.id}/edit`} title='編集'>
+            <AiFillEdit />
+            編集
+          </UpdateButton>
+          <DeleteButton onClick={handleDelete} ref={triggerRef}>
+            <AiFillDelete />
+            削除
+          </DeleteButton>
 
-            {isOpen && (
-              <ConfirmModal
-                {...modalProps}
-                titleProps={{
-                  ...titleProps,
-                  ref: titleRef,
-                }}
-                onCancel={cancel}
-                onOk={ok}
-              />
-            )}
-          </>
-        ))}
+          {isOpen && (
+            <ConfirmModal
+              {...modalProps}
+              titleProps={{
+                ...titleProps,
+                ref: titleRef,
+              }}
+              onCancel={cancel}
+              onOk={ok}
+            />
+          )}
+        </>
+      )}
     </ControlsWrap>
   )
 }
