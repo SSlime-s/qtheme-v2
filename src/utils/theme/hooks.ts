@@ -191,6 +191,12 @@ export const useTheme = (id: string) => {
     [client, id, mutate]
   )
 
+  const deleteTheme = useCallback(async () => {
+    const sdk = getSdkEditTheme(client)
+    await sdk.DeleteTheme({ id })
+    await mutate(undefined)
+  }, [client, id, mutate])
+
   return {
     theme: data,
     resolvedTheme,
@@ -199,6 +205,7 @@ export const useTheme = (id: string) => {
     mutate: {
       toggleLike,
       updateTheme,
+      deleteTheme,
     },
   }
 }

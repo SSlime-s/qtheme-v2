@@ -7,7 +7,7 @@ import { H1, H2, Message } from '@/components/Message'
 import { TextBox } from '@/components/TextBox'
 import { CopyButton } from '@/components/CopyButton'
 import { FavoriteButton } from '@/components/FavoriteButton'
-import { useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 import { GetServerSidePropsContext } from 'next'
 import { extractShowcaseUser, useSetUserId } from '@/utils/extractUser'
 import { isMobile } from '@/utils/isMobile'
@@ -16,6 +16,8 @@ import { ColoredGlassmorphismStyle } from '@/components/Glassmorphism'
 import { css } from '@emotion/react'
 import { AiFillDelete, AiFillEdit } from 'react-icons/ai'
 import Link from 'next/link'
+import { useConfirmModal } from '@/utils/modal/ConfirmModal/hooks'
+import { ConfirmModal } from './ConfirmModal'
 
 export const getServerSideProps = async ({
   req,
@@ -39,7 +41,7 @@ const ThemePage: NextPageWithLayout<Props> = ({ userId }) => {
   const {
     theme,
     resolvedTheme,
-    mutate: { toggleLike },
+    mutate: { toggleLike, deleteTheme },
   } = useTheme(id)
   const {
     mutate: { changeTheme },
@@ -75,7 +77,12 @@ const ThemePage: NextPageWithLayout<Props> = ({ userId }) => {
           tag={theme.type}
           name={theme.author}
           stamps={
-            <Controls theme={theme} toggleLike={toggleLike} userId={userId} />
+            <Controls
+              theme={theme}
+              toggleLike={toggleLike}
+              userId={userId}
+              deleteTheme={deleteTheme}
+            />
           }
         />
         <Message
@@ -126,9 +133,42 @@ const CopyBox = styled(TextBox)`
 interface ControlsProps {
   theme: FormattedTheme
   toggleLike: (isLike: boolean) => Promise<void>
+  deleteTheme: () => Promise<void>
   userId: string | null
 }
-const Controls: React.FC<ControlsProps> = ({ theme, toggleLike, userId }) => {
+const Controls: React.FC<ControlsProps> = ({
+  theme,
+  toggleLike,
+  userId,
+  deleteTheme,
+}) => {
+  const {
+    modalProps,
+    cancel,
+    isOpen,
+    ok,
+    titleProps,
+    titleRef,
+    triggerRef,
+    waitConfirm,
+  } = useConfirmModal('theme/[id]/delete')
+
+  const router = useRouter()
+  const handleDelete = useCallback(async () => {
+    const confirmed = await waitConfirm()
+    if (!confirmed) {
+      return
+    }
+    if (confirmed) {
+      try {
+        await deleteTheme()
+        await router.push(`/user/${theme.author}`)
+      } catch (e) {
+        console.error(e)
+      }
+    }
+  }, [deleteTheme, router, theme.author, waitConfirm])
+
   return (
     <ControlsWrap>
       <FavoriteButton
@@ -136,18 +176,31 @@ const Controls: React.FC<ControlsProps> = ({ theme, toggleLike, userId }) => {
         onClick={toggleLike}
         favoriteCount={theme.likes}
       />
-      {theme.author === userId && (
-        <>
-          <UpdateButton href={`/theme/${theme.id}/edit`} title='編集'>
-            <AiFillEdit />
-            編集
-          </UpdateButton>
-          <DeleteButton>
-            <AiFillDelete />
-            削除
-          </DeleteButton>
-        </>
-      )}
+      {theme.author === userId ||
+        (true && (
+          <>
+            <UpdateButton href={`/theme/${theme.id}/edit`} title='編集'>
+              <AiFillEdit />
+              編集
+            </UpdateButton>
+            <DeleteButton onClick={handleDelete} ref={triggerRef}>
+              <AiFillDelete />
+              削除
+            </DeleteButton>
+
+            {isOpen && (
+              <ConfirmModal
+                {...modalProps}
+                titleProps={{
+                  ...titleProps,
+                  ref: titleRef,
+                }}
+                onCancel={cancel}
+                onOk={ok}
+              />
+            )}
+          </>
+        ))}
     </ControlsWrap>
   )
 }
