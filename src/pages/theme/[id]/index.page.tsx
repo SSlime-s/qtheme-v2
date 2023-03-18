@@ -1,5 +1,5 @@
 import { Layout } from '@/components/layout'
-import { useCurrentTheme, useTheme } from '@/utils/theme/hooks'
+import { FormattedTheme, useCurrentTheme, useTheme } from '@/utils/theme/hooks'
 import styled from '@emotion/styled'
 import { useRouter } from 'next/router'
 import { NextPageWithLayout } from '@/pages/_app.page'
@@ -12,6 +12,10 @@ import { GetServerSidePropsContext } from 'next'
 import { extractShowcaseUser, useSetUserId } from '@/utils/extractUser'
 import { isMobile } from '@/utils/isMobile'
 import { LargePreviewCard } from '@/components/LargePreviewCard'
+import { ColoredGlassmorphismStyle } from '@/components/Glassmorphism'
+import { css } from '@emotion/react'
+import { AiFillDelete, AiFillEdit } from 'react-icons/ai'
+import Link from 'next/link'
 
 export const getServerSideProps = async ({
   req,
@@ -71,11 +75,7 @@ const ThemePage: NextPageWithLayout<Props> = ({ userId }) => {
           tag={theme.type}
           name={theme.author}
           stamps={
-            <FavoriteButton
-              isFavorite={theme.isLike}
-              onClick={toggleLike}
-              favoriteCount={theme.likes}
-            />
+            <Controls theme={theme} toggleLike={toggleLike} userId={userId} />
           }
         />
         <Message
@@ -121,6 +121,70 @@ const CopyBox = styled(TextBox)`
     border-radius: 0;
     margin: 0;
   }
+`
+
+interface ControlsProps {
+  theme: FormattedTheme
+  toggleLike: (isLike: boolean) => Promise<void>
+  userId: string | null
+}
+const Controls: React.FC<ControlsProps> = ({ theme, toggleLike, userId }) => {
+  return (
+    <ControlsWrap>
+      <FavoriteButton
+        isFavorite={theme.isLike}
+        onClick={toggleLike}
+        favoriteCount={theme.likes}
+      />
+      {theme.author === userId && (
+        <>
+          <UpdateButton href={`/theme/${theme.id}/edit`} title='編集'>
+            <AiFillEdit />
+            編集
+          </UpdateButton>
+          <DeleteButton>
+            <AiFillDelete />
+            削除
+          </DeleteButton>
+        </>
+      )}
+    </ControlsWrap>
+  )
+}
+const ControlsWrap = styled.div`
+  display: flex;
+`
+const ControlButtonStyle = css`
+  ${ColoredGlassmorphismStyle(
+    'rgba(255, 255, 255, 0.5)',
+    'rgba(255, 255, 255, 0.3)'
+  )}
+  border-radius: 8px;
+
+  display: flex;
+  align-items: center;
+  padding: 4px 8px;
+  gap: 4px;
+  cursor: pointer;
+  color: #333;
+
+  transition: all 0.1s ease-in;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+`
+const UpdateButton = styled(Link)`
+  ${ControlButtonStyle}
+  margin-left: auto;
+`
+const DeleteButton = styled.button`
+  ${ControlButtonStyle}
+  ${ColoredGlassmorphismStyle('rgba(255, 0, 0, 0.5)', 'rgba(255, 0, 0, 0.3)')}
+  border-radius: 8px;
+  margin-left: 16px;
+
+  color: #fff;
 `
 
 interface AfterProps {
