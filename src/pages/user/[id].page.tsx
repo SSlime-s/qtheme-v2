@@ -1,5 +1,5 @@
 import { Layout } from '@/components/layout'
-import { Message } from '@/components/Message'
+import { FullWidthContent, Message } from '@/components/Message'
 import { PreviewCard } from '@/components/PreviewCard'
 import { extractShowcaseUser, useSetUserId } from '@/utils/extractUser'
 import { useCurrentTheme } from '@/utils/theme/hooks'
@@ -58,16 +58,18 @@ const UserPage: NextPageWithLayout<Props> = ({ userId }) => {
         content={
           <>
             <p>{total} 投稿</p>
-            <ContentWrap>
-              {themes.map(theme => (
-                <PreviewCard
-                  key={theme.id}
-                  themeInfo={theme}
-                  onFavorite={toggleLike}
-                  changeTheme={changeTheme}
-                />
-              ))}
-            </ContentWrap>
+            <FullWidthContent>
+              <ContentWrap>
+                {themes.map(theme => (
+                  <PreviewCard
+                    key={theme.id}
+                    themeInfo={theme}
+                    onFavorite={toggleLike}
+                    changeTheme={changeTheme}
+                  />
+                ))}
+              </ContentWrap>
+            </FullWidthContent>
           </>
         }
         nonHover
