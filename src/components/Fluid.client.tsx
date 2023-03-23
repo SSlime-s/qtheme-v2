@@ -17,9 +17,8 @@ export const Fluid: React.FC<Props> = ({ mode = 'light', ...props }) => {
     const canvas = canvasRef.current
     if (canvas == null) return
     WebGLFluid(canvas, {
-      IMMEDIATE: false,
       // DENSITY_DISSIPATION: 1.5,
-      DENSITY_DISSIPATION: 1,
+      DENSITY_DISSIPATION: 0.3,
       VELOCITY_DISSIPATION: 1,
       PRESSURE: 0,
       PRESSURE_ITERATIONS: 1,
