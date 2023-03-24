@@ -94,7 +94,6 @@ export const getThemes: QueryResolvers<ContextValue>['getThemes'] = async (
       ...(limit != undefined ? [limit] : []),
       ...(offset != undefined ? [offset] : []),
     ])
-    console.log(rows)
     assertIsArray(rows)
     const [count] = await connection.execute(
       `SELECT COUNT(*) AS count ${baseSql}`,
