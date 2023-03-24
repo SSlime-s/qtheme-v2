@@ -99,7 +99,9 @@ export const DefaultSidebarContent: React.FC = () => {
       ) : (
         <LinkBlock href={`/theme/${currentThemeInfo?.id}`}>
           <Title>現在のテーマ</Title>
-          <p>{currentThemeInfo.title}</p>
+          <BreakP>
+            <BudouJa>{currentThemeInfo.title}</BudouJa>
+          </BreakP>
         </LinkBlock>
       )}
       {currentThemeInfo !== null && (
