@@ -5,6 +5,7 @@ import React from 'react'
 interface Props {
   author: string
   theme: ResolvedTheme
+  className?: string
 }
 
 export const SmallPreview: React.FC<Props> = props => {
@@ -16,6 +17,7 @@ export const SmallPreview: React.FC<Props> = props => {
         display: 'flex',
         background: 'white',
       }}
+      className={props.className}
     >
       <div
         style={{
