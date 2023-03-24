@@ -4,18 +4,15 @@ import dynamic from 'next/dynamic'
 import { GetServerSidePropsContext, NextPage } from 'next'
 import styled from '@emotion/styled'
 import { GlassmorphismStyle } from '@/components/Glassmorphism'
-import { BudouJa } from '@/utils/wrapper/BudouX'
 import { HiArrowRight } from 'react-icons/hi'
 import { useCallback, useEffect, useState } from 'react'
 import { lightTheme } from '@/utils/theme/default'
 import { Logo } from './components/Logo'
-import { useThemeList } from '@/utils/theme/hooks'
-import { resolveTheme } from '@/utils/theme'
 import { SmallPreview } from '@/components/preview'
 import { extractShowcaseUser } from '@/utils/extractUser'
 import { css } from '@emotion/react'
 import { useRouter } from 'next/router'
-import { TrimMark, TrimMarkGroup } from './components/TrimMark'
+import { TrimMarkGroup } from './components/TrimMark'
 import { isMobile, useIsMobile } from '@/utils/isMobile'
 import { useRandomTheme } from './random/hooks'
 
@@ -32,14 +29,14 @@ export const getServerSideProps = async ({
   const userId = extractShowcaseUser(req)
 
   // 部員とわかってる人はトップページを表示しない
-  // if (userId !== null) {
-  //   return {
-  //     redirect: {
-  //       destination: '/random',
-  //       permanent: false,
-  //     },
-  //   }
-  // }
+  if (userId !== null) {
+    return {
+      redirect: {
+        destination: '/random',
+        permanent: false,
+      },
+    }
+  }
 
   return {
     props: {},
@@ -64,7 +61,6 @@ const Home: NextPage = () => {
     localStorage.setItem('isShowTopPage', isShowTopPage ? '0' : '1')
   }, [isShowTopPage, setIsShowTopPage])
 
-  const { themes } = useThemeList(null, 'public', null, 10)
   const { theme, resolvedTheme } = useRandomTheme(null)
 
   const [loginUrl, setLoginUrl] = useState('')
