@@ -213,7 +213,6 @@ export const useTheme = (id: string) => {
 export const useThemeList = (
   type: 'light' | 'dark' | 'other' | null,
   visibility: 'public' | 'private' | 'draft' | null,
-  filter: 'is_like' | 'is_mine' | null,
   pageSize: number = THEMES_PER_PAGE
 ) => {
   const client = useClient()
@@ -233,7 +232,6 @@ export const useThemeList = (
           offset: index * pageSize + delta,
           type: type?.toUpperCase() ?? null,
           visibility: visibility?.toUpperCase() ?? null,
-          filter: filter?.toUpperCase() ?? null,
         },
       ] as const
     },
