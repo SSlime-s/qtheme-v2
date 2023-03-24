@@ -17,6 +17,7 @@ import { css } from '@emotion/react'
 import { useRouter } from 'next/router'
 import { TrimMark, TrimMarkGroup } from './components/TrimMark'
 import { isMobile, useIsMobile } from '@/utils/isMobile'
+import { useRandomTheme } from './random/hooks'
 
 const Fluid = dynamic(
   () => import('@/components/Fluid.client').then(mod => mod.Fluid),
@@ -64,6 +65,7 @@ const Home: NextPage = () => {
   }, [isShowTopPage, setIsShowTopPage])
 
   const { themes } = useThemeList(null, 'public', null, 10)
+  const { theme, resolvedTheme } = useRandomTheme(null)
 
   const [loginUrl, setLoginUrl] = useState('')
   useEffect(() => {
@@ -74,6 +76,10 @@ const Home: NextPage = () => {
 
   const isMobile = useIsMobile()
 
+  if (theme === null || resolvedTheme === null) {
+    return <></>
+  }
+
   return (
     <>
       <Head>
@@ -83,6 +89,12 @@ const Home: NextPage = () => {
         <link rel='icon' href='/favicon.ico' />
       </Head>
       <TopContainer hidden={!isRendered}>
+        <SmallPreview
+          css={BackgroundStyle}
+          theme={resolvedTheme}
+          author={theme.author}
+        />
+        <BlurBackground />
         <FluidBackground />
         <TopContentWrap>
           <TrimMarkGroup size={32} margin={isMobile ? 16 : 32} />
@@ -144,6 +156,19 @@ const TopContainer = styled.main`
   &[hidden] {
     display: none;
   }
+`
+const BackgroundStyle = css`
+  position: absolute;
+  top: 0;
+  height: 100%;
+  min-width: 100%;
+  aspect-ratio: 16 / 9;
+`
+const BlurBackground = styled.div`
+  position: absolute;
+  inset: 0;
+  backdrop-filter: blur(10px);
+  background-color: rgba(255, 255, 255, 0.7);
 `
 const FluidBackground = styled(Fluid)`
   position: absolute;

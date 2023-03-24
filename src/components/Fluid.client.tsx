@@ -29,6 +29,7 @@ export const Fluid: React.FC<Props> = ({ mode = 'light', ...props }) => {
 
       COLOR_UPDATE_SPEED: 5,
 
+      TRANSPARENT: true,
       BACK_COLOR: parseHexNotationColor(themeBackground) ?? {
         r: 0,
         g: 0,
