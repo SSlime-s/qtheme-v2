@@ -205,7 +205,7 @@ const LinkButtonStyle = css`
   vertical-align: middle;
   gap: 4px;
   line-height: 1;
-  margin: 8px 0;
+  margin-top: 24px;
   margin-right: auto;
 
   & > svg {
@@ -222,15 +222,6 @@ const LoginButton = styled.a`
   ${LinkButtonStyle}
 `
 
-const Checkbox = styled.input`
-  width: 24px;
-  height: 24px;
-  appearance: auto;
-
-  &:focus {
-    outline: 2px solid ${lightTheme.basic.accent.primary};
-  }
-`
 const Label = styled.label`
   display: flex;
   user-select: none;
@@ -240,6 +231,16 @@ const Label = styled.label`
   margin-right: auto;
   pointer-events: auto;
   margin-top: auto;
+  gap: 8px;
+`
+const Checkbox = styled.input`
+  width: 24px;
+  height: 24px;
+  appearance: auto;
+
+  &:focus {
+    outline: 2px solid ${lightTheme.basic.accent.primary};
+  }
 `
 
 const CurrentLink = styled(Link)`
