@@ -11,6 +11,8 @@ import { SmallPreview } from './preview'
 import { Tag } from './Tag'
 import { BreakStyle, BudouJa } from '@/utils/wrapper/BudouX'
 import { ReplaceNewLine } from '@/utils/wrapper/ReplaceNewLine'
+import { Linkify } from '@/utils/wrapper/Linkify'
+import { WrapResolver } from '@/utils/wrapper'
 import { lightTheme } from '@/utils/theme/default'
 
 interface Props {
@@ -61,7 +63,9 @@ export const PreviewCard: React.FC<Props> = ({
           </Tag>
         </TagWrap>
         <Description>
-          <BudouJa Wrapper={ReplaceNewLine}>{themeInfo.description}</BudouJa>
+          <WrapResolver Wrapper={[Linkify, BudouJa, ReplaceNewLine]}>
+            {themeInfo.description}
+          </WrapResolver>
         </Description>
 
         <PreviewWrap onClick={changeToCurrent}>

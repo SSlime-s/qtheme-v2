@@ -18,6 +18,10 @@ import { AiFillDelete, AiFillEdit } from 'react-icons/ai'
 import Link from 'next/link'
 import { useConfirmModal } from '@/utils/modal/ConfirmModal/hooks'
 import { ConfirmModal } from './ConfirmModal'
+import { BreakStyle, BudouJa } from '@/utils/wrapper/BudouX'
+import { ReplaceNewLine } from '@/utils/wrapper/ReplaceNewLine'
+import { Linkify } from '@/utils/wrapper/Linkify'
+import { WrapResolver } from '@/utils/wrapper'
 
 export const getServerSideProps = async ({
   req,
@@ -94,7 +98,11 @@ const ThemePage: NextPageWithLayout<Props> = ({ userId }) => {
           content={
             <>
               <H2>詳細</H2>
-              <p>{theme.description}</p>
+              <BreakP>
+                <WrapResolver Wrapper={[Linkify, BudouJa, ReplaceNewLine]}>
+                  {theme.description}
+                </WrapResolver>
+              </BreakP>
             </>
           }
           date={theme.createdAt}
@@ -121,6 +129,9 @@ const Wrap = styled.div`
 const MainWrap = styled.div`
   contain: strict;
   overflow-y: auto;
+`
+export const BreakP = styled.p`
+  ${BreakStyle}
 `
 
 const CopyBox = styled(TextBox)`

@@ -16,6 +16,10 @@ import { useRandomTheme } from './hooks'
 import { TfiReload } from 'react-icons/tfi'
 import { GlassmorphismStyle } from '@/components/Glassmorphism'
 import { lightTheme } from '@/utils/theme/default'
+import { BreakStyle, BudouJa } from '@/utils/wrapper/BudouX'
+import { ReplaceNewLine } from '@/utils/wrapper/ReplaceNewLine'
+import { Linkify } from '@/utils/wrapper/Linkify'
+import { WrapResolver } from '@/utils/wrapper'
 
 export const getServerSideProps = async ({
   req,
@@ -120,7 +124,11 @@ const RandomPage: NextPageWithLayout<Props> = ({ userId, filter }) => {
           content={
             <>
               <H2>詳細</H2>
-              <p>{theme.description}</p>
+              <BreakP>
+                <WrapResolver Wrapper={[Linkify, BudouJa, ReplaceNewLine]}>
+                  {theme.description}
+                </WrapResolver>
+              </BreakP>
             </>
           }
           date={theme.createdAt}
@@ -168,6 +176,9 @@ const ChangeNextButton = styled.button`
     outline: 1px solid ${lightTheme.basic.accent.primary};
     outline-offset: -2px;
   }
+`
+export const BreakP = styled.p`
+  ${BreakStyle}
 `
 const CopyBox = styled(TextBox)`
   margin: 0 32px 20px;
