@@ -1,0 +1,35 @@
+query Favorites(
+  $limit: Int
+  $offset: Int
+  $visibility: Visibility
+  $type: Type
+  $author: String
+) {
+  getThemes(
+    limit: $limit
+    offset: $offset
+    visibility: $visibility
+    type: $type
+    only_like: true
+    author: $author
+  ) {
+    themes {
+      ...ThemeFragment
+    }
+    total
+  }
+}
+
+mutation ToggleLike($id: ID!, $isLike: Boolean!) {
+  toggleLike(id: $id, isLike: $isLike) {
+    isLike
+  }
+}
+
+query Theme($id: ID!) {
+  getTheme(id: $id) {
+    theme {
+      ...ThemeFragment
+    }
+  }
+}
