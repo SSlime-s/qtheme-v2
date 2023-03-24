@@ -25,23 +25,7 @@ export const getThemes: QueryResolvers<ContextValue>['getThemes'] = async (
   const needCloseConnection = connection === undefined
   try {
     connection = connection ?? (await connectDb())
-    const sql = `
-          SELECT SQL_CALC_FOUND_ROWS
-            themes.id AS id,
-            themes.title,
-            themes.description,
-            themes.author_user_id AS author,
-            themes.visibility,
-            themes.type,
-            themes.created_at AS createdAt,
-            themes.theme,
-            CASE WHEN likes.count IS NULL THEN 0 ELSE likes.count END AS likes,
-            ${
-              userId == undefined
-                ? 'FALSE'
-                : 'CASE WHEN isLikes.isLike IS NULL THEN FALSE ELSE isLikes.isLike END'
-            } AS isLike
-          FROM themes
+    const baseSql = `FROM themes
           LEFT JOIN (
             SELECT COUNT(*) AS count, theme_id
             FROM likes
@@ -73,6 +57,30 @@ export const getThemes: QueryResolvers<ContextValue>['getThemes'] = async (
                 : `AND isLikes.isLike = TRUE`
             }
             ${author == undefined ? '' : `AND themes.author_user_id = ?`}
+    `
+    const baseValues = [
+      ...(userId != undefined ? [userId] : []),
+      ...(visibility != undefined ? [visibility] : []),
+      ...(type != undefined ? [type] : []),
+      ...(author != undefined ? [author] : []),
+    ]
+    const sql = `
+          SELECT
+            themes.id AS id,
+            themes.title,
+            themes.description,
+            themes.author_user_id AS author,
+            themes.visibility,
+            themes.type,
+            themes.created_at AS createdAt,
+            themes.theme,
+            CASE WHEN likes.count IS NULL THEN 0 ELSE likes.count END AS likes,
+            ${
+              userId == undefined
+                ? 'FALSE'
+                : 'CASE WHEN isLikes.isLike IS NULL THEN FALSE ELSE isLikes.isLike END'
+            } AS isLike
+          ${baseSql}
           ORDER BY ${
             only_like === true
               ? 'isLikes.created_at DESC'
@@ -82,16 +90,16 @@ export const getThemes: QueryResolvers<ContextValue>['getThemes'] = async (
           ${offset == undefined ? '' : `OFFSET ?`}
         `
     const [rows] = await connection.execute(sql, [
-      ...(userId != undefined ? [userId] : []),
-      ...(visibility != undefined ? [visibility] : []),
-      ...(type != undefined ? [type] : []),
-      ...(author != undefined ? [author] : []),
+      ...baseValues,
       ...(limit != undefined ? [limit] : []),
       ...(offset != undefined ? [offset] : []),
     ])
     console.log(rows)
     assertIsArray(rows)
-    const [count] = await connection.execute('SELECT FOUND_ROWS() AS count')
+    const [count] = await connection.execute(
+      `SELECT COUNT(*) AS count ${baseSql}`,
+      baseValues
+    )
     assertIsArrayObject(count)
     return {
       themes: rows as Theme[],
