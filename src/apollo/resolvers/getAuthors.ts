@@ -28,7 +28,6 @@ export const getAuthors: QueryResolvers<ContextValue>['getAuthors'] = async (
       ORDER BY id ASC
     `
     const [rows] = await connection.execute(sql)
-    console.log(rows)
     assertIsArray(rows)
     return rows.map(row => {
       assertIsObject(row)

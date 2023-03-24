@@ -7,7 +7,6 @@ import { QueryResolvers, Theme } from '@/apollo/generated/resolvers'
 export const getRandomTheme: QueryResolvers<ContextValue>['getRandomTheme'] =
   async (_parent, args, { userId, connection }) => {
     const { visibility, type } = args
-    console.log(visibility, type)
     if (visibility === 'draft') {
       throw new GraphQLError('Invalid visibility')
     }
@@ -45,7 +44,6 @@ export const getRandomTheme: QueryResolvers<ContextValue>['getRandomTheme'] =
         const [rows] = await connection.execute(sql, [
           ...(type != undefined ? [type] : []),
         ])
-        console.log(rows)
         assertIsArray(rows)
         if (rows.length === 0) {
           throw new GraphQLError('Not found')
@@ -90,7 +88,6 @@ export const getRandomTheme: QueryResolvers<ContextValue>['getRandomTheme'] =
           ...(visibility != undefined ? [visibility] : []),
           ...(type != undefined ? [type] : []),
         ])
-        console.log(rows)
         assertIsArray(rows)
         if (rows.length === 0) {
           throw new GraphQLError('Not found')

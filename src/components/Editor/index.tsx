@@ -65,7 +65,6 @@ export const Editor: React.FC<Props> = ({ userId, submit, ...methods }) => {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const onSubmit = useCallback(
     async (data: Form) => {
-      console.log('onSubmit', data)
       if (isSubmitting) {
         return
       }
