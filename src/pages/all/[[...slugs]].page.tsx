@@ -59,7 +59,7 @@ const AllPage: NextPageWithLayout<Props> = ({ userId, filter }) => {
     themes,
     total,
     mutate: { loadMore, toggleLike },
-  } = useThemeList(filter === 'all' ? null : filter, null, null)
+  } = useThemeList(filter === 'all' ? null : filter, null)
   const {
     mutate: { changeTheme },
   } = useCurrentTheme()

@@ -73,7 +73,7 @@ const EditPage: NextPageWithLayout<Props> = ({ defaultTheme, userId }) => {
 
   const {
     mutate: { createTheme },
-  } = useThemeList(null, null, null)
+  } = useThemeList(null, null)
   const submit = useCallback(
     async (data: Form) => {
       const newData = await createTheme(data)
