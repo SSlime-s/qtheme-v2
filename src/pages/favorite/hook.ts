@@ -74,52 +74,24 @@ export const useFavoritesList = (
         return data.map(page => {
           return {
             ...page,
-            themes: page.themes.map(theme => {
-              if (theme.id === id) {
-                return {
-                  ...theme,
-                  isLike: isLikeNew,
-                  likes:
-                    isLikeNew === theme.isLike
-                      ? theme.likes
-                      : theme.likes + (isLikeNew ? 1 : -1),
-                }
-              }
-              return theme
-            }),
-          }
-        })
-      }, false)
-
-      // SWR の mutate の更新に任せると全部ロードされなおされちゃうので自前でロード
-      void (async () => {
-        const sdk = getSdk(client)
-        const { getTheme } = await sdk.Theme({ id })
-        if (getTheme === null || getTheme === undefined) {
-          throw new Error('Theme not found')
-        }
-        await mutate(data => {
-          if (!data) {
-            return data
-          }
-
-          return data.map(page => {
-            return {
-              ...page,
-              themes: page.themes.map(theme => {
+            themes: page.themes
+              .map(theme => {
                 if (theme.id === id) {
                   return {
                     ...theme,
-                    isLike: getTheme.theme.isLike,
-                    likes: getTheme.theme.likes,
+                    isLike: isLikeNew,
+                    likes:
+                      isLikeNew === theme.isLike
+                        ? theme.likes
+                        : theme.likes + (isLikeNew ? 1 : -1),
                   }
                 }
                 return theme
-              }),
-            }
-          })
+              })
+              .filter(theme => theme.isLike),
+          }
         })
-      })()
+      })
 
       return
     },

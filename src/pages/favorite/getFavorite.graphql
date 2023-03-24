@@ -25,11 +25,3 @@ mutation ToggleLike($id: ID!, $isLike: Boolean!) {
     isLike
   }
 }
-
-query Theme($id: ID!) {
-  getTheme(id: $id) {
-    theme {
-      ...ThemeFragment
-    }
-  }
-}
