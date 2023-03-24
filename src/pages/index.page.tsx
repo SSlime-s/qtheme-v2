@@ -102,13 +102,6 @@ const Home: NextPage = () => {
           <Title>
             <Logo role='img' aria-label='Qtheme v2' />
           </Title>
-          <Description>
-            <p>
-              <BudouJa>
-                Qtheme は traQ のテーマを作成・共有できるサービスです。
-              </BudouJa>
-            </p>
-          </Description>
           <ViewLink href='/random'>
             <span>テーマを見てみる</span>
             <HiArrowRight />
@@ -119,18 +112,6 @@ const Home: NextPage = () => {
             <HiArrowRight />
           </LoginButton>
 
-          <HorizonWrap>
-            {themes.map(theme => {
-              const resolvedTheme = resolveTheme(theme.theme)
-              return (
-                <Card key={theme.id} href={`/theme/${theme.id}`}>
-                  <SmallPreview theme={resolvedTheme} author={theme.author} />
-                </Card>
-              )
-            })}
-            <Overlay />
-          </HorizonWrap>
-
           <Label>
             <Checkbox
               type='checkbox'
@@ -139,6 +120,9 @@ const Home: NextPage = () => {
             />
             <span>このページを今後表示しない</span>
           </Label>
+          <CurrentLink href={`/theme/${theme.id}`}>
+            {theme.title} by {theme.author}
+          </CurrentLink>
         </TopContentWrap>
       </TopContainer>
     </>
@@ -193,15 +177,6 @@ const TopContentWrap = styled.div`
     padding: 48px;
   }
 `
-const TopContent = styled.div`
-  ${GlassmorphismStyle}
-  border-radius: 8px;
-  padding: 24px;
-  display: flex;
-  flex-direction: column;
-
-  pointer-events: none;
-`
 const Title = styled.h1`
   font-size: 3rem;
   margin: 8px 0;
@@ -218,9 +193,6 @@ const Title = styled.h1`
   margin-right: auto;
   padding: 24px 16px;
   border-radius: 8px;
-`
-const Description = styled.div`
-  margin: 4px 0;
 `
 
 const LinkButtonStyle = css`
@@ -270,42 +242,8 @@ const Label = styled.label`
   margin-top: auto;
 `
 
-const HorizonWrap = styled.div`
-  display: flex;
-  flex-direction: row;
-  /* overflow: hidden; */
-  gap: 8px;
-  position: relative;
-  width: calc(100% + 80px);
-  ${isMobile} {
-    width: calc(100% + 48px);
-  }
-`
-const Card = styled(Link)`
-  ${GlassmorphismStyle}
-  border-radius: 8px;
-  padding: 8px;
-  display: grid;
-  place-items: center;
-  min-width: 240px;
-  width: 30vw;
-  & > * {
-    width: 100%;
-  }
+const CurrentLink = styled(Link)`
   pointer-events: auto;
-  flex-shrink: 0;
-`
-const Overlay = styled.div`
-  position: absolute;
-  pointer-events: none;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  max-width: 50%;
-  width: 160px;
-  background: linear-gradient(
-    to right,
-    transparent 0%,
-    rgba(255, 255, 255) 100%
-  );
+  margin-left: auto;
+  width: auto;
 `
