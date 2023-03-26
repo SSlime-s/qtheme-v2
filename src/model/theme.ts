@@ -42,7 +42,7 @@ const maybeCSSColorTypeSimple = <T extends z.ZodTypeAny>(t: T) =>
  * - fallback以外はoptionalにすること
  */
 export type BasicTheme = z.infer<typeof basicThemeSchema>
-const basicThemeSchema = z.object({
+export const basicThemeSchema = z.object({
   accent: z.object({
     primary: maybeCSSColorTypeSimple(
       z.object({

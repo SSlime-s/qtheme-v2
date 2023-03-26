@@ -12,7 +12,9 @@
     "storybook": "start-storybook -p 6006 -s ./src",
     "build-storybook": "build-storybook",
     "generate": "graphql-codegen --config codegen.ts",
-    "postinstall": "pnpm generate"
+    "postinstall": "pnpm generate",
+    "migration": "ts-node-esm ./bin/migrate.ts",
+    "mig": "tsc ./bin/migrate.ts && node --loader ./loader.js ./bin/migrate.ts"
   },
   "dependencies": {
     "@apollo/server": "^4.4.0",
@@ -82,12 +84,17 @@
     "assert": "^2.0.0",
     "babel-loader": "^8.3.0",
     "better-typescript-lib": "^2.2.1",
+    "csv-parse": "^5.3.6",
+    "dotenv": "^16.0.3",
     "eslint-config-prettier": "^8.6.0",
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-storybook": "^0.6.10",
     "prettier": "^2.8.4",
     "require-from-string": "^2.0.2",
+    "ts-node": "^10.9.1",
+    "tsconfig-paths": "^4.1.2",
+    "typescript-transform-paths": "^3.4.6",
     "webpack": "^5.75.0"
   },
   "pnpm": {
