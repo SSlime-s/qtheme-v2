@@ -42,7 +42,9 @@ specifiers:
   babel-loader: ^8.3.0
   better-typescript-lib: ^2.2.1
   budoux: ^0.4.1
+  csv-parse: ^5.3.6
   dayjs: ^1.11.7
+  dotenv: ^16.0.3
   eslint: 8.31.0
   eslint-config-next: 13.1.1
   eslint-config-prettier: ^8.6.0
@@ -67,7 +69,9 @@ specifiers:
   require-from-string: ^2.0.2
   swr: ^2.0.3
   ts-node: ^10.9.1
+  tsconfig-paths: ^4.1.2
   typescript: 4.9.4
+  typescript-transform-paths: ^3.4.6
   ulid: ^2.3.0
   webgl-fluid: ^0.3.3
   webpack: ^5.75.0
@@ -136,6 +140,8 @@ devDependencies:
   assert: 2.0.0
   babel-loader: 8.3.0_la66t7xldg4uecmyawueag5wkm
   better-typescript-lib: 2.2.1_typescript@4.9.4
+  csv-parse: 5.3.6
+  dotenv: 16.0.3
   eslint-config-prettier: 8.6.0_eslint@8.31.0
   eslint-plugin-react: 7.32.2_eslint@8.31.0
   eslint-plugin-react-hooks: 4.6.0_eslint@8.31.0
@@ -143,6 +149,8 @@ devDependencies:
   prettier: 2.8.4
   require-from-string: 2.0.2
   ts-node: 10.9.1_awa2wsr5thmg3i7jqycphctjfq
+  tsconfig-paths: 4.1.2
+  typescript-transform-paths: 3.4.6_typescript@4.9.4
   webpack: 5.75.0
 
 packages:
@@ -7351,6 +7359,10 @@ packages:
   /csstype/3.1.1:
     resolution: {integrity: sha512-DJR/VvkAvSZW9bTouZue2sSxDwdTN92uHjqeKVm+0dAqdfNykRzQ95tay8aXMBAAPpUiq4Qcug2L7neoRh2Egw==}
 
+  /csv-parse/5.3.6:
+    resolution: {integrity: sha512-WI330GjCuEioK/ii8HM2YE/eV+ynpeLvU+RXw4R8bRU8R0laK5zO3fDsc4gH8s472e3Ga38rbIjCAiQh+tEHkw==}
+    dev: true
+
   /currently-unhandled/0.4.1:
     resolution: {integrity: sha512-/fITjgjGU50vjQ4FH6eUoYu+iUoUKIXws2hL15JJpIR+BbTxaXQsMuuyjtNh2WqsSBS5nsaZHFsFecyw5CCAng==}
     engines: {node: '>=0.10.0'}
@@ -13426,7 +13438,6 @@ packages:
   /strip-bom/3.0.0:
     resolution: {integrity: sha512-vavAMRXOgBVNF6nyEEmL3DBK19iRpDcoIwW+swQ+CbGiu7lju6t+JklA1MHweoWtadgt4ISVUsXLyDq34ddcwA==}
     engines: {node: '>=4'}
-    dev: false
 
   /strip-eof/1.0.0:
     resolution: {integrity: sha512-7FCwGGmx8mD5xQd3RPUvnSpUXHM3BWuzjtpD4TXsfcZ9EL4azvVVUscFYwD9nx8Kh+uCBC00XBtAykoMHwTh8Q==}
@@ -13896,6 +13907,15 @@ packages:
       strip-bom: 3.0.0
     dev: false
 
+  /tsconfig-paths/4.1.2:
+    resolution: {integrity: sha512-uhxiMgnXQp1IR622dUXI+9Ehnws7i/y6xvpZB9IbUVOPy0muvdvgXeZOn88UcGPiT98Vp3rJPTa8bFoalZ3Qhw==}
+    engines: {node: '>=6'}
+    dependencies:
+      json5: 2.2.3
+      minimist: 1.2.8
+      strip-bom: 3.0.0
+    dev: true
+
   /tslib/1.14.1:
     resolution: {integrity: sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==}
 
@@ -13972,6 +13992,15 @@ packages:
 
   /typedarray/0.0.6:
     resolution: {integrity: sha512-/aCDEGatGvZ2BIk+HmLf4ifCJFwvKFNb9/JeZPMulfgFracn9QFcAf5GO8B/mweUjSoblS5In0cWhqpfs/5PQA==}
+    dev: true
+
+  /typescript-transform-paths/3.4.6_typescript@4.9.4:
+    resolution: {integrity: sha512-qdgpCk9oRHkIBhznxaHAapCFapJt5e4FbFik7Y4qdqtp6VyC3smAIPoDEIkjZ2eiF7x5+QxUPYNwJAtw0thsTw==}
+    peerDependencies:
+      typescript: '>=3.6.5'
+    dependencies:
+      minimatch: 3.1.2
+      typescript: 4.9.4
     dev: true
 
   /typescript/4.9.4:
