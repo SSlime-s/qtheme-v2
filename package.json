@@ -51,7 +51,7 @@
     "xmlhttprequest": "^1.8.0",
     "zod": "^3.20.6"
   },
-  "packageManager": "pnpm@7.27.1",
+  "packageManager": "pnpm@7.30.0",
   "engines": {
     "node": ">=18.0.0",
     "pnpm": ">=7.0.0",
