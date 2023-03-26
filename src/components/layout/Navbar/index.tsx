@@ -216,6 +216,7 @@ const Panel = styled.div<{ hasRPad: boolean }>`
   padding-right: ${({ hasRPad }) => (hasRPad ? '24px' : '0px')};
   grid-template-rows: max-content 1fr;
   gap: 24px;
+  overflow-y: auto;
 
   &[hidden] {
     display: none;
