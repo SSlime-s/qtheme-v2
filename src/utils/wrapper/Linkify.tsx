@@ -1,7 +1,7 @@
 import { IWrapper, WrapResolver } from '@/utils/wrapper'
-import React from 'react'
+import React, { ComponentProps, useMemo } from 'react'
 import { PropsWithChildren } from 'react'
-import LinkifyIt from 'linkify-it'
+import NativeLinkify from 'linkify-react'
 
 type Props = IWrapper
 
@@ -9,42 +9,43 @@ export const Linkify: React.FC<PropsWithChildren<Props>> = ({
   children,
   Wrapper,
 }) => {
-  const linkify = LinkifyIt()
-  const matches = linkify.match(children)
+  return (
+    <NativeLinkify
+      options={{
+        render: useMemo(() => renderLink(Wrapper), [Wrapper]),
+      }}
+    >
+      {children}
+    </NativeLinkify>
+  )
+}
 
-  if (matches === null) {
+const WrappedLink: React.FC<
+  ComponentProps<'a'> & Omit<IWrapper, 'children'>
+> = ({ children, Wrapper, ...props }) => {
+  if (typeof children !== 'string') {
     return <>{children}</>
   }
 
-  let rest = children
-  let offset = 0
-  const parsed = matches.map((v, i) => {
-    const before = rest.slice(0, v.index - offset)
-    const after = rest.slice(v.lastIndex - offset)
-    rest = after
-    offset += before.length + v.raw.length
-
-    const wrappedBefore = (
-      <WrapResolver Wrapper={Wrapper}>{before}</WrapResolver>
-    )
-    const wrappedLink = (
-      <a href={v.url} target='_blank' rel='noopener noreferrer'>
-        <WrapResolver Wrapper={Wrapper}>{v.text}</WrapResolver>
-      </a>
-    )
-
-    return (
-      <React.Fragment key={i}>
-        {wrappedBefore}
-        {wrappedLink}
-      </React.Fragment>
-    )
-  })
-
   return (
-    <>
-      {parsed}
-      {rest !== '' && <WrapResolver Wrapper={Wrapper}>{rest}</WrapResolver>}
-    </>
+    <a target='_blank' rel='noopener noreferrer' {...props}>
+      <WrapResolver Wrapper={Wrapper}>{children}</WrapResolver>
+    </a>
   )
 }
+const renderLink =
+  (Wrapper: IWrapper['Wrapper']) =>
+  // eslint-disable-next-line react/display-name
+  ({
+    attributes,
+    content,
+  }: {
+    attributes: ComponentProps<'a'>
+    content: string
+  }) => {
+    return (
+      <WrappedLink Wrapper={Wrapper} {...attributes}>
+        {content}
+      </WrappedLink>
+    )
+  }
