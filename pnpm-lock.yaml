@@ -55,7 +55,8 @@ specifiers:
   graphql-request: ^5.1.0
   graphql-tag: ^2.12.6
   jotai: ^2.0.2
-  linkify-it: ^4.0.1
+  linkify-react: ^4.1.1
+  linkifyjs: ^4.1.1
   mysql: ^2.18.1
   mysql2: ^2.3.3
   next: 13.1.1
@@ -96,7 +97,8 @@ dependencies:
   graphql-request: 5.1.0_graphql@16.6.0
   graphql-tag: 2.12.6_graphql@16.6.0
   jotai: 2.0.2_react@18.2.0
-  linkify-it: 4.0.1
+  linkify-react: 4.1.1_mspgloey5lkkx3kppb4gmihtci
+  linkifyjs: 4.1.1
   mysql: 2.18.1
   mysql2: 2.3.3
   next: 13.1.1_pjwopsidmaokadturxaafygjp4
@@ -6514,7 +6516,7 @@ packages:
       mississippi: 3.0.0
       mkdirp: 0.5.6
       move-concurrently: 1.0.1
-      promise-inflight: 1.0.1
+      promise-inflight: 1.0.1_bluebird@3.7.2
       rimraf: 2.7.1
       ssri: 6.0.2
       unique-filename: 1.1.1
@@ -10492,10 +10494,18 @@ packages:
       uc.micro: 1.0.6
     dev: false
 
-  /linkify-it/4.0.1:
-    resolution: {integrity: sha512-C7bfi1UZmoj8+PQx22XyeXCuBlokoyWQL5pWSP+EI6nzRylyThouddufc2c1NDIcP9k5agmN9fLpA7VNJfIiqw==}
+  /linkify-react/4.1.1_mspgloey5lkkx3kppb4gmihtci:
+    resolution: {integrity: sha512-2K9Y1cUdvq40dFWqCJ//X+WP19nlzIVITFGI93RjLnA0M7KbnxQ/ffC3AZIZaEIrLangF9Hjt3i0GQ9/anEG5A==}
+    peerDependencies:
+      linkifyjs: ^4.0.0
+      react: '>= 15.0.0'
     dependencies:
-      uc.micro: 1.0.6
+      linkifyjs: 4.1.1
+      react: 18.2.0
+    dev: false
+
+  /linkifyjs/4.1.1:
+    resolution: {integrity: sha512-zFN/CTVmbcVef+WaDXT63dNzzkfRBKT1j464NJQkV7iSgJU0sLBus9W0HBwnXK13/hf168pbrx/V/bjEHOXNHA==}
     dev: false
 
   /listr2/4.0.5:
@@ -12099,6 +12109,17 @@ packages:
     peerDependenciesMeta:
       bluebird:
         optional: true
+    dev: true
+
+  /promise-inflight/1.0.1_bluebird@3.7.2:
+    resolution: {integrity: sha512-6zWPyEOFaQBJYcGMHBKTKJ3u6TBsnMFOIZSa6ce1e/ZrrsOlnHRHbabMjLiBYKp+n44X9eUI6VUPaukCXHuG4g==}
+    peerDependencies:
+      bluebird: '*'
+    peerDependenciesMeta:
+      bluebird:
+        optional: true
+    dependencies:
+      bluebird: 3.7.2
     dev: true
 
   /promise.allsettled/1.0.6:
