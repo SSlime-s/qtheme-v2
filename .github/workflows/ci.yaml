@@ -1,8 +1,9 @@
 name: main
 on:
   push:
-    branches:
-      - main
+    tags:
+      - 'v*'
+
 env:
   GITEA_SSH_URL: 'https://git.trap.jp/SSlime/Qtheme_v2.git'
 
