@@ -11,6 +11,7 @@ import { pageTitle } from '@/utils/title'
 import { PreviewCard } from '@/components/PreviewCard'
 import styled from '@emotion/styled'
 import { useFavoritesList } from './hook'
+import { InfiniteLoad } from '@/components/InfiniteLoad'
 
 export const getServerSideProps = async ({
   req,
@@ -95,6 +96,7 @@ const FavoritePageContent: React.FC<
   const {
     themes,
     total,
+    isReachingEnd,
     mutate: { loadMore, toggleLike },
   } = useFavoritesList(filter === 'all' ? null : filter, null)
   const {
@@ -104,25 +106,38 @@ const FavoritePageContent: React.FC<
   return (
     <>
       <Wrap>
-        {themes.map(theme => {
-          return (
-            <PreviewCard
-              key={theme.id}
-              themeInfo={theme}
-              onFavorite={toggleLike}
-              changeTheme={changeTheme}
-            />
-          )
-        })}
+        <Grid>
+          {themes.map(theme => {
+            return (
+              <PreviewCard
+                key={theme.id}
+                themeInfo={theme}
+                onFavorite={toggleLike}
+                changeTheme={changeTheme}
+              />
+            )
+          })}
+        </Grid>
+        <InfiniteLoad
+          loadMore={loadMore}
+          isReachingEnd={isReachingEnd ?? true}
+        />
       </Wrap>
     </>
   )
 }
 
 const Wrap = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+`
+const Grid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
   gap: 16px;
   padding: 32px;
   justify-items: center;
+  width: 100%;
 `

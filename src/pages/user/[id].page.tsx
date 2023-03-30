@@ -1,3 +1,4 @@
+import { InfiniteLoad } from '@/components/InfiniteLoad'
 import { Layout } from '@/components/layout'
 import { FullWidthContent, Message } from '@/components/Message'
 import { PreviewCard } from '@/components/PreviewCard'
@@ -31,6 +32,7 @@ const UserPage: NextPageWithLayout<Props> = ({ userId }) => {
   const {
     themes,
     total,
+    isReachingEnd,
     error,
     isLoading,
     mutate: { loadMore, toggleLike },
@@ -69,6 +71,10 @@ const UserPage: NextPageWithLayout<Props> = ({ userId }) => {
                   />
                 ))}
               </ContentWrap>
+              <InfiniteLoad
+                loadMore={loadMore}
+                isReachingEnd={isReachingEnd ?? true}
+              />
             </FullWidthContent>
           </>
         }
