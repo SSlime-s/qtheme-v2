@@ -5,13 +5,14 @@ import { Layout } from '@/components/layout'
 import Error from 'next/error'
 import { assertIsArray } from '@/utils/typeUtils'
 import { useCurrentTheme } from '@/utils/theme/hooks'
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import Head from 'next/head'
 import { pageTitle } from '@/utils/title'
 import { PreviewCard } from '@/components/PreviewCard'
 import styled from '@emotion/styled'
 import { useFavoritesList } from './hook'
 import { InfiniteLoad } from '@/components/InfiniteLoad'
+import { useSetTopic } from '@/components/layout/Header'
 
 export const getServerSideProps = async ({
   req,
@@ -93,6 +94,8 @@ const FavoritePageContent: React.FC<
     userId: NonNullable<Props['userId']>
   }
 > = ({ userId, filter }) => {
+  useSetUserId(userId)
+
   const {
     themes,
     total,
@@ -102,6 +105,15 @@ const FavoritePageContent: React.FC<
   const {
     mutate: { changeTheme },
   } = useCurrentTheme()
+
+  const setTopic = useSetTopic()
+  useEffect(() => {
+    setTopic(`${total} themes`)
+
+    return () => {
+      setTopic(null)
+    }
+  }, [total, setTopic])
 
   return (
     <>

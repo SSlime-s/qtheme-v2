@@ -1,5 +1,6 @@
 import { InfiniteLoad } from '@/components/InfiniteLoad'
 import { Layout } from '@/components/layout'
+import { useSetTopic } from '@/components/layout/Header'
 import { FullWidthContent, Message } from '@/components/Message'
 import { PreviewCard } from '@/components/PreviewCard'
 import { extractShowcaseUser, useSetUserId } from '@/utils/extractUser'
@@ -7,6 +8,7 @@ import { useCurrentTheme } from '@/utils/theme/hooks'
 import styled from '@emotion/styled'
 import { GetServerSidePropsContext } from 'next'
 import { useRouter } from 'next/router'
+import { useEffect } from 'react'
 import { NextPageWithLayout } from '../_app.page'
 import { useAuthorThemes } from './hooks'
 
@@ -40,6 +42,15 @@ const UserPage: NextPageWithLayout<Props> = ({ userId }) => {
   const {
     mutate: { changeTheme },
   } = useCurrentTheme()
+
+  const setTopic = useSetTopic()
+  useEffect(() => {
+    setTopic(`${total} themes`)
+
+    return () => {
+      setTopic(null)
+    }
+  }, [total, setTopic])
 
   if (isLoading) {
     return <div>loading...</div>

@@ -1,5 +1,6 @@
 import { isMobile, useIsMobile } from '@/utils/isMobile'
 import styled from '@emotion/styled'
+import { atom, useAtomValue, useSetAtom } from 'jotai'
 import Link from 'next/link'
 import { useCallback, useMemo, useRef } from 'react'
 import { ChannelPath } from './convertChannelPath'
@@ -8,8 +9,15 @@ interface Props {
   channelPath: ChannelPath[]
 }
 
+const topicAtom = atom<string | null>(null)
+export const useSetTopic = () => {
+  return useSetAtom(topicAtom)
+}
 export const Header: React.FC<Props> = ({ channelPath }) => {
   const isMobile = useIsMobile()
+
+  const topic = useAtomValue(topicAtom)
+
   const now: ChannelPath | undefined = useMemo(() => {
     const pathElement = channelPath[channelPath.length - 1]
     if (pathElement === undefined) return undefined
@@ -73,6 +81,7 @@ export const Header: React.FC<Props> = ({ channelPath }) => {
             </>
           )}
         </PathWrap>
+        {topic !== null && <Topic>{topic}</Topic>}
       </Wrap>
     </>
   )
@@ -86,9 +95,10 @@ const Wrap = styled.header`
   background: ${({ theme }) => theme.theme.basic.background.primary.default};
   border-bottom: solid 2px
     ${({ theme }) => theme.theme.basic.ui.tertiary.default};
-  display: grid;
+  display: flex;
   align-items: center;
   padding: 16px;
+  gap: 16px;
 
   ${isMobile} {
     position: sticky;
@@ -134,4 +144,16 @@ const SeparatorWrap = styled.span`
   color: ${({ theme }) => theme.theme.basic.ui.secondary.inactive};
   font-size: 1rem;
   margin: 0 0.125rem;
+`
+const Topic = styled.div`
+  color: ${({ theme }) => theme.theme.basic.ui.secondary.default};
+  height: 16px;
+  padding: 0 16px;
+  border-left: 2px solid ${({ theme }) => theme.theme.basic.ui.tertiary.default};
+  font-size: 0.875rem;
+  font-weight: 400;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  line-height: 16px;
 `

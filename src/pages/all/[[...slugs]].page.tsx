@@ -7,10 +7,11 @@ import styled from '@emotion/styled'
 import { GetServerSidePropsContext } from 'next'
 import { NextPageWithLayout } from '@/pages/_app.page'
 import Head from 'next/head'
-import { useCallback, useMemo } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
 import { pageTitle } from '@/utils/title'
 import { useToast } from '@/utils/toast'
 import { InfiniteLoad } from '@/components/InfiniteLoad'
+import { useSetTopic } from '@/components/layout/Header'
 
 export const getServerSideProps = async ({
   req,
@@ -99,6 +100,15 @@ const AllPage: NextPageWithLayout<Props> = ({ userId, filter }) => {
       return `#all/${filter}`
     }
   }, [filter])
+
+  const setTopic = useSetTopic()
+  useEffect(() => {
+    setTopic(`${total} themes`)
+
+    return () => {
+      setTopic(null)
+    }
+  }, [total, setTopic])
 
   return (
     <>
