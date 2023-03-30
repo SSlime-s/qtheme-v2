@@ -7,9 +7,12 @@ import styled from '@emotion/styled'
 import { GetServerSidePropsContext } from 'next'
 import { NextPageWithLayout } from '@/pages/_app.page'
 import Head from 'next/head'
-import { useCallback, useMemo } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { pageTitle } from '@/utils/title'
 import { useToast } from '@/utils/toast'
+import { GlassmorphismStyle } from '@/components/Glassmorphism'
+import { useIsHoverable } from '@/utils/isMobile'
+import { lightTheme } from '@/utils/theme/default'
 
 export const getServerSideProps = async ({
   req,
@@ -55,9 +58,12 @@ type Props = NonNullable<
 const AllPage: NextPageWithLayout<Props> = ({ userId, filter }) => {
   useSetUserId(userId)
 
+  const isHoverable = useIsHoverable()
+
   const {
     themes,
     total,
+    isReachingEnd,
     mutate: { loadMore, toggleLike },
   } = useThemeList(filter === 'all' ? null : filter, null)
   const {
@@ -78,6 +84,43 @@ const AllPage: NextPageWithLayout<Props> = ({ userId, filter }) => {
     },
     [addToast, toggleLike, userId]
   )
+
+  const [isMoreLoading, setIsMoreLoading] = useState(false)
+  const checkedLoadMore = useCallback(async () => {
+    if (isMoreLoading) {
+      return
+    }
+    if (isReachingEnd ?? true) {
+      return
+    }
+    setIsMoreLoading(true)
+    await loadMore()
+    setIsMoreLoading(false)
+  }, [isMoreLoading, isReachingEnd, loadMore])
+
+  const bottomRef = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    if (isHoverable) {
+      return
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          void checkedLoadMore()
+        }
+      },
+      {
+        threshold: 0.5,
+      }
+    )
+    if (bottomRef.current) {
+      observer.observe(bottomRef.current)
+    }
+    return () => {
+      observer.disconnect()
+    }
+  }, [checkedLoadMore, isHoverable])
 
   // TODO: そのうち消す テスト用
   const ogUrl = useMemo(() => {
@@ -108,16 +151,24 @@ const AllPage: NextPageWithLayout<Props> = ({ userId, filter }) => {
         <meta name='og:image' content={ogUrl} />
       </Head>
       <Wrap>
-        {themes.map(theme => {
-          return (
-            <PreviewCard
-              key={theme.id}
-              themeInfo={theme}
-              onFavorite={toggleLikeWithAuth}
-              changeTheme={changeTheme}
-            />
-          )
-        })}
+        <Grid>
+          {themes.map(theme => {
+            return (
+              <PreviewCard
+                key={theme.id}
+                themeInfo={theme}
+                onFavorite={toggleLikeWithAuth}
+                changeTheme={changeTheme}
+              />
+            )
+          })}
+        </Grid>
+        {isReachingEnd === false && isHoverable && (
+          <LoadMoreButton aria-busy={isMoreLoading} onClick={checkedLoadMore}>
+            <span>もっと見る</span>
+          </LoadMoreButton>
+        )}
+        <Stopper ref={bottomRef} />
       </Wrap>
     </>
   )
@@ -128,10 +179,36 @@ AllPage.getLayout = page => {
 }
 
 const Wrap = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+`
+const Grid = styled.div`
   /* TODO: grid でいい感じに並べる */
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
   gap: 16px;
   padding: 32px;
   justify-items: center;
+  width: 100%;
+`
+const LoadMoreButton = styled.button`
+  ${GlassmorphismStyle}
+  border-radius: 9999px;
+  cursor: pointer;
+
+  padding: 8px 16px;
+  margin: 32px 0;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+  &:focus {
+    outline: 1px solid ${lightTheme.basic.accent.primary};
+    outline-offset: -2px;
+  }
+`
+const Stopper = styled.div`
+  width: 100%;
 `
