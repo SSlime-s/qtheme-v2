@@ -23,6 +23,11 @@ jobs:
         with:
           node-version: 18.
           cache: pnpm
+      - uses: actions/cache@v3
+        with:
+          path: |
+            node_modules
+          key: node_modules-${{ github.sha }}
       - run: pnpm install
 
   build:
@@ -37,6 +42,11 @@ jobs:
         with:
           node-version: 18.
           cache: pnpm
+      - uses: actions/cache@v3
+        with:
+          path: |
+            node_modules
+          key: node_modules-${{ github.sha }}
       - run: pnpm build --no-lint
       - name: Save All Build Files
         uses: actions/cache@v3
@@ -51,13 +61,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: pnpm/action-setup@v2
-        with:
-          version: 7
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 18.
-          cache: pnpm
       - name: Restore All Build Files
         uses: actions/cache@v3
         with:
