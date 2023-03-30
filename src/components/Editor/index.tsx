@@ -22,6 +22,7 @@ import { Title } from './InfoEditor/Title'
 import { Description } from './InfoEditor/Description'
 import { Sidebar } from './Sidebar'
 import { TextTheme } from './TextTheme'
+import { useBlockLeave } from './useBlockLeave'
 
 const ColorsTab = ['Basic', 'Advanced'] as const
 
@@ -83,6 +84,8 @@ export const Editor: React.FC<Props> = ({ userId, submit, ...methods }) => {
     () => methods.handleSubmit(onSubmit)(),
     [methods, onSubmit]
   )
+
+  useBlockLeave(methods.formState.isDirty)
 
   return (
     <>
