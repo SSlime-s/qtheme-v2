@@ -27,7 +27,9 @@ jobs:
         with:
           path: |
             node_modules
-          key: node_modules-${{ github.sha }}
+            **/*.generated.ts
+            **/*.generated
+          key: node_modules-generated-${{ github.sha }}
       - run: pnpm install
 
   build:
@@ -46,7 +48,9 @@ jobs:
         with:
           path: |
             node_modules
-          key: node_modules-${{ github.sha }}
+            **/*.generated.ts
+            **/*.generated
+          key: node_modules-generated-${{ github.sha }}
       - run: pnpm build --no-lint
       - name: Save All Build Files
         uses: actions/cache@v3
