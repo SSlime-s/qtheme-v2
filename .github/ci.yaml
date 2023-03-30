@@ -1,0 +1,79 @@
+name: main
+on:
+  push:
+    branches:
+      - main
+env:
+  GITEA_SSH_URL: 'https://git.trap.jp/SSlime/Qtheme_v2.git'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  install:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18.
+          cache: pnpm
+      - run: pnpm install
+
+  build:
+    needs: install
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18.
+          cache: pnpm
+      - run: pnpm build --no-lint
+      - name: Save All Build Files
+        uses: actions/cache@v3
+        with:
+          path: |
+            node_modules
+            build
+          key: build-${{ github.sha }}
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18.
+          cache: pnpm
+      - name: Restore All Build Files
+        uses: actions/cache@v3
+        with:
+          path: |
+            node_modules
+            build
+          key: build-${{ github.sha }}
+      - name: Add to LFS
+        run: |
+          git lfs track build
+          git lfs track node_modules
+      - name: Set Config
+        run: |
+          echo "${{ secrets.GITEA_TOKEN }}" > ~/deploy_key.pem
+          chmod 600 ~/deploy_key.pem
+          git config --local user.email "github@actions"
+          git config --local user.name "github"
+      - name: Commit (include build)
+        run: |
+          git add -f build
+          git add -f node_modules
+          git add -f .gitattributes
+          git commit -m "[build] ${{ github.sha }}"
+      - name: Push
+        env:
+          GIT_SSH_COMMAND: 'ssh -i ~/deploy_key.pem -o StrictHostKeyChecking=no -F /dev/null'
+        run: |
+          git fetch --unshallow origin
+          git push -f ${{ env.GITEA_SSH_URL }} main:master

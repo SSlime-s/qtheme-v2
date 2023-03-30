@@ -1,0 +1,22 @@
+type: runtime
+
+__image: node:18
+
+startup: |-
+  wget https://github.com/git-lfs/git-lfs/releases/download/v3.3.0/git-lfs-linux-amd64-v3.3.0.tar.gz
+  tar -xvf git-lfs-linux-amd64-v3.3.0.tar.gz
+  ./git-lfs-3.3.0/install.sh
+  git lfs install
+  git pull "https://SSlime:${{ env.GIT_ACCESS_TOKEN }}@git pull https://SSlime:${{ env.GIT_ACCESS_TOKEN }}@git.trap.jp/SSlime/QTheme_v2.git" master
+  git lfs pull
+
+entrypoint: 'pnpm run start'
+
+http_proxy: 3000
+
+use_mariadb: true
+
+internal: soft
+
+https: "on"
+cname: "qtheme-v2.trap.games"
