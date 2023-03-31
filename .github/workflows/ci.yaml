@@ -21,7 +21,7 @@ jobs:
           version: 7
       - uses: actions/setup-node@v3
         with:
-          node-version: 18.
+          node-version: 18.x
           cache: pnpm
       - uses: actions/cache@v3
         with:
@@ -42,7 +42,7 @@ jobs:
           version: 7
       - uses: actions/setup-node@v3
         with:
-          node-version: 18.
+          node-version: 18.x
           cache: pnpm
       - uses: actions/cache@v3
         with:
