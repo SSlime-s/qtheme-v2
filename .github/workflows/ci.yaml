@@ -5,7 +5,7 @@ on:
       - 'v*'
 
 env:
-  GITEA_SSH_URL: 'https://git.trap.jp/SSlime/Qtheme_v2.git'
+  GITEA_SSH_URL: 'ssh://git@git.trap.jp:2200/SSlime/Qtheme_v2.git'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
