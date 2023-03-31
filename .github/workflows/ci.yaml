@@ -52,9 +52,11 @@ jobs:
             **/generated
           key: node_modules-generated-${{ github.sha }}
       - run: pnpm install
-      - run: pnpm run generate
       - name: FOR DEBUG
         run: |
+          printenv
+          echo ''
+          echo ''
           pnpm ls
           echo ''
           echo ''
