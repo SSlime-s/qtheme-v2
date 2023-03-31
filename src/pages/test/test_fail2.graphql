@@ -1,0 +1,20 @@
+mutation ToggleLike($id: ID!, $isLike: Boolean!) {
+  toggleLike(id: $id, isLike: $isLike) {
+    isLike
+  }
+}
+
+query Random($visibility: Visibility, $type: Type) {
+  getRandomTheme(visibility: $visibility, type: $type) {
+    ...ThemeFragment
+  }
+}
+
+query GetThemeLike($id: ID!) {
+  getTheme(id: $id) {
+    theme {
+      isLike
+      likes
+    }
+  }
+}

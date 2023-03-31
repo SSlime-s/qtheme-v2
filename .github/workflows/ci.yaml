@@ -74,6 +74,22 @@ jobs:
           cat ./src/pages/user/AuthorThemes.graphql
           echo "./src/pages/user/AuthorThemes.generated.ts"
           cat ./src/pages/user/AuthorThemes.generated.ts
+      - name: DEBUG TEST
+        run: |
+          echo  "./src/pages/test/test_fail.generated.ts"
+          cat ./src/pages/test/test_fail.generated.ts
+          echo ''
+          echo "./src/pages/test/test_fail2.generated.ts"
+          cat ./src/pages/test/test_fail2.generated.ts
+          echo ''
+          echo "./src/pages/test/test_fail3.generated.ts"
+          cat ./src/pages/test/test_fail3.generated.ts
+          echo ''
+          echo "./src/pages/test/test_success.generated.ts"
+          cat ./src/pages/test/test_success.generated.ts
+          echo ''
+          echo "./src/pages/test/test_success2.generated.ts"
+          cat ./src/pages/test/test_success2.generated.ts
       - run: pnpm build --no-lint
       - name: Save All Build Files
         uses: actions/cache@v3
