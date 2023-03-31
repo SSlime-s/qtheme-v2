@@ -55,6 +55,9 @@ jobs:
       - run: pnpm run generate
       - name: FOR DEBUG
         run: |
+          pnpm ls
+          echo ''
+          echo ''
           echo "./src/pages/random"
           ls -al ./src/pages/random
           echo "./src/pages/random/getRandom.graphql"
