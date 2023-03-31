@@ -26,6 +26,7 @@ jobs:
             **/*.generated.ts
             **/generated
           key: node_modules-generated-${{ github.sha }}
+      - run: sed -i 's/pnpm generate/npm run generate/g' package.json
       - run: npm i
       - run: npm run generate
 
