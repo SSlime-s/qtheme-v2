@@ -52,28 +52,6 @@ jobs:
             **/generated
           key: node_modules-generated-${{ github.sha }}
       - run: pnpm install
-      - name: FOR DEBUG
-        run: |
-          printenv
-          echo ''
-          echo ''
-          pnpm ls
-          echo ''
-          echo ''
-          echo "./src/pages/random"
-          ls -al ./src/pages/random
-          echo "./src/pages/random/getRandom.graphql"
-          cat ./src/pages/random/getRandom.graphql
-          echo "./src/pages/random/getRandom.generated.ts"
-          cat ./src/pages/random/getRandom.generated.ts
-          echo ''
-          echo ''
-          echo "./src/pages/user"
-          ls -al ./src/pages/user
-          echo "./src/pages/user/AuthorThemes.graphql"
-          cat ./src/pages/user/AuthorThemes.graphql
-          echo "./src/pages/user/AuthorThemes.generated.ts"
-          cat ./src/pages/user/AuthorThemes.generated.ts
       - run: pnpm build --no-lint
       - name: Save All Build Files
         uses: actions/cache@v3
