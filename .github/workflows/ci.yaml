@@ -52,6 +52,7 @@ jobs:
             **/generated
           key: node_modules-generated-${{ github.sha }}
       - run: pnpm install
+      - run: pnpm run generate
       - name: FOR DEBUG
         run: |
           echo "./src/pages/random"
