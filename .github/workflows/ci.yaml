@@ -63,12 +63,12 @@ jobs:
           cat ./src/pages/random/getRandom.generated.ts
           echo ''
           echo ''
-          echo "./src/pages/favorite"
-          ls -al ./src/pages/favorite
-          echo "./src/pages/favorite/getFavorite.graphql"
-          cat ./src/pages/favorite/getFavorite.graphql
-          echo "./src/pages/favorite/getFavorite.generated.ts"
-          cat ./src/pages/favorite/getFavorite.generated.ts
+          echo "./src/pages/user"
+          ls -al ./src/pages/user
+          echo "./src/pages/user/AuthorThemes.graphql"
+          cat ./src/pages/user/AuthorThemes.graphql
+          echo "./src/pages/user/AuthorThemes.generated.ts"
+          cat ./src/pages/user/AuthorThemes.generated.ts
       - run: pnpm build --no-lint
       - name: Save All Build Files
         uses: actions/cache@v3
