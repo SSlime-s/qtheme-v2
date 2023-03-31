@@ -20,7 +20,7 @@ query Favorites(
   }
 }
 
-mutation ToggleLike($id: ID!, $isLike: Boolean!) {
+mutation Favorites_ToggleLike($id: ID!, $isLike: Boolean!) {
   toggleLike(id: $id, isLike: $isLike) {
     isLike
   }

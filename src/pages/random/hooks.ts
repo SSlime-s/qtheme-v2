@@ -43,7 +43,7 @@ export const useRandomTheme = (type: Lowercase<Type> | null) => {
 
       const {
         toggleLike: { isLike: newIsLike },
-      } = await sdk.ToggleLike({ id, isLike })
+      } = await sdk.Random_ToggleLike({ id, isLike })
 
       await mutate(data => {
         if (data === undefined) return
@@ -58,7 +58,7 @@ export const useRandomTheme = (type: Lowercase<Type> | null) => {
       }, false)
 
       void (async () => {
-        const { getTheme } = await sdk.GetThemeLike({ id })
+        const { getTheme } = await sdk.Random_GetThemeLike({ id })
 
         if (getTheme === null || getTheme === undefined) return
 

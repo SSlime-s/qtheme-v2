@@ -64,7 +64,7 @@ export const useFavoritesList = (
       const sdk = getSdk(client)
       const {
         toggleLike: { isLike: isLikeNew },
-      } = await sdk.ToggleLike({ id, isLike })
+      } = await sdk.Favorites_ToggleLike({ id, isLike })
 
       await mutate(data => {
         if (!data) {

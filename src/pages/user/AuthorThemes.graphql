@@ -1,4 +1,4 @@
-query AuthorThemes($author: String!, $limit: Int, $offset: Int, $type: Type) {
+query Author_Themes($author: String!, $limit: Int, $offset: Int, $type: Type) {
   getThemes(limit: $limit, offset: $offset, type: $type, author: $author) {
     themes {
       ...ThemeFragment
@@ -7,13 +7,13 @@ query AuthorThemes($author: String!, $limit: Int, $offset: Int, $type: Type) {
   }
 }
 
-mutation ToggleLike($id: ID!, $isLike: Boolean!) {
+mutation Author_ToggleLike($id: ID!, $isLike: Boolean!) {
   toggleLike(id: $id, isLike: $isLike) {
     isLike
   }
 }
 
-query Theme($id: ID!) {
+query Author_Theme($id: ID!) {
   getTheme(id: $id) {
     theme {
       ...ThemeFragment

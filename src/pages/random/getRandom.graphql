@@ -4,7 +4,7 @@ query Random($visibility: Visibility, $type: Type) {
   }
 }
 
-query GetThemeLike($id: ID!) {
+query Random_GetThemeLike($id: ID!) {
   getTheme(id: $id) {
     theme {
       isLike
@@ -12,7 +12,8 @@ query GetThemeLike($id: ID!) {
     }
   }
 }
-mutation ToggleLike($id: ID!, $isLike: Boolean!) {
+
+mutation Random_ToggleLike($id: ID!, $isLike: Boolean!) {
   toggleLike(id: $id, isLike: $isLike) {
     isLike
   }

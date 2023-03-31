@@ -1,7 +1,7 @@
 import { useClient } from '@/utils/api'
 import { themeFromRaw, THEMES_PER_PAGE } from '@/utils/theme/hooks'
 import useSWRInfinite from 'swr/infinite'
-import { AuthorThemesDocument, getSdk } from './AuthorThemes.generated'
+import { Author_ThemesDocument, getSdk } from './AuthorThemes.generated'
 import { print } from 'graphql'
 import { useCallback, useMemo } from 'react'
 
@@ -19,7 +19,7 @@ export const useAuthorThemes = (
       }
 
       return [
-        print(AuthorThemesDocument),
+        print(Author_ThemesDocument),
         {
           author,
           limit: pageSize,
@@ -30,7 +30,7 @@ export const useAuthorThemes = (
     },
     async ([_, variables]) => {
       const sdk = getSdk(client)
-      const { getThemes } = await sdk.AuthorThemes(variables)
+      const { getThemes } = await sdk.Author_Themes(variables)
       if (getThemes === null || getThemes === undefined) {
         throw new Error('Theme not found')
       }
@@ -64,7 +64,7 @@ export const useAuthorThemes = (
       const sdk = getSdk(client)
       const {
         toggleLike: { isLike: isLikeNew },
-      } = await sdk.ToggleLike({ id, isLike })
+      } = await sdk.Author_ToggleLike({ id, isLike })
 
       await mutate(data => {
         if (!data) {
@@ -94,7 +94,7 @@ export const useAuthorThemes = (
       // SWR の mutate の更新に任せると全部ロードされなおされちゃうので自前でロード
       void (async () => {
         const sdk = getSdk(client)
-        const { getTheme } = await sdk.Theme({ id })
+        const { getTheme } = await sdk.Author_Theme({ id })
         if (getTheme === null || getTheme === undefined) {
           throw new Error('Theme not found')
         }
