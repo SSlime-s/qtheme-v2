@@ -87,11 +87,11 @@ jobs:
         run: |
           git add -f build
           git add -f node_modules
-          git add -f .gitattributes
+          git add .gitattributes
           git commit -m "[build] ${{ github.sha }}"
       - name: Push
         env:
-          GIT_SSH_COMMAND: 'ssh -i ~/deploy_key.pem -o StrictHostKeyChecking=no -F /dev/null'
+          GIT_SSH_COMMAND: ssh -i ~/deploy_key.pem -o StrictHostKeyChecking=no -F /dev/null
         run: |
           git fetch --unshallow origin
           git push -f ${{ env.GITEA_SSH_URL }} main:master
