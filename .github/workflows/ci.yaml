@@ -16,13 +16,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: pnpm/action-setup@v2
-        with:
-          version: 7
       - uses: actions/setup-node@v3
         with:
           node-version: 18.x
-          cache: pnpm
       - uses: actions/cache@v3
         with:
           path: |
@@ -30,20 +26,17 @@ jobs:
             **/*.generated.ts
             **/generated
           key: node_modules-generated-${{ github.sha }}
-      - run: pnpm install
+      - run: npm i
+      - run: npm run generate
 
   build:
     needs: install
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: pnpm/action-setup@v2
-        with:
-          version: 7
       - uses: actions/setup-node@v3
         with:
           node-version: 18.x
-          cache: pnpm
       - uses: actions/cache@v3
         with:
           path: |
@@ -51,13 +44,14 @@ jobs:
             **/*.generated.ts
             **/generated
           key: node_modules-generated-${{ github.sha }}
-      - run: pnpm install
-      - run: pnpm run generate
+      # - run: pnpm install
+      # - run: pnpm run generate
       - name: FOR DEBUG
+        # run: |
+        #   pnpm ls
+        #   echo ''
+        #   echo ''
         run: |
-          pnpm ls
-          echo ''
-          echo ''
           echo "./src/pages/random"
           ls -al ./src/pages/random
           echo "./src/pages/random/getRandom.graphql"
@@ -72,7 +66,7 @@ jobs:
           cat ./src/pages/user/AuthorThemes.graphql
           echo "./src/pages/user/AuthorThemes.generated.ts"
           cat ./src/pages/user/AuthorThemes.generated.ts
-      - run: pnpm build --no-lint
+      - run: npm run build --no-lint
       - name: Save All Build Files
         uses: actions/cache@v3
         with:
