@@ -75,7 +75,7 @@ jobs:
             node_modules
             build
           key: build-${{ github.sha }}
-      - run: git branch ${{ env.BRANCH_NAME }}
+      - run: git switch -c ${{ env.BRANCH_NAME }}
       - name: Add to LFS
         run: |
           git lfs track build
