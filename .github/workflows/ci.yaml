@@ -32,12 +32,9 @@ jobs:
           key: node_modules-generated-${{ github.sha }}
       - run: pnpm install
 
-  build:
+  type-check:
     needs: install
     runs-on: ubuntu-latest
-    concurrency:
-      group: for-prod-${{ github.workflow }}
-      cancel-in-progress: true
     steps:
       - uses: actions/checkout@v3
       - uses: pnpm/action-setup@v2
@@ -54,18 +51,10 @@ jobs:
             **/*.generated.ts
             **/generated
           key: node_modules-generated-${{ github.sha }}
-      - run: pnpm install
-      - run: pnpm build --no-lint
-      - name: Save All Build Files
-        uses: actions/cache@v3
-        with:
-          path: |
-            node_modules
-            build
-          key: build-${{ github.sha }}
+      - run: pnpm run type-check
 
   deploy:
-    needs: build
+    needs: type-check
     runs-on: ubuntu-latest
     concurrency:
       group: for-prod-${{ github.workflow }}
@@ -74,35 +63,12 @@ jobs:
       BRANCH_NAME: tmp-${{ github.ref }}
     steps:
       - uses: actions/checkout@v3
-      - name: Restore All Build Files
-        uses: actions/cache@v3
-        with:
-          path: |
-            node_modules
-            build
-          key: build-${{ github.sha }}
-      - run: git switch -c ${{ env.BRANCH_NAME }}
-      - name: Add to LFS
-        run: |
-          git lfs track build
-          git lfs track node_modules
       - name: Set Config
         run: |
           echo "${{ secrets.GITEA_TOKEN }}" > ~/deploy_key.pem
           chmod 600 ~/deploy_key.pem
           git config --local user.email "github@actions"
           git config --local user.name "github"
-      - name: Commit (include build)
-        run: |
-          git add -f build
-          git add -f node_modules
-          git add .gitattributes
-          git commit -m "[build] ${{ github.sha }}"
-      - name: DEBUG
-        run: |
-          git status
-          git log -n 5
-          git branch -a
       - name: Push
         env:
           GIT_SSH_COMMAND: ssh -i ~/deploy_key.pem -o StrictHostKeyChecking=no -F /dev/null

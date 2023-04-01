@@ -3,12 +3,9 @@ type: runtime
 __image: node:18
 
 startup: |-
-  wget https://github.com/git-lfs/git-lfs/releases/download/v3.3.0/git-lfs-linux-amd64-v3.3.0.tar.gz
-  tar -xvf git-lfs-linux-amd64-v3.3.0.tar.gz
-  ./git-lfs-3.3.0/install.sh
-  git lfs install
-  git pull "https://SSlime:${GIT_ACCESS_TOKEN}@git pull https://SSlime:${GIT_ACCESS_TOKEN}@git.trap.jp/SSlime/QTheme_v2.git" master
-  git lfs pull
+  corepack enable
+  pnpm install
+  pnpm run build
 
 entrypoint: 'pnpm run start'
 
