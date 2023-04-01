@@ -29,14 +29,17 @@ export const getAuthors: QueryResolvers<ContextValue>['getAuthors'] = async (
     `
     const [rows] = await connection.execute(sql)
     assertIsArray(rows)
-    return rows.map(row => {
-      assertIsObject(row)
-      const { id, publicCount, privateCount } = row as Row
-      return {
-        name: id,
-        count: userId === undefined ? publicCount : publicCount + privateCount,
-      }
-    })
+    return rows
+      .map(row => {
+        assertIsObject(row)
+        const { id, publicCount, privateCount } = row as Row
+        return {
+          name: id,
+          count:
+            userId === undefined ? publicCount : publicCount + privateCount,
+        }
+      })
+      .filter(({ count }) => count > 0)
   } catch (err: unknown) {
     console.error(err)
     if (err instanceof GraphQLError) {
