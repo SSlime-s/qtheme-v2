@@ -35,6 +35,9 @@ jobs:
   build:
     needs: install
     runs-on: ubuntu-latest
+    concurrency:
+      group: for-prod-${{ github.workflow }}
+      cancel-in-progress: true
     steps:
       - uses: actions/checkout@v3
       - uses: pnpm/action-setup@v2
@@ -64,6 +67,9 @@ jobs:
   deploy:
     needs: build
     runs-on: ubuntu-latest
+    concurrency:
+      group: for-prod-${{ github.workflow }}
+      cancel-in-progress: true
     env:
       BRANCH_NAME: tmp-${{ github.ref }}
     steps:
