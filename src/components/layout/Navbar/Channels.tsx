@@ -2,6 +2,7 @@ import {
   Channel,
   ChannelAccordion,
 } from '@/components/layout/components/ChannelAccordion'
+import { useUserId } from '@/utils/extractUser'
 import { ReadonlyTree, Tree } from '@/utils/typeUtils'
 import styled from '@emotion/styled'
 import { useRouter } from 'next/router'
@@ -22,7 +23,13 @@ const loginHome = [
     children: lightDark,
   },
 ] as const satisfies readonly ReadonlyTree<string>[]
-const channels = [
+const nonLoginHome = [
+  {
+    value: 'random',
+    children: lightDark,
+  },
+] as const satisfies readonly ReadonlyTree<string>[]
+const loginChannels = [
   {
     value: 'random',
     children: lightDark,
@@ -32,11 +39,23 @@ const channels = [
     children: lightDark,
   },
 ] as const satisfies readonly ReadonlyTree<string>[]
+const nonLoginChannels = [
+  {
+    value: 'all',
+    children: lightDark,
+  },
+] as const satisfies readonly ReadonlyTree<string>[]
 
 export const NavbarChannels: React.FC = () => {
+  const userId = useUserId()
+  const isLogin = userId !== null
+
+  const home = isLogin ? loginHome : nonLoginHome
+  const channels = isLogin ? loginChannels : nonLoginChannels
+
   return (
     <Wrap>
-      <ChannelGroup name='ホーム' channelNames={loginHome} />
+      <ChannelGroup name='ホーム' channelNames={home} />
       <ChannelGroup name='チャンネル' channelNames={channels} />
     </Wrap>
   )
