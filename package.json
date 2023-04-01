@@ -14,7 +14,7 @@
     "generate": "graphql-codegen --config codegen.ts",
     "postinstall": "pnpm generate",
     "migration": "ts-node-esm ./bin/migrate.ts",
-    "mig": "tsc ./bin/migrate.ts && node --loader ./loader.js ./bin/migrate.ts"
+    "migration:default": "ts-node-esm ./bin/default.ts"
   },
   "dependencies": {
     "@apollo/server": "^4.5.0",
