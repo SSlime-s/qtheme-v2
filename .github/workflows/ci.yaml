@@ -64,6 +64,8 @@ jobs:
   deploy:
     needs: build
     runs-on: ubuntu-latest
+    env:
+      BRANCH_NAME: tmp-${{ github.ref }}
     steps:
       - uses: actions/checkout@v3
       - name: Restore All Build Files
@@ -73,6 +75,7 @@ jobs:
             node_modules
             build
           key: build-${{ github.sha }}
+      - run: git branch ${{ env.BRANCH_NAME }}
       - name: Add to LFS
         run: |
           git lfs track build
@@ -99,4 +102,4 @@ jobs:
           GIT_SSH_COMMAND: ssh -i ~/deploy_key.pem -o StrictHostKeyChecking=no -F /dev/null
         run: |
           git fetch --unshallow origin
-          git push -f -u ${{ env.GITEA_SSH_URL }} main:master
+          git push -f -u ${{ env.GITEA_SSH_URL }} ${{ env.BRANCH_NAME }}:master
