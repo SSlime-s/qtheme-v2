@@ -1,5 +1,6 @@
 import { atom, useAtomValue, useSetAtom } from 'jotai'
 import React, { useCallback, useId } from 'react'
+import { Prettify } from './typeUtils'
 
 export interface ToastOptions {
   type: 'info' | 'success' | 'error'
@@ -14,7 +15,7 @@ export const useToast = () => {
   const id = useId()
 
   const addToast = useCallback(
-    (toast: Omit<ToastOptions, 'key'>) => {
+    (toast: Prettify<Omit<ToastOptions, 'key'>>) => {
       const key = `${id}-${toast.type}-${Date.now()}`
       setToasts(toasts => [...toasts, { ...toast, key }])
 
