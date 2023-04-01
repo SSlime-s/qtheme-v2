@@ -27,7 +27,7 @@ export const getRandomTheme: QueryResolvers<ContextValue>['getRandomTheme'] =
               themes.type,
               themes.created_at AS createdAt,
               themes.theme,
-              likes.count AS likes,
+              CASE WHEN likes.count IS NULL THEN 0 ELSE likes.count END AS likes,
               FALSE AS isLike
             FROM themes
             LEFT JOIN (
