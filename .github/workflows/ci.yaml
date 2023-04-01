@@ -63,6 +63,7 @@ jobs:
       BRANCH_NAME: tmp-${{ github.ref }}
     steps:
       - uses: actions/checkout@v3
+      - run: git switch -c ${{ env.BRANCH_NAME }}
       - name: Set Config
         run: |
           echo "${{ secrets.GITEA_TOKEN }}" > ~/deploy_key.pem
