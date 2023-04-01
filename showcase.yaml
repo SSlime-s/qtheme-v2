@@ -5,7 +5,7 @@ __image: node:18
 startup: |-
   corepack enable
   pnpm install
-  pnpm run build
+  pnpm run build --no-lint
 
 entrypoint: 'pnpm run start'
 
@@ -15,5 +15,5 @@ use_mariadb: true
 
 internal: soft
 
-https: "on"
-cname: "qtheme-v2.trap.games"
+https: 'on'
+cname: 'qtheme-v2.trap.games'
