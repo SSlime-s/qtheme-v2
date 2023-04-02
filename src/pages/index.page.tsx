@@ -29,7 +29,7 @@ export const getServerSideProps = async ({
   const userId = extractShowcaseUser(req)
 
   // 部員とわかってる人はトップページを表示しない
-  if (userId !== null) {
+  if (userId !== undefined) {
     return {
       redirect: {
         destination: '/random',
