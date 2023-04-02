@@ -45,6 +45,7 @@
     "react-hook-form": "^7.43.8",
     "react-icons": "^4.8.0",
     "react-linkify": "1.0.0-alpha",
+    "sharp": "^0.32.0",
     "swr": "^2.1.1",
     "typescript": "4.9.4",
     "ulid": "^2.3.0",
