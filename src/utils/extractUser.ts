@@ -5,6 +5,13 @@ import { useEffect } from 'react'
 
 const showcaseUserKey = 'x-showcase-user'
 export const extractShowcaseUser = (req: IncomingMessage | NextRequest) => {
+  if (
+    process.env.NODE_ENV === 'development' &&
+    process.env.DEBUG_USER !== undefined
+  ) {
+    return process.env.DEBUG_USER
+  }
+
   let userId: string | undefined
   if (req instanceof NextRequest) {
     userId = req.headers.get(showcaseUserKey) ?? undefined
