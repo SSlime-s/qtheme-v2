@@ -23,7 +23,6 @@ export const extractShowcaseUser = (req: IncomingMessage | NextRequest) => {
       userId = unsafeUserId
     }
   }
-  console.log('userId', userId, ' -> ', userId === '-' ? undefined : userId)
   return userId === '-' ? undefined : userId ?? undefined
 }
 
