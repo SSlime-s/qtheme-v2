@@ -16,6 +16,7 @@ import { BreakStyle, BudouJa } from '@/utils/wrapper/BudouX'
 import { ReplaceNewLine } from '@/utils/wrapper/ReplaceNewLine'
 import { Linkify } from '@/utils/wrapper/Linkify'
 import { WrapResolver } from '@/utils/wrapper'
+import { MdKeyboardDoubleArrowLeft } from 'react-icons/md'
 
 interface Props {
   id?: string
@@ -54,10 +55,20 @@ export const Sidebar: React.FC<PropsWithChildren<Props>> = ({
     }
   }, [isMobile, ref])
 
+  const scrollToSelf = useCallback(() => {
+    if (!isMobile) {
+      return
+    }
+    ref.current?.scrollIntoView({ behavior: 'smooth', block: 'end' })
+  }, [isMobile])
+
   return (
     <>
       <Cover hidden={!isOpen} />
       <Wrap ref={ref} id={id}>
+        <OpenButton onClick={scrollToSelf} hidden={!isMobile || isOpen}>
+          <MdKeyboardDoubleArrowLeft role='img' aria-label='open' />
+        </OpenButton>
         {children}
       </Wrap>
     </>
@@ -127,6 +138,7 @@ export const DefaultSidebarContent: React.FC = () => {
 
 const Wrap = styled.aside`
   grid-area: side;
+  position: relative;
   background: ${({ theme }) => theme.theme.basic.background.secondary.default};
   padding: 32px;
 
@@ -135,6 +147,26 @@ const Wrap = styled.aside`
     z-index: 30;
     scroll-snap-align: end;
     scroll-snap-stop: always;
+  }
+`
+const OpenButton = styled.button`
+  position: absolute;
+  top: 80px;
+  left: 0;
+  padding: 16px;
+  transform: translateX(-100%);
+  color: ${({ theme }) => theme.theme.basic.ui.primary.default};
+  font-size: 28px;
+
+  & > svg {
+    transition: transform 0.1s;
+  }
+  &:hover > svg {
+    transform: scale(1.1);
+  }
+
+  &[hidden] {
+    display: none;
   }
 `
 export const BlockStyle = ({
