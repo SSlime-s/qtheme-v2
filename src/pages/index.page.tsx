@@ -14,6 +14,7 @@ import { useRouter } from 'next/router'
 import { TrimMarkGroup } from './components/TrimMark'
 import { isMobile, useIsMobile } from '@/utils/isMobile'
 import { useRandomTheme } from './random/hooks'
+import { useLoginUrl } from '@/utils/useLoginUrl'
 
 const Fluid = dynamic(
   () => import('@/components/Fluid.client').then(mod => mod.Fluid),
@@ -62,12 +63,7 @@ const Home: NextPage = () => {
 
   const { theme, resolvedTheme } = useRandomTheme(null)
 
-  const [loginUrl, setLoginUrl] = useState('')
-  useEffect(() => {
-    setLoginUrl(
-      `https://portal.trap.jp/pipeline?redirect=${window?.location.href ?? ''}`
-    )
-  }, [])
+  const loginUrl = useLoginUrl()
 
   const isMobile = useIsMobile()
 

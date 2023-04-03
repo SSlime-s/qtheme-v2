@@ -10,6 +10,7 @@ import { ModalTemplate } from '@/utils/modal/ModalTemplate'
 import styled from '@emotion/styled'
 import { lightTheme } from '@/utils/theme/default'
 import { userIconUrl } from '@/utils/api'
+import { useLoginUrl } from '@/utils/useLoginUrl'
 
 interface Props {
   userId?: string
@@ -17,6 +18,8 @@ interface Props {
 export const UserIcon: React.FC<Props> = ({ userId }) => {
   const { isOpen, open, close, modalProps, titleProps, titleRef, triggerRef } =
     useModal('layout/Navbar/User')
+
+  const loginUrl = useLoginUrl()
 
   if (userId !== undefined) {
     return (
@@ -75,11 +78,7 @@ export const UserIcon: React.FC<Props> = ({ userId }) => {
             <HiOutlineExternalLink />
           </Link>
 
-          <LoginButton
-            href={`https://portal.trap.jp/pipeline?redirect=${
-              window?.location.href ?? ''
-            }`}
-          >
+          <LoginButton href={loginUrl}>
             すでに部員の方はこちら
             <MdNavigateNext />
           </LoginButton>
