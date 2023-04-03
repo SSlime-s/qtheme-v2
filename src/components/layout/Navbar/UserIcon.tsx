@@ -132,6 +132,7 @@ const CloseButton = styled.button`
   color: ${lightTheme.basic.ui.secondary};
 
   transition: all 0.2s ease-out;
+  transition-property: transform, color;
 
   &:hover {
     transform: scale(1.1);
@@ -181,6 +182,7 @@ const LoginButton = styled.a`
   margin-right: auto;
 
   transition: all 0.2s ease-out;
+  transition-property: transform;
 
   &:hover {
     box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.2);

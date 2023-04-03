@@ -167,8 +167,6 @@ const ChangeNextButton = styled.button`
   padding: 16px 24px;
   cursor: pointer;
 
-  transition: all 0.2s ease-out;
-
   &:hover {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
   }

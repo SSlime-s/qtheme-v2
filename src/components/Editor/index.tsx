@@ -202,6 +202,7 @@ const Tabs = styled.div`
 `
 const Tab = styled.button`
   transition: all 0.2s ease-out;
+  transition-property: color, border-color;
   color: #888;
   border-bottom: 2px solid;
   border-color: transparent;
@@ -266,6 +267,7 @@ const Select = styled.select`
   backdrop-filter: blur(4px);
   appearance: menulist;
   transition: all 0.2s ease-out;
+  transition-property: border-color;
 
   &:hover {
     border-color: ${lightTheme.basic.ui.secondary};

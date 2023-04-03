@@ -82,6 +82,7 @@ const ToggleButton = styled.button<{
   background: transparent;
   position: relative;
   transition: all 0.1s ease;
+  transition-property: background, border-color, color;
 
   &[aria-expanded='true'] {
     background: ${({ theme, ...props }) =>
@@ -139,7 +140,7 @@ const ContentWrap = styled.div<{
   'data-height'?: number
 }>`
   overflow: hidden;
-  transition: all 0.3s ease;
+  transition: height 0.3s ease;
   height: ${({ 'data-height': height }) =>
     height === undefined ? 'auto' : height}px;
   padding-left: 12px;

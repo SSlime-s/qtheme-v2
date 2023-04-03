@@ -235,7 +235,7 @@ const ControlButtonStyle = css`
   cursor: pointer;
   color: #333;
 
-  transition: all 0.1s ease-in;
+  transition: transform 0.1s ease-in;
 
   &:hover {
     transform: scale(1.05);

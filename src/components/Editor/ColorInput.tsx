@@ -51,6 +51,7 @@ const Wrap = styled.div`
   gap: 8px;
 
   transition: all 0.2s ease-out;
+  transition-property: border-color;
   &:hover {
     border-color: #a8b0b5;
   }

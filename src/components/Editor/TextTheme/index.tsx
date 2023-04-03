@@ -234,6 +234,7 @@ const CopyButton = styled.button<{ status: CopyStatus }>`
   place-items: center;
   text-transform: uppercase;
   transition: all 0.2s ease-out;
+  transition-property: border-color, opacity;
 
   border: 1px solid ${lightTheme.basic.ui.tertiary};
   border-radius: 4px;

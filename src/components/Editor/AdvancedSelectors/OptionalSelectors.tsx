@@ -127,7 +127,7 @@ export const OptionalSelectors: React.FC<Props<keyof typeof AdvancedKeys>> = <
   )
 }
 const Wrap = styled.div<{ valid: boolean }>`
-  transition: all 0.2s ease-out;
+  transition: transform 0.2s ease-out;
   transform: ${({ valid }) => (valid ? 'none' : 'translateX(16px)')};
 `
 const Label = styled.button`
@@ -137,7 +137,7 @@ const Label = styled.button`
   gap: 8px;
   width: 100%;
 
-  transition: all 0.2s ease-out;
+  transition: transform 0.2s ease-out;
   transform-origin: left center;
   &:hover {
     transform: scale(1.05, 1.1);
@@ -151,11 +151,6 @@ const Icon = styled.div`
   height: 16px;
   position: relative;
   margin-bottom: auto;
-  /* transition: all 0.2s ease-out;
-
-  *:hover > & {
-    transform: scale(1.1);
-  } */
 
   &::before,
   &::after {
@@ -164,7 +159,7 @@ const Icon = styled.div`
     border-radius: 1px;
     background-color: #333;
     transform-origin: center;
-    transition: all 0.2s ease-out, transform 0.2s ease-out;
+    transition: transform 0.2s ease-out;
   }
   &::before {
     width: 16px;

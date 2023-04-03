@@ -102,6 +102,7 @@ export const Tag: React.FC<PropsWithChildren<Props>> = ({
       border-radius: 8px;
 
       transition: all 0.1s ease-in-out;
+      transition-property: transform, color, background-color;
 
       ${tag !== 'div'
         ? css`

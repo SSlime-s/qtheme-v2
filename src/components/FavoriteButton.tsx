@@ -45,6 +45,7 @@ const Wrap = styled.button<{
   color: #333;
 
   transition: all 0.1s ease-in;
+  transition-property: color, transform, background-color;
 
   &:hover {
     /* ${ColoredGlassmorphismStyle('rgba(236, 72, 153, 0.5)')}

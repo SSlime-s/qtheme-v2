@@ -198,7 +198,7 @@ const LinkButtonStyle = css`
   margin-right: auto;
 
   & > svg {
-    transition: all 0.2s ease-out;
+    transition: transform 0.2s ease-out;
   }
   &:hover > svg {
     transform: translateX(4px);

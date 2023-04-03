@@ -193,6 +193,7 @@ const FormatButton = styled(Button)<{ state: State }>`
       color: ${lightTheme.basic.accent.error};
 
       transition: all 0.2s ease-out;
+      transition-property: border-color, color;
 
       &:focus {
         border-color: ${lightTheme.basic.accent.error};

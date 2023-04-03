@@ -130,6 +130,7 @@ const PreviewWrap = styled.button`
   margin: 16px 0;
 
   transition: all 0.1s ease-in;
+  transition-property: transform, background, border-color;
 
   &:hover {
     transform: scale(1.05);
@@ -162,9 +163,11 @@ const DetailButton = styled(Link)`
   place-items: center;
   text-transform: capitalize;
   transition: all 0.1s ease-in;
+  transition-property: transform, background, border-color;
 
   & > span {
     transition: all 0.1s ease-in;
+    transition-property: transform;
     transform-origin: center;
   }
 

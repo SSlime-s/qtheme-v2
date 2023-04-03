@@ -54,6 +54,7 @@ const Button = styled.button<{
       ? theme.theme.basic.accent.online.default
       : theme.theme.basic.accent.error.default};
   transition: all 0.2s ease-out, transform 0.1s ease-out;
+  transition-property: color, transform;
   cursor: pointer;
   display: grid;
   place-items: center;
