@@ -124,6 +124,11 @@ const DummyWrap = styled.div`
 const MenuButton = styled.button`
   margin-right: 8px;
   height: 36px;
+  cursor: pointer;
+
+  &:focus-visible {
+    outline: 1px solid ${({ theme }) => theme.theme.basic.accent.primary.default};
+  }
 
   &[hidden] {
     display: none;
