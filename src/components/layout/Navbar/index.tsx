@@ -12,10 +12,12 @@ import { MdHome } from 'react-icons/md'
 import { FaUser, FaWrench } from 'react-icons/fa'
 import { NavbarCustom } from './Custom'
 import { useControlledNamedTabList } from '@/utils/tablist'
-import { isMobile } from '@/utils/isMobile'
+import { isMobile, useIsMobile } from '@/utils/isMobile'
 import { UserIcon } from './UserIcon'
 import { useUserId } from '@/utils/extractUser'
 import { NavbarUsers } from './Users'
+import Image from 'next/image'
+import Logo from '@/assets/QTheme.png'
 
 type NavbarState = 'channel' | 'user' | 'custom'
 const states = [
@@ -33,6 +35,8 @@ interface Props {
   scrollRef: RefObject<HTMLDivElement>
 }
 export const Navbar: React.FC<Props> = ({ scrollRef }) => {
+  const isMobile = useIsMobile()
+
   const [state, setState] = useAtom(NavbarAtom)
   const { ariaTabListProps, ariaTabProps, ariaPanelProps } =
     useControlledNamedTabList(states, state, setState)
@@ -44,6 +48,13 @@ export const Navbar: React.FC<Props> = ({ scrollRef }) => {
       <DummyWrap ref={scrollRef} />
       <Wrap {...ariaTabListProps}>
         <TabList role='tablist'>
+          <Image
+            src={Logo}
+            alt='QTheme'
+            width={24}
+            height={24}
+            hidden={isMobile}
+          />
           {states.map(s => (
             <Button key={s} state={s} {...ariaTabProps[s]} />
           ))}
