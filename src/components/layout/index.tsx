@@ -78,10 +78,18 @@ export const Layout: React.FC<PropsWithChildren<Props>> = ({
     scrollToSelf()
   }, [isMobile, scrollToSelf, router.asPath])
 
+  const navBarRef = useRef<HTMLDivElement>(null)
+  const openNavBar = useCallback(() => {
+    if (!isMobile) {
+      return
+    }
+    navBarRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }, [isMobile])
+
   return (
     <Container>
-      <Navbar />
-      <Header channelPath={nowChannelPath} />
+      <Navbar scrollRef={navBarRef} />
+      <Header channelPath={nowChannelPath} openNavBar={openNavBar} />
       <DummyMain ref={mainRef} />
       <Main onClickCapture={scrollToSelf}>{children}</Main>
       <Sidebar id='app-sidebar'>

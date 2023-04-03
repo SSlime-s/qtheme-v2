@@ -3,6 +3,7 @@ import { atom, useAtom, useSetAtom } from 'jotai'
 import {
   ButtonHTMLAttributes,
   HTMLAttributes,
+  RefObject,
   useCallback,
   useMemo,
 } from 'react'
@@ -28,7 +29,10 @@ const titlesMap = {
   custom: 'カスタム',
 } as const satisfies Record<NavbarState, string>
 const NavbarAtom = atom<NavbarState>('channel')
-export const Navbar: React.FC = () => {
+interface Props {
+  scrollRef: RefObject<HTMLDivElement>
+}
+export const Navbar: React.FC<Props> = ({ scrollRef }) => {
   const [state, setState] = useAtom(NavbarAtom)
   const { ariaTabListProps, ariaTabProps, ariaPanelProps } =
     useControlledNamedTabList(states, state, setState)
@@ -37,7 +41,7 @@ export const Navbar: React.FC = () => {
 
   return (
     <>
-      <DummyWrap />
+      <DummyWrap ref={scrollRef} />
       <Wrap {...ariaTabListProps}>
         <TabList role='tablist'>
           {states.map(s => (

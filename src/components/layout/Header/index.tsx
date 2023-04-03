@@ -4,16 +4,19 @@ import { atom, useAtomValue, useSetAtom } from 'jotai'
 import Link from 'next/link'
 import { useCallback, useMemo, useRef } from 'react'
 import { ChannelPath } from './convertChannelPath'
+import Image from 'next/image'
+import Logo from '@/assets/QTheme.png'
 
 interface Props {
   channelPath: ChannelPath[]
+  openNavBar: () => void
 }
 
 const topicAtom = atom<string | null>(null)
 export const useSetTopic = () => {
   return useSetAtom(topicAtom)
 }
-export const Header: React.FC<Props> = ({ channelPath }) => {
+export const Header: React.FC<Props> = ({ channelPath, openNavBar }) => {
   const isMobile = useIsMobile()
 
   const topic = useAtomValue(topicAtom)
@@ -54,6 +57,9 @@ export const Header: React.FC<Props> = ({ channelPath }) => {
     <>
       <DummyWrap ref={ref} />
       <Wrap onClickCapture={scrollToSelf}>
+        <MenuButton onClick={openNavBar} hidden={!isMobile}>
+          <Image src={Logo} alt='Open NavBar' width={24} height={24} />
+        </MenuButton>
         <PathWrap>
           {isRoot ? (
             <NowPath>
@@ -98,7 +104,6 @@ const Wrap = styled.header`
   display: flex;
   align-items: center;
   padding: 16px;
-  gap: 16px;
 
   ${isMobile} {
     position: sticky;
@@ -114,6 +119,14 @@ const DummyWrap = styled.div`
     display: block;
     pointer-events: none;
     scroll-snap-align: start;
+  }
+`
+const MenuButton = styled.button`
+  margin-right: 8px;
+  height: 36px;
+
+  &[hidden] {
+    display: none;
   }
 `
 const PathWrap = styled.div`
@@ -148,6 +161,7 @@ const SeparatorWrap = styled.span`
 const Topic = styled.div`
   color: ${({ theme }) => theme.theme.basic.ui.secondary.default};
   height: 16px;
+  margin-left: 16px;
   padding: 0 16px;
   border-left: 2px solid ${({ theme }) => theme.theme.basic.ui.tertiary.default};
   font-size: 0.875rem;
