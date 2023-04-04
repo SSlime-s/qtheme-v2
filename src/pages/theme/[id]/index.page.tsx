@@ -22,6 +22,7 @@ import { BreakStyle, BudouJa } from '@/utils/wrapper/BudouX'
 import { ReplaceNewLine } from '@/utils/wrapper/ReplaceNewLine'
 import { Linkify } from '@/utils/wrapper/Linkify'
 import { WrapResolver } from '@/utils/wrapper'
+import { Error } from '@/components/Error'
 
 export const getServerSideProps = async ({
   req,
@@ -45,6 +46,7 @@ const ThemePage: NextPageWithLayout<Props> = ({ userId }) => {
   const {
     theme,
     resolvedTheme,
+    error,
     mutate: { toggleLike, deleteTheme },
   } = useTheme(id)
   const {
@@ -57,6 +59,13 @@ const ThemePage: NextPageWithLayout<Props> = ({ userId }) => {
     }
     return JSON.stringify(theme.theme)
   }, [theme])
+
+  if (error !== undefined) {
+    const isNotFound = (error.message as string)
+      .trimStart()
+      .startsWith('Not found')
+    return <Error statusCode={isNotFound ? 404 : 500} />
+  }
 
   if (theme === undefined) {
     return <div>loading...</div>

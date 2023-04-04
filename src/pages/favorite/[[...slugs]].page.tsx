@@ -2,7 +2,6 @@ import { extractShowcaseUser, useSetUserId } from '@/utils/extractUser'
 import { GetServerSidePropsContext } from 'next'
 import { NextPageWithLayout } from '@/pages/_app.page'
 import { Layout } from '@/components/layout'
-import Error from 'next/error'
 import { assertIsArray } from '@/utils/typeUtils'
 import { useCurrentTheme } from '@/utils/theme/hooks'
 import { useEffect, useMemo } from 'react'
@@ -13,6 +12,7 @@ import styled from '@emotion/styled'
 import { useFavoritesList } from './hook'
 import { InfiniteLoad } from '@/components/InfiniteLoad'
 import { useSetTopic } from '@/components/layout/Header'
+import { Error } from '@/components/Error'
 
 export const getServerSideProps = async ({
   req,
@@ -99,6 +99,8 @@ const FavoritePageContent: React.FC<
   const {
     themes,
     total,
+    error,
+    isLoading,
     isReachingEnd,
     mutate: { loadMore, toggleLike },
   } = useFavoritesList(filter === 'all' ? null : filter, null)
@@ -114,6 +116,14 @@ const FavoritePageContent: React.FC<
       setTopic(null)
     }
   }, [total, setTopic])
+
+  if (isLoading) {
+    return <div>loading...</div>
+  }
+
+  if (error !== undefined) {
+    return <Error statusCode={500} />
+  }
 
   return (
     <>

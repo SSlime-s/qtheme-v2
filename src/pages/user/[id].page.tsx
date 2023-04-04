@@ -11,6 +11,7 @@ import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import { NextPageWithLayout } from '../_app.page'
 import { useAuthorThemes } from './hooks'
+import { Error } from '@/components/Error'
 
 export const getServerSideProps = async ({
   req,
@@ -56,9 +57,8 @@ const UserPage: NextPageWithLayout<Props> = ({ userId }) => {
     return <div>loading...</div>
   }
 
-  // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
-  if (error) {
-    return <div>error</div>
+  if (error !== undefined) {
+    return <Error statusCode={500} />
   }
 
   return (

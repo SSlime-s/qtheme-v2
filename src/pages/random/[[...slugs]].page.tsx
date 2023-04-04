@@ -20,6 +20,7 @@ import { BreakStyle, BudouJa } from '@/utils/wrapper/BudouX'
 import { ReplaceNewLine } from '@/utils/wrapper/ReplaceNewLine'
 import { Linkify } from '@/utils/wrapper/Linkify'
 import { WrapResolver } from '@/utils/wrapper'
+import { Error } from '@/components/Error'
 
 export const getServerSideProps = async ({
   req,
@@ -84,7 +85,7 @@ const RandomPage: NextPageWithLayout<Props> = ({ userId, filter }) => {
   }, [theme])
 
   if (error !== undefined) {
-    return <div>Error: {error.message}</div>
+    return <Error statusCode={500} />
   }
   if (isLoading || theme === null || resolvedTheme === null) {
     return <div>Loading...</div>

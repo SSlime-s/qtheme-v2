@@ -5,6 +5,7 @@ import { extractShowcaseUser, useSetUserId } from '@/utils/extractUser'
 import { FormattedTheme, useTheme } from '@/utils/theme/hooks'
 import { pageTitle } from '@/utils/title'
 import { GetServerSidePropsContext } from 'next'
+import { Error } from '@/components/Error'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useCallback } from 'react'
@@ -34,6 +35,14 @@ const ThemeEditPage: NextPageWithLayout<Props> = ({ userId }) => {
     mutate: { updateTheme },
   } = useTheme(id)
 
+  if (userId === null) {
+    return (
+      <>
+        <Error statusCode={401} />
+      </>
+    )
+  }
+
   if (theme === undefined) {
     return (
       <>
@@ -41,6 +50,14 @@ const ThemeEditPage: NextPageWithLayout<Props> = ({ userId }) => {
           <title>{pageTitle('#edit')}</title>
         </Head>
         <div>Loading ...</div>
+      </>
+    )
+  }
+
+  if (userId !== theme?.author) {
+    return (
+      <>
+        <Error statusCode={403} />
       </>
     )
   }

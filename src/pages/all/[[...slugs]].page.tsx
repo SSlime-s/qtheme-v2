@@ -12,6 +12,7 @@ import { pageTitle } from '@/utils/title'
 import { useToast } from '@/utils/toast'
 import { InfiniteLoad } from '@/components/InfiniteLoad'
 import { useSetTopic } from '@/components/layout/Header'
+import { Error } from '@/components/Error'
 
 export const getServerSideProps = async ({
   req,
@@ -60,6 +61,8 @@ const AllPage: NextPageWithLayout<Props> = ({ userId, filter }) => {
   const {
     themes,
     total,
+    isLoading,
+    error,
     isReachingEnd,
     mutate: { loadMore, toggleLike },
   } = useThemeList(filter === 'all' ? null : filter, null)
@@ -109,6 +112,14 @@ const AllPage: NextPageWithLayout<Props> = ({ userId, filter }) => {
       setTopic(null)
     }
   }, [total, setTopic])
+
+  if (isLoading) {
+    return <div>loading...</div>
+  }
+
+  if (error !== undefined) {
+    return <Error statusCode={500} />
+  }
 
   return (
     <>
