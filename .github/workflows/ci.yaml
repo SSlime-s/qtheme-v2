@@ -51,6 +51,8 @@ jobs:
             **/*.generated.ts
             **/generated
           key: node_modules-generated-${{ github.sha }}
+      - run: echo '/// <reference types="next" />\n/// <reference types="next/image-types/global" />' > ./next-env.d.ts
+      - run: cat ./next-env.d.ts
       - run: pnpm run type-check
 
   deploy:
