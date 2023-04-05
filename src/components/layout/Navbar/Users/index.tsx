@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { useAuthors } from './useAuthors'
 import { Skeleton } from '@/components/LoadingBar'
 import { css } from '@emotion/react'
+import { Error } from '@/components/Error'
 
 export const NavbarUsers: React.FC = () => {
   const { data, error, isLoading } = useAuthors()
@@ -19,9 +20,12 @@ export const NavbarUsers: React.FC = () => {
     )
   }
 
-  // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
-  if (error) {
-    return <Wrap>Error</Wrap>
+  if (error !== undefined) {
+    return (
+      <Wrap>
+        <Error statusCode={500} />
+      </Wrap>
+    )
   }
 
   if (data === undefined || data.length === 0) {
