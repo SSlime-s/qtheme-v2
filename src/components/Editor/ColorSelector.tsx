@@ -8,6 +8,7 @@ import { TransparentCheckerStyle } from '@/components/TransparentChecker'
 import { fixLayoutAtom } from '@/pages/_app.page'
 import { useSetAtom } from 'jotai'
 import { lightTheme } from '@/utils/theme/default'
+import React from 'react'
 
 // NOTE: react color が SSR で動かないので、SSR では動かないようにする
 const SketchPicker = dynamic(
@@ -26,7 +27,7 @@ interface Props {
   isExpanded: boolean
   setExpanded?: (expanded: boolean) => void
 }
-export const ColorSelector: React.FC<Props> = ({
+const ColorSelectorRaw: React.FC<Props> = ({
   allowText,
   suggestedColors,
   onChange,
@@ -146,6 +147,7 @@ export const ColorSelector: React.FC<Props> = ({
     </Wrap>
   )
 }
+export const ColorSelector = React.memo(ColorSelectorRaw)
 
 const Wrap = styled.div``
 

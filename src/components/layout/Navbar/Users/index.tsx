@@ -3,17 +3,29 @@ import styled from '@emotion/styled'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useAuthors } from './useAuthors'
+import { Skeleton } from '@/components/LoadingBar'
+import { css } from '@emotion/react'
+import { Error } from '@/components/Error'
 
 export const NavbarUsers: React.FC = () => {
   const { data, error, isLoading } = useAuthors()
 
   if (isLoading) {
-    return <Wrap>Loading</Wrap>
+    return (
+      <Wrap>
+        {Array.from({ length: 8 }, (_, i) => (
+          <UserSkeleton key={i} />
+        ))}
+      </Wrap>
+    )
   }
 
-  // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
-  if (error) {
-    return <Wrap>Error</Wrap>
+  if (error !== undefined) {
+    return (
+      <Wrap>
+        <Error statusCode={500} />
+      </Wrap>
+    )
   }
 
   if (data === undefined || data.length === 0) {
@@ -46,7 +58,45 @@ const UserCard: React.FC<{
     </CardWrap>
   )
 }
-const CardWrap = styled(Link)`
+const UserSkeleton: React.FC = () => {
+  return (
+    <CardWrapSkelton
+      tabIndex={0}
+      role='progressbar'
+      aria-busy={true}
+      aria-valuemin={0}
+      aria-valuemax={100}
+      aria-valuetext='Loading...'
+    >
+      <Skeleton
+        width='36px'
+        height='36px'
+        borderRadius='9999px'
+        css={css`
+          grid-area: icon;
+        `}
+      />
+      <Skeleton
+        width='100px'
+        height='14px'
+        borderRadius='9999px'
+        css={css`
+          grid-area: name;
+        `}
+      />
+      <Skeleton
+        width='40px'
+        height='12px'
+        borderRadius='9999px'
+        css={css`
+          grid-area: count;
+          align-self: flex-end;
+        `}
+      />
+    </CardWrapSkelton>
+  )
+}
+const CardBaseStyle = css`
   display: grid;
   grid-template-areas:
     'icon name'
@@ -57,6 +107,9 @@ const CardWrap = styled(Link)`
   padding: 4px 8px;
   margin: 0 -8px;
   border-radius: 4px;
+`
+const CardWrap = styled(Link)`
+  ${CardBaseStyle}
 
   box-shadow: inset 0 0 4px -1px transparent;
   transition: box-shadow 0.2s ease-out;
@@ -68,6 +121,11 @@ const CardWrap = styled(Link)`
     outline: 1px solid
       ${({ theme }) => theme.theme.basic.accent.primary.default};
   }
+`
+const CardWrapSkelton = styled.div`
+  ${CardBaseStyle}
+
+  justify-content: center;
 `
 const Icon = styled(Image)`
   grid-area: icon;

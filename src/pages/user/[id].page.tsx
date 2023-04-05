@@ -12,6 +12,7 @@ import { useEffect } from 'react'
 import { NextPageWithLayout } from '../_app.page'
 import { useAuthorThemes } from './hooks'
 import { Error } from '@/components/Error'
+import { LoadingBar } from '@/components/LoadingBar'
 
 export const getServerSideProps = async ({
   req,
@@ -54,7 +55,7 @@ const UserPage: NextPageWithLayout<Props> = ({ userId }) => {
   }, [total, setTopic])
 
   if (isLoading) {
-    return <div>loading...</div>
+    return <LoadingBar />
   }
 
   if (error !== undefined) {

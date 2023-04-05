@@ -23,6 +23,7 @@ import { ReplaceNewLine } from '@/utils/wrapper/ReplaceNewLine'
 import { Linkify } from '@/utils/wrapper/Linkify'
 import { WrapResolver } from '@/utils/wrapper'
 import { Error } from '@/components/Error'
+import { LoadingBar } from '@/components/LoadingBar'
 
 export const getServerSideProps = async ({
   req,
@@ -68,7 +69,7 @@ const ThemePage: NextPageWithLayout<Props> = ({ userId }) => {
   }
 
   if (theme === undefined) {
-    return <div>loading...</div>
+    return <LoadingBar />
   }
 
   return (

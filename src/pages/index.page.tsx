@@ -67,18 +67,16 @@ const Home: NextPage = () => {
 
   const isMobile = useIsMobile()
 
-  if (theme === null || resolvedTheme === null) {
-    return <></>
-  }
-
   return (
     <>
       <TopContainer hidden={!isRendered}>
-        <SmallPreview
-          css={BackgroundStyle}
-          theme={resolvedTheme}
-          author={theme.author}
-        />
+        {theme !== null && resolvedTheme !== null && (
+          <SmallPreview
+            css={BackgroundStyle}
+            theme={resolvedTheme}
+            author={theme.author}
+          />
+        )}
         <BlurBackground />
         <FluidBackground />
         <TopContentWrap>
@@ -105,9 +103,11 @@ const Home: NextPage = () => {
             />
             <span>このページを今後表示しない</span>
           </Label>
-          <CurrentLink href={`/theme/${theme.id}`}>
-            {theme.title} by {theme.author}
-          </CurrentLink>
+          {theme !== null && (
+            <CurrentLink href={`/theme/${theme.id}`}>
+              {theme.title} by {theme.author}
+            </CurrentLink>
+          )}
         </TopContentWrap>
       </TopContainer>
     </>
