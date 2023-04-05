@@ -10,6 +10,7 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useCallback } from 'react'
 import { useForm } from 'react-hook-form'
+import { LoadingBar } from '@/components/LoadingBar'
 
 export const getServerSideProps = async ({
   req,
@@ -49,7 +50,7 @@ const ThemeEditPage: NextPageWithLayout<Props> = ({ userId }) => {
         <Head>
           <title>{pageTitle('#edit')}</title>
         </Head>
-        <div>Loading ...</div>
+        <LoadingBar />
       </>
     )
   }
