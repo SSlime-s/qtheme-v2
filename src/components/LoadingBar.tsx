@@ -1,4 +1,4 @@
-import { keyframes } from '@emotion/react'
+import { css, keyframes } from '@emotion/react'
 import styled from '@emotion/styled'
 
 const LoadingKeyframes = keyframes`
@@ -38,4 +38,43 @@ export const LoadingBar = styled.div`
 
   height: 12px;
   width: 100%;
+`
+
+const SkeletonKeyframes = keyframes`
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+`
+export const Skeleton = styled.div<{
+  width?: string
+  height?: string
+  borderRadius?: string
+}>`
+  position: relative;
+  width: ${({ width }) => width ?? '100%'};
+  height: ${({ height }) => height ?? '100%'};
+  ${({ borderRadius }) =>
+    borderRadius !== undefined &&
+    css`
+      border-radius: ${borderRadius};
+    `}
+  background: ${({ theme }) => theme.theme.basic.ui.secondary.default};
+  overflow: hidden;
+  opacity: 0.5;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      ${({ theme }) => theme.theme.basic.ui.primary.default},
+      transparent
+    );
+    animation: ${SkeletonKeyframes} 1.2s ease infinite;
+  }
 `
