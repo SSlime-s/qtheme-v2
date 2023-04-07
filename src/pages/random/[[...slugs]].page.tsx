@@ -22,6 +22,9 @@ import { Linkify } from '@/utils/wrapper/Linkify'
 import { WrapResolver } from '@/utils/wrapper'
 import { Error } from '@/components/Error'
 import { LoadingBar } from '@/components/LoadingBar'
+import Head from 'next/head'
+import { pageTitle } from '@/utils/title'
+import { SEO } from '@/components/SEO'
 
 export const getServerSideProps = async ({
   req,
@@ -93,57 +96,68 @@ const RandomPage: NextPageWithLayout<Props> = ({ userId, filter }) => {
   }
 
   return (
-    <Wrap>
-      <MainWrap>
-        <ChangeNextButton onClick={changeNext}>
-          次のテーマを表示 <TfiReload />
-        </ChangeNextButton>
-        <Message
-          iconUser={theme.author}
-          content={
-            <>
-              <H1>{theme.title}</H1>
-              <LargePreviewCard
-                theme={theme}
-                resolvedTheme={resolvedTheme}
-                changeTheme={changeTheme}
+    <>
+      <Head>
+        <title>
+          {pageTitle(`#random${filter !== 'all' ? `/${filter}` : ''}`)}
+        </title>
+        <SEO
+          title={`#random${filter !== 'all' ? `/${filter}` : ''}`}
+          url={`/random${filter !== 'all' ? `/${filter}` : ''}`}
+        />
+      </Head>
+      <Wrap>
+        <MainWrap>
+          <ChangeNextButton onClick={changeNext}>
+            次のテーマを表示 <TfiReload />
+          </ChangeNextButton>
+          <Message
+            iconUser={theme.author}
+            content={
+              <>
+                <H1>{theme.title}</H1>
+                <LargePreviewCard
+                  theme={theme}
+                  resolvedTheme={resolvedTheme}
+                  changeTheme={changeTheme}
+                />
+              </>
+            }
+            date={theme.createdAt}
+            tag={theme.type}
+            name={theme.author}
+            stamps={
+              <FavoriteButton
+                isFavorite={theme.isLike}
+                onClick={toggleLike}
+                favoriteCount={theme.likes}
               />
-            </>
-          }
-          date={theme.createdAt}
-          tag={theme.type}
-          name={theme.author}
-          stamps={
-            <FavoriteButton
-              isFavorite={theme.isLike}
-              onClick={toggleLike}
-              favoriteCount={theme.likes}
-            />
-          }
+            }
+          />
+          <Message
+            iconUser={theme.author}
+            content={
+              <>
+                <H2>詳細</H2>
+                <BreakP>
+                  <WrapResolver Wrapper={[Linkify, BudouJa, ReplaceNewLine]}>
+                    {theme.description}
+                  </WrapResolver>
+                </BreakP>
+              </>
+            }
+            date={theme.createdAt}
+            tag={theme.type}
+            name={theme.author}
+          />
+        </MainWrap>
+        <CopyBox
+          defaultValue={themeString}
+          after={<After text={themeString} changeNext={changeNext} />}
+          readOnly
         />
-        <Message
-          iconUser={theme.author}
-          content={
-            <>
-              <H2>詳細</H2>
-              <BreakP>
-                <WrapResolver Wrapper={[Linkify, BudouJa, ReplaceNewLine]}>
-                  {theme.description}
-                </WrapResolver>
-              </BreakP>
-            </>
-          }
-          date={theme.createdAt}
-          tag={theme.type}
-          name={theme.author}
-        />
-      </MainWrap>
-      <CopyBox
-        defaultValue={themeString}
-        after={<After text={themeString} changeNext={changeNext} />}
-        readOnly
-      />
-    </Wrap>
+      </Wrap>
+    </>
   )
 }
 export default RandomPage

@@ -1,9 +1,7 @@
 import { darkTheme, lightTheme } from '@/utils/theme/default'
 import { themeSchema } from '@/model/theme'
 import { GetServerSidePropsContext } from 'next'
-import {
-  useForm,
-} from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { NextPageWithLayout } from '@/pages/_app.page'
 import { Layout } from '@/components/layout'
 import { extractShowcaseUser, useSetUserId } from '@/utils/extractUser'
@@ -14,6 +12,7 @@ import React from 'react'
 import { pageTitle } from '@/utils/title'
 import Head from 'next/head'
 import { Editor, Form } from '@/components/Editor'
+import { SEO } from '@/components/SEO'
 
 export const getServerSideProps = async ({
   req,
@@ -86,6 +85,9 @@ const EditPage: NextPageWithLayout<Props> = ({ defaultTheme, userId }) => {
     <>
       <Head>
         <title>{pageTitle('#edit')}</title>
+        <meta name='robots' content='noindex' />
+        <meta name='googlebot' content='noindex' />
+        <SEO url={`/edit`} title='#edit' description='Create a new theme' />
       </Head>
       <Editor userId={userId} submit={submit} {...methods} />
     </>

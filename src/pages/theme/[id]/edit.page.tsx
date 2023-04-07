@@ -11,6 +11,7 @@ import { useRouter } from 'next/router'
 import { useCallback } from 'react'
 import { useForm } from 'react-hook-form'
 import { LoadingBar } from '@/components/LoadingBar'
+import { SEO } from '@/components/SEO'
 
 export const getServerSideProps = async ({
   req,
@@ -49,6 +50,9 @@ const ThemeEditPage: NextPageWithLayout<Props> = ({ userId }) => {
       <>
         <Head>
           <title>{pageTitle('#edit')}</title>
+          <meta name='robots' content='noindex' />
+          <meta name='googlebot' content='noindex' />
+          <SEO url={`/theme/${id}/edit`} />
         </Head>
         <LoadingBar />
       </>
@@ -67,6 +71,9 @@ const ThemeEditPage: NextPageWithLayout<Props> = ({ userId }) => {
     <>
       <Head>
         <title>{pageTitle(`#edit - ${theme.title}`)}</title>
+        <meta name='robots' content='noindex' />
+        <meta name='googlebot' content='noindex' />
+        <SEO url={`/theme/${id}/edit`} />
       </Head>
       <Edit defaultTheme={theme} updateTheme={updateTheme} userId={userId} />
     </>

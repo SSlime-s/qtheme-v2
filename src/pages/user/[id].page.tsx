@@ -13,6 +13,9 @@ import { NextPageWithLayout } from '../_app.page'
 import { useAuthorThemes } from './hooks'
 import { Error } from '@/components/Error'
 import { LoadingBar } from '@/components/LoadingBar'
+import Head from 'next/head'
+import { pageTitle } from '@/utils/title'
+import { SEO } from '@/components/SEO'
 
 export const getServerSideProps = async ({
   req,
@@ -63,36 +66,46 @@ const UserPage: NextPageWithLayout<Props> = ({ userId }) => {
   }
 
   return (
-    <Wrap>
-      <Message
-        iconUser={id}
-        name={id}
-        date=''
-        tag=''
-        content={
-          <>
-            <p>{total} 投稿</p>
-            <FullWidthContent>
-              <ContentWrap>
-                {themes.map(theme => (
-                  <PreviewCard
-                    key={theme.id}
-                    themeInfo={theme}
-                    onFavorite={toggleLike}
-                    changeTheme={changeTheme}
-                  />
-                ))}
-              </ContentWrap>
-              <InfiniteLoad
-                loadMore={loadMore}
-                isReachingEnd={isReachingEnd ?? true}
-              />
-            </FullWidthContent>
-          </>
-        }
-        nonHover
-      />
-    </Wrap>
+    <>
+      <Head>
+        <title>{pageTitle(`#user/${id}`)}</title>
+        <SEO
+          url={`/user/${id}`}
+          title={`#user/${id}`}
+          description={total.toString()}
+        />
+      </Head>
+      <Wrap>
+        <Message
+          iconUser={id}
+          name={id}
+          date=''
+          tag=''
+          content={
+            <>
+              <p>{total} 投稿</p>
+              <FullWidthContent>
+                <ContentWrap>
+                  {themes.map(theme => (
+                    <PreviewCard
+                      key={theme.id}
+                      themeInfo={theme}
+                      onFavorite={toggleLike}
+                      changeTheme={changeTheme}
+                    />
+                  ))}
+                </ContentWrap>
+                <InfiniteLoad
+                  loadMore={loadMore}
+                  isReachingEnd={isReachingEnd ?? true}
+                />
+              </FullWidthContent>
+            </>
+          }
+          nonHover
+        />
+      </Wrap>
+    </>
   )
 }
 
