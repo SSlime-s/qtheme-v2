@@ -51,12 +51,23 @@ export const getThemeFromDb = async (
       ) AS isLikes ON isLikes.theme_id = themes.id
     `
     }
-    WHERE themes.id = ?
+    WHERE themes.id = ? AND ${
+      userId === undefined
+        ? `visibility = 'public'`
+        : `(
+            visibility IN ('public', 'private')
+              OR (
+                visibility = 'draft'
+                AND author_user_id = ?
+                  )
+            )`
+    }
   `
   try {
     const [rows] = await connection.execute<ITheme[]>(sql, [
       ...(userId !== undefined ? [userId] : []),
       id,
+      ...(userId !== undefined ? [userId] : []),
     ])
     if (rows.length === 0) {
       return null

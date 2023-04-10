@@ -47,7 +47,9 @@ export const getThemes: QueryResolvers<ContextValue>['getThemes'] = async (
               visibility == undefined
                 ? userId == undefined
                   ? 'themes.visibility = "public"'
-                  : 'themes.visibility IN ("public", "private")'
+                  : author == undefined
+                  ? 'themes.visibility IN ("public", "private")'
+                  : '(themes.visibility IN ("public", "private") OR (themes.visibility = "draft" AND themes.author_user_id = ?))'
                 : 'themes.visibility = ?'
             }
             ${type == undefined ? '' : `AND themes.type = ?`}
@@ -60,7 +62,11 @@ export const getThemes: QueryResolvers<ContextValue>['getThemes'] = async (
     `
     const baseValues = [
       ...(userId != undefined ? [userId] : []),
-      ...(visibility != undefined ? [visibility] : []),
+      ...(visibility != undefined
+        ? [visibility]
+        : userId != undefined && author != undefined
+        ? [userId]
+        : []),
       ...(type != undefined ? [type] : []),
       ...(author != undefined ? [author] : []),
     ]
