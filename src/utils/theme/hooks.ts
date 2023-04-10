@@ -1,4 +1,4 @@
-import useSWR from 'swr'
+import useSWR, { unstable_serialize } from 'swr'
 import useSWRInfinite from 'swr/infinite'
 import { useClient } from '@/utils/api'
 import { useCallback, useMemo, useState } from 'react'
@@ -20,6 +20,7 @@ import {
   ThemesDocument,
 } from '@/utils/graphql/getThemes.generated'
 import { getSdk as getSdkEditTheme } from '@/utils/graphql/editTheme.generated'
+import { newClient } from '@/utils/api'
 
 export const THEMES_PER_PAGE = 20
 
@@ -122,7 +123,29 @@ export const useCurrentTheme = () => {
   }
 }
 
-export const useTheme = (id: string) => {
+export const prefetchUseTheme = async (
+  id: string
+): Promise<Record<string, FormattedTheme>> => {
+  const client = newClient()
+  const key = unstable_serialize([print(ThemeDocument), { id }])
+  const sdk = getSdkGetTheme(client)
+  try {
+    const { getTheme } = await sdk.Theme({ id })
+
+    if (getTheme === null || getTheme === undefined) {
+      return {}
+    }
+
+    const themeWhole = themeFromRaw(getTheme.theme)
+    return {
+      [key]: themeWhole,
+    }
+  } catch (e) {
+    console.error(e)
+    return {}
+  }
+}
+export const useTheme = (id: string, fallbackData?: FormattedTheme) => {
   const client = useClient()
 
   const { data, error, isLoading, mutate } = useSWR(
@@ -136,6 +159,9 @@ export const useTheme = (id: string) => {
       }
 
       return themeFromRaw(getTheme.theme)
+    },
+    {
+      fallbackData,
     }
   )
 

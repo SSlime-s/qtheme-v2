@@ -1,5 +1,10 @@
 import { Layout } from '@/components/layout'
-import { FormattedTheme, useCurrentTheme, useTheme } from '@/utils/theme/hooks'
+import {
+  FormattedTheme,
+  prefetchUseTheme,
+  useCurrentTheme,
+  useTheme,
+} from '@/utils/theme/hooks'
 import styled from '@emotion/styled'
 import { useRouter } from 'next/router'
 import { NextPageWithLayout } from '@/pages/_app.page'
@@ -7,7 +12,7 @@ import { FullWidthContent, H1, H2, Message } from '@/components/Message'
 import { TextBox } from '@/components/TextBox'
 import { CopyButton } from '@/components/CopyButton'
 import { FavoriteButton } from '@/components/FavoriteButton'
-import { useCallback, useMemo } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import { GetServerSidePropsContext } from 'next'
 import { extractShowcaseUser, useSetUserId } from '@/utils/extractUser'
 import { isMobile } from '@/utils/isMobile'
@@ -27,15 +32,21 @@ import { LoadingBar } from '@/components/LoadingBar'
 import Head from 'next/head'
 import { pageTitle } from '@/utils/title'
 import { SEO, ogImageUrl } from '@/components/SEO'
+import { SWRConfig } from 'swr'
 
 export const getServerSideProps = async ({
   req,
-}: GetServerSidePropsContext) => {
+  params,
+}: GetServerSidePropsContext<{ id: string }>) => {
   const userId = extractShowcaseUser(req)
+
+  const prefetchData =
+    params === undefined ? {} : await prefetchUseTheme(params.id)
 
   return {
     props: {
       userId: userId ?? null,
+      fallback: prefetchData,
     },
   }
 }
@@ -43,7 +54,17 @@ export const getServerSideProps = async ({
 type Props = NonNullable<
   Awaited<ReturnType<typeof getServerSideProps>>['props']
 >
-const ThemePage: NextPageWithLayout<Props> = ({ userId }) => {
+const ThemePage: NextPageWithLayout<Props> = ({ fallback, ...props }) => {
+  return (
+    <SWRConfig value={{ fallback }}>
+      <ThemePageInner {...props} />
+    </SWRConfig>
+  )
+}
+ThemePage.getLayout = page => <Layout>{page}</Layout>
+export default ThemePage
+
+const ThemePageInner: React.FC<Omit<Props, 'fallback'>> = ({ userId }) => {
   useSetUserId(userId)
 
   const { id } = useRouter().query as { id: string }
@@ -142,8 +163,6 @@ const ThemePage: NextPageWithLayout<Props> = ({ userId }) => {
     </>
   )
 }
-ThemePage.getLayout = page => <Layout>{page}</Layout>
-export default ThemePage
 
 const Wrap = styled.div`
   height: 100%;
