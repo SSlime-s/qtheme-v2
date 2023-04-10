@@ -129,8 +129,10 @@ const PreviewWrap = styled.button`
   cursor: pointer;
   margin: 16px 0;
 
-  transition: all 0.1s ease-in;
+  transition: all 0.1s ease-out;
   transition-property: transform, background, border-color;
+
+  will-change: transform;
 
   &:hover {
     transform: scale(1.05);
