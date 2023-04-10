@@ -14,6 +14,7 @@ import { InfiniteLoad } from '@/components/InfiniteLoad'
 import { useSetTopic } from '@/components/layout/Header'
 import { Error } from '@/components/Error'
 import { LoadingBar } from '@/components/LoadingBar'
+import { SEO } from '@/components/SEO'
 
 export const getServerSideProps = async ({
   req,
@@ -128,6 +129,10 @@ const FavoritePageContent: React.FC<
 
   return (
     <>
+      <SEO
+        title={`#favorite${filter !== 'all' ? `/${filter}` : ''}`}
+        url={`/favorite${filter !== 'all' ? `/${filter}` : ''}`}
+      />
       <Wrap>
         <Grid>
           {themes.map(theme => {

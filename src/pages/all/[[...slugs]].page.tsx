@@ -14,6 +14,7 @@ import { InfiniteLoad } from '@/components/InfiniteLoad'
 import { useSetTopic } from '@/components/layout/Header'
 import { Error } from '@/components/Error'
 import { LoadingBar } from '@/components/LoadingBar'
+import { SEO } from '@/components/SEO'
 
 export const getServerSideProps = async ({
   req,
@@ -86,17 +87,6 @@ const AllPage: NextPageWithLayout<Props> = ({ userId, filter }) => {
     [addToast, toggleLike, userId]
   )
 
-  // TODO: そのうち消す テスト用
-  const ogUrl = useMemo(() => {
-    const url = new URL('http://localhost:3000/api/og')
-    url.searchParams.set(
-      'theme',
-      JSON.stringify(themes[0]?.theme ?? '01GPX823XG885ZENT9QD6E76EQ')
-    )
-    url.searchParams.set('author', themes[0]?.author)
-    return url.toString()
-  }, [themes])
-
   const title = useMemo(() => {
     if (filter === 'all') {
       return '#all'
@@ -104,6 +94,24 @@ const AllPage: NextPageWithLayout<Props> = ({ userId, filter }) => {
       return `#all/${filter}`
     }
   }, [filter])
+  const url = useMemo(() => {
+    if (filter === 'all') {
+      return '/all'
+    } else {
+      return `/all/${filter}`
+    }
+  }, [filter])
+
+  const Heads = useCallback(() => {
+    return (
+      <>
+        <Head>
+          <title>{pageTitle(title)}</title>
+        </Head>
+        <SEO url={url} title={title} description='all themes' />
+      </>
+    )
+  }, [title, url])
 
   const setTopic = useSetTopic()
   useEffect(() => {
@@ -115,7 +123,12 @@ const AllPage: NextPageWithLayout<Props> = ({ userId, filter }) => {
   }, [total, setTopic])
 
   if (isLoading) {
-    return <LoadingBar />
+    return (
+      <>
+        <Heads />
+        <LoadingBar />
+      </>
+    )
   }
 
   if (error !== undefined) {
@@ -124,13 +137,7 @@ const AllPage: NextPageWithLayout<Props> = ({ userId, filter }) => {
 
   return (
     <>
-      <Head>
-        <title>{pageTitle(title)}</title>
-        <meta name='description' content='all themes' />
-        <meta name='og:title' content='all themes' />
-        <meta name='og:description' content='all themes' />
-        <meta name='og:image' content={ogUrl} />
-      </Head>
+      <Heads />
       <Wrap>
         <Grid>
           {themes.map(theme => {
