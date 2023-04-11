@@ -228,7 +228,7 @@ const Tab = styled.button`
 const TabPanel = styled.div``
 
 const visibilityDescription = {
-  public: 'traP 外の人でも見ることができます',
+  public: 'traP 外の人でも見ることができます (推奨)',
   private: 'traP 内の人だけが見ることができます',
   draft: 'あなただけが見ることができます',
 } as const satisfies Record<'public' | 'private' | 'draft', string>
