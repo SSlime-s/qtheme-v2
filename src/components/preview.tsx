@@ -6,6 +6,7 @@ interface Props {
   author: string
   theme: ResolvedTheme
   className?: string
+  ogp?: boolean
 }
 
 export const SmallPreview: React.FC<Props> = props => {
@@ -27,7 +28,7 @@ export const SmallPreview: React.FC<Props> = props => {
         }}
       >
         <FixRatioBox
-          ratio='16:9'
+          ratio={props.ogp === true ? '40:21' : '16:9'}
           style={{
             height: '100%',
             width: '100%',
@@ -120,10 +121,12 @@ export const SmallPreview: React.FC<Props> = props => {
   )
 }
 
-type Ratio = '1:1' | '16:9'
+type Ratio = '1:1' | '16:9' | '40:21'
 const ratioMap: Record<Ratio, `${number}%`> = {
   '1:1': '100%',
   '16:9': '56.25%',
+  /// 1200 : 630 (OGP size)
+  '40:21': '52.5%',
 }
 type FixRatioBoxProps = {
   ratio: Ratio

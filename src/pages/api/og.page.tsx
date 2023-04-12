@@ -19,7 +19,7 @@ const res = async (req: NextRequest) => {
     }
     return new ImageResponse(dom, {
       width: 1200,
-      height: 675,
+      height: 630,
     })
   }
   let theme
@@ -34,13 +34,14 @@ const res = async (req: NextRequest) => {
   const dom = SmallPreview({
     author,
     theme: resolvedTheme,
+    ogp: true,
   })
   if (dom === null) {
     return new Response('Not Found', { status: 404 })
   }
   return new ImageResponse(dom, {
     width: 1200,
-    height: 675,
+    height: 630,
   })
 }
 export default res
@@ -48,7 +49,7 @@ export default res
 const Fallback: React.FC = () => {
   return (
     <div style={{ display: 'flex', position: 'relative' }}>
-      <SmallPreview author={'traP'} theme={resolveTheme(lightTheme)} />
+      <SmallPreview author={'traP'} theme={resolveTheme(lightTheme)} ogp />
       <div
         style={{
           display: 'flex',
