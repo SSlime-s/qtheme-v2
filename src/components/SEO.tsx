@@ -37,13 +37,13 @@ export const SEO: React.FC<PropsWithChildren<Props>> = ({
 }) => {
   return (
     <Head>
-      <meta name='og:type' content={type} />
-      <meta name='og:sitename' content='QTheme v2' />
-      <meta name='og:title' content={title} />
+      <meta property='og:type' content={type} />
+      <meta property='og:sitename' content='QTheme v2' />
+      <meta property='og:title' content={title} />
       <meta name='description' content={description} />
-      <meta name='og:description' content={description} />
-      <meta name='og:image' content={`${BASE_URL}${imageUrl}`} />
-      <meta name='og:url' content={`${BASE_URL}${url}`} />
+      <meta property='og:description' content={description} />
+      <meta property='og:image' content={`${BASE_URL}${imageUrl}`} />
+      <meta property='og:url' content={`${BASE_URL}${url}`} />
       <meta name='twitter:card' content='summary_large_image' />
       <meta name='twitter:site' content='@_SSlime' />
       {children}
