@@ -121,13 +121,14 @@ const ChannelGroupContent = styled.div`
 
 const Channels: React.FC<ReadonlyTree<ChannelInfo>> = ({ value, children }) => {
   const { asPath } = useRouter()
+  const formattedPath = asPath.split('?')[0].split('#')[0]
 
   if (children === undefined || children.length === 0) {
     return (
       <Channel
         name={value.name}
         to={value.href}
-        selected={asPath === value.href}
+        selected={formattedPath === value.href}
       />
     )
   }
@@ -136,7 +137,7 @@ const Channels: React.FC<ReadonlyTree<ChannelInfo>> = ({ value, children }) => {
     <ChannelAccordion
       name={value.name}
       to={value.href}
-      selected={asPath === value.href}
+      selected={formattedPath === value.href}
     >
       {children.map(child => {
         return <Channels key={child.value.href} {...child} />
