@@ -85,8 +85,6 @@ export const Editor: React.FC<Props> = ({ userId, submit, ...methods }) => {
     [methods, onSubmit]
   )
 
-  useBlockLeave(methods.formState.isDirty)
-
   return (
     <>
       <FormProvider {...methods}>

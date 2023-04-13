@@ -12,6 +12,7 @@ import { useCallback } from 'react'
 import { useForm } from 'react-hook-form'
 import { LoadingBar } from '@/components/LoadingBar'
 import { SEO } from '@/components/SEO'
+import { useBlockLeave } from '@/components/Editor/useBlockLeave'
 
 export const getServerSideProps = async ({
   req,
@@ -75,7 +76,12 @@ const ThemeEditPage: NextPageWithLayout<Props> = ({ userId }) => {
         <meta name='googlebot' content='noindex' />
       </Head>
       <SEO url={`/theme/${id}/edit`} />
-      <Edit defaultTheme={theme} updateTheme={updateTheme} userId={userId} />
+      <Edit
+        id={id}
+        defaultTheme={theme}
+        updateTheme={updateTheme}
+        userId={userId}
+      />
     </>
   )
 }
@@ -83,6 +89,7 @@ ThemeEditPage.getLayout = page => <Layout noSidebar>{page}</Layout>
 export default ThemeEditPage
 
 interface EditProps {
+  id: string
   defaultTheme: FormattedTheme
   updateTheme: (
     theme: Pick<
@@ -92,7 +99,12 @@ interface EditProps {
   ) => Promise<void>
   userId: string | null
 }
-const Edit: React.FC<EditProps> = ({ defaultTheme, updateTheme, userId }) => {
+const Edit: React.FC<EditProps> = ({
+  id,
+  defaultTheme,
+  updateTheme,
+  userId,
+}) => {
   const methods = useForm<Form>({
     defaultValues: {
       title: defaultTheme.title,
@@ -103,11 +115,18 @@ const Edit: React.FC<EditProps> = ({ defaultTheme, updateTheme, userId }) => {
     },
   })
 
+  const { push } = useRouter()
+
+  const { unbind } = useBlockLeave(methods.formState.isDirty)
+
   const submit = useCallback(
     async (data: Form) => {
       await updateTheme(data)
+      methods.reset({}, { keepValues: true })
+      unbind()
+      await push(`/theme/${id}`)
     },
-    [updateTheme]
+    [id, methods, push, unbind, updateTheme]
   )
 
   return (

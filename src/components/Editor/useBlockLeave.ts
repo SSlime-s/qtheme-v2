@@ -1,7 +1,9 @@
 import { useRouter } from 'next/router'
-import { useEffect } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
 
 export const useBlockLeave = (isBlock: boolean) => {
+  const abortController = useMemo(() => new AbortController(), [])
+
   // ブラウザネイティブの離脱をブロック
   useEffect(() => {
     if (!isBlock) {
@@ -11,11 +13,13 @@ export const useBlockLeave = (isBlock: boolean) => {
       e.preventDefault()
       e.returnValue = ''
     }
-    window.addEventListener('beforeunload', handleUnload)
+    window.addEventListener('beforeunload', handleUnload, {
+      signal: abortController.signal,
+    })
     return () => {
       window.removeEventListener('beforeunload', handleUnload)
     }
-  }, [isBlock])
+  }, [abortController.signal, isBlock])
 
   // Next.js のルーティングをブロック
   const router = useRouter()
@@ -34,8 +38,21 @@ export const useBlockLeave = (isBlock: boolean) => {
       }
     }
     router.events.on('routeChangeStart', handleRouteChange)
-    return () => {
+    const abort = () => {
       router.events.off('routeChangeStart', handleRouteChange)
     }
-  }, [isBlock, router])
+    abortController.signal.addEventListener('abort', abort)
+    return () => {
+      router.events.off('routeChangeStart', handleRouteChange)
+      abortController.signal.removeEventListener('abort', abort)
+    }
+  }, [abortController.signal, isBlock, router])
+
+  const unbind = useCallback(() => {
+    abortController.abort()
+  }, [abortController])
+
+  return {
+    unbind,
+  }
 }

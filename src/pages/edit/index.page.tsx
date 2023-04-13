@@ -13,6 +13,7 @@ import { pageTitle } from '@/utils/title'
 import Head from 'next/head'
 import { Editor, Form } from '@/components/Editor'
 import { SEO } from '@/components/SEO'
+import { useBlockLeave } from '@/components/Editor/useBlockLeave'
 
 export const getServerSideProps = async ({
   req,
@@ -70,15 +71,19 @@ const EditPage: NextPageWithLayout<Props> = ({ defaultTheme, userId }) => {
     void replace('/edit', undefined, { shallow: true })
   }, [asPath, replace])
 
+  const { unbind } = useBlockLeave(methods.formState.isDirty)
+
   const {
     mutate: { createTheme },
   } = useThemeList(null, null)
   const submit = useCallback(
     async (data: Form) => {
       const newData = await createTheme(data)
+      methods.reset({}, { keepValues: true })
+      unbind()
       await push(`/theme/${newData.id}`)
     },
-    [createTheme, push]
+    [createTheme, methods, push, unbind]
   )
 
   return (
