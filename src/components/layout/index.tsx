@@ -14,7 +14,11 @@ import { Navbar } from './Navbar'
 import { DefaultSidebarContent, Sidebar } from './Sidebar'
 import ReactDOM from 'react-dom'
 import dynamic from 'next/dynamic'
-import { ChannelPath, convertChannelPath, extendChannelPath } from './Header/convertChannelPath'
+import {
+  ChannelPath,
+  convertChannelPath,
+  extendChannelPath,
+} from './Header/convertChannelPath'
 
 interface Props {
   userId?: string
@@ -34,6 +38,10 @@ export const Layout: React.FC<PropsWithChildren<Props>> = ({
       .filter(p => p !== '')
       .map(p => {
         const split = p.split('?')
+        return split[0]
+      })
+      .map(p => {
+        const split = p.split('#')
         return split[0]
       })
 
