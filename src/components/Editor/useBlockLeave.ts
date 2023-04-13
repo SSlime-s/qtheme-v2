@@ -28,8 +28,18 @@ export const useBlockLeave = (isBlock: boolean) => {
       return
     }
 
-    const handleRouteChange = (to: string) => {
+    const handleRouteChange = (
+      to: string,
+      {
+        shallow,
+      }: {
+        shallow?: boolean
+      }
+    ) => {
       if (to === router.asPath) {
+        return
+      }
+      if (shallow === true) {
         return
       }
       if (!confirm('離脱してもよろしいですか? (変更は保存されません)')) {
