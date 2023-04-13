@@ -31,7 +31,7 @@ export const SEO: React.FC<PropsWithChildren<Props>> = ({
   type = 'article',
   title = 'QTheme v2',
   description = 'traQ のテーマ作成・公開サービス',
-  imageUrl = `/og.png`,
+  imageUrl = `/api/og`,
   url = '/',
   children,
 }) => {
