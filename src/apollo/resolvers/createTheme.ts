@@ -6,6 +6,7 @@ import { Connection } from 'mysql2/promise'
 import { MutationResolvers } from '@/apollo/generated/resolvers'
 import { assertIsArrayObject } from '@/utils/typeUtils'
 import { bumpVersion } from './utils/bumpVersion'
+import { publishThemeWebhook } from './utils/sendTraqWebhook'
 
 export const createTheme: MutationResolvers<ContextValue>['createTheme'] =
   async (_, args, { userId }) => {
@@ -73,6 +74,17 @@ export const createTheme: MutationResolvers<ContextValue>['createTheme'] =
         throw new GraphQLError('Internal server error')
       }
       const { created_at } = rows[0]
+
+      if (visibility !== 'draft') {
+        await publishThemeWebhook({
+          author: userId,
+          themeId: id,
+          title,
+        }).catch((err: unknown) => {
+          console.error(err)
+        })
+      }
+
       return {
         id,
         ...args,

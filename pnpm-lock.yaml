@@ -42,6 +42,7 @@ specifiers:
   babel-loader: ^8.3.0
   better-typescript-lib: ^2.2.1
   budoux: ^0.4.1
+  crypto: ^1.0.1
   csv-parse: ^5.3.6
   dayjs: ^1.11.7
   dotenv: ^16.0.3
@@ -91,6 +92,7 @@ dependencies:
   '@types/react-dom': 18.0.10
   '@vercel/og': 0.0.27
   budoux: 0.4.1
+  crypto: 1.0.1
   dayjs: 1.11.7
   eslint: 8.31.0
   eslint-config-next: 13.1.1_iukboom6ndih5an6iafl45j2fe
@@ -7275,6 +7277,11 @@ packages:
       randombytes: 2.1.0
       randomfill: 1.0.4
     dev: true
+
+  /crypto/1.0.1:
+    resolution: {integrity: sha512-VxBKmeNcqQdiUQUW2Tzq0t377b54N2bMtXO/qiLa+6eRRmmC4qT3D4OnTGoT/U6O9aklQ/jTwbOtRMTTY8G0Ig==}
+    deprecated: This package is no longer supported. It's now a built-in Node module. If you've depended on crypto, you should switch to the one that's built-in.
+    dev: false
 
   /css-background-parser/0.1.0:
     resolution: {integrity: sha512-2EZLisiZQ+7m4wwur/qiYJRniHX4K5Tc9w93MT3AS0WS1u5kaZ4FKXlOTBhOjc+CgEgPiGY+fX1yWD8UwpEqUA==}

@@ -7,6 +7,7 @@ import { MutationResolvers, Theme } from '@/apollo/generated/resolvers'
 import { getThemeFromDb } from './utils/getThemeFromDb'
 import { getLatestHistoryFromDb } from './utils/getHistoryFromDb'
 import { bumpVersion } from './utils/bumpVersion'
+import { publishThemeWebhook } from './utils/sendTraqWebhook'
 
 export const updateTheme: MutationResolvers<ContextValue>['updateTheme'] =
   async (_, args, { userId }) => {
@@ -69,6 +70,16 @@ export const updateTheme: MutationResolvers<ContextValue>['updateTheme'] =
         await connection.execute(sql, [version_id, id, newVersion, theme])
       }
       await connection.commit()
+
+      if (oldTheme.visibility === 'draft' && visibility !== 'draft') {
+        await publishThemeWebhook({
+          author: userId,
+          themeId: id,
+          title,
+        }).catch((err: unknown) => {
+          console.error(err)
+        })
+      }
 
       return {
         ...(oldTheme as Theme),
