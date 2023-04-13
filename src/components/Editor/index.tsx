@@ -8,7 +8,15 @@ import {
   useWatch,
 } from 'react-hook-form'
 import { SidebarPortal } from '@/components/layout'
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import {
+  ReactNode,
+  useCallback,
+  useEffect,
+  useId,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
 import { resolveTheme } from '@/utils/theme'
 import { SmallPreview } from '@/components/preview'
 import { GlassmorphismStyle } from '@/components/Glassmorphism'
@@ -23,6 +31,9 @@ import { Description } from './InfoEditor/Description'
 import { Sidebar } from './Sidebar'
 import { TextTheme } from './TextTheme'
 import { useBlockLeave } from './useBlockLeave'
+import { useModal } from '@/utils/modal/useModal'
+import { BiHelpCircle } from 'react-icons/bi'
+import { PublicDescriptionModal } from './PublicDescriptionModal'
 
 const ColorsTab = ['Basic', 'Advanced'] as const
 
@@ -225,17 +236,75 @@ const Tab = styled.button`
 `
 const TabPanel = styled.div``
 
+const VisibilityPublicDescription: React.FC = () => {
+  const { close, isOpen, modalProps, open, titleProps, titleRef, triggerRef } =
+    useModal('editor/visibility')
+
+  const titlePropsWithRef = useMemo(
+    () => ({
+      ...titleProps,
+      ref: titleRef,
+    }),
+    [titleProps, titleRef]
+  )
+
+  return (
+    <VisibilityPublicDescriptionWrap>
+      <Strong>推奨</Strong>
+      <WhyRecommended onClick={open} ref={triggerRef} title='なぜ推奨なのか？'>
+        <BiHelpCircle />
+      </WhyRecommended>
+      traP 外の人でも見ることができます
+      {isOpen && (
+        <PublicDescriptionModal
+          {...modalProps}
+          titleProps={titlePropsWithRef}
+          close={close}
+        />
+      )}
+    </VisibilityPublicDescriptionWrap>
+  )
+}
+const VisibilityPublicDescriptionWrap = styled.div`
+  display: flex;
+  align-items: center;
+  line-height: 1;
+  height: 1.5rem;
+`
+const Strong = styled.strong`
+  font-weight: bold;
+`
+const WhyRecommended = styled.button`
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  margin-right: 8px;
+  height: 1rem;
+  padding: 0 2px;
+
+  color: ${lightTheme.basic.accent.primary};
+
+  transition: opacity 0.2s ease-out, transform 0.2s ease-out;
+
+  &:hover {
+    opacity: 0.8;
+    transform: scale(1.1);
+  }
+`
+
 const visibilityDescription = {
-  public: 'traP 外の人でも見ることができます (推奨)',
+  public: <VisibilityPublicDescription />,
   private: 'traP 内の人だけが見ることができます',
   draft: 'あなただけが見ることができます',
-} as const satisfies Record<'public' | 'private' | 'draft', string>
+} as const satisfies Record<'public' | 'private' | 'draft', ReactNode>
 const Selects: React.FC = () => {
   const { control, register } = useFormContext<Form>()
   const visibility = useWatch({
     control,
     name: 'visibility',
   })
+
+  const descriptionId = useId()
 
   return (
     <>
@@ -244,13 +313,13 @@ const Selects: React.FC = () => {
           <option value='light'>Light</option>
           <option value='dark'>Dark</option>
         </Select>
-        <Select {...register('visibility')}>
+        <Select {...register('visibility')} aria-describedby={descriptionId}>
           <option value='public'>Public</option>
           <option value='private'>Private</option>
           <option value='draft'>Draft</option>
         </Select>
       </SelectsWrap>
-      <span>{visibilityDescription[visibility]}</span>
+      <span id={descriptionId}>{visibilityDescription[visibility]}</span>
     </>
   )
 }
