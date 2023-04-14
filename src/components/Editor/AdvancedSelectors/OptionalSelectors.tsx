@@ -82,11 +82,29 @@ export const OptionalSelectors: React.FC<Props<keyof typeof AdvancedKeys>> = <
 
   useEffect(() => {
     setInnerColor(
-      theme?.[key1]?.[
-        label as keyof (typeof DescriptionMap)[keyof typeof DescriptionMap]
-      ] ?? '#000000'
+      old =>
+        theme?.[key1]?.[
+          label as keyof (typeof DescriptionMap)[keyof typeof DescriptionMap]
+        ] ?? old
     )
   }, [theme, key1, label])
+
+  const setColor = useCallback(
+    (value: string) => {
+      setInnerColor(value)
+      if (valid) {
+        setValue('theme', {
+          ...getValues('theme'),
+          [key1]: {
+            ...getValues('theme')?.[key1],
+            [label]: value,
+          },
+        })
+        return
+      }
+    },
+    [getValues, key1, label, setValue, valid]
+  )
 
   return (
     <Wrap valid={valid}>
@@ -116,10 +134,10 @@ export const OptionalSelectors: React.FC<Props<keyof typeof AdvancedKeys>> = <
               isExpanded={isExpanded}
               setExpanded={setIsExpanded}
               value={innerColor}
-              onChange={setInnerColor}
+              onChange={setColor}
             />
           ) : (
-            <ColorInput value={innerColor} onChange={setInnerColor} />
+            <ColorInput value={innerColor} onChange={setColor} />
           )}
         </div>
       </OptionalSelectorsContent>
