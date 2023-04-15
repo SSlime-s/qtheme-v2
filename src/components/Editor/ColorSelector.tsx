@@ -70,7 +70,9 @@ const ColorSelectorRaw: React.FC<Props> = ({
       }
 
       if (trimmedHex.length === 6) {
-        const alphaHex = Math.round((color.rgb.a ?? 1) * 255).toString(16)
+        const alphaHex = Math.round((color.rgb.a ?? 1) * 255)
+          .toString(16)
+          .padStart(2, '0')
         onChange(`#${trimmedHex}${alphaHex}`)
         return
       }
