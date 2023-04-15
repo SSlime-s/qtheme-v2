@@ -61,6 +61,6 @@ export const toggleLike: MutationResolvers<ContextValue>['toggleLike'] = async (
   return {
     isLike: args.isLike,
     // TODO: 今はどこにも使われてないため一旦は仮置き
-    likes: 0
+    likes: 0,
   }
 }

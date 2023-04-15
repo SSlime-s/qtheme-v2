@@ -12,11 +12,7 @@ export const Description: React.FC = () => {
   return (
     <div>
       <Label htmlFor={id}>Description</Label>
-      <Input
-        id={id}
-        {...register('description')}
-        placeholder='Description'
-      />
+      <Input id={id} {...register('description')} placeholder='Description' />
     </div>
   )
 }

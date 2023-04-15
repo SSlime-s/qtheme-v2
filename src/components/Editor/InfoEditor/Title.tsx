@@ -1,7 +1,7 @@
-import { lightTheme } from "@/utils/theme/default"
-import styled from "@emotion/styled"
-import { useId } from "react"
-import { useFormContext } from "react-hook-form"
+import { lightTheme } from '@/utils/theme/default'
+import styled from '@emotion/styled'
+import { useId } from 'react'
+import { useFormContext } from 'react-hook-form'
 import { Form } from '@/components/Editor'
 
 export const Title: React.FC = () => {

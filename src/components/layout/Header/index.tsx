@@ -127,7 +127,8 @@ const MenuButton = styled.button`
   cursor: pointer;
 
   &:focus-visible {
-    outline: 1px solid ${({ theme }) => theme.theme.basic.accent.primary.default};
+    outline: 1px solid
+      ${({ theme }) => theme.theme.basic.accent.primary.default};
   }
 
   &[hidden] {
