@@ -1,10 +1,10 @@
-import { resolveTheme } from "@/utils/theme"
-import { Theme } from "@/model/theme"
-import styled from "@emotion/styled"
-import { useCallback, useMemo, useState } from "react"
-import { useFormContext, useWatch } from "react-hook-form"
-import { ColorSelector } from "./ColorSelector"
-import { Form } from "@/components/Editor"
+import { resolveTheme } from '@/utils/theme'
+import { Theme } from '@/model/theme'
+import styled from '@emotion/styled'
+import { useCallback, useMemo, useState } from 'react'
+import { useFormContext, useWatch } from 'react-hook-form'
+import { ColorSelector } from './ColorSelector'
+import { Form } from '@/components/Editor'
 
 const BasicKeys = {
   accent: ['primary', 'notification', 'online', 'error', 'focus'] as const,
@@ -21,19 +21,23 @@ const BasicKeysKeys = [
 export const BasicSelectors: React.FC = () => {
   const { control, setValue, getValues } = useFormContext<Form>()
   const theme = useWatch({ control, name: 'theme' })
-  const basicTheme = useMemo(() => {
-    return theme.basic
-  }, [theme])
   const resolvedTheme = useMemo(() => {
     return resolveTheme(theme)
   }, [theme])
 
   const setBasicTheme = useCallback(
-    (newTheme: Partial<Theme['basic']>) => {
+    (
+      newTheme:
+        | Partial<Theme['basic']>
+        | ((prev: Theme['basic']) => Partial<Theme['basic']>)
+    ) => {
       const prev = getValues('theme')
+      const newThemeResolved =
+        typeof newTheme === 'function' ? newTheme(prev.basic) : newTheme
+
       setValue(
         'theme',
-        { ...prev, basic: { ...prev.basic, ...newTheme } },
+        { ...prev, basic: { ...prev.basic, ...newThemeResolved } },
         {
           shouldDirty: true,
         }
@@ -44,6 +48,32 @@ export const BasicSelectors: React.FC = () => {
 
   const [expanded, setExpanded] = useState<string>()
 
+  const onChangeWrap = useCallback(
+    (
+      value: string,
+      key1: keyof typeof BasicKeys,
+      key2: (typeof BasicKeys)[keyof typeof BasicKeys][number]
+    ) => {
+      setBasicTheme(prev => ({
+        [key1]: {
+          ...prev[key1],
+          [key2]: value,
+        },
+      }))
+    },
+    [setBasicTheme]
+  )
+  const setExpandedWrap = useCallback(
+    (
+      v: boolean,
+      key1: keyof typeof BasicKeys,
+      key2: (typeof BasicKeys)[keyof typeof BasicKeys][number]
+    ) => {
+      setExpanded(v ? `${key1}.${key2}` : undefined)
+    },
+    [setExpanded]
+  )
+
   return (
     <div>
       {BasicKeysKeys.map(key1 => (
@@ -52,21 +82,14 @@ export const BasicSelectors: React.FC = () => {
           {BasicKeys[key1].map(key2 => (
             <Selector key={key2}>
               <SelectorLabel>{key2}</SelectorLabel>
-              <ColorSelector
+              <ColorSelectorWrap
+                key1={key1}
+                key2={key2}
                 // @ts-expect-error: TODO: key の chain をうまく認識できてない
                 value={resolvedTheme.basic[key1][key2].default}
-                onChange={color => {
-                  setBasicTheme({
-                    [key1]: {
-                      ...basicTheme[key1],
-                      [key2]: color,
-                    },
-                  })
-                }}
+                onChange={onChangeWrap}
                 isExpanded={expanded === `${key1}.${key2}`}
-                setExpanded={v =>
-                  setExpanded(v ? `${key1}.${key2}` : undefined)
-                }
+                setExpanded={setExpandedWrap}
               />
             </Selector>
           ))}
@@ -92,3 +115,51 @@ const SelectorLabel = styled.div`
   color: #333;
   margin-bottom: 4px;
 `
+
+interface ColorSelectorWrapProps {
+  key1: keyof typeof BasicKeys
+  key2: (typeof BasicKeys)[keyof typeof BasicKeys][number]
+  onChange: (
+    color: string,
+    key1: keyof typeof BasicKeys,
+    key2: (typeof BasicKeys)[keyof typeof BasicKeys][number]
+  ) => void
+  value: string
+  isExpanded: boolean
+  setExpanded: (
+    v: boolean,
+    key1: keyof typeof BasicKeys,
+    key2: (typeof BasicKeys)[keyof typeof BasicKeys][number]
+  ) => void
+}
+const ColorSelectorWrap: React.FC<ColorSelectorWrapProps> = ({
+  key1,
+  key2,
+  onChange,
+  value,
+  isExpanded,
+  setExpanded,
+}) => {
+  const onChangeWrap = useCallback(
+    (color: string) => {
+      onChange(color, key1, key2)
+    },
+    [onChange, key1, key2]
+  )
+
+  const setExpandedWrap = useCallback(
+    (v: boolean) => {
+      setExpanded(v, key1, key2)
+    },
+    [setExpanded, key1, key2]
+  )
+
+  return (
+    <ColorSelector
+      value={value}
+      onChange={onChangeWrap}
+      isExpanded={isExpanded}
+      setExpanded={setExpandedWrap}
+    />
+  )
+}
