@@ -71,7 +71,7 @@ export const Navbar: React.FC<Props> = ({ scrollRef }) => {
 }
 const Wrap = styled.nav`
   grid-area: nav;
-  background: ${({ theme }) => theme.theme.basic.background.secondary.default};
+  background: ${({ theme }) => theme.theme.specific.navigationBarDesktopBackground};
   display: grid;
   grid-template-columns: 60px 1fr;
   grid-template-rows: 1fr max-content;

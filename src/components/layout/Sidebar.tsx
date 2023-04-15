@@ -139,7 +139,7 @@ export const DefaultSidebarContent: React.FC = () => {
 const Wrap = styled.aside`
   grid-area: side;
   position: relative;
-  background: ${({ theme }) => theme.theme.basic.background.secondary.default};
+  background: ${({ theme }) => theme.theme.specific.sideBarBackground};
   padding: 32px;
 
   ${isMobile} {
