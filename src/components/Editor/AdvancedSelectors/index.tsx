@@ -9,6 +9,7 @@ export const AdvancedKeys = {
     'selectionBackground',
     'caret',
     'scrollbarThumb',
+    'scrollbarThumbHover',
     'scrollbarTrack',
   ] as const,
   specific: [
@@ -35,6 +36,7 @@ export const DescriptionMap = {
     selectionBackground: 'テキスト選択時の背景色',
     caret: 'テキストカーソルの色',
     scrollbarThumb: 'スクロールバーのスクロール部分の色',
+    scrollbarThumbHover: 'スクロールバーのスクロール部分のホバー時の色',
     scrollbarTrack: 'スクロールバーの背景色',
   },
   specific: {
