@@ -58,6 +58,7 @@ specifiers:
   jotai: ^2.0.3
   linkify-react: ^4.1.1
   linkifyjs: ^4.1.1
+  lz-string: ^1.5.0
   mysql: ^2.18.1
   mysql2: ^2.3.3
   next: 13.1.1
@@ -102,6 +103,7 @@ dependencies:
   jotai: 2.0.3_react@18.2.0
   linkify-react: 4.1.1_mspgloey5lkkx3kppb4gmihtci
   linkifyjs: 4.1.1
+  lz-string: 1.5.0
   mysql: 2.18.1
   mysql2: 2.3.3
   next: 13.1.1_hrdbe576m4w26u2yfpqpvbxyky
@@ -8905,7 +8907,7 @@ packages:
     resolution: {integrity: sha512-oWb1Z6mkHIskLzEJ/XWX0srkpkTQ7vaopMQkyaEIoq0fmtFVxOthb8cCxeT+p3ynTdkk/RZwbgG4brR5BeWECw==}
     engines: {node: '>= 4.0'}
     os: [darwin]
-    deprecated: fsevents 1 will break on node v14+ and could be using insecure binaries. Upgrade to fsevents 2.
+    deprecated: The v1 package contains DANGEROUS / INSECURE binaries. Upgrade to safe fsevents v2
     requiresBuild: true
     dependencies:
       bindings: 1.5.0
@@ -10731,7 +10733,6 @@ packages:
   /lz-string/1.5.0:
     resolution: {integrity: sha512-h5bgJWpxJNswbU7qCrV0tIKQCaS3blPDrqKWx+QxzuzL1zGUzij9XCWLrSLsJPu5t+eWA/ycetzYAO5IOMcWAQ==}
     hasBin: true
-    dev: true
 
   /make-dir/2.1.0:
     resolution: {integrity: sha512-LS9X+dc8KLxXCb8dni79fLIIUA5VyZoyjSMCwTluaXA0o27cCK0bhXkpgw+sTXVpPy/lSO57ilRixqk0vDmtRA==}
