@@ -5,13 +5,13 @@ import {
 import { z } from 'zod'
 import { themeSchema } from '@/model/theme'
 
-const shareThemeScheme = z.object({
+export const shareThemeScheme = z.object({
   title: z.string(),
   description: z.string(),
   type: z.enum(['dark', 'light']),
   theme: themeSchema,
 })
-type ShareTheme = z.infer<typeof shareThemeScheme>
+export type ShareTheme = z.infer<typeof shareThemeScheme>
 
 export const encodeTheme = (theme: ShareTheme): string => {
   return compressToEncodedURIComponent(
