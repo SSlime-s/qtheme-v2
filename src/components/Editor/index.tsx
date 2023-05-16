@@ -33,6 +33,8 @@ import { TextTheme } from './TextTheme'
 import { useModal } from '@/utils/modal/useModal'
 import { BiHelpCircle } from 'react-icons/bi'
 import { PublicDescriptionModal } from './PublicDescriptionModal'
+import { encodeTheme } from '@/utils/themeCodec'
+import { RecursiveRequired } from '@/utils/typeUtils'
 
 const ColorsTab = ['Basic', 'Advanced'] as const
 
@@ -95,6 +97,12 @@ export const Editor: React.FC<Props> = ({ userId, submit, ...methods }) => {
     [methods, onSubmit]
   )
 
+  const watched = useWatch({ control: methods.control })
+  const shareUrl = useMemo(() => {
+    const encoded = encodeTheme(watched as RecursiveRequired<typeof watched>)
+    return `${location.origin}/share?t=${encoded}`
+  }, [watched])
+
   return (
     <>
       <FormProvider {...methods}>
@@ -140,7 +148,7 @@ export const Editor: React.FC<Props> = ({ userId, submit, ...methods }) => {
         </Wrap>
 
         <SidebarPortal>
-          <Sidebar submit={handleSubmit} />
+          <Sidebar submit={handleSubmit} shareUrl={shareUrl} />
         </SidebarPortal>
       </FormProvider>
     </>
