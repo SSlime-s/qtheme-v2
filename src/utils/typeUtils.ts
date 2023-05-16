@@ -37,3 +37,8 @@ export type Prettify<T> = {
   [K in keyof T]: T[K]
   // eslint-disable-next-line @typescript-eslint/ban-types
 } & {}
+
+// ref: https://qiita.com/suin/items/c462533f5d110577eb92
+export type RecursiveRequired<T> = {
+  [P in keyof T]-?: RecursiveRequired<T[P]>
+}

@@ -83,9 +83,16 @@ export const useCurrentTheme = () => {
   }, [setCurrentThemeWhole])
 
   const changeTheme = useCallback(
-    async (id: string, fallback?: FormattedTheme) => {
-      if (fallback) {
+    async (id?: string, fallback?: FormattedTheme) => {
+      if (id === undefined && fallback === undefined) {
+        throw new Error('id or fallback must be specified')
+      }
+
+      if (fallback !== undefined) {
         setCurrentThemeWhole(fallback)
+      }
+      if (id === undefined) {
+        return
       }
       const sdk = getSdkGetTheme(client)
       const { getTheme } = await sdk.Theme({ id })

@@ -6,19 +6,32 @@ import { useCallback } from 'react'
 import { GlassmorphismStyle } from './Glassmorphism'
 import { SmallPreview } from './preview'
 
-interface Props {
+type Props = {
   theme: FormattedTheme
   resolvedTheme: ResolvedTheme
-  changeTheme: (id: string, theme: FormattedTheme) => void
-}
+} & (
+  | {
+      changeTheme: (id: string, theme: FormattedTheme) => void
+      noId?: false
+    }
+  | {
+      changeTheme: (id: undefined, theme: FormattedTheme) => void
+      noId: true
+    }
+)
 export const LargePreviewCard: React.FC<Props> = ({
   theme,
   resolvedTheme,
   changeTheme,
+  noId,
 }) => {
   const changeHandler = useCallback(() => {
-    changeTheme(theme.id, theme)
-  }, [changeTheme, theme])
+    if (noId === true) {
+      changeTheme(undefined, theme)
+    } else {
+      changeTheme(theme.id, theme)
+    }
+  }, [changeTheme, noId, theme])
 
   return (
     <Card>
