@@ -10,5 +10,5 @@ export const useLoginUrl = (redirectTo?: string) => {
     return encodeURIComponent(redirectTo ?? now ?? '')
   }, [redirectTo, now])
 
-  return `https://portal.trap.jp/pipeline?redirect=${redirect}`
+  return `https://qtheme-v2.trap.games/_oauth/login?redirect=${redirect}`
 }
