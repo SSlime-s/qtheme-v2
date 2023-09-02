@@ -10,6 +10,11 @@ import { atom, useAtom } from 'jotai'
 import { isMobile } from '@/utils/isMobile'
 import Head from 'next/head'
 import { SEO } from '@/components/SEO'
+import {
+  GoogleTagManager,
+  GoogleTagManagerId,
+} from '@/components/Editor/GoogleTagManager'
+import { googleTagManagerId } from '@/utils/gtm'
 
 export type NextPageWithLayout<P = Record<string, unknown>, IP = P> = NextPage<
   P,
@@ -43,6 +48,9 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
 
   return (
     <>
+      <GoogleTagManager
+        googleTagManagerId={googleTagManagerId as GoogleTagManagerId}
+      />
       <Head>
         <title>QTheme v2</title>
         <meta charSet='utf-8' />
