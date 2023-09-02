@@ -1,6 +1,7 @@
-import { lineClamp } from '@/styles/lineClamp'
 import styled from '@emotion/styled'
 import { useEffect, useRef } from 'react'
+
+import { lineClamp } from '@/styles/lineClamp'
 
 export interface Props {
   before?: React.ReactNode

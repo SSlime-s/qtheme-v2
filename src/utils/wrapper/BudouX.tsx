@@ -1,7 +1,11 @@
-import { IWrapper, WrapResolver } from '@/utils/wrapper'
 import { css } from '@emotion/react'
 import { loadDefaultJapaneseParser } from 'budoux'
-import React, { PropsWithChildren, useMemo } from 'react'
+import React, { useMemo } from 'react'
+
+import type { IWrapper } from '@/utils/wrapper'
+import type { PropsWithChildren } from 'react'
+
+import { WrapResolver } from '@/utils/wrapper'
 
 const parser = loadDefaultJapaneseParser()
 

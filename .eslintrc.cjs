@@ -34,6 +34,29 @@ module.exports = {
     '@typescript-eslint/no-floating-promises': ['error'],
     'react/jsx-uses-react': 'off',
     'react/react-in-jsx-scope': 'off',
+    'import/order': [
+      'warn',
+      {
+        groups: [
+          'builtin',
+          'external',
+          'parent',
+          'sibling',
+          'index',
+          'object',
+          'type',
+        ],
+        pathGroupsExcludedImportTypes: ['builtin'],
+        alphabetize: {
+          order: 'asc',
+        },
+        'newlines-between': 'always',
+      },
+    ],
+    '@typescript-eslint/consistent-type-imports': [
+      'warn',
+      { prefer: 'type-imports' },
+    ],
   },
   ignorePatterns: ['node_modules'],
   settings: {

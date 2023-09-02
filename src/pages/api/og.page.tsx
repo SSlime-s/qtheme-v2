@@ -1,5 +1,7 @@
 import { ImageResponse } from '@vercel/og'
-import { NextRequest } from 'next/server'
+
+import type { NextRequest } from 'next/server'
+
 import { SmallPreview } from '@/components/preview'
 import { themeSchema } from '@/model/theme'
 import { resolveTheme } from '@/utils/theme'

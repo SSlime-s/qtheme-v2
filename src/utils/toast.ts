@@ -1,6 +1,8 @@
 import { atom, useAtomValue, useSetAtom } from 'jotai'
-import React, { useCallback, useId } from 'react'
-import { Prettify } from './typeUtils'
+import { useCallback, useId } from 'react'
+
+import type { Prettify } from './typeUtils'
+import type React from 'react'
 
 export interface ToastOptions {
   type: 'info' | 'success' | 'error'

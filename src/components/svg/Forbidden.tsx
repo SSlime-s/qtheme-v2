@@ -1,4 +1,4 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
 interface Props extends ComponentProps<'svg'> {
   size?: number

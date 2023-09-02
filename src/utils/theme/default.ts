@@ -1,4 +1,4 @@
-import { Theme } from '@/model/theme'
+import type { Theme } from '@/model/theme'
 
 export const lightTheme = {
   version: 2,

@@ -1,10 +1,13 @@
-import { ResolvedTheme } from '@/utils/theme'
-import { lightTheme } from '@/utils/theme/default'
-import { FormattedTheme } from '@/utils/theme/hooks'
 import styled from '@emotion/styled'
 import { useCallback } from 'react'
+
 import { GlassmorphismStyle } from './Glassmorphism'
 import { SmallPreview } from './preview'
+
+import type { ResolvedTheme } from '@/utils/theme'
+import type { FormattedTheme } from '@/utils/theme/hooks'
+
+import { lightTheme } from '@/utils/theme/default'
 
 type Props = {
   theme: FormattedTheme

@@ -1,7 +1,11 @@
-import { IWrapper, WrapResolver } from '@/utils/wrapper'
-import React, { ComponentProps, useMemo } from 'react'
-import { PropsWithChildren } from 'react'
 import NativeLinkify from 'linkify-react'
+import React, { useMemo } from 'react'
+
+import type { IWrapper } from '@/utils/wrapper'
+import type { ComponentProps } from 'react'
+import type { PropsWithChildren } from 'react'
+
+import { WrapResolver } from '@/utils/wrapper'
 
 type Props = IWrapper
 

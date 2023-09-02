@@ -1,23 +1,21 @@
 import styled from '@emotion/styled'
 import { atom, useAtom, useSetAtom } from 'jotai'
-import {
-  ButtonHTMLAttributes,
-  HTMLAttributes,
-  RefObject,
-  useCallback,
-  useMemo,
-} from 'react'
-import { NavbarChannels } from './Channels'
-import { MdHome } from 'react-icons/md'
-import { FaUser, FaWrench } from 'react-icons/fa'
-import { NavbarCustom } from './Custom'
-import { useControlledNamedTabList } from '@/utils/tablist'
-import { isMobile, useIsMobile } from '@/utils/isMobile'
-import { UserIcon } from './UserIcon'
-import { useUserId } from '@/utils/extractUser'
-import { NavbarUsers } from './Users'
 import Image from 'next/image'
+import { useCallback, useMemo } from 'react'
+import { FaUser, FaWrench } from 'react-icons/fa'
+import { MdHome } from 'react-icons/md'
+
+import { NavbarChannels } from './Channels'
+import { NavbarCustom } from './Custom'
+import { UserIcon } from './UserIcon'
+import { NavbarUsers } from './Users'
+
+import type { ButtonHTMLAttributes, HTMLAttributes, RefObject } from 'react'
+
 import Logo from '@/assets/QTheme.png'
+import { useUserId } from '@/utils/extractUser'
+import { isMobile, useIsMobile } from '@/utils/isMobile'
+import { useControlledNamedTabList } from '@/utils/tablist'
 
 type NavbarState = 'channel' | 'user' | 'custom'
 const states = [

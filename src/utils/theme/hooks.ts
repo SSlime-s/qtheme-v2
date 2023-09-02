@@ -1,26 +1,29 @@
-import useSWR, { unstable_serialize } from 'swr'
-import useSWRInfinite from 'swr/infinite'
-import { useClient } from '@/utils/api'
-import { useCallback, useMemo, useState } from 'react'
-import { Theme, themeSchema } from '@/model/theme'
-import { resolveTheme } from '@/utils/theme'
-import { lightTheme } from './default'
-import { atom, useAtom } from 'jotai'
 import dayjs from 'dayjs'
 import { print } from 'graphql'
+import { atom, useAtom } from 'jotai'
+import { useCallback, useMemo, useState } from 'react'
+import useSWR, { unstable_serialize } from 'swr'
+import useSWRInfinite from 'swr/infinite'
 
-import { Theme as ThemeRes } from '@/apollo/generated/graphql'
+import { lightTheme } from './default'
+
+import type { Theme as ThemeRes } from '@/apollo/generated/graphql'
+import type { Theme } from '@/model/theme'
+
+import { themeSchema } from '@/model/theme'
+import { useClient } from '@/utils/api'
+import { newClient } from '@/utils/api'
+import { getSdk as getSdkEditTheme } from '@/utils/graphql/editTheme.generated'
 import {
   getSdk as getSdkGetTheme,
   ThemeDocument,
 } from '@/utils/graphql/getTheme.generated'
-import { getSdk as getSdkToggleLike } from '@/utils/graphql/toggleLike.generated'
 import {
   getSdk as getSdkGetThemes,
   ThemesDocument,
 } from '@/utils/graphql/getThemes.generated'
-import { getSdk as getSdkEditTheme } from '@/utils/graphql/editTheme.generated'
-import { newClient } from '@/utils/api'
+import { getSdk as getSdkToggleLike } from '@/utils/graphql/toggleLike.generated'
+import { resolveTheme } from '@/utils/theme'
 
 export const THEMES_PER_PAGE = 20
 

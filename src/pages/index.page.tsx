@@ -1,19 +1,22 @@
-import Link from 'next/link'
-import dynamic from 'next/dynamic'
-import { GetServerSidePropsContext, NextPage } from 'next'
+import { css } from '@emotion/react'
 import styled from '@emotion/styled'
-import { GlassmorphismStyle } from '@/components/Glassmorphism'
-import { HiArrowRight } from 'react-icons/hi'
+import dynamic from 'next/dynamic'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
 import { useCallback, useEffect, useState } from 'react'
-import { lightTheme } from '@/utils/theme/default'
+import { HiArrowRight } from 'react-icons/hi'
+
 import { Logo } from './components/Logo'
+import { TrimMarkGroup } from './components/TrimMark'
+import { useRandomTheme } from './random/hooks'
+
+import type { GetServerSidePropsContext, NextPage } from 'next'
+
+import { GlassmorphismStyle } from '@/components/Glassmorphism'
 import { SmallPreview } from '@/components/preview'
 import { extractShowcaseUser } from '@/utils/extractUser'
-import { css } from '@emotion/react'
-import { useRouter } from 'next/router'
-import { TrimMarkGroup } from './components/TrimMark'
 import { isMobile, useIsMobile } from '@/utils/isMobile'
-import { useRandomTheme } from './random/hooks'
+import { lightTheme } from '@/utils/theme/default'
 import { useLoginUrl } from '@/utils/useLoginUrl'
 
 const Fluid = dynamic(

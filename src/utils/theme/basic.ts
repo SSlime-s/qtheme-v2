@@ -5,15 +5,17 @@ https://opensource.org/licenses/mit-license.php
 */
 // ref: https://github.com/traPtitech/traQ_S-UI/blob/master/src/lib/theme/resolve/basic.ts
 
-import { transparentizeWithFallback } from '@/model/color'
-import type { OnlyDefault } from './util'
 import { resolveOnlyDefault, resolveWithFallback } from './util'
+
+import type { OnlyDefault } from './util'
 import type {
   BasicTheme,
   CSSColorType,
   CSSColorTypeSimple,
   CSSImageType,
 } from '@/model/theme'
+
+import { transparentizeWithFallback } from '@/model/color'
 
 export interface ResolvedBasicTheme {
   accent: {

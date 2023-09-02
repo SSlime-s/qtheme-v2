@@ -1,10 +1,12 @@
-import { ColoredGlassmorphismStyle } from '@/components/Glassmorphism'
-import { useCurrentTheme } from '@/utils/theme/hooks'
 import styled from '@emotion/styled'
 import { atom, useAtom } from 'jotai'
 import { useState, useEffect, useCallback } from 'react'
 import { useFormContext, useWatch } from 'react-hook-form'
-import { Form } from '@/components/Editor'
+
+import type { Form } from '@/components/Editor'
+
+import { ColoredGlassmorphismStyle } from '@/components/Glassmorphism'
+import { useCurrentTheme } from '@/utils/theme/hooks'
 
 const AlwaysSyncAtom = atom<boolean>(false)
 export const SyncControls: React.FC = () => {

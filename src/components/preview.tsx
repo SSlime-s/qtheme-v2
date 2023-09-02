@@ -1,6 +1,8 @@
-import { userIconUrl } from '@/utils/api'
-import { ResolvedTheme } from '@/utils/theme'
 import React from 'react'
+
+import type { ResolvedTheme } from '@/utils/theme'
+
+import { userIconUrl } from '@/utils/api'
 
 interface Props {
   author: string

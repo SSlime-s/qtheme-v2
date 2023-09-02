@@ -1,20 +1,23 @@
-import { extractShowcaseUser, useSetUserId } from '@/utils/extractUser'
-import { GetServerSidePropsContext } from 'next'
-import { NextPageWithLayout } from '@/pages/_app.page'
-import { Layout } from '@/components/layout'
-import { assertIsArray } from '@/utils/typeUtils'
-import { useCurrentTheme } from '@/utils/theme/hooks'
-import { useEffect, useMemo } from 'react'
-import Head from 'next/head'
-import { pageTitle } from '@/utils/title'
-import { PreviewCard } from '@/components/PreviewCard'
 import styled from '@emotion/styled'
+import Head from 'next/head'
+import { useEffect, useMemo } from 'react'
+
 import { useFavoritesList } from './hook'
-import { InfiniteLoad } from '@/components/InfiniteLoad'
-import { useSetTopic } from '@/components/layout/Header'
+
+import type { NextPageWithLayout } from '@/pages/_app.page'
+import type { GetServerSidePropsContext } from 'next'
+
 import { Error } from '@/components/Error'
+import { InfiniteLoad } from '@/components/InfiniteLoad'
 import { LoadingBar } from '@/components/LoadingBar'
+import { PreviewCard } from '@/components/PreviewCard'
 import { SEO } from '@/components/SEO'
+import { Layout } from '@/components/layout'
+import { useSetTopic } from '@/components/layout/Header'
+import { extractShowcaseUser, useSetUserId } from '@/utils/extractUser'
+import { useCurrentTheme } from '@/utils/theme/hooks'
+import { pageTitle } from '@/utils/title'
+import { assertIsArray } from '@/utils/typeUtils'
 
 export const getServerSideProps = async ({
   req,

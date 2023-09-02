@@ -1,18 +1,22 @@
-import { Editor, Form } from '@/components/Editor'
-import { Layout } from '@/components/layout'
-import { NextPageWithLayout } from '@/pages/_app.page'
-import { extractShowcaseUser, useSetUserId } from '@/utils/extractUser'
-import { FormattedTheme, useTheme } from '@/utils/theme/hooks'
-import { pageTitle } from '@/utils/title'
-import { GetServerSidePropsContext } from 'next'
-import { Error } from '@/components/Error'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useCallback } from 'react'
 import { useForm } from 'react-hook-form'
+
+import type { Form } from '@/components/Editor'
+import type { NextPageWithLayout } from '@/pages/_app.page'
+import type { FormattedTheme } from '@/utils/theme/hooks'
+import type { GetServerSidePropsContext } from 'next'
+
+import { Editor } from '@/components/Editor'
+import { useBlockLeave } from '@/components/Editor/useBlockLeave'
+import { Error } from '@/components/Error'
 import { LoadingBar } from '@/components/LoadingBar'
 import { SEO } from '@/components/SEO'
-import { useBlockLeave } from '@/components/Editor/useBlockLeave'
+import { Layout } from '@/components/layout'
+import { extractShowcaseUser, useSetUserId } from '@/utils/extractUser'
+import { useTheme } from '@/utils/theme/hooks'
+import { pageTitle } from '@/utils/title'
 
 export const getServerSideProps = async ({
   req,

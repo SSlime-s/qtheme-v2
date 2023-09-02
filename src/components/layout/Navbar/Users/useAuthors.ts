@@ -1,8 +1,10 @@
-import { useClient } from '@/utils/api'
-import { useMemo } from 'react'
-import { getSdk, AuthorsDocument } from './getAuthors.generated'
-import useSWR from 'swr'
 import { print } from 'graphql'
+import { useMemo } from 'react'
+import useSWR from 'swr'
+
+import { getSdk, AuthorsDocument } from './getAuthors.generated'
+
+import { useClient } from '@/utils/api'
 
 export const useAuthors = () => {
   const client = useClient()

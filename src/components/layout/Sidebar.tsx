@@ -1,22 +1,19 @@
-import { isMobile, useIsMobile } from '@/utils/isMobile'
-import { ResolvedTheme } from '@/utils/theme'
-import { useCurrentTheme } from '@/utils/theme/hooks'
 import { css } from '@emotion/react'
 import styled from '@emotion/styled'
 import Link from 'next/link'
-import {
-  PropsWithChildren,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from 'react'
-import { RxReset } from 'react-icons/rx'
-import { BreakStyle, BudouJa } from '@/utils/wrapper/BudouX'
-import { ReplaceNewLine } from '@/utils/wrapper/ReplaceNewLine'
-import { Linkify } from '@/utils/wrapper/Linkify'
-import { WrapResolver } from '@/utils/wrapper'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { MdKeyboardDoubleArrowLeft } from 'react-icons/md'
+import { RxReset } from 'react-icons/rx'
+
+import type { ResolvedTheme } from '@/utils/theme'
+import type { PropsWithChildren } from 'react'
+
+import { isMobile, useIsMobile } from '@/utils/isMobile'
+import { useCurrentTheme } from '@/utils/theme/hooks'
+import { WrapResolver } from '@/utils/wrapper'
+import { BreakStyle, BudouJa } from '@/utils/wrapper/BudouX'
+import { Linkify } from '@/utils/wrapper/Linkify'
+import { ReplaceNewLine } from '@/utils/wrapper/ReplaceNewLine'
 
 interface Props {
   id?: string

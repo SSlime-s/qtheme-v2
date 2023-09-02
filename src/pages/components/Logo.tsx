@@ -1,4 +1,4 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
 type Props = ComponentProps<'svg'>
 export const Logo: React.FC<Props> = props => {

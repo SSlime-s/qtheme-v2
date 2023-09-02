@@ -1,8 +1,12 @@
-import { GlassmorphismStyle } from '@/components/Glassmorphism'
 import { css } from '@emotion/react'
 import styled from '@emotion/styled'
-import { PropsWithChildren, useCallback } from 'react'
+import { useCallback } from 'react'
+
 import { Modal } from './Modal'
+
+import type { PropsWithChildren } from 'react'
+
+import { GlassmorphismStyle } from '@/components/Glassmorphism'
 
 interface Props extends React.ComponentProps<'div'> {
   onOutsideClick?: () => void

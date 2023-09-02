@@ -1,5 +1,6 @@
-import { googleTagManagerId } from '@/utils/gtm'
 import { Html, Head, Main, NextScript } from 'next/document'
+
+import { googleTagManagerId } from '@/utils/gtm'
 
 export default function Document() {
   return (

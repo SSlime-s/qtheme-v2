@@ -1,9 +1,13 @@
-import { ToastOptions, useToastList } from '@/utils/toast'
-import { css, keyframes, Theme } from '@emotion/react'
+import { css, keyframes } from '@emotion/react'
 import styled from '@emotion/styled'
 import dynamic from 'next/dynamic'
 import { useMemo } from 'react'
 import ReactDOM from 'react-dom'
+
+import type { ToastOptions } from '@/utils/toast'
+import type { Theme } from '@emotion/react'
+
+import { useToastList } from '@/utils/toast'
 
 type Props = Omit<ToastOptions, 'durationMs' | 'key'> & {
   toastKey: string

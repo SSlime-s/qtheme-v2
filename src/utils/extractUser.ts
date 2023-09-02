@@ -1,7 +1,8 @@
-import { IncomingMessage } from 'http'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
 import { NextRequest } from 'next/server'
 import { useEffect } from 'react'
+
+import type { IncomingMessage } from 'http'
 
 const showcaseUserKey = 'x-showcase-user'
 export const extractShowcaseUser = (req: IncomingMessage | NextRequest) => {

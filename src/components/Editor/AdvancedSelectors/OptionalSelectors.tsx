@@ -1,11 +1,15 @@
-import { useControlledAccordion, useHiddenTransition } from '@/utils/accordion'
 import styled from '@emotion/styled'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useFormContext, useWatch } from 'react-hook-form'
-import { AdvancedKeys, DescriptionMap } from '.'
-import { Form } from '@/components/Editor'
+
+import { DescriptionMap } from '.'
+
+import type { AdvancedKeys } from '.'
+import type { Form } from '@/components/Editor'
+
 import { ColorInput } from '@/components/Editor/ColorInput'
 import { ColorSelector } from '@/components/Editor/ColorSelector'
+import { useControlledAccordion, useHiddenTransition } from '@/utils/accordion'
 
 type Type = 'color' | 'boolean' | 'text'
 interface Props<K extends keyof typeof AdvancedKeys> {

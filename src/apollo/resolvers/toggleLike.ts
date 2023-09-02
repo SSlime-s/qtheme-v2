@@ -1,9 +1,11 @@
-import { assertIsArrayObject } from '@/utils/typeUtils'
-import { connectDb } from '@/model/db'
 import { GraphQLError } from 'graphql'
-import { Connection } from 'mysql2/promise'
-import { ContextValue } from '.'
-import { MutationResolvers } from '@/apollo/generated/resolvers'
+
+import type { ContextValue } from '.'
+import type { MutationResolvers } from '@/apollo/generated/resolvers'
+import type { Connection } from 'mysql2/promise'
+
+import { connectDb } from '@/model/db'
+import { assertIsArrayObject } from '@/utils/typeUtils'
 
 export const toggleLike: MutationResolvers<ContextValue>['toggleLike'] = async (
   _,

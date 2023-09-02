@@ -1,5 +1,3 @@
-import { Connection } from 'mysql2/promise'
-import { Resolvers } from '@/apollo/generated/resolvers'
 import { createTheme } from './createTheme'
 import { deleteTheme } from './deleteTheme'
 import { getAuthors } from './getAuthors'
@@ -8,6 +6,9 @@ import { getTheme } from './getTheme'
 import { getThemes } from './getThemes'
 import { toggleLike } from './toggleLike'
 import { updateTheme } from './updateTheme'
+
+import type { Resolvers } from '@/apollo/generated/resolvers'
+import type { Connection } from 'mysql2/promise'
 
 export interface ContextValue {
   userId?: string

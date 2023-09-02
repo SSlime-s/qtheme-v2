@@ -1,5 +1,6 @@
 import { atom, useAtom, useAtomValue } from 'jotai'
 import { useCallback } from 'react'
+
 import { getFocus } from './focus'
 
 // window が focus を持っている間、1秒ごとに clipboard の値を同期する

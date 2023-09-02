@@ -1,20 +1,20 @@
 import '@/styles/reset.css'
-import type { AppProps } from 'next/app'
-import { Inter, M_PLUS_1p } from '@next/font/google'
-import { ReactElement, ReactNode } from 'react'
-import { NextPage } from 'next'
-import { useCurrentTheme } from '@/utils/theme/hooks'
 import { css, Global, ThemeProvider } from '@emotion/react'
-import { useRouter } from 'next/router'
+import { Inter, M_PLUS_1p } from '@next/font/google'
 import { atom, useAtom } from 'jotai'
-import { isMobile } from '@/utils/isMobile'
 import Head from 'next/head'
+import { useRouter } from 'next/router'
+
+import type { GoogleTagManagerId } from '@/components/Editor/GoogleTagManager'
+import type { NextPage } from 'next'
+import type { AppProps } from 'next/app'
+import type { ReactElement, ReactNode } from 'react'
+
+import { GoogleTagManager } from '@/components/Editor/GoogleTagManager'
 import { SEO } from '@/components/SEO'
-import {
-  GoogleTagManager,
-  GoogleTagManagerId,
-} from '@/components/Editor/GoogleTagManager'
 import { googleTagManagerId } from '@/utils/gtm'
+import { isMobile } from '@/utils/isMobile'
+import { useCurrentTheme } from '@/utils/theme/hooks'
 
 export type NextPageWithLayout<P = Record<string, unknown>, IP = P> = NextPage<
   P,

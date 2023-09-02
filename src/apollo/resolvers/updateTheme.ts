@@ -1,13 +1,16 @@
 import { GraphQLError } from 'graphql'
-import { connectDb } from '@/model/db'
-import { ContextValue } from '.'
-import { Connection } from 'mysql2/promise'
 import { ulid } from 'ulid'
-import { MutationResolvers, Theme } from '@/apollo/generated/resolvers'
-import { getThemeFromDb } from './utils/getThemeFromDb'
-import { getLatestHistoryFromDb } from './utils/getHistoryFromDb'
+
 import { bumpVersion } from './utils/bumpVersion'
+import { getLatestHistoryFromDb } from './utils/getHistoryFromDb'
+import { getThemeFromDb } from './utils/getThemeFromDb'
 import { publishThemeWebhook } from './utils/sendTraqWebhook'
+
+import type { ContextValue } from '.'
+import type { MutationResolvers, Theme } from '@/apollo/generated/resolvers'
+import type { Connection } from 'mysql2/promise'
+
+import { connectDb } from '@/model/db'
 
 export const updateTheme: MutationResolvers<ContextValue>['updateTheme'] =
   async (_, args, { userId }) => {

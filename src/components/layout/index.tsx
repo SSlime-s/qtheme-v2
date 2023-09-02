@@ -1,26 +1,25 @@
-import { isMobile, useIsMobile } from '@/utils/isMobile'
 import styled from '@emotion/styled'
-import { useRouter } from 'next/router'
-import {
-  PropsWithChildren,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-} from 'react'
-import { ToastContainer } from '@/components/Toast'
-import { Header } from './Header'
-import { Navbar } from './Navbar'
-import { DefaultSidebarContent, Sidebar } from './Sidebar'
-import ReactDOM from 'react-dom'
 import dynamic from 'next/dynamic'
+import { useRouter } from 'next/router'
+import { useCallback, useEffect, useMemo, useRef } from 'react'
+import ReactDOM from 'react-dom'
+
+import { LoadingBar } from '../LoadingBar'
+
+import { Header } from './Header'
 import {
-  ChannelPath,
   convertChannelPath,
   extendChannelPath,
 } from './Header/convertChannelPath'
+import { Navbar } from './Navbar'
+import { DefaultSidebarContent, Sidebar } from './Sidebar'
+
+import type { ChannelPath } from './Header/convertChannelPath'
+import type { PropsWithChildren } from 'react'
+
+import { ToastContainer } from '@/components/Toast'
+import { isMobile, useIsMobile } from '@/utils/isMobile'
 import { usePageLoading } from '@/utils/usePageLoading'
-import { LoadingBar } from '../LoadingBar'
 
 interface Props {
   userId?: string
@@ -102,7 +101,10 @@ export const Layout: React.FC<PropsWithChildren<Props>> = ({
       <Navbar scrollRef={navBarRef} />
       <Header channelPath={nowChannelPath} openNavBar={openNavBar} />
       <DummyMain ref={mainRef} />
-      <Main onClickCapture={scrollToSelf}>{isPageLoading && <Loading />}{children}</Main>
+      <Main onClickCapture={scrollToSelf}>
+        {isPageLoading && <Loading />}
+        {children}
+      </Main>
       <Sidebar id='app-sidebar'>
         {!noSidebar && <DefaultSidebarContent />}
       </Sidebar>

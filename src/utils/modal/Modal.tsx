@@ -1,7 +1,8 @@
 import styled from '@emotion/styled'
 import dynamic from 'next/dynamic'
-import { PropsWithChildren } from 'react'
 import ReactDOM from 'react-dom'
+
+import type { PropsWithChildren } from 'react'
 
 const ModalPortalRaw: React.FC<PropsWithChildren> = ({ children }) => {
   return ReactDOM.createPortal(children, document.body)

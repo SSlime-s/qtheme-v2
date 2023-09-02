@@ -1,9 +1,13 @@
-import { ResolvedTheme, resolveTheme } from '@/utils/theme'
-import { lightTheme, darkTheme } from '@/utils/theme/default'
 import { ThemeProvider } from '@emotion/react'
 import styled from '@emotion/styled'
-import { ComponentMeta, ComponentStory } from '@storybook/react'
+
 import { Channel, ChannelAccordion } from './ChannelAccordion'
+
+import type { ResolvedTheme } from '@/utils/theme'
+import type { ComponentMeta, ComponentStory } from '@storybook/react'
+
+import { resolveTheme } from '@/utils/theme'
+import { lightTheme, darkTheme } from '@/utils/theme/default'
 
 export default {
   title: 'Components/Layout/Components/ChannelAccordion',

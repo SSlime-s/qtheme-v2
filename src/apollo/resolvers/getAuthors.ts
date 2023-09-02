@@ -1,8 +1,10 @@
-import { assertIsArray, assertIsObject } from '@/utils/typeUtils'
-import { connectDb } from '@/model/db'
 import { GraphQLError } from 'graphql'
-import { ContextValue } from '.'
-import { QueryResolvers } from '@/apollo/generated/resolvers'
+
+import type { ContextValue } from '.'
+import type { QueryResolvers } from '@/apollo/generated/resolvers'
+
+import { connectDb } from '@/model/db'
+import { assertIsArray, assertIsObject } from '@/utils/typeUtils'
 
 interface Row {
   id: string

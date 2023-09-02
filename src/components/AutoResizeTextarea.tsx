@@ -1,12 +1,7 @@
 import styled from '@emotion/styled'
-import {
-  ComponentProps,
-  useRef,
-  useState,
-  useCallback,
-  useEffect,
-  forwardRef,
-} from 'react'
+import { useRef, useState, useCallback, useEffect, forwardRef } from 'react'
+
+import type { ComponentProps } from 'react'
 
 type Props = ComponentProps<'textarea'>
 export const AutoResizeTextarea = forwardRef<HTMLTextAreaElement, Props>(

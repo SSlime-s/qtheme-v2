@@ -1,8 +1,9 @@
-import Link from 'next/link'
+import { css } from '@emotion/react'
 import styled from '@emotion/styled'
+import Link from 'next/link'
 import { BiImport } from 'react-icons/bi'
 import { TbNewSection } from 'react-icons/tb'
-import { css } from '@emotion/react'
+
 import { useCurrentTheme } from '@/utils/theme/hooks'
 
 export const NavbarCustom: React.FC = () => {

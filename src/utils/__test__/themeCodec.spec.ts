@@ -1,5 +1,5 @@
-import { encodeTheme, decodeTheme, shareThemeScheme } from '../themeCodec'
 import { lightTheme } from '../theme/default'
+import { encodeTheme, decodeTheme, shareThemeScheme } from '../themeCodec'
 
 describe.concurrent('themeCodec', () => {
   const validTheme = {

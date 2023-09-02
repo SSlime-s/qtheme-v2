@@ -1,7 +1,9 @@
-import { BASE_URL } from '@/utils/baseUrl'
-import { FormattedTheme } from '@/utils/theme/hooks'
 import Head from 'next/head'
-import { PropsWithChildren } from 'react'
+
+import type { FormattedTheme } from '@/utils/theme/hooks'
+import type { PropsWithChildren } from 'react'
+
+import { BASE_URL } from '@/utils/baseUrl'
 
 export const ogImageUrl = (
   theme: FormattedTheme['theme'],

@@ -1,13 +1,16 @@
+import path from 'path'
+
+import styled from '@emotion/styled'
+import { useRouter } from 'next/router'
+import { useMemo } from 'react'
+
+import type { ReadonlyTree, Tree } from '@/utils/typeUtils'
+
 import {
   Channel,
   ChannelAccordion,
 } from '@/components/layout/components/ChannelAccordion'
 import { useUserId } from '@/utils/extractUser'
-import { ReadonlyTree, Tree } from '@/utils/typeUtils'
-import styled from '@emotion/styled'
-import { useRouter } from 'next/router'
-import path from 'path'
-import { useMemo } from 'react'
 
 const lightDark = [
   {

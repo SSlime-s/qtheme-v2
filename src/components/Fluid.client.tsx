@@ -1,8 +1,11 @@
+import styled from '@emotion/styled'
+import { useEffect, useRef } from 'react'
+import WebGLFluid from 'webgl-fluid'
+
+import type { ComponentProps } from 'react'
+
 import { parseHexNotationColor } from '@/model/color'
 import { lightTheme, darkTheme } from '@/utils/theme/default'
-import styled from '@emotion/styled'
-import { ComponentProps, useEffect, useRef } from 'react'
-import WebGLFluid from 'webgl-fluid'
 
 interface Props extends ComponentProps<'canvas'> {
   mode?: 'dark' | 'light'

@@ -1,4 +1,4 @@
-import { Connection, RowDataPacket } from 'mysql2/promise'
+import type { Connection, RowDataPacket } from 'mysql2/promise'
 
 interface ITheme extends RowDataPacket {
   id: string

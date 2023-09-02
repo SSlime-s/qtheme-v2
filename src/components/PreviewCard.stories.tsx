@@ -1,7 +1,10 @@
-import { darkTheme, lightTheme } from '@/utils/theme/default'
 import styled from '@emotion/styled'
-import { ComponentMeta, ComponentStory } from '@storybook/react'
+
 import { PreviewCard } from './PreviewCard'
+
+import type { ComponentMeta, ComponentStory } from '@storybook/react'
+
+import { darkTheme, lightTheme } from '@/utils/theme/default'
 
 export default {
   title: 'Components/PreviewCard',

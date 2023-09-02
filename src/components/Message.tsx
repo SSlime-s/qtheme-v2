@@ -1,8 +1,9 @@
-import { userIconUrl } from '@/utils/api'
 import { css } from '@emotion/react'
 import styled from '@emotion/styled'
 import Image from 'next/image'
 import Link from 'next/link'
+
+import { userIconUrl } from '@/utils/api'
 
 interface Props {
   iconUser: string

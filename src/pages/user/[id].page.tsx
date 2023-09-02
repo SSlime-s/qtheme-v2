@@ -1,21 +1,24 @@
-import { InfiniteLoad } from '@/components/InfiniteLoad'
-import { Layout } from '@/components/layout'
-import { useSetTopic } from '@/components/layout/Header'
-import { FullWidthContent, Message } from '@/components/Message'
-import { PreviewCard } from '@/components/PreviewCard'
-import { extractShowcaseUser, useSetUserId } from '@/utils/extractUser'
-import { useCurrentTheme } from '@/utils/theme/hooks'
 import styled from '@emotion/styled'
-import { GetServerSidePropsContext } from 'next'
+import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
-import { NextPageWithLayout } from '../_app.page'
+
 import { useAuthorThemes } from './hooks'
+
+import type { NextPageWithLayout } from '../_app.page'
+import type { GetServerSidePropsContext } from 'next'
+
 import { Error } from '@/components/Error'
+import { InfiniteLoad } from '@/components/InfiniteLoad'
 import { LoadingBar } from '@/components/LoadingBar'
-import Head from 'next/head'
-import { pageTitle } from '@/utils/title'
+import { FullWidthContent, Message } from '@/components/Message'
+import { PreviewCard } from '@/components/PreviewCard'
 import { SEO } from '@/components/SEO'
+import { Layout } from '@/components/layout'
+import { useSetTopic } from '@/components/layout/Header'
+import { extractShowcaseUser, useSetUserId } from '@/utils/extractUser'
+import { useCurrentTheme } from '@/utils/theme/hooks'
+import { pageTitle } from '@/utils/title'
 
 export const getServerSideProps = async ({
   req,

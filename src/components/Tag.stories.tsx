@@ -1,5 +1,6 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react'
 import { Tag } from './Tag'
+
+import type { ComponentMeta, ComponentStory } from '@storybook/react'
 
 export default {
   title: 'Components/Tag',

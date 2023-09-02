@@ -1,11 +1,13 @@
-import { isMobile, useIsMobile } from '@/utils/isMobile'
 import styled from '@emotion/styled'
 import { atom, useAtomValue, useSetAtom } from 'jotai'
+import Image from 'next/image'
 import Link from 'next/link'
 import { useCallback, useMemo, useRef } from 'react'
-import { ChannelPath } from './convertChannelPath'
-import Image from 'next/image'
+
+import type { ChannelPath } from './convertChannelPath'
+
 import Logo from '@/assets/QTheme.png'
+import { isMobile, useIsMobile } from '@/utils/isMobile'
 
 interface Props {
   channelPath: ChannelPath[]

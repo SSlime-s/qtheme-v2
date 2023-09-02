@@ -1,9 +1,11 @@
 import { GraphQLError } from 'graphql'
-import { Connection } from 'mysql2/promise'
-import { assertIsArrayObject } from '@/utils/typeUtils'
+
+import type { ContextValue } from '.'
+import type { MutationResolvers } from '@/apollo/generated/resolvers'
+import type { Connection } from 'mysql2/promise'
+
 import { connectDb } from '@/model/db'
-import { ContextValue } from '.'
-import { MutationResolvers } from '@/apollo/generated/resolvers'
+import { assertIsArrayObject } from '@/utils/typeUtils'
 
 export const deleteTheme: MutationResolvers<ContextValue>['deleteTheme'] =
   async (_, args, { userId }) => {
