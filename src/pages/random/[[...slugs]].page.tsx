@@ -154,6 +154,7 @@ const RandomPage: NextPageWithLayout<Props> = ({ userId, filter }) => {
         <CopyBox
           defaultValue={themeString}
           after={<After text={themeString} changeNext={changeNext} />}
+          aria-label='テーマのjson'
           readOnly
         />
       </Wrap>
