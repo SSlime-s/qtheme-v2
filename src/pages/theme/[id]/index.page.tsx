@@ -157,6 +157,7 @@ const ThemePageInner: React.FC<Omit<Props, 'fallback'>> = ({ userId }) => {
         <CopyBox
           defaultValue={themeString}
           after={<After text={themeString} />}
+          aria-label='テーマのjson'
           readOnly
         />
       </Wrap>
@@ -304,7 +305,7 @@ const After: React.FC<AfterProps> = ({ text }) => {
   return (
     <AfterWrap>
       <CopyButtonWrap>
-        <CopyButton text={text} />
+        <CopyButton text={text} title='テーマのコピー' />
       </CopyButtonWrap>
     </AfterWrap>
   )
