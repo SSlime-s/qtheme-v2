@@ -46,7 +46,7 @@ export const Navbar: React.FC<Props> = ({ scrollRef }) => {
   return (
     <>
       <DummyWrap ref={scrollRef} />
-      <Wrap {...ariaTabListProps}>
+      <Wrap>
         <TabListWrap>
           <Image
             src={Logo}
@@ -55,7 +55,7 @@ export const Navbar: React.FC<Props> = ({ scrollRef }) => {
             height={24}
             hidden={isMobile}
           />
-          <TabList role='tablist'>
+          <TabList {...ariaTabListProps}>
             {states.map(s => (
               <Button key={s} state={s} {...ariaTabProps[s]} />
             ))}
