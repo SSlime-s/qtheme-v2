@@ -154,6 +154,7 @@ const RandomPage: NextPageWithLayout<Props> = ({ userId, filter }) => {
         <CopyBox
           defaultValue={themeString}
           after={<After text={themeString} changeNext={changeNext} />}
+          aria-label='テーマのjson'
           readOnly
         />
       </Wrap>
@@ -213,9 +214,9 @@ const After: React.FC<AfterProps> = ({ text, changeNext }) => {
   return (
     <AfterWrap>
       <CopyButtonWrap>
-        <CopyButton text={text} />
+        <CopyButton text={text} title='テーマをコピー' />
       </CopyButtonWrap>
-      <NextButton onClick={changeNext}>
+      <NextButton onClick={changeNext} title='次のテーマを表示'>
         <TfiReload />
       </NextButton>
     </AfterWrap>
