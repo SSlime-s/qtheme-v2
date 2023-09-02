@@ -316,11 +316,15 @@ const Selects: React.FC = () => {
   return (
     <>
       <SelectsWrap>
-        <Select {...register('type')}>
+        <Select {...register('type')} aria-label='タイプ'>
           <option value='light'>Light</option>
           <option value='dark'>Dark</option>
         </Select>
-        <Select {...register('visibility')} aria-describedby={descriptionId}>
+        <Select
+          {...register('visibility')}
+          aria-describedby={descriptionId}
+          aria-label='公開範囲'
+        >
           <option value='public'>Public</option>
           <option value='private'>Private</option>
           <option value='draft'>Draft</option>
