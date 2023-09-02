@@ -213,9 +213,9 @@ const After: React.FC<AfterProps> = ({ text, changeNext }) => {
   return (
     <AfterWrap>
       <CopyButtonWrap>
-        <CopyButton text={text} />
+        <CopyButton text={text} title='テーマをコピー' />
       </CopyButtonWrap>
-      <NextButton onClick={changeNext}>
+      <NextButton onClick={changeNext} title='次のテーマを表示'>
         <TfiReload />
       </NextButton>
     </AfterWrap>
