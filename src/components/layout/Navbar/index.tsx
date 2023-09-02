@@ -47,7 +47,7 @@ export const Navbar: React.FC<Props> = ({ scrollRef }) => {
     <>
       <DummyWrap ref={scrollRef} />
       <Wrap {...ariaTabListProps}>
-        <TabList role='tablist'>
+        <TabListWrap>
           <Image
             src={Logo}
             alt='QTheme'
@@ -55,10 +55,12 @@ export const Navbar: React.FC<Props> = ({ scrollRef }) => {
             height={24}
             hidden={isMobile}
           />
-          {states.map(s => (
-            <Button key={s} state={s} {...ariaTabProps[s]} />
-          ))}
-        </TabList>
+          <TabList role='tablist'>
+            {states.map(s => (
+              <Button key={s} state={s} {...ariaTabProps[s]} />
+            ))}
+          </TabList>
+        </TabListWrap>
         <Selector>
           <UserIcon userId={userId ?? undefined} />
         </Selector>
@@ -71,7 +73,8 @@ export const Navbar: React.FC<Props> = ({ scrollRef }) => {
 }
 const Wrap = styled.nav`
   grid-area: nav;
-  background: ${({ theme }) => theme.theme.specific.navigationBarDesktopBackground};
+  background: ${({ theme }) =>
+    theme.theme.specific.navigationBarDesktopBackground};
   display: grid;
   grid-template-columns: 60px 1fr;
   grid-template-rows: 1fr max-content;
@@ -123,11 +126,27 @@ const Selector = styled.div`
     grid-template-rows: 1fr;
   }
 `
-const TabList = styled.div`
+const TabListWrap = styled.div`
   grid-area: list;
   display: grid;
   width: 100%;
-  grid-auto-flow: column;
+  grid-auto-columns: 60px;
+  grid-auto-rows: 60px;
+  grid-template-columns: 1fr;
+  grid-template-rows: 60px max-content;
+  place-items: center;
+
+  ${isMobile} {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    background: ${({ theme }) =>
+      theme.theme.basic.background.secondary.default};
+    border-radius: 4px;
+  }
+`
+const TabList = styled.div`
+  display: grid;
+  width: 100%;
   grid-auto-columns: 60px;
   grid-auto-rows: 60px;
   grid-template-columns: 1fr;
@@ -137,9 +156,6 @@ const TabList = styled.div`
   ${isMobile} {
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: 1fr;
-    background: ${({ theme }) =>
-      theme.theme.basic.background.secondary.default};
-    border-radius: 4px;
   }
 `
 
