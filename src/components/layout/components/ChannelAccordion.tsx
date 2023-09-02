@@ -28,7 +28,16 @@ export const ChannelAccordion: React.FC<PropsWithChildren<Props>> = ({
         aria-current={selected === true ? 'page' : 'false'}
         selected={selected}
       >
-        <ToggleButton onClick={toggle} selected={selected} {...ariaToggle}>
+        <ToggleButton
+          onClick={toggle}
+          selected={selected}
+          aria-label={
+            selected === true
+              ? `${name}以下を折りたたむ`
+              : `${name}以下を展開する`
+          }
+          {...ariaToggle}
+        >
           <BsHash />
         </ToggleButton>
         <ChannelLink href={to}>{name}</ChannelLink>
