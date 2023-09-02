@@ -19,6 +19,8 @@ import {
   convertChannelPath,
   extendChannelPath,
 } from './Header/convertChannelPath'
+import { usePageLoading } from '@/utils/usePageLoading'
+import { LoadingBar } from '../LoadingBar'
 
 interface Props {
   userId?: string
@@ -32,6 +34,7 @@ export const Layout: React.FC<PropsWithChildren<Props>> = ({
 }) => {
   const isMobile = useIsMobile()
   const router = useRouter()
+  const isPageLoading = usePageLoading()
   const nowChannelPath: ChannelPath[] = useMemo(() => {
     const path = router.asPath
       .split('/')
@@ -99,7 +102,7 @@ export const Layout: React.FC<PropsWithChildren<Props>> = ({
       <Navbar scrollRef={navBarRef} />
       <Header channelPath={nowChannelPath} openNavBar={openNavBar} />
       <DummyMain ref={mainRef} />
-      <Main onClickCapture={scrollToSelf}>{children}</Main>
+      <Main onClickCapture={scrollToSelf}>{isPageLoading && <Loading />}{children}</Main>
       <Sidebar id='app-sidebar'>
         {!noSidebar && <DefaultSidebarContent />}
       </Sidebar>
@@ -193,6 +196,7 @@ const Main = styled.main`
   contain: strict;
   height: 100%;
   background: ${({ theme }) => theme.theme.specific.mainViewBackground};
+  position: relative;
 
   ${isMobile} {
     position: sticky;
@@ -201,6 +205,11 @@ const Main = styled.main`
     scroll-snap-align: start;
     scroll-snap-stop: always;
   }
+`
+const Loading = styled(LoadingBar)`
+  position: absolute;
+  top: 0;
+  left: 0;
 `
 const DummyMain = styled.div`
   grid-area: main;
