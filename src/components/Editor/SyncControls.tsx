@@ -3,10 +3,10 @@ import { atom, useAtom } from 'jotai'
 import { useState, useEffect, useCallback } from 'react'
 import { useFormContext, useWatch } from 'react-hook-form'
 
-import type { Form } from '@/components/Editor'
-
 import { ColoredGlassmorphismStyle } from '@/components/Glassmorphism'
 import { useCurrentTheme } from '@/utils/theme/hooks'
+
+import type { Form } from '@/components/Editor'
 
 const AlwaysSyncAtom = atom<boolean>(false)
 export const SyncControls: React.FC = () => {

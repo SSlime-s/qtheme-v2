@@ -1,13 +1,13 @@
 import { ThemeProvider } from '@emotion/react'
 import styled from '@emotion/styled'
 
+import { resolveTheme } from '@/utils/theme'
+import { lightTheme, darkTheme } from '@/utils/theme/default'
+
 import { Layout } from '.'
 
 import type { ResolvedTheme } from '@/utils/theme'
 import type { ComponentMeta, ComponentStory } from '@storybook/react'
-
-import { resolveTheme } from '@/utils/theme'
-import { lightTheme, darkTheme } from '@/utils/theme/default'
 
 export default {
   title: 'Components/Layout',

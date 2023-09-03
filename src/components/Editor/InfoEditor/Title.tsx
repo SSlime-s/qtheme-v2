@@ -2,9 +2,9 @@ import styled from '@emotion/styled'
 import { useId } from 'react'
 import { useFormContext } from 'react-hook-form'
 
-import type { Form } from '@/components/Editor'
-
 import { lightTheme } from '@/utils/theme/default'
+
+import type { Form } from '@/components/Editor'
 
 export const Title: React.FC = () => {
   const id = useId()

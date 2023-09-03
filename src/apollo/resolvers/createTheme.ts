@@ -1,15 +1,15 @@
 import { GraphQLError } from 'graphql'
 import { ulid } from 'ulid'
 
+import { connectDb } from '@/model/db'
+import { assertIsArrayObject } from '@/utils/typeUtils'
+
 import { bumpVersion } from './utils/bumpVersion'
 import { publishThemeWebhook } from './utils/sendTraqWebhook'
 
 import type { ContextValue } from '.'
 import type { MutationResolvers } from '@/apollo/generated/resolvers'
 import type { Connection } from 'mysql2/promise'
-
-import { connectDb } from '@/model/db'
-import { assertIsArrayObject } from '@/utils/typeUtils'
 
 export const createTheme: MutationResolvers<ContextValue>['createTheme'] =
   async (_, args, { userId }) => {

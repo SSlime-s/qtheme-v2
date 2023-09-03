@@ -4,10 +4,10 @@ import dynamic from 'next/dynamic'
 import { useMemo } from 'react'
 import ReactDOM from 'react-dom'
 
+import { useToastList } from '@/utils/toast'
+
 import type { ToastOptions } from '@/utils/toast'
 import type { Theme } from '@emotion/react'
-
-import { useToastList } from '@/utils/toast'
 
 type Props = Omit<ToastOptions, 'durationMs' | 'key'> & {
   toastKey: string

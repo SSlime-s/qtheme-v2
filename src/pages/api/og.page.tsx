@@ -1,11 +1,11 @@
 import { ImageResponse } from '@vercel/og'
 
-import type { NextRequest } from 'next/server'
-
 import { SmallPreview } from '@/components/preview'
 import { themeSchema } from '@/model/theme'
 import { resolveTheme } from '@/utils/theme'
 import { lightTheme } from '@/utils/theme/default'
+
+import type { NextRequest } from 'next/server'
 
 export const config = {
   runtime: 'experimental-edge',

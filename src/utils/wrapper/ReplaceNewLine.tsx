@@ -1,9 +1,9 @@
 import React from 'react'
 
+import { WrapResolver } from '@/utils/wrapper'
+
 import type { IWrapper } from '@/utils/wrapper'
 import type { PropsWithChildren } from 'react'
-
-import { WrapResolver } from '@/utils/wrapper'
 
 type Props = IWrapper
 

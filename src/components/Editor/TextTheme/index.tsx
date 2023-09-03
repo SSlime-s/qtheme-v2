@@ -4,17 +4,17 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useFormContext, useWatch } from 'react-hook-form'
 import { BsCheckLg, BsXLg } from 'react-icons/bs'
 
-import { ConfirmModal } from './ConfirmModal'
-import { InputModal } from './InputModal'
-
-import type { Form } from '@/components/Editor'
-
 import { themeSchema } from '@/model/theme'
 import { lineClamp } from '@/styles/lineClamp'
 import { useCheckedClipboard } from '@/utils/clipboard'
 import { useConfirmModal } from '@/utils/modal/ConfirmModal/hooks'
 import { useModal } from '@/utils/modal/useModal'
 import { lightTheme } from '@/utils/theme/default'
+
+import { ConfirmModal } from './ConfirmModal'
+import { InputModal } from './InputModal'
+
+import type { Form } from '@/components/Editor'
 
 type CopyStatus = 'idle' | 'copied' | 'failed'
 export const TextTheme: React.FC = () => {

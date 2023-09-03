@@ -3,9 +3,9 @@ import styled from '@emotion/styled'
 import { useCallback } from 'react'
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai'
 
-import { ColoredGlassmorphismStyle } from './Glassmorphism'
-
 import { lightTheme } from '@/utils/theme/default'
+
+import { ColoredGlassmorphismStyle } from './Glassmorphism'
 
 interface Props {
   isFavorite: boolean

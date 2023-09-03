@@ -2,12 +2,12 @@ import { css, keyframes } from '@emotion/react'
 import styled from '@emotion/styled'
 import { useCallback, useEffect, useRef, useState } from 'react'
 
-import { wiggleElement } from './WiggleAnimation'
-
 import { AutoResizeTextarea } from '@/components/AutoResizeTextarea'
 import { useAutoRestoreState } from '@/utils/autoRestoreState'
 import { ModalTemplate } from '@/utils/modal/ModalTemplate'
 import { lightTheme } from '@/utils/theme/default'
+
+import { wiggleElement } from './WiggleAnimation'
 
 const checkValidJson = (value: string): boolean => {
   try {

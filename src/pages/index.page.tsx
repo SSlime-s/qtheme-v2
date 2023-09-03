@@ -6,18 +6,18 @@ import { useRouter } from 'next/router'
 import { useCallback, useEffect, useState } from 'react'
 import { HiArrowRight } from 'react-icons/hi'
 
-import { Logo } from './components/Logo'
-import { TrimMarkGroup } from './components/TrimMark'
-import { useRandomTheme } from './random/hooks'
-
-import type { GetServerSidePropsContext, NextPage } from 'next'
-
 import { GlassmorphismStyle } from '@/components/Glassmorphism'
 import { SmallPreview } from '@/components/preview'
 import { extractShowcaseUser } from '@/utils/extractUser'
 import { isMobile, useIsMobile } from '@/utils/isMobile'
 import { lightTheme } from '@/utils/theme/default'
 import { useLoginUrl } from '@/utils/useLoginUrl'
+
+import { Logo } from './components/Logo'
+import { TrimMarkGroup } from './components/TrimMark'
+import { useRandomTheme } from './random/hooks'
+
+import type { GetServerSidePropsContext, NextPage } from 'next'
 
 const Fluid = dynamic(
   () => import('@/components/Fluid.client').then(mod => mod.Fluid),

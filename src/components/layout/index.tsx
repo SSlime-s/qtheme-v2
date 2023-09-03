@@ -4,6 +4,10 @@ import { useRouter } from 'next/router'
 import { useCallback, useEffect, useMemo, useRef } from 'react'
 import ReactDOM from 'react-dom'
 
+import { ToastContainer } from '@/components/Toast'
+import { isMobile, useIsMobile } from '@/utils/isMobile'
+import { usePageLoading } from '@/utils/usePageLoading'
+
 import { LoadingBar } from '../LoadingBar'
 
 import { Header } from './Header'
@@ -16,10 +20,6 @@ import { DefaultSidebarContent, Sidebar } from './Sidebar'
 
 import type { ChannelPath } from './Header/convertChannelPath'
 import type { PropsWithChildren } from 'react'
-
-import { ToastContainer } from '@/components/Toast'
-import { isMobile, useIsMobile } from '@/utils/isMobile'
-import { usePageLoading } from '@/utils/usePageLoading'
 
 interface Props {
   userId?: string

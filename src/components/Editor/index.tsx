@@ -5,6 +5,15 @@ import React from 'react'
 import { FormProvider, useFormContext, useWatch } from 'react-hook-form'
 import { BiHelpCircle } from 'react-icons/bi'
 
+import { GlassmorphismStyle } from '@/components/Glassmorphism'
+import { SidebarPortal } from '@/components/layout'
+import { SmallPreview } from '@/components/preview'
+import { useModal } from '@/utils/modal/useModal'
+import { useNamedTabList } from '@/utils/tablist'
+import { resolveTheme } from '@/utils/theme'
+import { darkTheme, lightTheme } from '@/utils/theme/default'
+import { encodeTheme } from '@/utils/themeCodec'
+
 import { AdvancedSelectors } from './AdvancedSelectors'
 import { BasicSelectors } from './BasicSelectors'
 import { Description } from './InfoEditor/Description'
@@ -18,15 +27,6 @@ import type { ThemeInfo } from '@/model/schema'
 import type { RecursiveRequired } from '@/utils/typeUtils'
 import type { ReactNode } from 'react'
 import type { UseFormReturn } from 'react-hook-form'
-
-import { GlassmorphismStyle } from '@/components/Glassmorphism'
-import { SidebarPortal } from '@/components/layout'
-import { SmallPreview } from '@/components/preview'
-import { useModal } from '@/utils/modal/useModal'
-import { useNamedTabList } from '@/utils/tablist'
-import { resolveTheme } from '@/utils/theme'
-import { darkTheme, lightTheme } from '@/utils/theme/default'
-import { encodeTheme } from '@/utils/themeCodec'
 
 const ColorsTab = ['Basic', 'Advanced'] as const
 

@@ -2,11 +2,6 @@ import styled from '@emotion/styled'
 import Head from 'next/head'
 import { useEffect, useMemo } from 'react'
 
-import { useFavoritesList } from './hook'
-
-import type { NextPageWithLayout } from '@/pages/_app.page'
-import type { GetServerSidePropsContext } from 'next'
-
 import { Error } from '@/components/Error'
 import { InfiniteLoad } from '@/components/InfiniteLoad'
 import { LoadingBar } from '@/components/LoadingBar'
@@ -18,6 +13,11 @@ import { extractShowcaseUser, useSetUserId } from '@/utils/extractUser'
 import { useCurrentTheme } from '@/utils/theme/hooks'
 import { pageTitle } from '@/utils/title'
 import { assertIsArray } from '@/utils/typeUtils'
+
+import { useFavoritesList } from './hook'
+
+import type { NextPageWithLayout } from '@/pages/_app.page'
+import type { GetServerSidePropsContext } from 'next'
 
 export const getServerSideProps = async ({
   req,

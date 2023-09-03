@@ -3,12 +3,12 @@ import styled from '@emotion/styled'
 import Link from 'next/link'
 import React, { useMemo } from 'react'
 
+import { lightTheme } from '@/utils/theme/default'
+
 import { ColoredGlassmorphismStyle } from './Glassmorphism'
 
 import type { LinkProps as RawLinkProps } from 'next/link'
 import type { PropsWithChildren } from 'react'
-
-import { lightTheme } from '@/utils/theme/default'
 
 type Variant = 'light' | 'dark' | 'other' | 'private' | 'public' | 'draft'
 

@@ -2,9 +2,9 @@ import { print } from 'graphql'
 import { useMemo } from 'react'
 import useSWR from 'swr'
 
-import { getSdk, AuthorsDocument } from './getAuthors.generated'
-
 import { useClient } from '@/utils/api'
+
+import { getSdk, AuthorsDocument } from './getAuthors.generated'
 
 export const useAuthors = () => {
   const client = useClient()

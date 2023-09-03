@@ -1,11 +1,11 @@
 import { ThemeProvider } from '@emotion/react'
 
+import { resolveTheme } from '@/utils/theme'
+import { lightTheme } from '@/utils/theme/default'
+
 import { Message } from './Message'
 
 import type { ComponentMeta, ComponentStory } from '@storybook/react'
-
-import { resolveTheme } from '@/utils/theme'
-import { lightTheme } from '@/utils/theme/default'
 
 export default {
   title: 'Components/Message',

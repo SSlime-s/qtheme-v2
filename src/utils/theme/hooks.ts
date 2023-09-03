@@ -5,11 +5,6 @@ import { useCallback, useMemo, useState } from 'react'
 import useSWR, { unstable_serialize } from 'swr'
 import useSWRInfinite from 'swr/infinite'
 
-import { lightTheme } from './default'
-
-import type { Theme as ThemeRes } from '@/apollo/generated/graphql'
-import type { Theme } from '@/model/theme'
-
 import { themeSchema } from '@/model/theme'
 import { useClient } from '@/utils/api'
 import { newClient } from '@/utils/api'
@@ -24,6 +19,11 @@ import {
 } from '@/utils/graphql/getThemes.generated'
 import { getSdk as getSdkToggleLike } from '@/utils/graphql/toggleLike.generated'
 import { resolveTheme } from '@/utils/theme'
+
+import { lightTheme } from './default'
+
+import type { Theme as ThemeRes } from '@/apollo/generated/graphql'
+import type { Theme } from '@/model/theme'
 
 export const THEMES_PER_PAGE = 20
 

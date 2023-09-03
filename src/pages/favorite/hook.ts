@@ -2,10 +2,10 @@ import { print } from 'graphql'
 import { useCallback, useMemo } from 'react'
 import useSWRInfinite from 'swr/infinite'
 
-import { FavoritesDocument, getSdk } from './getFavorite.generated'
-
 import { useClient } from '@/utils/api'
 import { themeFromRaw, THEMES_PER_PAGE } from '@/utils/theme/hooks'
+
+import { FavoritesDocument, getSdk } from './getFavorite.generated'
 
 export const useFavoritesList = (
   type: 'light' | 'dark' | 'other' | null,

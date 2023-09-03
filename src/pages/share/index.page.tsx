@@ -3,10 +3,6 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 import React, { useMemo } from 'react'
 
-import type { NextPageWithLayout } from '@/pages/_app.page'
-import type { FormattedTheme } from '@/utils/theme/hooks'
-import type { GetServerSidePropsContext } from 'next'
-
 import { CopyButton } from '@/components/CopyButton'
 import { Error as ErrorPage } from '@/components/Error'
 import { LargePreviewCard } from '@/components/LargePreviewCard'
@@ -25,6 +21,10 @@ import { WrapResolver } from '@/utils/wrapper'
 import { BreakStyle, BudouJa } from '@/utils/wrapper/BudouX'
 import { Linkify } from '@/utils/wrapper/Linkify'
 import { ReplaceNewLine } from '@/utils/wrapper/ReplaceNewLine'
+
+import type { NextPageWithLayout } from '@/pages/_app.page'
+import type { FormattedTheme } from '@/utils/theme/hooks'
+import type { GetServerSidePropsContext } from 'next'
 
 const DUMMY_AUTHOR = 'traP'
 

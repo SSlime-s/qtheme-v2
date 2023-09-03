@@ -2,13 +2,13 @@ import { print } from 'graphql'
 import { useCallback, useMemo } from 'react'
 import useSWR from 'swr'
 
-import { getSdk, RandomDocument } from './getRandom.generated'
-
-import type { Type } from '@/apollo/generated/graphql'
-
 import { useClient } from '@/utils/api'
 import { resolveTheme } from '@/utils/theme'
 import { themeFromRaw } from '@/utils/theme/hooks'
+
+import { getSdk, RandomDocument } from './getRandom.generated'
+
+import type { Type } from '@/apollo/generated/graphql'
 
 export const useRandomTheme = (type: Lowercase<Type> | null) => {
   const client = useClient()

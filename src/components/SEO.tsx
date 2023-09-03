@@ -1,9 +1,9 @@
 import Head from 'next/head'
 
+import { BASE_URL } from '@/utils/baseUrl'
+
 import type { FormattedTheme } from '@/utils/theme/hooks'
 import type { PropsWithChildren } from 'react'
-
-import { BASE_URL } from '@/utils/baseUrl'
 
 export const ogImageUrl = (
   theme: FormattedTheme['theme'],

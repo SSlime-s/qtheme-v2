@@ -5,17 +5,17 @@ import { useCallback, useMemo } from 'react'
 import { FaUser, FaWrench } from 'react-icons/fa'
 import { MdHome } from 'react-icons/md'
 
+import Logo from '@/assets/QTheme.png'
+import { useUserId } from '@/utils/extractUser'
+import { isMobile, useIsMobile } from '@/utils/isMobile'
+import { useControlledNamedTabList } from '@/utils/tablist'
+
 import { NavbarChannels } from './Channels'
 import { NavbarCustom } from './Custom'
 import { UserIcon } from './UserIcon'
 import { NavbarUsers } from './Users'
 
 import type { ButtonHTMLAttributes, HTMLAttributes, RefObject } from 'react'
-
-import Logo from '@/assets/QTheme.png'
-import { useUserId } from '@/utils/extractUser'
-import { isMobile, useIsMobile } from '@/utils/isMobile'
-import { useControlledNamedTabList } from '@/utils/tablist'
 
 type NavbarState = 'channel' | 'user' | 'custom'
 const states = [

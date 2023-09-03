@@ -1,11 +1,11 @@
 import { ThemeProvider } from '@emotion/react'
 
+import { resolveTheme } from '@/utils/theme'
+import { lightTheme } from '@/utils/theme/default'
+
 import { TextBox } from './TextBox'
 
 import type { ComponentMeta } from '@storybook/react'
-
-import { resolveTheme } from '@/utils/theme'
-import { lightTheme } from '@/utils/theme/default'
 
 export default {
   title: 'Components/TextBox',

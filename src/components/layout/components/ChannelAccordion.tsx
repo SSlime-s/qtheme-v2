@@ -3,10 +3,10 @@ import styled from '@emotion/styled'
 import Link from 'next/link'
 import { BsHash } from 'react-icons/bs'
 
+import { useAccordion, useHiddenTransition } from '@/utils/accordion'
+
 import type { ResolvedTheme } from '@/utils/theme'
 import type { PropsWithChildren } from 'react'
-
-import { useAccordion, useHiddenTransition } from '@/utils/accordion'
 
 interface Props {
   name: string

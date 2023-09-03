@@ -1,8 +1,8 @@
 import styled from '@emotion/styled'
 
-import type { NextPage } from 'next'
-
 import { GlassmorphismStyle } from '@/components/Glassmorphism'
+
+import type { NextPage } from 'next'
 
 const Test: NextPage = () => {
   return (

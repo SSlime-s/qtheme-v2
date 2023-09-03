@@ -3,13 +3,6 @@ import styled from '@emotion/styled'
 import Link from 'next/link'
 import { useCallback, useMemo } from 'react'
 
-import { FavoriteButton } from './FavoriteButton'
-import { GlassmorphismStyle } from './Glassmorphism'
-import { Tag } from './Tag'
-import { SmallPreview } from './preview'
-
-import type { FormattedTheme } from '@/utils/theme/hooks'
-
 import { lineClamp } from '@/styles/lineClamp'
 import { resolveTheme } from '@/utils/theme'
 import { lightTheme } from '@/utils/theme/default'
@@ -17,6 +10,13 @@ import { WrapResolver } from '@/utils/wrapper'
 import { BreakStyle, BudouJa } from '@/utils/wrapper/BudouX'
 import { Linkify } from '@/utils/wrapper/Linkify'
 import { ReplaceNewLine } from '@/utils/wrapper/ReplaceNewLine'
+
+import { FavoriteButton } from './FavoriteButton'
+import { GlassmorphismStyle } from './Glassmorphism'
+import { Tag } from './Tag'
+import { SmallPreview } from './preview'
+
+import type { FormattedTheme } from '@/utils/theme/hooks'
 
 interface Props {
   themeInfo: FormattedTheme

@@ -4,10 +4,6 @@ import { useCallback, useEffect } from 'react'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 
-import type { Form } from '@/components/Editor'
-import type { NextPageWithLayout } from '@/pages/_app.page'
-import type { GetServerSidePropsContext } from 'next'
-
 import { Editor } from '@/components/Editor'
 import { useBlockLeave } from '@/components/Editor/useBlockLeave'
 import { SEO } from '@/components/SEO'
@@ -17,6 +13,10 @@ import { extractShowcaseUser, useSetUserId } from '@/utils/extractUser'
 import { darkTheme, lightTheme } from '@/utils/theme/default'
 import { useThemeList } from '@/utils/theme/hooks'
 import { pageTitle } from '@/utils/title'
+
+import type { Form } from '@/components/Editor'
+import type { NextPageWithLayout } from '@/pages/_app.page'
+import type { GetServerSidePropsContext } from 'next'
 
 export const getServerSideProps = async ({
   req,

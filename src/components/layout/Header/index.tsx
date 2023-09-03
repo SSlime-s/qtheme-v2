@@ -4,10 +4,10 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useCallback, useMemo, useRef } from 'react'
 
-import type { ChannelPath } from './convertChannelPath'
-
 import Logo from '@/assets/QTheme.png'
 import { isMobile, useIsMobile } from '@/utils/isMobile'
+
+import type { ChannelPath } from './convertChannelPath'
 
 interface Props {
   channelPath: ChannelPath[]

@@ -1,10 +1,10 @@
 import { GraphQLError } from 'graphql'
 
-import type { ContextValue } from '.'
-import type { QueryResolvers } from '@/apollo/generated/resolvers'
-
 import { connectDb } from '@/model/db'
 import { assertIsArray, assertIsObject } from '@/utils/typeUtils'
+
+import type { ContextValue } from '.'
+import type { QueryResolvers } from '@/apollo/generated/resolvers'
 
 interface Row {
   id: string

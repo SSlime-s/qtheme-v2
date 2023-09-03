@@ -46,7 +46,14 @@ module.exports = {
           'object',
           'type',
         ],
-        pathGroupsExcludedImportTypes: ['builtin'],
+        pathGroupsExcludedImportTypes: ['builtin', 'type'],
+        pathGroups: [
+          {
+            pattern: '@/**',
+            group: 'parent',
+            position: 'before',
+          },
+        ],
         alphabetize: {
           order: 'asc',
         },

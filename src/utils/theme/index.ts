@@ -5,6 +5,8 @@ https://opensource.org/licenses/mit-license.php
 */
 // ref: https://github.com/traPtitech/traQ_S-UI/blob/master/src/lib/theme/resolve/index.ts
 
+import { isDarkColor, transparentizeWithFallback } from '@/model/color'
+
 import { resolveBasicTheme } from './basic'
 import { resolveMarkdownTheme } from './markdown'
 
@@ -16,8 +18,6 @@ import type {
   BrowserTheme,
   SpecificTheme,
 } from '@/model/theme'
-
-import { isDarkColor, transparentizeWithFallback } from '@/model/color'
 
 export interface ResolvedTheme {
   basic: ResolvedBasicTheme

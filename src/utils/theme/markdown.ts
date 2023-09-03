@@ -5,14 +5,14 @@ https://opensource.org/licenses/mit-license.php
 */
 // ref: https://github.com/traPtitech/traQ_S-UI/blob/master/src/lib/theme/resolve/markdown.ts
 
+import { isDarkColor } from '@/model/color'
+
 import type { ResolvedBasicTheme } from './basic'
 import type {
   ExtendedOptionalMarkdownTheme,
   MarkdownDefaultTheme,
   MarkdownTheme,
 } from '@/model/theme'
-
-import { isDarkColor } from '@/model/color'
 
 export type ResolvedMarkdownTheme = MarkdownTheme & {
   codeHighlight: 'light' | 'dark'

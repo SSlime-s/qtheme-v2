@@ -3,11 +3,6 @@ import Head from 'next/head'
 import { useMemo } from 'react'
 import { TfiReload } from 'react-icons/tfi'
 
-import { useRandomTheme } from './hooks'
-
-import type { NextPageWithLayout } from '../_app.page'
-import type { GetServerSidePropsContext } from 'next'
-
 import { CopyButton } from '@/components/CopyButton'
 import { Error } from '@/components/Error'
 import { FavoriteButton } from '@/components/FavoriteButton'
@@ -28,6 +23,11 @@ import { WrapResolver } from '@/utils/wrapper'
 import { BreakStyle, BudouJa } from '@/utils/wrapper/BudouX'
 import { Linkify } from '@/utils/wrapper/Linkify'
 import { ReplaceNewLine } from '@/utils/wrapper/ReplaceNewLine'
+
+import { useRandomTheme } from './hooks'
+
+import type { NextPageWithLayout } from '../_app.page'
+import type { GetServerSidePropsContext } from 'next'
 
 export const getServerSideProps = async ({
   req,

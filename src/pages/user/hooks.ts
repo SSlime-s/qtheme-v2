@@ -2,10 +2,10 @@ import { print } from 'graphql'
 import { useCallback, useMemo } from 'react'
 import useSWRInfinite from 'swr/infinite'
 
-import { Author_ThemesDocument, getSdk } from './AuthorThemes.generated'
-
 import { useClient } from '@/utils/api'
 import { themeFromRaw, THEMES_PER_PAGE } from '@/utils/theme/hooks'
+
+import { Author_ThemesDocument, getSdk } from './AuthorThemes.generated'
 
 export const useAuthorThemes = (
   author: string,

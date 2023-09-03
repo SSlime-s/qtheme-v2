@@ -3,11 +3,6 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 
-import { useAuthorThemes } from './hooks'
-
-import type { NextPageWithLayout } from '../_app.page'
-import type { GetServerSidePropsContext } from 'next'
-
 import { Error } from '@/components/Error'
 import { InfiniteLoad } from '@/components/InfiniteLoad'
 import { LoadingBar } from '@/components/LoadingBar'
@@ -19,6 +14,11 @@ import { useSetTopic } from '@/components/layout/Header'
 import { extractShowcaseUser, useSetUserId } from '@/utils/extractUser'
 import { useCurrentTheme } from '@/utils/theme/hooks'
 import { pageTitle } from '@/utils/title'
+
+import { useAuthorThemes } from './hooks'
+
+import type { NextPageWithLayout } from '../_app.page'
+import type { GetServerSidePropsContext } from 'next'
 
 export const getServerSideProps = async ({
   req,

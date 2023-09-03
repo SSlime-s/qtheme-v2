@@ -3,11 +3,11 @@ import styled from '@emotion/styled'
 import Image from 'next/image'
 import Link from 'next/link'
 
-import { useAuthors } from './useAuthors'
-
 import { Error } from '@/components/Error'
 import { Skeleton } from '@/components/LoadingBar'
 import { userIconUrl } from '@/utils/api'
+
+import { useAuthors } from './useAuthors'
 
 export const NavbarUsers: React.FC = () => {
   const { data, error, isLoading } = useAuthors()

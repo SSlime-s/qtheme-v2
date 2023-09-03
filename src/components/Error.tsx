@@ -2,13 +2,13 @@ import styled from '@emotion/styled'
 import { useMemo } from 'react'
 import { HiArrowRight } from 'react-icons/hi'
 
+import { useLoginUrl } from '@/utils/useLoginUrl'
+
 import { GlassmorphismStyle } from './Glassmorphism'
 import { Forbidden } from './svg/Forbidden'
 import { NotFound } from './svg/NotFound'
 import { OtherError } from './svg/OtherError'
 import { Unauthorized } from './svg/Unauthorized'
-
-import { useLoginUrl } from '@/utils/useLoginUrl'
 
 interface Props {
   color?: string

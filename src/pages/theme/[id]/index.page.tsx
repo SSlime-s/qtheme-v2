@@ -7,12 +7,6 @@ import React, { useCallback, useMemo } from 'react'
 import { AiFillDelete, AiFillEdit } from 'react-icons/ai'
 import { SWRConfig } from 'swr'
 
-import { ConfirmModal } from './ConfirmModal'
-
-import type { NextPageWithLayout } from '@/pages/_app.page'
-import type { FormattedTheme } from '@/utils/theme/hooks'
-import type { GetServerSidePropsContext } from 'next'
-
 import { CopyButton } from '@/components/CopyButton'
 import { Error } from '@/components/Error'
 import { FavoriteButton } from '@/components/FavoriteButton'
@@ -36,6 +30,12 @@ import { WrapResolver } from '@/utils/wrapper'
 import { BreakStyle, BudouJa } from '@/utils/wrapper/BudouX'
 import { Linkify } from '@/utils/wrapper/Linkify'
 import { ReplaceNewLine } from '@/utils/wrapper/ReplaceNewLine'
+
+import { ConfirmModal } from './ConfirmModal'
+
+import type { NextPageWithLayout } from '@/pages/_app.page'
+import type { FormattedTheme } from '@/utils/theme/hooks'
+import type { GetServerSidePropsContext } from 'next'
 
 export const getServerSideProps = async ({
   req,
