@@ -106,12 +106,15 @@ const ColorSelectorRaw: React.FC<Props> = ({
     const { signal } = abortController
     content.addEventListener('touchstart', onTouchStart, {
       signal,
+      passive: true,
     })
     content.addEventListener('touchend', onTouchEnd, {
       signal,
+      passive: true,
     })
     content.addEventListener('touchcancel', onTouchEnd, {
       signal,
+      passive: true,
     })
     return () => {
       abortController.abort()
