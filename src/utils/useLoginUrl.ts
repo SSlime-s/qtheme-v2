@@ -1,14 +1,11 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useRouter } from 'next/router'
+import { useMemo } from 'react'
 
 export const useLoginUrl = (redirectTo?: string) => {
-  const [now, setNow] = useState('')
-  useEffect(() => {
-    setNow(window.location.href)
-  }, [])
-
+  const router = useRouter()
   const redirect = useMemo(() => {
-    return encodeURIComponent(redirectTo ?? now ?? '')
-  }, [redirectTo, now])
+    return encodeURIComponent(redirectTo ?? router.asPath)
+  }, [redirectTo, router.asPath])
 
   return `https://qtheme-v2.trap.games/_oauth/login?redirect=${redirect}`
 }
