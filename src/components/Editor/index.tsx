@@ -92,7 +92,9 @@ export const Editor: React.FC<Props> = ({ userId, submit, ...methods }) => {
   const watched = useWatch({ control: methods.control })
   const shareUrl = useMemo(() => {
     const encoded = encodeTheme(watched as RecursiveRequired<typeof watched>)
-    return `${window.location.origin}/share?t=${encoded}`
+    return `${
+      typeof window === 'undefined' ? '' : window.location.origin
+    }/share?t=${encoded}`
   }, [watched])
 
   return (
