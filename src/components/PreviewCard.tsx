@@ -106,11 +106,13 @@ const Title = styled.h1`
   font-size: 1.25rem;
   font-weight: bold;
   margin-bottom: auto;
+  overflow-wrap: anywhere;
 `
 const Author = styled.h2`
   font-size: 1rem;
   font-weight: bold;
   text-align: right;
+  overflow-wrap: anywhere;
 `
 const Description = styled.p`
   ${BreakStyle}
