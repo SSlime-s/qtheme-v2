@@ -26,10 +26,7 @@ export const ChannelAccordion: React.FC<PropsWithChildren<Props>> = ({
 
   return (
     <Wrap>
-      <ChannelWrap
-        aria-current={selected === true ? 'page' : 'false'}
-        selected={selected}
-      >
+      <ChannelWrap aria-current={selected === true ? 'page' : 'false'}>
         <ToggleButton
           onClick={toggle}
           selected={selected}
@@ -58,18 +55,17 @@ export const ChannelAccordion: React.FC<PropsWithChildren<Props>> = ({
 const Wrap = styled.div`
   margin: 4px 0;
 `
-const ChannelWrap = styled.div<{
-  selected?: boolean
-}>`
+const ChannelWrap = styled.div`
   display: grid;
   grid-template-columns: 29px 1fr;
   height: 32px;
   align-items: center;
-  color: ${({ theme, ...props }) =>
-    props.selected === true
-      ? theme.theme.basic.accent.primary.default
-      : theme.theme.basic.ui.primary.default};
-  font-weight: ${props => (props.selected === true ? 'bold' : 'normal')};
+  color: ${({ theme }) => theme.theme.basic.ui.primary.default};
+  font-weight: normal;
+  &[aria-current='page'] {
+    color: ${({ theme }) => theme.theme.basic.accent.primary.default};
+    font-weight: bold;
+  }
   position: relative;
   padding-left: 8px;
 `
@@ -134,9 +130,10 @@ const ChannelTextStyle = ({
     left: 0;
     width: 100%;
     pointer-events: none;
+    transition: background 0.2s ease-in-out;
   }
 
-  [data-selected='true'] &:after {
+  [aria-current='page'] &:after {
     background: ${theme.theme.basic.accent.primary.default};
   }
 `
@@ -165,9 +162,9 @@ export const Channel: React.FC<Props> = ({ name, to, selected }) => {
   return (
     <Wrap>
       <Link href={to}>
-        <ChannelWrap data-selected={selected}>
+        <ChannelWrap aria-current={selected === true ? 'page' : 'false'}>
           <CenteredBsHash />
-          <ChannelText selected={selected}>{name}</ChannelText>
+          <ChannelText>{name}</ChannelText>
         </ChannelWrap>
       </Link>
     </Wrap>
@@ -178,13 +175,10 @@ const CenteredBsHash = styled(BsHash)`
   justify-self: end;
   font-size: 24px;
 `
-const ChannelText = styled.div<{
-  selected?: boolean
-}>`
+const ChannelText = styled.div`
   ${ChannelTextStyle}
 
-  *:hover > * > &:after {
-    background: ${({ theme, selected }) =>
-      selected === true ? undefined : theme.theme.basic.ui.primary.default};
+  *:hover > *:not([aria-current='page']) > &:after {
+    background: ${({ theme }) => theme.theme.basic.ui.primary.default};
   }
 `
