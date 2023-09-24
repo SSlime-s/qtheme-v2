@@ -8,7 +8,7 @@ import {
   Channel,
   ChannelAccordion,
 } from '@/components/layout/components/ChannelAccordion'
-import { useUserId } from '@/utils/extractUser'
+import { useUserId } from '@/utils/userId'
 
 import type { ReadonlyTree, Tree } from '@/utils/typeUtils'
 

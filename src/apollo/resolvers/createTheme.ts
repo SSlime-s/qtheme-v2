@@ -12,7 +12,7 @@ import type { MutationResolvers } from '@/apollo/generated/resolvers'
 import type { Connection } from 'mysql2/promise'
 
 export const createTheme: MutationResolvers<ContextValue>['createTheme'] =
-  async (_, args, { userId }) => {
+  async (_, args, { userId, revalidate }) => {
     if (userId === undefined) {
       throw new GraphQLError('Forbidden')
     }
@@ -87,6 +87,8 @@ export const createTheme: MutationResolvers<ContextValue>['createTheme'] =
           console.error(err)
         })
       }
+
+      await revalidate?.(`/theme/${id}`)
 
       return {
         id,

@@ -50,16 +50,10 @@ export const PreviewCard: React.FC<Props> = ({
         <Title>{themeInfo.title}</Title>
         <Author>{themeInfo.author}</Author>
         <TagWrap>
-          <Tag
-            variant={themeInfo.type}
-            tag='div'
-          >
+          <Tag variant={themeInfo.type} tag='div'>
             {themeInfo.type}
           </Tag>
-          <Tag
-            variant={themeInfo.visibility}
-            tag='div'
-          >
+          <Tag variant={themeInfo.visibility} tag='div'>
             {themeInfo.visibility}
           </Tag>
         </TagWrap>

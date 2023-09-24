@@ -16,7 +16,8 @@ interface ITheme extends RowDataPacket {
 export const getThemeFromDb = async (
   connection: Connection,
   id: string,
-  userId?: string
+  userId?: string,
+  isSuper = false
 ) => {
   const sql = `
     SELECT
@@ -52,7 +53,9 @@ export const getThemeFromDb = async (
     `
     }
     WHERE themes.id = ? AND ${
-      userId === undefined
+      isSuper
+        ? `TRUE`
+        : userId === undefined
         ? `visibility = 'public'`
         : `(
             visibility IN ('public', 'private')
@@ -67,7 +70,7 @@ export const getThemeFromDb = async (
     const [rows] = await connection.execute<ITheme[]>(sql, [
       ...(userId !== undefined ? [userId] : []),
       id,
-      ...(userId !== undefined ? [userId] : []),
+      ...(!isSuper && userId !== undefined ? [userId] : []),
     ])
     if (rows.length === 0) {
       return null

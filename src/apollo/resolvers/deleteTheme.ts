@@ -8,7 +8,7 @@ import type { MutationResolvers } from '@/apollo/generated/resolvers'
 import type { Connection } from 'mysql2/promise'
 
 export const deleteTheme: MutationResolvers<ContextValue>['deleteTheme'] =
-  async (_, args, { userId }) => {
+  async (_, args, { userId, revalidate }) => {
     const { id } = args
     let connection: Connection | undefined
     try {
@@ -24,6 +24,7 @@ export const deleteTheme: MutationResolvers<ContextValue>['deleteTheme'] =
       await connection.commit()
       assertIsArrayObject(rows)
       if (rows[0].count === 1) {
+        await revalidate?.(`/theme/${id}`)
         return null
       }
       throw new GraphQLError('Not found')

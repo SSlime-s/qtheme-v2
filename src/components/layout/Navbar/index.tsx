@@ -6,9 +6,9 @@ import { FaUser, FaWrench } from 'react-icons/fa'
 import { MdHome } from 'react-icons/md'
 
 import Logo from '@/assets/QTheme.png'
-import { useUserId } from '@/utils/extractUser'
 import { isMobile, useIsMobile } from '@/utils/isMobile'
 import { useControlledNamedTabList } from '@/utils/tablist'
+import { useUserId } from '@/utils/userId'
 
 import { NavbarChannels } from './Channels'
 import { NavbarCustom } from './Custom'

@@ -11,14 +11,14 @@ import type { QueryResolvers } from '@/apollo/generated/resolvers'
 export const getTheme: QueryResolvers<ContextValue>['getTheme'] = async (
   _,
   args,
-  { userId, connection }
+  { userId, connection, isSuper }
 ) => {
   const { id } = args
   const needCloseConnection = connection === undefined
   try {
     connection = connection ?? (await connectDb())
     await connection.beginTransaction()
-    const theme = await getThemeFromDb(connection, id, userId)
+    const theme = await getThemeFromDb(connection, id, userId, isSuper)
     if (theme === null) {
       throw new GraphQLError('Not found')
     }

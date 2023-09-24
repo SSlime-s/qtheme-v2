@@ -13,6 +13,7 @@ import {
   getSdk as getSdkGetTheme,
   ThemeDocument,
 } from '@/utils/graphql/getTheme.generated'
+import { getSdk as getSdkGetThemeIds } from '@/utils/graphql/getThemeIds.generated'
 import {
   getSdk as getSdkGetThemes,
   ThemesDocument,
@@ -134,9 +135,13 @@ export const useCurrentTheme = () => {
 }
 
 export const prefetchUseTheme = async (
-  id: string
+  id: string,
+  secretToken?: string
 ): Promise<Record<string, FormattedTheme>> => {
   const client = newClient()
+  if (secretToken !== undefined) {
+    client.setHeader('Secret-Token', secretToken)
+  }
   const key = unstable_serialize([print(ThemeDocument), { id }])
   const sdk = getSdkGetTheme(client)
   try {
@@ -153,6 +158,27 @@ export const prefetchUseTheme = async (
   } catch (e) {
     console.error(e)
     return {}
+  }
+}
+export const prefetchThemeIdList = async (
+  secretToken?: string
+): Promise<string[]> => {
+  const client = newClient()
+  if (secretToken !== undefined) {
+    client.setHeader('Secret-Token', secretToken)
+  }
+  const sdk = getSdkGetThemeIds(client)
+  try {
+    const { getThemes } = await sdk.ThemeIds()
+
+    if (getThemes === null || getThemes === undefined) {
+      return []
+    }
+
+    return getThemes.themes.map(theme => theme.id)
+  } catch (e) {
+    console.error(e)
+    return []
   }
 }
 export const useTheme = (id: string, fallbackData?: FormattedTheme) => {

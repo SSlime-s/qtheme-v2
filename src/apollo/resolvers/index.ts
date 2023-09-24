@@ -9,10 +9,13 @@ import { updateTheme } from './updateTheme'
 
 import type { Resolvers } from '@/apollo/generated/resolvers'
 import type { Connection } from 'mysql2/promise'
+import type { NextApiResponse } from 'next'
 
 export interface ContextValue {
   userId?: string
   connection?: Connection
+  isSuper?: boolean
+  revalidate?: NextApiResponse['revalidate']
 }
 
 export const resolvers: Resolvers<ContextValue> = {

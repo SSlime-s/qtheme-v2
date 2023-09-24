@@ -9,10 +9,11 @@ import { PreviewCard } from '@/components/PreviewCard'
 import { SEO } from '@/components/SEO'
 import { Layout } from '@/components/layout'
 import { useSetTopic } from '@/components/layout/Header'
-import { extractShowcaseUser, useSetUserId } from '@/utils/extractUser'
+import { extractShowcaseUser } from '@/utils/extractUser'
 import { useCurrentTheme } from '@/utils/theme/hooks'
 import { pageTitle } from '@/utils/title'
 import { assertIsArray } from '@/utils/typeUtils'
+import { useSetUserId } from '@/utils/userId'
 
 import { useFavoritesList } from './hook'
 

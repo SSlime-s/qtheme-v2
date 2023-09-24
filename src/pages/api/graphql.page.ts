@@ -16,9 +16,13 @@ const server = new ApolloServer<ContextValue>({
 const handler = startServerAndCreateNextHandler(server, {
   context: async (req, res) => {
     const userId = extractShowcaseUser(req)
+    const isSuper = req.cookies['Secret-Token'] === process.env.SECRET_KEY
+    const revalidate = res.revalidate
 
     return {
       userId,
+      isSuper,
+      revalidate,
       req,
       res,
     }

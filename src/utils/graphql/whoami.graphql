@@ -1,0 +1,3 @@
+query Whoami {
+  getMe
+}

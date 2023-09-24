@@ -1,0 +1,7 @@
+query HasPermission($id: ID!) {
+  getTheme(id: $id) {
+    theme {
+      id
+    }
+  }
+}

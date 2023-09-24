@@ -1,0 +1,8 @@
+query ThemeIds {
+  getThemes(limit: 1000) {
+    themes {
+      id
+    }
+    total
+  }
+}

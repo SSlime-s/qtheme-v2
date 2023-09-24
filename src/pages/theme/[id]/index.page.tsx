@@ -17,7 +17,6 @@ import { FullWidthContent, H1, H2, Message } from '@/components/Message'
 import { SEO, ogImageUrl } from '@/components/SEO'
 import { TextBox } from '@/components/TextBox'
 import { Layout } from '@/components/layout'
-import { extractShowcaseUser, useSetUserId } from '@/utils/extractUser'
 import { isMobile } from '@/utils/isMobile'
 import { useConfirmModal } from '@/utils/modal/ConfirmModal/hooks'
 import {
@@ -26,6 +25,7 @@ import {
   useTheme,
 } from '@/utils/theme/hooks'
 import { pageTitle } from '@/utils/title'
+import { useUserId } from '@/utils/userId'
 import { WrapResolver } from '@/utils/wrapper'
 import { BreakStyle, BudouJa } from '@/utils/wrapper/BudouX'
 import { Linkify } from '@/utils/wrapper/Linkify'
@@ -35,28 +35,41 @@ import { ConfirmModal } from './ConfirmModal'
 
 import type { NextPageWithLayout } from '@/pages/_app.page'
 import type { FormattedTheme } from '@/utils/theme/hooks'
-import type { GetServerSidePropsContext } from 'next'
+import type { GetStaticPaths, GetStaticProps } from 'next'
+import type { ParsedUrlQuery } from 'querystring'
 
-export const getServerSideProps = async ({
-  req,
-  params,
-}: GetServerSidePropsContext<{ id: string }>) => {
-  const userId = extractShowcaseUser(req)
+interface Params extends ParsedUrlQuery {
+  id: string
+}
 
+// MEMO: 認証管理は middleware でやる
+export const getStaticProps = (async ({ params }) => {
   const prefetchData =
-    params === undefined ? {} : await prefetchUseTheme(params.id)
+    params === undefined
+      ? {}
+      : await prefetchUseTheme(params.id, process.env.SECRET_KEY)
 
   return {
     props: {
-      userId: userId ?? null,
       fallback: prefetchData,
     },
   }
-}
-
-type Props = NonNullable<
-  Awaited<ReturnType<typeof getServerSideProps>>['props']
+}) satisfies GetStaticProps<
+  { fallback: Record<string, FormattedTheme> },
+  Params
 >
+
+export const getStaticPaths = (async () => {
+  // TODO: 取得するタイミングだとサーバーが動いていないので一旦取得しないことにする
+  // const ids = await prefetchThemeIdList(process.env.SECRET_KEY)
+
+  return {
+    paths: [],
+    fallback: 'blocking',
+  }
+}) satisfies GetStaticPaths<Params>
+
+type Props = NonNullable<Awaited<ReturnType<typeof getStaticProps>>['props']>
 const ThemePage: NextPageWithLayout<Props> = ({ fallback, ...props }) => {
   return (
     <SWRConfig value={{ fallback }}>
@@ -67,9 +80,8 @@ const ThemePage: NextPageWithLayout<Props> = ({ fallback, ...props }) => {
 ThemePage.getLayout = page => <Layout>{page}</Layout>
 export default ThemePage
 
-const ThemePageInner: React.FC<Omit<Props, 'fallback'>> = ({ userId }) => {
-  useSetUserId(userId)
-
+const ThemePageInner: React.FC<Omit<Props, 'fallback'>> = () => {
+  const userId = useUserId()
   const { id } = useRouter().query as { id: string }
   const {
     theme,

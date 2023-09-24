@@ -13,7 +13,7 @@ import type { MutationResolvers, Theme } from '@/apollo/generated/resolvers'
 import type { Connection } from 'mysql2/promise'
 
 export const updateTheme: MutationResolvers<ContextValue>['updateTheme'] =
-  async (_, args, { userId }) => {
+  async (_, args, { userId, revalidate }) => {
     if (userId === undefined) {
       throw new GraphQLError('Forbidden')
     }
@@ -83,6 +83,8 @@ export const updateTheme: MutationResolvers<ContextValue>['updateTheme'] =
           console.error(err)
         })
       }
+
+      await revalidate?.(`/theme/${id}`)
 
       return {
         ...(oldTheme as Theme),
