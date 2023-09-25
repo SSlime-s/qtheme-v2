@@ -19,12 +19,8 @@ import { TextBox } from '@/components/TextBox'
 import { Layout } from '@/components/layout'
 import { isMobile } from '@/utils/isMobile'
 import { useConfirmModal } from '@/utils/modal/ConfirmModal/hooks'
-import {
-  prefetchThemeIdList,
-  prefetchUseTheme,
-  useCurrentTheme,
-  useTheme,
-} from '@/utils/theme/hooks'
+import { prefetchThemeIdList, prefetchUseTheme } from '@/utils/theme/forPrefetch'
+import { useCurrentTheme, useTheme } from '@/utils/theme/hooks'
 import { pageTitle } from '@/utils/title'
 import { useUserId } from '@/utils/userId'
 import { WrapResolver } from '@/utils/wrapper'
