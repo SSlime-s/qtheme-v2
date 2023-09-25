@@ -1,0 +1,26 @@
+diff --git a/_internal/dist/index.d.mts b/_internal/dist/index.d.mts
+index 01b520b910c6706aa41103aafc800c96511b12fc..49709e8af0ace84d8734a602ee86004dddb7b53e 100644
+--- a/_internal/dist/index.d.mts
++++ b/_internal/dist/index.d.mts
+@@ -253,7 +253,7 @@ interface ScopedMutator {
+  * @typeParam Data - The type of the data related to the key
+  * @typeParam MutationData - The type of the data returned by the mutator
+  */
+-type KeyedMutator<Data> = <MutationData>(data?: MutationData | Promise<MutationData | undefined> | MutatorCallback<MutationData>, opts?: boolean | MutatorOptions<Data, MutationData>) => Promise<MutationData | undefined>;
++type KeyedMutator<Data> = <MutationData = Data>(data?: MutationData | Promise<MutationData | undefined> | MutatorCallback<MutationData>, opts?: boolean | MutatorOptions<Data, MutationData>) => Promise<Data | MutationData | undefined>;
+ type SWRConfiguration<Data = any, Error = any, Fn extends BareFetcher<any> = BareFetcher<any>> = Partial<PublicConfiguration<Data, Error, Fn>>;
+ type SWROptions<Data> = SWRConfiguration<Data, Error, Fetcher<Data, Key>>;
+ interface SWRResponse<Data = any, Error = any, Config = any> {
+diff --git a/_internal/dist/index.d.ts b/_internal/dist/index.d.ts
+index 01b520b910c6706aa41103aafc800c96511b12fc..49709e8af0ace84d8734a602ee86004dddb7b53e 100644
+--- a/_internal/dist/index.d.ts
++++ b/_internal/dist/index.d.ts
+@@ -253,7 +253,7 @@ interface ScopedMutator {
+  * @typeParam Data - The type of the data related to the key
+  * @typeParam MutationData - The type of the data returned by the mutator
+  */
+-type KeyedMutator<Data> = <MutationData>(data?: MutationData | Promise<MutationData | undefined> | MutatorCallback<MutationData>, opts?: boolean | MutatorOptions<Data, MutationData>) => Promise<MutationData | undefined>;
++type KeyedMutator<Data> = <MutationData = Data>(data?: MutationData | Promise<MutationData | undefined> | MutatorCallback<MutationData>, opts?: boolean | MutatorOptions<Data, MutationData>) => Promise<Data | MutationData | undefined>;
+ type SWRConfiguration<Data = any, Error = any, Fn extends BareFetcher<any> = BareFetcher<any>> = Partial<PublicConfiguration<Data, Error, Fn>>;
+ type SWROptions<Data> = SWRConfiguration<Data, Error, Fetcher<Data, Key>>;
+ interface SWRResponse<Data = any, Error = any, Config = any> {
