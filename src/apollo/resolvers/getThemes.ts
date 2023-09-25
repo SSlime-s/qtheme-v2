@@ -9,7 +9,7 @@ import type { QueryResolvers, Theme } from '@/apollo/generated/resolvers'
 export const getThemes: QueryResolvers<ContextValue>['getThemes'] = async (
   _,
   args,
-  { userId, connection, isSuper = false }
+  { userId, connection }
 ) => {
   const { limit, offset, visibility, type, only_like, author } = args
   if (visibility === 'draft') {
@@ -47,9 +47,7 @@ export const getThemes: QueryResolvers<ContextValue>['getThemes'] = async (
           WHERE
             ${
               visibility == undefined
-                ? isSuper
-                  ? 'TRUE'
-                  : userId == undefined
+                ? userId == undefined
                   ? 'themes.visibility = "public"'
                   : author == undefined
                   ? 'themes.visibility IN ("public", "private")'
@@ -68,7 +66,7 @@ export const getThemes: QueryResolvers<ContextValue>['getThemes'] = async (
       ...(userId != undefined ? [userId] : []),
       ...(visibility != undefined
         ? [visibility]
-        : !isSuper && userId != undefined && author != undefined
+        : userId != undefined && author != undefined
         ? [userId]
         : []),
       ...(type != undefined ? [type] : []),

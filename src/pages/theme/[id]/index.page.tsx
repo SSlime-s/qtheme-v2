@@ -50,9 +50,7 @@ interface Params extends ParsedUrlQuery {
 // MEMO: 認証管理は middleware でやる
 export const getStaticProps = (async ({ params }) => {
   const prefetchData =
-    params === undefined
-      ? {}
-      : await prefetchUseTheme(params.id, process.env.SECRET_KEY)
+    params === undefined ? {} : await prefetchUseTheme(params.id)
 
   return {
     props: {
@@ -63,7 +61,7 @@ export const getStaticProps = (async ({ params }) => {
 }) satisfies GetStaticProps<{ fallback: Record<string, any> }, Params>
 
 export const getStaticPaths = (async () => {
-  const ids = await prefetchThemeIdList(process.env.SECRET_KEY)
+  const ids = await prefetchThemeIdList()
 
   return {
     paths: ids.map(id => ({ params: { id } })),

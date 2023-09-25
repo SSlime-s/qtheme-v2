@@ -15,7 +15,6 @@ import type { NextApiResponse } from 'next'
 export interface ContextValue {
   userId?: string
   connection?: Connection
-  isSuper?: boolean
   revalidate?: NextApiResponse['revalidate']
 }
 

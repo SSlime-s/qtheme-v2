@@ -5,15 +5,14 @@ import { useCallback, useMemo, useState } from 'react'
 import useSWR, { unstable_serialize } from 'swr'
 import useSWRInfinite from 'swr/infinite'
 
+import { connectDb } from '@/model/db'
 import { themeSchema } from '@/model/theme'
 import { useClient } from '@/utils/api'
-import { newClient } from '@/utils/api'
 import { getSdk as getSdkEditTheme } from '@/utils/graphql/editTheme.generated'
 import {
   getSdk as getSdkGetTheme,
   ThemeDocument,
 } from '@/utils/graphql/getTheme.generated'
-import { getSdk as getSdkGetThemeIds } from '@/utils/graphql/getThemeIds.generated'
 import {
   getSdk as getSdkGetThemes,
   ThemesDocument,
@@ -21,10 +20,13 @@ import {
 import { getSdk as getSdkToggleLike } from '@/utils/graphql/toggleLike.generated'
 import { resolveTheme } from '@/utils/theme'
 
+import { assertIsArray } from '../typeUtils'
+
 import { lightTheme } from './default'
 
 import type { Theme as ThemeRes } from '@/apollo/generated/graphql'
 import type { Theme } from '@/model/theme'
+import type { Connection } from 'mysql2/promise'
 
 export const THEMES_PER_PAGE = 20
 
@@ -134,24 +136,47 @@ export const useCurrentTheme = () => {
   }
 }
 
+/**
+ * @warning 権限のチェックは行わない
+ */
 export const prefetchUseTheme = async (
-  id: string,
-  secretToken?: string
+  id: string
 ): Promise<Record<string, FormattedTheme>> => {
-  const client = newClient()
-  if (secretToken !== undefined) {
-    client.setHeader('Secret-Token', secretToken)
-  }
+  let connection: Connection | undefined = undefined
   const key = unstable_serialize([print(ThemeDocument), { id }])
-  const sdk = getSdkGetTheme(client)
-  try {
-    const { getTheme } = await sdk.Theme({ id })
 
-    if (getTheme === null || getTheme === undefined) {
+  try {
+    connection = await connectDb()
+    const sql = `
+      SELECT
+        themes.id AS id,
+        themes.title,
+        themes.description,
+        themes.author_user_id AS author,
+        themes.visibility,
+        themes.type,
+        themes.created_at AS createdAt,
+        themes.theme,
+        CASE WHEN likes.count IS NULL THEN 0 ELSE likes.count END AS likes,
+        FALSE AS isLike,
+      FROM themes
+      LEFT JOIN (
+        SELECT COUNT(*) AS count, theme_id
+        FROM likes
+        GROUP BY theme_id
+      ) AS likes ON likes.theme_id = themes.id
+      WHERE themes.id = ?
+    `
+    const [rows] = await connection.execute(sql, [id])
+    assertIsArray(rows)
+    if (rows.length === 0) {
       return {}
     }
 
-    const themeWhole = themeFromRaw(getTheme.theme)
+    const theme = rows[0] as ThemeRes
+
+    const themeWhole = themeFromRaw(theme)
+
     return {
       [key]: themeWhole,
     }
@@ -160,25 +185,28 @@ export const prefetchUseTheme = async (
     return {}
   }
 }
-export const prefetchThemeIdList = async (
-  secretToken?: string
-): Promise<string[]> => {
-  const client = newClient()
-  if (secretToken !== undefined) {
-    client.setHeader('Secret-Token', secretToken)
-  }
-  const sdk = getSdkGetThemeIds(client)
+
+/**
+ * @warning 権限のチェックは行わない
+ */
+export const prefetchThemeIdList = async (): Promise<string[]> => {
+  let connection: Connection | undefined = undefined
   try {
-    const { getThemes } = await sdk.ThemeIds()
-
-    if (getThemes === null || getThemes === undefined) {
-      return []
-    }
-
-    return getThemes.themes.map(theme => theme.id)
+    connection = await connectDb()
+    const sql = `
+      SELECT id
+      FROM themes
+      ORDER BY created_at DESC
+      LIMIT 1000
+    `
+    const [rows] = await connection.execute(sql)
+    assertIsArray(rows)
+    return (rows as { id: string }[]).map(row => row.id)
   } catch (e) {
     console.error(e)
-    return []
+    throw new Error(`Failed to prefetch theme id list: ${e}`)
+  } finally {
+    await connection?.end()
   }
 }
 
