@@ -1,6 +1,7 @@
 import { createTheme } from './createTheme'
 import { deleteTheme } from './deleteTheme'
 import { getAuthors } from './getAuthors'
+import { getMe } from './getMe'
 import { getRandomTheme } from './getRandomTheme'
 import { getTheme } from './getTheme'
 import { getThemes } from './getThemes'
@@ -34,6 +35,7 @@ export const resolvers: Resolvers<ContextValue> = {
     getTheme,
     getThemes,
     getAuthors,
+    getMe,
   },
 
   Mutation: {
