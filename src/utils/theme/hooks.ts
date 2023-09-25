@@ -181,11 +181,18 @@ export const prefetchThemeIdList = async (
     return []
   }
 }
-export const useTheme = (id: string, fallbackData?: FormattedTheme) => {
+
+/**
+ * @param id SSG による fallback 用の場合は undefined が降ってくるため、その場合は id が降ってくるのを待つ
+ */
+export const useTheme = (
+  id: string | undefined,
+  fallbackData?: FormattedTheme
+) => {
   const client = useClient()
 
   const { data, error, isLoading, mutate } = useSWR(
-    [print(ThemeDocument), { id }],
+    id !== undefined ? [print(ThemeDocument), { id }] : null,
     async ([_, variables]) => {
       const sdk = getSdkGetTheme(client)
       const { getTheme } = await sdk.Theme(variables)
@@ -234,6 +241,7 @@ export const useTheme = (id: string, fallbackData?: FormattedTheme) => {
         'title' | 'description' | 'theme' | 'type' | 'visibility'
       >
     ) => {
+      if (id === undefined) return
       const sdk = getSdkEditTheme(client)
       const { updateTheme } = await sdk.UpdateTheme({
         id,
@@ -254,6 +262,7 @@ export const useTheme = (id: string, fallbackData?: FormattedTheme) => {
   )
 
   const deleteTheme = useCallback(async () => {
+    if (id === undefined) return
     const sdk = getSdkEditTheme(client)
     await sdk.DeleteTheme({ id })
     await mutate(undefined)

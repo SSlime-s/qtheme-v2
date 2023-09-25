@@ -54,10 +54,8 @@ export const getStaticProps = (async ({ params }) => {
       fallback: prefetchData,
     },
   }
-}) satisfies GetStaticProps<
-  { fallback: Record<string, FormattedTheme> },
-  Params
->
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+}) satisfies GetStaticProps<{ fallback: Record<string, any> }, Params>
 
 export const getStaticPaths = (async () => {
   // TODO: 取得するタイミングだとサーバーが動いていないので一旦取得しないことにする
@@ -69,10 +67,22 @@ export const getStaticPaths = (async () => {
   }
 }) satisfies GetStaticPaths<Params>
 
-type Props = NonNullable<Awaited<ReturnType<typeof getStaticProps>>['props']>
+type Props =
+  | NonNullable<Awaited<ReturnType<typeof getStaticProps>>['props']>
+  // SSG による fallback の生成時は Props が undefined になる
+  | Record<PropertyKey, undefined>
+
 const ThemePage: NextPageWithLayout<Props> = ({ fallback, ...props }) => {
+  // NOTE: fallback が undefined だと、fallback が {} から undefined に上書きされてしまうため、注意する
+  const value =
+    fallback === undefined
+      ? {}
+      : {
+          fallback,
+        }
+
   return (
-    <SWRConfig value={{ fallback }}>
+    <SWRConfig value={value}>
       <ThemePageInner {...props} />
     </SWRConfig>
   )
@@ -82,7 +92,7 @@ export default ThemePage
 
 const ThemePageInner: React.FC<Omit<Props, 'fallback'>> = () => {
   const userId = useUserId()
-  const { id } = useRouter().query as { id: string }
+  const { id } = useRouter().query as { id: string | undefined }
   const {
     theme,
     resolvedTheme,
@@ -101,6 +111,7 @@ const ThemePageInner: React.FC<Omit<Props, 'fallback'>> = () => {
   }, [theme])
 
   if (error !== undefined) {
+    console.error(error)
     const isNotFound = (error.message as string)
       .trimStart()
       .startsWith('Not found')

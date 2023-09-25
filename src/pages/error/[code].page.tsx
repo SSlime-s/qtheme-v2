@@ -52,7 +52,9 @@ export const getStaticPaths = (async () => {
   }
 }) satisfies GetStaticPaths<Params>
 
-type Props = NonNullable<Awaited<ReturnType<typeof getStaticProps>>['props']>
+type Props =
+  | NonNullable<Awaited<ReturnType<typeof getStaticProps>>['props']>
+  | Record<PropertyKey, undefined>
 
 const ErrorPage: NextPageWithLayout<Props> = ({ code }) => {
   return <Error statusCode={code} />
