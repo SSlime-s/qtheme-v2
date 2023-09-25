@@ -20,6 +20,7 @@ import { Layout } from '@/components/layout'
 import { isMobile } from '@/utils/isMobile'
 import { useConfirmModal } from '@/utils/modal/ConfirmModal/hooks'
 import {
+  prefetchThemeIdList,
   prefetchUseTheme,
   useCurrentTheme,
   useTheme,
@@ -62,11 +63,10 @@ export const getStaticProps = (async ({ params }) => {
 }) satisfies GetStaticProps<{ fallback: Record<string, any> }, Params>
 
 export const getStaticPaths = (async () => {
-  // TODO: 取得するタイミングだとサーバーが動いていないので一旦取得しないことにする
-  // const ids = await prefetchThemeIdList(process.env.SECRET_KEY)
+  const ids = await prefetchThemeIdList(process.env.SECRET_KEY)
 
   return {
-    paths: [],
+    paths: ids.map(id => ({ params: { id } })),
     fallback: true,
   }
 }) satisfies GetStaticPaths<Params>
