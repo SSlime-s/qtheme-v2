@@ -2,7 +2,11 @@ import { Error } from '@/components/Error'
 import { Layout } from '@/components/layout'
 
 import type { NextPageWithLayout } from '@/pages/_app.page'
-import type { GetStaticPaths, GetStaticProps } from 'next'
+import type {
+  GetStaticPaths,
+  GetStaticProps,
+  InferGetStaticPropsType,
+} from 'next'
 import type { ParsedUrlQuery } from 'querystring'
 
 interface Params extends ParsedUrlQuery {
@@ -53,7 +57,7 @@ export const getStaticPaths = (async () => {
 }) satisfies GetStaticPaths<Params>
 
 type Props =
-  | NonNullable<Awaited<ReturnType<typeof getStaticProps>>['props']>
+  | InferGetStaticPropsType<typeof getStaticProps>
   | Record<PropertyKey, undefined>
 
 const ErrorPage: NextPageWithLayout<Props> = ({ code }) => {

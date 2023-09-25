@@ -35,7 +35,11 @@ import { ConfirmModal } from './ConfirmModal'
 
 import type { NextPageWithLayout } from '@/pages/_app.page'
 import type { FormattedTheme } from '@/utils/theme/hooks'
-import type { GetStaticPaths, GetStaticProps } from 'next'
+import type {
+  GetStaticPaths,
+  GetStaticProps,
+  InferGetStaticPropsType,
+} from 'next'
 import type { ParsedUrlQuery } from 'querystring'
 
 interface Params extends ParsedUrlQuery {
@@ -68,7 +72,7 @@ export const getStaticPaths = (async () => {
 }) satisfies GetStaticPaths<Params>
 
 type Props =
-  | NonNullable<Awaited<ReturnType<typeof getStaticProps>>['props']>
+  | InferGetStaticPropsType<typeof getStaticProps>
   // SSG による fallback の生成時は Props が undefined になる
   | Record<PropertyKey, undefined>
 
