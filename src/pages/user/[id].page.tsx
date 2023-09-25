@@ -19,11 +19,9 @@ import { useSetUserId } from '@/utils/userId'
 import { useAuthorThemes } from './hooks'
 
 import type { NextPageWithLayout } from '../_app.page'
-import type { GetServerSidePropsContext } from 'next'
+import type { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 
-export const getServerSideProps = async ({
-  req,
-}: GetServerSidePropsContext) => {
+export const getServerSideProps = (async ({ req }) => {
   const userId = extractShowcaseUser(req)
 
   return {
@@ -31,11 +29,10 @@ export const getServerSideProps = async ({
       userId: userId ?? null,
     },
   }
-}
+}) satisfies GetServerSideProps
 
-type Props = NonNullable<
-  Awaited<ReturnType<typeof getServerSideProps>>['props']
->
+type Props = InferGetServerSidePropsType<typeof getServerSideProps>
+
 const UserPage: NextPageWithLayout<Props> = ({ userId }) => {
   useSetUserId(userId)
 

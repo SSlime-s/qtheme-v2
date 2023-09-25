@@ -25,13 +25,11 @@ import { ReplaceNewLine } from '@/utils/wrapper/ReplaceNewLine'
 
 import type { NextPageWithLayout } from '@/pages/_app.page'
 import type { FormattedTheme } from '@/utils/theme/hooks'
-import type { GetServerSidePropsContext } from 'next'
+import type { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 
 const DUMMY_AUTHOR = 'traP'
 
-export const getServerSideProps = async ({
-  req,
-}: GetServerSidePropsContext) => {
+export const getServerSideProps = (async ({ req }) => {
   const userId = extractShowcaseUser(req)
 
   return {
@@ -39,11 +37,9 @@ export const getServerSideProps = async ({
       userId: userId ?? null,
     },
   }
-}
+}) satisfies GetServerSideProps
 
-type Props = NonNullable<
-  Awaited<ReturnType<typeof getServerSideProps>>['props']
->
+type Props = InferGetServerSidePropsType<typeof getServerSideProps>
 
 const ThemePage: NextPageWithLayout<Props> = ({ userId }) => {
   useSetUserId(userId)

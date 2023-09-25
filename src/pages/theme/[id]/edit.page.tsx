@@ -17,11 +17,9 @@ import { useSetUserId } from '@/utils/userId'
 import type { Form } from '@/components/Editor'
 import type { NextPageWithLayout } from '@/pages/_app.page'
 import type { FormattedTheme } from '@/utils/theme/hooks'
-import type { GetServerSidePropsContext } from 'next'
+import type { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 
-export const getServerSideProps = async ({
-  req,
-}: GetServerSidePropsContext) => {
+export const getServerSideProps = (async ({ req }) => {
   const userId = extractShowcaseUser(req)
 
   return {
@@ -29,11 +27,10 @@ export const getServerSideProps = async ({
       userId: userId ?? null,
     },
   }
-}
+}) satisfies GetServerSideProps
 
-type Props = NonNullable<
-  Awaited<ReturnType<typeof getServerSideProps>>['props']
->
+type Props = InferGetServerSidePropsType<typeof getServerSideProps>
+
 const ThemeEditPage: NextPageWithLayout<Props> = ({ userId }) => {
   useSetUserId(userId)
 

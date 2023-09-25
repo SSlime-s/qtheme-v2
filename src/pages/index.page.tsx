@@ -17,7 +17,7 @@ import { Logo } from './components/Logo'
 import { TrimMarkGroup } from './components/TrimMark'
 import { useRandomTheme } from './random/hooks'
 
-import type { GetServerSidePropsContext, NextPage } from 'next'
+import type { GetServerSideProps, NextPage } from 'next'
 
 const Fluid = dynamic(
   () => import('@/components/Fluid.client').then(mod => mod.Fluid),
@@ -26,9 +26,7 @@ const Fluid = dynamic(
   }
 )
 
-export const getServerSideProps = async ({
-  req,
-}: GetServerSidePropsContext) => {
+export const getServerSideProps = (async ({ req }) => {
   const userId = extractShowcaseUser(req)
 
   // 部員とわかってる人はトップページを表示しない
@@ -44,7 +42,7 @@ export const getServerSideProps = async ({
   return {
     props: {},
   }
-}
+}) satisfies GetServerSideProps
 
 const Home: NextPage = () => {
   const [isShowTopPage, setIsShowTopPage] = useState(true)

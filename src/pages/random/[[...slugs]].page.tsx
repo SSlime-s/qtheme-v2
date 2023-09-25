@@ -28,12 +28,9 @@ import { ReplaceNewLine } from '@/utils/wrapper/ReplaceNewLine'
 import { useRandomTheme } from './hooks'
 
 import type { NextPageWithLayout } from '../_app.page'
-import type { GetServerSidePropsContext } from 'next'
+import type { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 
-export const getServerSideProps = async ({
-  req,
-  query,
-}: GetServerSidePropsContext) => {
+export const getServerSideProps = (async ({ req, query }) => {
   const userId = extractShowcaseUser(req)
 
   const { slugs } = query
@@ -66,10 +63,9 @@ export const getServerSideProps = async ({
       filter,
     },
   }
-}
-type Props = NonNullable<
-  Awaited<ReturnType<typeof getServerSideProps>>['props']
->
+}) satisfies GetServerSideProps
+
+type Props = InferGetServerSidePropsType<typeof getServerSideProps>
 
 const RandomPage: NextPageWithLayout<Props> = ({ userId, filter }) => {
   useSetUserId(userId)

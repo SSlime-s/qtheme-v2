@@ -17,12 +17,9 @@ import { useSetUserId } from '@/utils/userId'
 
 import type { Form } from '@/components/Editor'
 import type { NextPageWithLayout } from '@/pages/_app.page'
-import type { GetServerSidePropsContext } from 'next'
+import type { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 
-export const getServerSideProps = async ({
-  req,
-  query,
-}: GetServerSidePropsContext) => {
+export const getServerSideProps = (async ({ req, query }) => {
   const { init } = query
   const userId = extractShowcaseUser(req) ?? null
   if (init === undefined || Array.isArray(init)) {
@@ -50,11 +47,10 @@ export const getServerSideProps = async ({
       },
     }
   }
-}
+}) satisfies GetServerSideProps
 
-type Props = NonNullable<
-  Awaited<ReturnType<typeof getServerSideProps>>['props']
->
+type Props = InferGetServerSidePropsType<typeof getServerSideProps>
+
 const EditPage: NextPageWithLayout<Props> = ({ defaultTheme, userId }) => {
   useSetUserId(userId)
 
