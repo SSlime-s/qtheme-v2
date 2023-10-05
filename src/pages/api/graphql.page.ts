@@ -1,5 +1,6 @@
 import { ApolloServer } from '@apollo/server'
 import { startServerAndCreateNextHandler } from '@as-integrations/next'
+import { PrismaClient } from '@prisma/client'
 
 import { resolvers } from '@/apollo/resolvers'
 import typeDefs from '@/apollo/schema.graphql'
@@ -13,6 +14,8 @@ const server = new ApolloServer<ContextValue>({
   resolvers,
 })
 
+const prisma = new PrismaClient()
+
 const handler = startServerAndCreateNextHandler(server, {
   context: async (req, res) => {
     const userId = extractShowcaseUser(req)
@@ -21,6 +24,7 @@ const handler = startServerAndCreateNextHandler(server, {
     return {
       userId,
       revalidate,
+      prisma,
       req,
       res,
     }
