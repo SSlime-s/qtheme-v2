@@ -75,3 +75,11 @@ model visibility_types {
   name   String   @id @db.VarChar(32)
   themes themes[]
 }
+
+// View は生成してくれないので、手動で作成する
+model users {
+  id            String @id @db.VarChar(32)
+  public_count  Int    @db.Int
+  private_count Int    @db.Int
+  draft_count   Int    @db.Int
+}
