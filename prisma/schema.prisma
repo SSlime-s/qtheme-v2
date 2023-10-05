@@ -1,0 +1,77 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model likes {
+  user_id    String   @db.VarChar(32)
+  theme_id   String   @db.Char(26)
+  created_at DateTime @default(now()) @db.DateTime(0)
+  themes     themes   @relation(fields: [theme_id], references: [id], onDelete: Cascade, map: "likes_ibfk_2")
+
+  @@id([user_id, theme_id])
+  @@index([theme_id], map: "theme_id")
+}
+
+model theme_tag_relations {
+  theme_id   String     @db.Char(26)
+  tag_id     String     @db.Char(26)
+  created_at DateTime   @default(now()) @db.DateTime(0)
+  themes     themes     @relation(fields: [theme_id], references: [id], onDelete: Cascade, map: "theme_tag_relations_ibfk_1")
+  theme_tags theme_tags @relation(fields: [tag_id], references: [id], onDelete: Cascade, map: "theme_tag_relations_ibfk_2")
+
+  @@id([theme_id, tag_id])
+  @@index([tag_id], map: "tag_id")
+}
+
+model theme_tags {
+  id                  String                @id @db.Char(26)
+  name                String                @db.VarChar(255)
+  created_at          DateTime              @default(now()) @db.DateTime(0)
+  theme_tag_relations theme_tag_relations[]
+}
+
+model theme_types {
+  name   String   @id @db.VarChar(32)
+  themes themes[]
+}
+
+model theme_versions {
+  id         String   @id @db.Char(26)
+  theme_id   String   @db.Char(26)
+  version    String   @db.VarChar(255)
+  theme      String   @db.LongText
+  created_at DateTime @default(now()) @db.DateTime(6)
+  themes     themes   @relation(fields: [theme_id], references: [id], onDelete: Cascade, map: "theme_versions_ibfk_1")
+
+  @@index([created_at], map: "created_at")
+  @@index([theme_id], map: "theme_id")
+}
+
+model themes {
+  id                  String                @id @db.Char(26)
+  title               String                @db.VarChar(255)
+  description         String                @db.Text
+  author_user_id      String                @db.VarChar(32)
+  visibility          String                @db.VarChar(32)
+  type                String?               @db.VarChar(32)
+  theme               String                @db.LongText
+  created_at          DateTime              @default(now()) @db.DateTime(0)
+  likes               likes[]
+  theme_tag_relations theme_tag_relations[]
+  theme_versions      theme_versions[]
+  theme_types         theme_types?          @relation(fields: [type], references: [name], map: "themes_ibfk_1")
+  visibility_types    visibility_types      @relation(fields: [visibility], references: [name], onDelete: Cascade, map: "themes_ibfk_2")
+
+  @@index([type], map: "type")
+  @@index([visibility], map: "visibility")
+}
+
+model visibility_types {
+  name   String   @id @db.VarChar(32)
+  themes themes[]
+}
