@@ -8,7 +8,6 @@ export const deleteTheme: MutationResolvers<ContextValue>['deleteTheme'] =
     const { id } = args
     try {
       await prisma.$transaction(async prisma => {
-        console.log(id, userId)
         await prisma.themes.delete({
           where: {
             id,
