@@ -3,6 +3,7 @@ import { startServerAndCreateNextHandler } from '@as-integrations/next'
 
 import { resolvers } from '@/apollo/resolvers'
 import typeDefs from '@/apollo/schema.graphql'
+import { prisma } from '@/model/prisma'
 import { extractShowcaseUser } from '@/utils/extractUser'
 
 import type { ContextValue } from '@/apollo/resolvers'
@@ -21,6 +22,7 @@ const handler = startServerAndCreateNextHandler(server, {
     return {
       userId,
       revalidate,
+      prisma,
       req,
       res,
     }

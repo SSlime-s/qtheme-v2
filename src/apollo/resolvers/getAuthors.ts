@@ -1,44 +1,35 @@
 import { GraphQLError } from 'graphql'
 
-import { connectDb } from '@/model/db'
-import { assertIsArray, assertIsObject } from '@/utils/typeUtils'
-
 import type { ContextValue } from '.'
 import type { QueryResolvers } from '@/apollo/generated/resolvers'
 
-interface Row {
-  id: string
-  publicCount: number
-  privateCount: number
-  draftCount: number
-}
 export const getAuthors: QueryResolvers<ContextValue>['getAuthors'] = async (
   _,
   __,
-  { userId, connection }
+  { userId, prisma }
 ) => {
-  const needCloseConnection = connection === undefined
   try {
-    connection = connection ?? (await connectDb())
-    const sql = `
-      SELECT
-        id,
-        public_count AS publicCount,
-        private_count AS privateCount,
-        draft_count AS draftCount
-      FROM users
-      ORDER BY id ASC
-    `
-    const [rows] = await connection.execute(sql)
-    assertIsArray(rows)
-    return rows
-      .map(row => {
-        assertIsObject(row)
-        const { id, publicCount, privateCount } = row as Row
+    const users = await prisma.users.findMany({
+      select: {
+        id: true,
+        public_count: true,
+        private_count: true,
+        draft_count: true,
+      },
+      orderBy: {
+        id: 'asc',
+      },
+    })
+
+    return users
+      .map(user => {
+        const { id, public_count, private_count, draft_count } = user
         return {
           name: id,
           count:
-            userId === undefined ? publicCount : publicCount + privateCount,
+            userId === undefined
+              ? public_count
+              : public_count + private_count + draft_count,
         }
       })
       .filter(({ count }) => count > 0)
@@ -48,9 +39,5 @@ export const getAuthors: QueryResolvers<ContextValue>['getAuthors'] = async (
       throw err
     }
     throw new GraphQLError(`Internal server error: ${err}`)
-  } finally {
-    if (needCloseConnection) {
-      await connection?.end()
-    }
   }
 }

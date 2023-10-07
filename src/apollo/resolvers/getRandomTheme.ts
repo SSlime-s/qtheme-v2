@@ -1,13 +1,17 @@
 import { GraphQLError } from 'graphql'
-
-import { connectDb } from '@/model/db'
-import { assertIsArray } from '@/utils/typeUtils'
+import { P, match } from 'ts-pattern'
 
 import type { ContextValue } from '.'
-import type { QueryResolvers, Theme } from '@/apollo/generated/resolvers'
+import type {
+  QueryResolvers,
+  Theme,
+  Type,
+  Visibility,
+} from '@/apollo/generated/resolvers'
+import type { Prisma } from '@prisma/client'
 
 export const getRandomTheme: QueryResolvers<ContextValue>['getRandomTheme'] =
-  async (_parent, args, { userId, connection }) => {
+  async (_parent, args, { userId, prisma }) => {
     const { visibility, type } = args
     if (visibility === 'draft') {
       throw new GraphQLError('Invalid visibility')
@@ -15,96 +19,99 @@ export const getRandomTheme: QueryResolvers<ContextValue>['getRandomTheme'] =
     if (visibility === 'private' && userId === undefined) {
       throw new GraphQLError('Forbidden')
     }
-    const needCloseConnection = connection === undefined
+
     try {
-      connection = connection ?? (await connectDb())
-      if (userId === undefined) {
-        const sql = `
-            SELECT
-              themes.id AS id,
-              themes.title,
-              themes.description,
-              themes.author_user_id AS author,
-              themes.visibility,
-              themes.type,
-              themes.created_at AS createdAt,
-              themes.theme,
-              CASE WHEN likes.count IS NULL THEN 0 ELSE likes.count END AS likes,
-              FALSE AS isLike
-            FROM themes
-            LEFT JOIN (
-              SELECT COUNT(*) AS count, theme_id
-              FROM likes
-              GROUP BY theme_id
-            ) AS likes ON likes.theme_id = themes.id
-            WHERE
-              themes.visibility = 'public'
-              ${type == undefined ? '' : `AND themes.type = ?`}
-            ORDER BY RAND()
-            LIMIT 1
-          `
-        const [rows] = await connection.execute(sql, [
-          ...(type != undefined ? [type] : []),
-        ])
-        assertIsArray(rows)
-        if (rows.length === 0) {
-          throw new GraphQLError('Not found')
+      const visibilityCondition = match([
+        userId === undefined,
+        visibility === undefined || visibility === null,
+      ])
+        .returnType<Prisma.themesWhereInput>()
+        .with([true, P._], () => ({
+          visibility: 'public',
+        }))
+        .with([false, true], () => ({
+          visibility: {
+            in: ['public', 'private'],
+          },
+        }))
+        .with([false, false], () => ({
+          visibility: visibility!,
+        }))
+        .exhaustive()
+
+      const theme = await prisma.$transaction(async prisma => {
+        const where: Prisma.themesWhereInput = {
+          ...visibilityCondition,
+          type: type ?? undefined,
         }
-        return rows[0] as Theme
-      } else {
-        const sql = `
-            SELECT
-              themes.id AS id,
-              themes.title,
-              themes.description,
-              themes.author_user_id AS author,
-              themes.visibility,
-              themes.type,
-              themes.created_at AS createdAt,
-              themes.theme,
-              CASE WHEN likes.count IS NULL THEN 0 ELSE likes.count END AS likes,
-              CASE WHEN isLikes.isLike IS NULL THEN FALSE ELSE isLikes.isLike END AS isLike
-            FROM themes
-            LEFT JOIN (
-              SELECT COUNT(*) AS count, theme_id
-              FROM likes
-              GROUP BY theme_id
-            ) AS likes ON likes.theme_id = themes.id
-            LEFT JOIN (
-              SELECT theme_id, TRUE AS isLike
-              FROM likes
-              WHERE user_id = ?
-            ) AS isLikes ON isLikes.theme_id = themes.id
-            WHERE
-              ${
-                visibility == undefined
-                  ? 'themes.visibility IN ("public", "private")'
-                  : 'themes.visibility = ?'
-              }
-              ${type == undefined ? '' : `AND themes.type = ?`}
-            ORDER BY RAND()
-            LIMIT 1
-          `
-        const [rows] = await connection.execute(sql, [
-          userId,
-          ...(visibility != undefined ? [visibility] : []),
-          ...(type != undefined ? [type] : []),
-        ])
-        assertIsArray(rows)
-        if (rows.length === 0) {
-          throw new GraphQLError('Not found')
-        }
-        return rows[0] as Theme
+
+        const themeCount = await prisma.themes.count({
+          where,
+        })
+        const random = Math.floor(Math.random() * themeCount)
+        const theme = await prisma.themes.findFirst({
+          select: {
+            id: true,
+            title: true,
+            description: true,
+            author_user_id: true,
+            visibility: true,
+            type: true,
+            created_at: true,
+            theme: true,
+            _count: {
+              select: {
+                likes: true,
+              },
+            },
+          },
+          where,
+          skip: random,
+        })
+        return theme
+      })
+      if (theme === null) {
+        throw new GraphQLError('Not found')
       }
+
+      const getIsLike = async (userId: string): Promise<boolean> => {
+        const like = await prisma.likes.findFirst({
+          select: {
+            theme_id: true,
+          },
+          where: {
+            user_id: userId,
+            theme_id: theme.id,
+          },
+        })
+        return like !== null
+      }
+
+      const is_like = userId === undefined ? false : await getIsLike(userId)
+
+      const {
+        _count: { likes },
+        created_at: createdAt,
+        author_user_id: author,
+        type: type_,
+        visibility: visibility_,
+        ...themeRest
+      } = theme
+
+      return {
+        ...themeRest,
+        likes,
+        createdAt,
+        author,
+        type: (type_ ?? 'other') as Type,
+        visibility: visibility_ as Visibility,
+        isLike: is_like,
+      } satisfies Theme
     } catch (err: unknown) {
       console.error(err)
       if (err instanceof GraphQLError) {
         throw err
       }
       throw new GraphQLError(`Internal server error: ${err}`)
-    } finally {
-      if (needCloseConnection) {
-        await connection?.end()
-      }
     }
   }

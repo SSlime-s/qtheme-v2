@@ -1,111 +1,89 @@
 import { GraphQLError } from 'graphql'
 import { ulid } from 'ulid'
 
-import { connectDb } from '@/model/db'
-import { assertIsArrayObject } from '@/utils/typeUtils'
-
 import { bumpVersion } from './utils/bumpVersion'
 import { publishThemeWebhook } from './utils/sendTraqWebhook'
 
 import type { ContextValue } from '.'
-import type { MutationResolvers } from '@/apollo/generated/resolvers'
-import type { Connection } from 'mysql2/promise'
+import type {
+  MutationResolvers,
+  Theme,
+  Type,
+  Visibility,
+} from '@/apollo/generated/resolvers'
 
 export const createTheme: MutationResolvers<ContextValue>['createTheme'] =
-  async (_, args, { userId, revalidate }) => {
+  async (_, args, { userId, revalidate, prisma }) => {
     if (userId === undefined) {
       throw new GraphQLError('Forbidden')
     }
-    const { title, description, visibility, type, theme } = args
-    const id = ulid()
-    let connection: Connection | undefined
     try {
-      connection = await connectDb()
-      await connection.beginTransaction()
-      const sql = `
-          INSERT INTO themes (
+      return await prisma.$transaction(async prisma => {
+        const { title, description, visibility, type, theme } = args
+        const id = ulid()
+        const created = await prisma.themes.create({
+          data: {
             id,
             title,
             description,
-            author_user_id,
+            author_user_id: userId,
             visibility,
             type,
-            theme
-          ) VALUES (
-            ?, ?, ?, ?, ?, ?, ?
-          )
-        `
-      await connection.execute(sql, [
-        id,
-        title,
-        description,
-        userId,
-        visibility,
-        type,
-        theme,
-      ])
-      // version にも入れる
-      {
+            theme,
+          },
+        })
         const version_id = ulid()
         const version = bumpVersion()
         if (version === null) {
           throw new GraphQLError('Internal server error')
         }
 
-        const sql = `
-          INSERT INTO theme_versions (
-            id,
-            theme_id,
+        await prisma.theme_versions.create({
+          data: {
+            id: version_id,
+            theme_id: id,
             version,
-            theme
-          ) VALUES (
-            ?, ?, ?, ?
-          )
-        `
-        await connection.execute(sql, [version_id, id, version, theme])
-      }
-      await connection.commit()
-      const sql2 = `
-        SELECT
-          created_at
-        FROM themes
-        WHERE id = ?
-      `
-      const [rows] = await connection.execute(sql2, [id])
-      assertIsArrayObject(rows)
-      if (rows.length === 0) {
-        throw new GraphQLError('Internal server error')
-      }
-      const { created_at } = rows[0]
-
-      if (visibility !== 'draft') {
-        await publishThemeWebhook({
-          author: userId,
-          themeId: id,
-          title,
-        }).catch((err: unknown) => {
-          console.error(err)
+            theme,
+          },
         })
-      }
 
-      await revalidate?.(`/theme/${id}`)
+        if (visibility !== 'draft') {
+          await publishThemeWebhook({
+            author: userId,
+            themeId: id,
+            title,
+          }).catch((err: unknown) => {
+            console.error(err)
+          })
+        }
 
-      return {
-        id,
-        ...args,
-        author: userId,
-        createdAt: created_at,
-        likes: 0,
-        isLike: false,
-      }
+        await revalidate?.(`/theme/${id}`)
+
+        {
+          const {
+            created_at,
+            author_user_id,
+            type,
+            visibility,
+            ...createdRest
+          } = created
+
+          return {
+            ...createdRest,
+            author: author_user_id,
+            createdAt: created_at,
+            type: (type ?? 'other') as Type,
+            visibility: visibility as Visibility,
+            likes: 0,
+            isLike: false,
+          } satisfies Theme
+        }
+      })
     } catch (err: unknown) {
       console.error(err)
-      await connection?.rollback()
       if (err instanceof GraphQLError) {
         throw err
       }
       throw new GraphQLError(`Internal server error: ${err}`)
-    } finally {
-      await connection?.end()
     }
   }

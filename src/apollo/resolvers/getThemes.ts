@@ -1,15 +1,18 @@
 import { GraphQLError } from 'graphql'
-
-import { connectDb } from '@/model/db'
-import { assertIsArray, assertIsArrayObject } from '@/utils/typeUtils'
+import { P, match } from 'ts-pattern'
 
 import type { ContextValue } from '.'
-import type { QueryResolvers, Theme } from '@/apollo/generated/resolvers'
+import type {
+  QueryResolvers,
+  Type,
+  Visibility,
+} from '@/apollo/generated/resolvers'
+import type { Prisma } from '@prisma/client'
 
 export const getThemes: QueryResolvers<ContextValue>['getThemes'] = async (
   _,
   args,
-  { userId, connection }
+  { userId, prisma }
 ) => {
   const { limit, offset, visibility, type, only_like, author } = args
   if (visibility === 'draft') {
@@ -24,93 +27,177 @@ export const getThemes: QueryResolvers<ContextValue>['getThemes'] = async (
   if (limit == undefined && offset != undefined) {
     throw new GraphQLError('Invalid offset')
   }
-  const needCloseConnection = connection === undefined
+
   try {
-    connection = connection ?? (await connectDb())
-    const baseSql = `FROM themes
-          LEFT JOIN (
-            SELECT COUNT(*) AS count, theme_id
-            FROM likes
-            GROUP BY theme_id
-          ) AS likes ON likes.theme_id = themes.id
-          ${
-            userId == undefined
-              ? ''
-              : `
-            LEFT JOIN (
-              SELECT theme_id, TRUE AS isLike, created_at
-              FROM likes
-              WHERE user_id = ?
-            ) AS isLikes ON isLikes.theme_id = themes.id
-          `
-          }
-          WHERE
-            ${
-              visibility == undefined
-                ? userId == undefined
-                  ? 'themes.visibility = "public"'
-                  : author == undefined
-                  ? 'themes.visibility IN ("public", "private")'
-                  : '(themes.visibility IN ("public", "private") OR (themes.visibility = "draft" AND themes.author_user_id = ?))'
-                : 'themes.visibility = ?'
-            }
-            ${type == undefined ? '' : `AND themes.type = ?`}
-            ${
-              only_like == undefined || !only_like
-                ? ''
-                : `AND isLikes.isLike = TRUE`
-            }
-            ${author == undefined ? '' : `AND themes.author_user_id = ?`}
-    `
-    const baseValues = [
-      ...(userId != undefined ? [userId] : []),
-      ...(visibility != undefined
-        ? [visibility]
-        : userId != undefined && author != undefined
-        ? [userId]
-        : []),
-      ...(type != undefined ? [type] : []),
-      ...(author != undefined ? [author] : []),
-    ]
-    const sql = `
-          SELECT
-            themes.id AS id,
-            themes.title,
-            themes.description,
-            themes.author_user_id AS author,
-            themes.visibility,
-            themes.type,
-            themes.created_at AS createdAt,
-            themes.theme,
-            CASE WHEN likes.count IS NULL THEN 0 ELSE likes.count END AS likes,
-            ${
-              userId == undefined
-                ? 'FALSE'
-                : 'CASE WHEN isLikes.isLike IS NULL THEN FALSE ELSE isLikes.isLike END'
-            } AS isLike
-          ${baseSql}
-          ORDER BY ${
-            only_like === true
-              ? 'isLikes.created_at DESC'
-              : 'themes.created_at DESC'
-          }
-          ${limit == undefined ? '' : `LIMIT ?`}
-          ${offset == undefined ? '' : `OFFSET ?`}
-        `
-    const [rows] = await connection.execute(sql, [
-      ...baseValues,
-      ...(limit != undefined ? [limit] : []),
-      ...(offset != undefined ? [offset] : []),
+    const visibilityCondition = match([
+      visibility == undefined || visibility == null,
+      userId == undefined,
+      author == undefined,
     ])
-    assertIsArray(rows)
-    const [count] = await connection.execute(
-      `SELECT COUNT(*) AS count ${baseSql}`,
-      baseValues
-    )
-    assertIsArrayObject(count)
-    return {
-      themes: rows as Theme[],
-      total: count[0].count,
+      .returnType<Prisma.themesWhereInput>()
+      .with([false, P._, P._], () => ({
+        visibility: visibility ?? undefined,
+      }))
+      .with([true, true, P._], () => ({
+        visibility: 'public',
+      }))
+      .with([true, false, true], () => ({
+        visibility: {
+          in: ['public', 'private'],
+        },
+      }))
+      .with([true, false, false], () => ({
+        OR: [
+          {
+            visibility: {
+              in: ['public', 'private'],
+            },
+          },
+          {
+            visibility: 'draft',
+            author_user_id: userId,
+          },
+        ],
+      }))
+      .exhaustive()
+    const mergedThemeCondition: Prisma.themesWhereInput = {
+      ...visibilityCondition,
+      type: type ?? undefined,
+      author_user_id: author ?? undefined,
+    }
+    if (only_like === true) {
+      const themes = await prisma.likes.findMany({
+        select: {
+          themes: {
+            select: {
+              id: true,
+              title: true,
+              description: true,
+              author_user_id: true,
+              visibility: true,
+              type: true,
+              created_at: true,
+              theme: true,
+              _count: {
+                select: {
+                  likes: true,
+                },
+              },
+            },
+          },
+        },
+        where: {
+          user_id: userId,
+          themes: mergedThemeCondition,
+        },
+        orderBy: {
+          created_at: 'desc',
+        },
+        take: limit ?? undefined,
+        skip: offset ?? undefined,
+      })
+      const total = await prisma.likes.count({
+        where: {
+          user_id: userId,
+          themes: mergedThemeCondition,
+        },
+      })
+
+      return {
+        themes: themes.map(({ themes }) => {
+          const {
+            id,
+            title,
+            description,
+            author_user_id,
+            visibility,
+            type,
+            created_at,
+            theme,
+            _count: { likes },
+          } = themes
+
+          return {
+            id,
+            title,
+            description,
+            author: author_user_id,
+            visibility: visibility as Visibility,
+            type: (type ?? 'other') as Type,
+            createdAt: created_at,
+            theme: theme,
+            likes,
+            isLike: true,
+          }
+        }),
+        total,
+      }
+    } else {
+      const themes = await prisma.themes.findMany({
+        select: {
+          id: true,
+          title: true,
+          description: true,
+          author_user_id: true,
+          visibility: true,
+          type: true,
+          created_at: true,
+          theme: true,
+          _count: {
+            select: {
+              likes: true,
+            },
+          },
+          likes: {
+            select: {
+              theme_id: true,
+            },
+            where: {
+              user_id: userId,
+            },
+          },
+        },
+        where: mergedThemeCondition,
+        orderBy: {
+          created_at: 'desc',
+        },
+        take: limit ?? undefined,
+        skip: offset ?? undefined,
+      })
+      const total = await prisma.themes.count({
+        where: mergedThemeCondition,
+      })
+
+      return {
+        themes: themes.map(theme => {
+          const {
+            id,
+            title,
+            description,
+            author_user_id,
+            visibility,
+            type,
+            created_at,
+            theme: theme_,
+            _count: { likes },
+            likes: likes_,
+          } = theme
+
+          return {
+            id,
+            title,
+            description,
+            author: author_user_id,
+            visibility: visibility as Visibility,
+            type: (type ?? 'other') as Type,
+            createdAt: created_at,
+            theme: theme_,
+            likes,
+            isLike: likes_.length === 1,
+          }
+        }),
+        total,
+      }
     }
   } catch (err: unknown) {
     console.error(err)
@@ -118,9 +205,5 @@ export const getThemes: QueryResolvers<ContextValue>['getThemes'] = async (
       throw err
     }
     throw new GraphQLError(`Internal server error: ${err}`)
-  } finally {
-    if (needCloseConnection) {
-      await connection?.end()
-    }
   }
 }
