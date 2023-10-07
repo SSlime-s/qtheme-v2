@@ -1,34 +1,60 @@
-import type { Connection, RowDataPacket } from 'mysql2/promise'
+import type { Version } from '@/apollo/generated/resolvers'
+import type { PrismaClient } from '@prisma/client'
 
-interface IHistory extends RowDataPacket {
+interface IHistory extends Version {
   id: string
   themeId: string
   version: string
   theme: string
   createdAt: Date
 }
+interface HistoryRow {
+  id: string
+  theme_id: string
+  version: string
+  theme: string
+  created_at: Date
+}
+
+const convertRowToI = (history: HistoryRow): IHistory => {
+  const { theme_id, created_at, ...restHistory } = history
+
+  return {
+    ...restHistory,
+    themeId: theme_id,
+    createdAt: created_at,
+  }
+}
 
 /**
  * **WARNING**: この関数では閲覧権限の確認は行わない
  */
-export const getHistoryFromDb = async (connection: Connection, id: string) => {
-  const sql = `
-    SELECT
-      id,
-      theme_id AS themeId,
-      version,
-      theme,
-      created_at AS createdAt
-    FROM theme_versions
-    WHERE theme_id = ?
-    ORDER BY created_at DESC
-  `
+
+export const getHistoryFromDb = async (
+  prisma: Pick<PrismaClient, 'theme_versions'>,
+  id: string
+) => {
   try {
-    const [rows] = await connection.execute<IHistory[]>(sql, [id])
-    return rows
-  } catch (error) {
-    console.error(error)
-    throw error
+    const history = await prisma.theme_versions.findMany({
+      select: {
+        id: true,
+        theme_id: true,
+        version: true,
+        theme: true,
+        created_at: true,
+      },
+      where: {
+        theme_id: id,
+      },
+      orderBy: {
+        created_at: 'desc',
+      },
+    })
+
+    return history.map(convertRowToI) satisfies IHistory[]
+  } catch (err) {
+    console.error(err)
+    throw err
   }
 }
 
@@ -36,29 +62,31 @@ export const getHistoryFromDb = async (connection: Connection, id: string) => {
  * **WARNING**: この関数では閲覧権限の確認は行わない
  */
 export const getLatestHistoryFromDb = async (
-  connection: Connection,
+  prisma: Pick<PrismaClient, 'theme_versions'>,
   id: string
 ) => {
-  const sql = `
-    SELECT
-      id,
-      theme_id AS themeId,
-      version,
-      theme,
-      created_at AS createdAt
-    FROM theme_versions
-    WHERE theme_id = ?
-    ORDER BY created_at DESC
-    LIMIT 1
-  `
   try {
-    const [rows] = await connection.execute<IHistory[]>(sql, [id])
-    if (rows.length === 0) {
+    const history = await prisma.theme_versions.findFirst({
+      select: {
+        id: true,
+        theme_id: true,
+        version: true,
+        theme: true,
+        created_at: true,
+      },
+      where: {
+        theme_id: id,
+      },
+      orderBy: {
+        created_at: 'desc',
+      },
+    })
+    if (history === null) {
       return null
     }
-    return rows[0]
-  } catch (error) {
-    console.error(error)
-    throw error
+    return convertRowToI(history)
+  } catch (err) {
+    console.error(err)
+    throw err
   }
 }

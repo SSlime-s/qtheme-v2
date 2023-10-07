@@ -17,9 +17,13 @@ import { FullWidthContent, H1, H2, Message } from '@/components/Message'
 import { SEO, ogImageUrl } from '@/components/SEO'
 import { TextBox } from '@/components/TextBox'
 import { Layout } from '@/components/layout'
+import { prisma } from '@/model/prisma'
 import { isMobile } from '@/utils/isMobile'
 import { useConfirmModal } from '@/utils/modal/ConfirmModal/hooks'
-import { prefetchThemeIdList, prefetchUseTheme } from '@/utils/theme/forPrefetch'
+import {
+  prefetchThemeIdList,
+  prefetchUseTheme,
+} from '@/utils/theme/forPrefetch'
 import { useCurrentTheme, useTheme } from '@/utils/theme/hooks'
 import { pageTitle } from '@/utils/title'
 import { useUserId } from '@/utils/userId'
@@ -46,7 +50,7 @@ interface Params extends ParsedUrlQuery {
 // MEMO: 認証管理は middleware でやる
 export const getStaticProps = (async ({ params }) => {
   const prefetchData =
-    params === undefined ? {} : await prefetchUseTheme(params.id)
+    params === undefined ? {} : await prefetchUseTheme(prisma, params.id)
 
   return {
     props: {
@@ -57,7 +61,7 @@ export const getStaticProps = (async ({ params }) => {
 }) satisfies GetStaticProps<{ fallback: Record<string, any> }, Params>
 
 export const getStaticPaths = (async () => {
-  const ids = await prefetchThemeIdList()
+  const ids = await prefetchThemeIdList(prisma)
 
   return {
     paths: ids.map(id => ({ params: { id } })),

@@ -1,39 +1,30 @@
-import type { Connection, RowDataPacket } from 'mysql2/promise'
+import { Prisma } from '@prisma/client'
 
-interface ITheme extends RowDataPacket {
-  id: string
-  title: string
-  description: string
-  author: string
-  visibility: 'public' | 'private' | 'draft'
-  type: 'light' | 'dark'
-  createdAt: Date
-  theme: string
-  likes: number
-  isLike: boolean
-}
+import type { Theme, Type, Visibility } from '@/apollo/generated/resolvers'
+import type { PrismaClient } from '@prisma/client'
 
 export const getThemeFromDb = async (
-  connection: Connection,
+  prisma: Pick<PrismaClient, '$queryRaw'>,
   id: string,
   userId?: string
 ) => {
-  const sql = `
+  try {
+    const sql = Prisma.sql`
     SELECT
-      themes.id AS id,
+      themes.id,
       themes.title,
       themes.description,
-      themes.author_user_id AS author,
+      themes.author_user_id,
       themes.visibility,
       themes.type,
-      themes.created_at AS createdAt,
+      themes.created_at,
       themes.theme,
       CASE WHEN likes.count IS NULL THEN 0 ELSE likes.count END AS likes,
       ${
         userId === undefined
-          ? 'FALSE'
-          : 'CASE WHEN isLikes.isLike IS NULL THEN FALSE ELSE isLikes.isLike END'
-      } AS isLike
+          ? Prisma.sql`FALSE`
+          : Prisma.sql`CASE WHEN is_like.is_like = TRUE THEN TRUE ELSE FALSE END`
+      } AS is_like
     FROM themes
     LEFT JOIN (
       SELECT COUNT(*) AS count, theme_id
@@ -42,39 +33,66 @@ export const getThemeFromDb = async (
     ) AS likes ON likes.theme_id = themes.id
     ${
       userId === undefined
-        ? ''
-        : `
-      LEFT JOIN (
-        SELECT theme_id, TRUE AS isLike
-        FROM likes
-        WHERE user_id = ?
-      ) AS isLikes ON isLikes.theme_id = themes.id
-    `
+        ? Prisma.empty
+        : Prisma.sql`
+    LEFT JOIN (
+      SELECT theme_id, TRUE AS is_like
+      FROM likes
+      WHERE user_id = ${userId}
+    ) AS is_like ON is_like.theme_id = themes.id`
     }
-    WHERE themes.id = ? AND ${
+    WHERE themes.id = ${id} AND ${
       userId === undefined
-        ? `visibility = 'public'`
-        : `(
-            visibility IN ('public', 'private')
-              OR (
-                visibility = 'draft'
-                AND author_user_id = ?
-                  )
-            )`
+        ? Prisma.sql`visibility = 'public'`
+        : Prisma.sql`(
+        visibility IN ('public', 'private')
+          OR (
+            visibility = 'draft'
+            AND author_user_id = ${userId}
+          )
+      )`
     }
-  `
-  try {
-    const [rows] = await connection.execute<ITheme[]>(sql, [
-      ...(userId !== undefined ? [userId] : []),
-      id,
-      ...(userId !== undefined ? [userId] : []),
-    ])
-    if (rows.length === 0) {
+    `
+
+    type Themes = {
+      id: string
+      title: string
+      description: string
+      author_user_id: string
+      visibility: string
+      type: string | null
+      created_at: Date
+      theme: string
+      likes: bigint
+      is_like: boolean
+    }[]
+    const theme = await prisma.$queryRaw<Themes>(sql)
+
+    if (theme.length === 0) {
       return null
     }
-    return rows[0]
-  } catch (error) {
-    console.error(error)
-    throw error
+
+    const {
+      author_user_id,
+      type,
+      visibility,
+      created_at,
+      is_like,
+      likes,
+      ...restTheme
+    } = theme[0]
+
+    return {
+      ...restTheme,
+      author: author_user_id,
+      type: (type ?? 'other') as Type,
+      visibility: visibility as Visibility,
+      createdAt: created_at,
+      isLike: is_like,
+      likes: Number(likes),
+    } satisfies Theme
+  } catch (err: unknown) {
+    console.error(err)
+    throw err
   }
 }

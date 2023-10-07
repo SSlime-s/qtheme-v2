@@ -10,12 +10,10 @@ import { updateTheme } from './updateTheme'
 
 import type { Resolvers } from '@/apollo/generated/resolvers'
 import type { PrismaClient } from '@prisma/client'
-import type { Connection } from 'mysql2/promise'
 import type { NextApiResponse } from 'next'
 
 export interface ContextValue {
   userId?: string
-  connection?: Connection
   revalidate?: NextApiResponse['revalidate']
   prisma: PrismaClient
 }

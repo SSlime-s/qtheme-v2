@@ -1,41 +1,35 @@
 import { GraphQLError } from 'graphql'
 
-import { connectDb } from '@/model/db'
-import { assertIsArrayObject } from '@/utils/typeUtils'
-
 import type { ContextValue } from '.'
 import type { MutationResolvers } from '@/apollo/generated/resolvers'
-import type { Connection } from 'mysql2/promise'
 
 export const deleteTheme: MutationResolvers<ContextValue>['deleteTheme'] =
-  async (_, args, { userId, revalidate }) => {
+  async (_, args, { userId, revalidate, prisma }) => {
     const { id } = args
-    let connection: Connection | undefined
     try {
-      connection = await connectDb()
-      await connection.beginTransaction()
-      const sql = `
-      DELETE FROM themes
-      WHERE id = ?
-        AND author_user_id = ?
-    `
-      await connection.execute(sql, [id, userId])
-      const [rows] = await connection.execute('SELECT ROW_COUNT() AS count', [])
-      await connection.commit()
-      assertIsArrayObject(rows)
-      if (rows[0].count === 1) {
+      await prisma.$transaction(async prisma => {
+        console.log(id, userId)
+        await prisma.themes.delete({
+          where: {
+            id,
+            author_user_id: userId,
+          },
+        })
+        type Count = { count: bigint }[]
+        const count = await prisma.$queryRaw<Count>`SELECT ROW_COUNT() AS count`
+        if (Number(count[0].count) === 0) {
+          throw new GraphQLError('Not found')
+        }
+
         await revalidate?.(`/theme/${id}`)
-        return null
-      }
-      throw new GraphQLError('Not found')
+      })
+
+      return null
     } catch (err: unknown) {
-      await connection?.rollback()
       console.error(err)
       if (err instanceof GraphQLError) {
         throw err
       }
       throw new GraphQLError(`Internal server error: ${err}`)
-    } finally {
-      await connection?.end()
     }
   }
