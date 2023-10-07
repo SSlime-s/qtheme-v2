@@ -13,12 +13,28 @@
  * 6. 完了
  */
 
-import { connectDb } from '../src/model/db.js'
+import type { Connection } from 'mysql2/promise'
 import { ulid } from 'ulid'
-import { Connection } from 'mysql2/promise'
+
 import { bumpVersion } from '../src/apollo/resolvers/utils/bumpVersion.js'
 import { basicThemeSchema, Theme } from '../src/model/theme.js'
 import { isDarkColor } from '../src/model/color.js'
+import { createConnection } from 'mysql2/promise'
+
+const connectDb = async () => {
+  const url = process.env.DATABASE_URL
+  if (url === undefined) throw new Error('DATABASE_URL is undefined')
+  try {
+    const connection = await createConnection(url)
+    return connection
+  } catch (error) {
+    if (error instanceof Error) {
+      throw error
+    } else {
+      throw new Error('Unknown error')
+    }
+  }
+}
 
 const migration = ({
   title,
