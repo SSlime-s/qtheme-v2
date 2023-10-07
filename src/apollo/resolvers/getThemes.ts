@@ -30,7 +30,7 @@ export const getThemes: QueryResolvers<ContextValue>['getThemes'] = async (
 
   try {
     const visibilityCondition = match([
-      visibility == undefined,
+      visibility == undefined || visibility == null,
       userId == undefined,
       author == undefined,
     ])
