@@ -120,7 +120,6 @@ const DummyWrap = styled.div`
   ${isMobile} {
     display: block;
     pointer-events: none;
-    scroll-snap-align: start;
   }
 `
 const MenuButton = styled.button`

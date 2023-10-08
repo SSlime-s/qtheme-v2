@@ -204,8 +204,6 @@ const Main = styled.main`
     position: sticky;
     left: 0;
     z-index: 20;
-    scroll-snap-align: start;
-    scroll-snap-stop: always;
   }
 `
 const Loading = styled(LoadingBar)`
@@ -220,5 +218,7 @@ const DummyMain = styled.div`
   ${isMobile} {
     display: block;
     pointer-events: none;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
   }
 `
