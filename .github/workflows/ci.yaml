@@ -65,12 +65,15 @@ jobs:
     needs: type-check
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/github-script@v6
         id: generate
         with:
+          result-encoding: string
           script: |
-            const notifyDeploy = require('./bin/notify_deploy.js')
+            const notifyDeploy = require('${{ github.workspace }}/bin/notify_deploy.js')
             return notifyDeploy('${{ github.server_url }}/${{ github.repository }}')
       - uses: SSlime-s/traq-webhook@v4.15
         with:
