@@ -73,7 +73,7 @@ jobs:
         with:
           result-encoding: string
           script: |
-            const notifyDeploy = require('${{ github.workspace }}/bin/notify_deploy.js')
+            const notifyDeploy = require('${{ github.workspace }}/bin/notify_deploy.cjs')
             return notifyDeploy('${{ github.server_url }}/${{ github.repository }}')
       - uses: SSlime-s/traq-webhook@v4.15
         with:
