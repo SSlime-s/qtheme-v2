@@ -142,7 +142,11 @@ export const Editor: React.FC<Props> = ({ userId, submit, ...methods }) => {
         </Wrap>
 
         <SidebarPortal>
-          <Sidebar submit={handleSubmit} shareUrl={shareUrl} />
+          <Sidebar
+            submit={handleSubmit}
+            isSubmitting={isSubmitting}
+            shareUrl={shareUrl}
+          />
         </SidebarPortal>
       </FormProvider>
     </>
