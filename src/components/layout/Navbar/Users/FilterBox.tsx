@@ -74,4 +74,8 @@ const Input = styled.input`
   &::placeholder {
     color: ${({ theme }) => theme.theme.basic.ui.secondary.inactive};
   }
+
+  &::-webkit-search-cancel-button {
+    cursor: pointer;
+  }
 `
