@@ -53,6 +53,7 @@ export const NavbarUsers: React.FC = () => {
         setWord={setFilterWord}
         placeholder={placeholder}
       />
+      {filtered.length === 0 && <Empty>該当するユーザーはいません</Empty>}
       {filtered.map(({ name, count }) => (
         <UserCard key={name} name={name} count={count} />
       ))}
@@ -63,6 +64,12 @@ export const NavbarUsers: React.FC = () => {
 const Wrap = styled.div`
   display: flex;
   flex-direction: column;
+`
+
+const Empty = styled.div`
+  text-align: center;
+  color: ${({ theme }) => theme.theme.basic.ui.secondary.default};
+  padding: 24px 0;
 `
 
 const UserCard: React.FC<{
