@@ -194,6 +194,14 @@ const ChangeNextButton = styled.button`
 `
 export const BreakP = styled.p`
   ${BreakStyle}
+
+  & > a {
+    color: ${({ theme }) => theme.theme.markdown.linkText};
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 `
 const CopyBox = styled(TextBox)`
   margin: 0 32px 20px;

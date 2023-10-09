@@ -204,6 +204,14 @@ const MainWrap = styled.div`
 `
 export const BreakP = styled.p`
   ${BreakStyle}
+
+  & > a {
+    color: ${({ theme }) => theme.theme.markdown.linkText};
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 `
 
 const CopyBox = styled(TextBox)`

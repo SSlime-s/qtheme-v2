@@ -117,6 +117,14 @@ const Author = styled.h2`
 const Description = styled.p`
   ${BreakStyle}
   ${lineClamp(2)}
+
+  & > a {
+    color: ${({ theme }) => theme.theme.markdown.linkText};
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 `
 const PreviewWrap = styled.button`
   ${GlassmorphismStyle}

@@ -187,6 +187,14 @@ export const LinkBlock = styled(Link)`
 `
 export const BreakP = styled.p`
   ${BreakStyle}
+
+  & > a {
+    color: ${({ theme }) => theme.theme.markdown.linkText};
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 `
 export const ResetButton = styled.button`
   ${BlockStyle}
