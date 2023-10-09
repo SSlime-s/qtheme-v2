@@ -7,14 +7,26 @@ import { Error } from '@/components/Error'
 import { Skeleton } from '@/components/LoadingBar'
 import { userIconUrl } from '@/utils/api'
 
+import { FilterBox } from './FilterBox'
 import { useAuthors } from './useAuthors'
 
 export const NavbarUsers: React.FC = () => {
-  const { data, error, isLoading } = useAuthors()
+  const {
+    data: { raw: rawData, filtered, filterWord },
+    error,
+    isLoading,
+    mutate: { setFilterWord },
+  } = useAuthors()
+  const placeholder = 'ra, ^SSl, ime$, ^traP$, ...'
 
   if (isLoading) {
     return (
       <Wrap>
+        <FilterBox
+          word={filterWord}
+          setWord={setFilterWord}
+          placeholder={placeholder}
+        />
         {Array.from({ length: 8 }, (_, i) => (
           <UserSkeleton key={i} />
         ))}
@@ -30,13 +42,18 @@ export const NavbarUsers: React.FC = () => {
     )
   }
 
-  if (data === undefined || data.length === 0) {
+  if (rawData === undefined || rawData.length === 0) {
     return <Wrap>ユーザーがいません</Wrap>
   }
 
   return (
     <Wrap>
-      {data.map(({ name, count }) => (
+      <FilterBox
+        word={filterWord}
+        setWord={setFilterWord}
+        placeholder={placeholder}
+      />
+      {filtered.map(({ name, count }) => (
         <UserCard key={name} name={name} count={count} />
       ))}
     </Wrap>

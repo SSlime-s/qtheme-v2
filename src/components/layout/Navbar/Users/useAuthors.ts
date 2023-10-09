@@ -1,6 +1,7 @@
 import { print } from 'graphql'
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import useSWR from 'swr'
+import { match } from 'ts-pattern'
 
 import { useClient } from '@/utils/api'
 
@@ -20,9 +21,31 @@ export const useAuthors = () => {
     }
   )
 
+  const [filterWord, setFilterWord] = useState('')
+  const filteredData = useMemo(() => {
+    if (data === undefined) return []
+
+    const check = (word: string, target: string) => {
+      return match([word.startsWith('^'), word.endsWith('$')])
+        .with([true, true], () => word.slice(1, -1) === target)
+        .with([true, false], () => target.startsWith(word.slice(1)))
+        .with([false, true], () => target.endsWith(word.slice(0, -1)))
+        .otherwise(() => target.includes(word))
+    }
+
+    return data.filter(author => check(filterWord, author.name))
+  }, [data, filterWord])
+
   return {
-    data,
+    data: {
+      raw: data,
+      filterWord,
+      filtered: filteredData,
+    },
     error,
     isLoading,
+    mutate: {
+      setFilterWord,
+    },
   }
 }
