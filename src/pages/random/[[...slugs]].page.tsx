@@ -19,6 +19,7 @@ import { lightTheme } from '@/utils/theme/default'
 import { useCurrentTheme } from '@/utils/theme/hooks'
 import { pageTitle } from '@/utils/title'
 import { assertIsArray } from '@/utils/typeUtils'
+import { useWithAuth } from '@/utils/useWithAuth'
 import { useSetUserId } from '@/utils/userId'
 import { WrapResolver } from '@/utils/wrapper'
 import { BreakStyle, BudouJa } from '@/utils/wrapper/BudouX'
@@ -81,6 +82,12 @@ const RandomPage: NextPageWithLayout<Props> = ({ userId, filter }) => {
     mutate: { changeTheme },
   } = useCurrentTheme()
 
+  const toggleLikeWithAuth = useWithAuth(
+    userId,
+    toggleLike,
+    'favorite は部員限定です'
+  )
+
   const themeString = useMemo(() => {
     if (theme === null) {
       return ''
@@ -129,7 +136,7 @@ const RandomPage: NextPageWithLayout<Props> = ({ userId, filter }) => {
             stamps={
               <FavoriteButton
                 isFavorite={theme.isLike}
-                onClick={toggleLike}
+                onClick={toggleLikeWithAuth}
                 favoriteCount={theme.likes}
               />
             }

@@ -14,6 +14,7 @@ import { useSetTopic } from '@/components/layout/Header'
 import { extractShowcaseUser } from '@/utils/extractUser'
 import { useCurrentTheme } from '@/utils/theme/hooks'
 import { pageTitle } from '@/utils/title'
+import { useWithAuth } from '@/utils/useWithAuth'
 import { useSetUserId } from '@/utils/userId'
 
 import { useAuthorThemes } from './hooks'
@@ -48,6 +49,12 @@ const UserPage: NextPageWithLayout<Props> = ({ userId }) => {
   const {
     mutate: { changeTheme },
   } = useCurrentTheme()
+
+  const toggleLikeWithAuth = useWithAuth(
+    userId,
+    toggleLike,
+    'favorite は部員限定です'
+  )
 
   const setTopic = useSetTopic()
   useEffect(() => {
@@ -91,7 +98,7 @@ const UserPage: NextPageWithLayout<Props> = ({ userId }) => {
                     <PreviewCard
                       key={theme.id}
                       themeInfo={theme}
-                      onFavorite={toggleLike}
+                      onFavorite={toggleLikeWithAuth}
                       changeTheme={changeTheme}
                     />
                   ))}

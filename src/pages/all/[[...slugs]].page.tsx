@@ -12,8 +12,8 @@ import { useSetTopic } from '@/components/layout/Header'
 import { extractShowcaseUser } from '@/utils/extractUser'
 import { useCurrentTheme, useThemeList } from '@/utils/theme/hooks'
 import { pageTitle } from '@/utils/title'
-import { useToast } from '@/utils/toast'
 import { assertIsArray } from '@/utils/typeUtils'
+import { useWithAuth } from '@/utils/useWithAuth'
 import { useSetUserId } from '@/utils/userId'
 
 import type { NextPageWithLayout } from '@/pages/_app.page'
@@ -70,20 +70,11 @@ const AllPage: NextPageWithLayout<Props> = ({ userId, filter }) => {
   const {
     mutate: { changeTheme },
   } = useCurrentTheme()
-  const { addToast } = useToast()
 
-  const toggleLikeWithAuth = useCallback(
-    (id: string, isLike: boolean) => {
-      if (userId === null) {
-        addToast({
-          content: <>favorite は部員限定です</>,
-          type: 'error',
-        })
-        return
-      }
-      void toggleLike(id, isLike)
-    },
-    [addToast, toggleLike, userId]
+  const toggleLikeWithAuth = useWithAuth(
+    userId,
+    toggleLike,
+    'favorite は部員限定です'
   )
 
   const title = useMemo(() => {

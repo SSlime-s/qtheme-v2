@@ -26,6 +26,7 @@ import {
 } from '@/utils/theme/forPrefetch'
 import { useCurrentTheme, useTheme } from '@/utils/theme/hooks'
 import { pageTitle } from '@/utils/title'
+import { useWithAuth } from '@/utils/useWithAuth'
 import { useUserId } from '@/utils/userId'
 import { WrapResolver } from '@/utils/wrapper'
 import { BreakStyle, BudouJa } from '@/utils/wrapper/BudouX'
@@ -105,6 +106,12 @@ const ThemePageInner: React.FC<Omit<Props, 'fallback'>> = () => {
     mutate: { changeTheme },
   } = useCurrentTheme()
 
+  const toggleLikeWithAuth = useWithAuth(
+    userId,
+    toggleLike,
+    'favorite は部員限定です'
+  )
+
   const themeString = useMemo(() => {
     if (theme === undefined) {
       return ''
@@ -158,7 +165,7 @@ const ThemePageInner: React.FC<Omit<Props, 'fallback'>> = () => {
               <FullWidthContent>
                 <Controls
                   theme={theme}
-                  toggleLike={toggleLike}
+                  toggleLike={toggleLikeWithAuth}
                   userId={userId}
                   deleteTheme={deleteTheme}
                 />
