@@ -1,4 +1,4 @@
-import { ImageResponse } from '@vercel/og'
+import { ImageResponse } from 'next/og'
 
 import { SmallPreview } from '@/components/preview'
 import { themeSchema } from '@/model/theme'
@@ -6,6 +6,7 @@ import { resolveTheme } from '@/utils/theme'
 import { lightTheme } from '@/utils/theme/default'
 
 import type { NextRequest } from 'next/server'
+import type { ReactElement } from 'react'
 
 export const config = {
   runtime: 'experimental-edge',
@@ -15,7 +16,7 @@ const res = async (req: NextRequest) => {
   const author = req.nextUrl.searchParams.get('author') ?? 'traP'
   const rawTheme = req.nextUrl.searchParams.get('theme')
   if (rawTheme === null) {
-    const dom = Fallback({})
+    const dom = Fallback()
     if (dom === null) {
       return new Response('Internal Server Error', { status: 500 })
     }
@@ -41,14 +42,14 @@ const res = async (req: NextRequest) => {
   if (dom === null) {
     return new Response('Not Found', { status: 404 })
   }
-  return new ImageResponse(dom, {
+  return new ImageResponse(dom as ReactElement, {
     width: 1200,
     height: 630,
   })
 }
 export default res
 
-const Fallback: React.FC = () => {
+const Fallback = () => {
   return (
     <div style={{ display: 'flex', position: 'relative' }}>
       <SmallPreview author={'traP'} theme={resolveTheme(lightTheme)} ogp />

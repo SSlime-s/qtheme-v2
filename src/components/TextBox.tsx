@@ -3,15 +3,15 @@ import { useEffect, useRef } from 'react'
 
 import { lineClamp } from '@/styles/lineClamp'
 
-export interface Props {
+export interface Props
+  extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   before?: React.ReactNode
   after?: React.ReactNode
 
   readOnly?: boolean
 }
-export const TextBox: React.FC<
-  Props & React.HTMLAttributes<HTMLTextAreaElement>
-> = ({ readOnly, ...props }) => {
+
+export const TextBox: React.FC<Props> = ({ readOnly, ...props }) => {
   if (readOnly === true) {
     return <ReadOnlyTextBox {...props} />
   }
@@ -27,9 +27,12 @@ export const TextBox: React.FC<
   )
 }
 
-const ReadOnlyTextBox: React.FC<
-  Props & React.HTMLAttributes<HTMLTextAreaElement>
-> = ({ before, after, className, ...props }) => {
+const ReadOnlyTextBox: React.FC<Props> = ({
+  before,
+  after,
+  className,
+  ...props
+}) => {
   const textAreaRef = useRef<HTMLTextAreaElement>(null)
 
   useEffect(() => {

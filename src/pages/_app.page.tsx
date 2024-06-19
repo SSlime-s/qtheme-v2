@@ -1,7 +1,7 @@
 import '@/styles/reset.css'
 import { css, Global, ThemeProvider } from '@emotion/react'
-import { Inter, M_PLUS_1p } from '@next/font/google'
 import { atom, useAtom } from 'jotai'
+import { Inter, M_PLUS_1p } from 'next/font/google'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 
