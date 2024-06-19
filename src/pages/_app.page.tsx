@@ -34,7 +34,7 @@ export const inter = Inter({
 
 export const mPlus1p = M_PLUS_1p({
   weight: ['400', '700'],
-  subsets: ['latin', 'japanese'],
+  preload: false,
 })
 
 export const fixLayoutAtom = atom<boolean>(false)

@@ -7,7 +7,13 @@ const nextConfig = {
   },
   pageExtensions: ['page.tsx', 'page.ts', 'page.jsx', 'page.js'],
   images: {
-    domains: ['q.trap.jp'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'q.trap.jp',
+        port: '',
+      },
+    ],
   },
 
   webpack: (config, options) => {
@@ -18,7 +24,7 @@ const nextConfig = {
     })
 
     return config
-  }
+  },
 }
 
 module.exports = nextConfig
