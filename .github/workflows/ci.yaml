@@ -9,7 +9,6 @@ on:
 
 env:
   GITEA_SSH_URL: 'ssh://git@git.trap.jp:2200/SSlime/Qtheme_v2.git'
-  PNPM_VERSION: 8
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -20,10 +19,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: pnpm/action-setup@v2
-        with:
-          version: ${{ env.PNPM_VERSION }}
-      - uses: actions/setup-node@v3
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
         with:
           cache: pnpm
       - uses: actions/cache@v3
@@ -40,10 +37,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: pnpm/action-setup@v2
-        with:
-          version: ${{ env.PNPM_VERSION }}
-      - uses: actions/setup-node@v3
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
         with:
           cache: pnpm
       - uses: actions/cache@v3
