@@ -193,7 +193,7 @@ export const getThemes: QueryResolvers<ContextValue>['getThemes'] = async (
             createdAt: created_at,
             theme: theme_,
             likes,
-            isLike: likes_.length === 1,
+            isLike: userId != undefined && likes_.length === 1,
           }
         }),
         total,
