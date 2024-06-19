@@ -22,5 +22,5 @@ export const extractShowcaseUser = (req: IncomingMessage | NextRequest) => {
       userId = unsafeUserId
     }
   }
-  return userId === '-' ? undefined : userId ?? undefined
+  return userId === '' ? undefined : userId ?? undefined
 }
