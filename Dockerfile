@@ -5,6 +5,9 @@ WORKDIR /app
 
 COPY . /app
 
+RUN apt-get update
+RUN apt-get install -y openssl
+
 RUN corepack enable pnpm
 RUN pnpm install
 RUN pnpm run build --no-lint
