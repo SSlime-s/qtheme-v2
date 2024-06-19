@@ -2,7 +2,7 @@ import { NextRequest } from 'next/server'
 
 import type { IncomingMessage } from 'http'
 
-const showcaseUserKey = 'x-showcase-user'
+const showcaseUserKey = 'x-forwarded-user'
 export const extractShowcaseUser = (req: IncomingMessage | NextRequest) => {
   if (
     process.env.NODE_ENV === 'development' &&

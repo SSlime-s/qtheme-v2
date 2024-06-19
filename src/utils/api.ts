@@ -16,7 +16,7 @@ export const newClient = () => {
     process.env.NODE_ENV === 'development'
       ? {
           headers: {
-            'X-Showcase-User': 'SSlime',
+            'X-Forwarded-User': 'SSlime',
           },
         }
       : {
