@@ -1,3 +1,4 @@
+import { ClientError } from 'graphql-request'
 import { NextResponse } from 'next/server'
 
 import { getSdk } from './Middleware.generated'
@@ -6,7 +7,7 @@ import { newClient } from './utils/api'
 import type { NextRequest } from 'next/server'
 
 // This function can be marked `async` if using `await` inside
-export const middleware = async (request: NextRequest) => {
+export async function middleware(request: NextRequest) {
   const client = newClient()
   const sdk = getSdk(client)
 
@@ -14,19 +15,30 @@ export const middleware = async (request: NextRequest) => {
     .replace(/^\/theme\//, '')
     .replace(/\/$/, '')
 
+  if (id.includes('/')) {
+    return NextResponse.next()
+  }
+
   try {
     const { getTheme } = await sdk.HasPermission({
       id,
     })
 
     if (getTheme === null || getTheme === undefined) {
-      return NextResponse.rewrite('/error/404')
+      return NextResponse.rewrite(new URL('/error/404', request.url))
     }
   } catch (e) {
-    return NextResponse.rewrite('/error/500')
+    if (e instanceof ClientError) {
+      if (e.message.startsWith('Not found')) {
+        return NextResponse.rewrite(new URL('/error/404', request.url))
+      }
+    }
+    return NextResponse.rewrite(new URL('/error/500', request.url))
   }
+
+  return NextResponse.next()
 }
 
 export const config = {
-  matcher: '/theme/:id',
+  matcher: '/theme/:path*',
 }

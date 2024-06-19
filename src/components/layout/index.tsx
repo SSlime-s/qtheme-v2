@@ -1,7 +1,7 @@
 import styled from '@emotion/styled'
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
-import { useCallback, useEffect, useMemo, useRef } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import ReactDOM from 'react-dom'
 
 import { ToastContainer } from '@/components/Toast'
@@ -34,37 +34,44 @@ export const Layout: React.FC<PropsWithChildren<Props>> = ({
   const isMobile = useIsMobile()
   const router = useRouter()
   const isPageLoading = usePageLoading()
-  const nowChannelPath: ChannelPath[] = useMemo(() => {
-    const path = router.asPath
-      .split('/')
-      .filter(p => p !== '')
-      .map(p => {
-        const split = p.split('?')
-        return split[0]
-      })
-      .map(p => {
-        const split = p.split('#')
-        return split[0]
-      })
 
-    // theme は下に uuid が来るため、uuid まで込みで theme とする
-    if (path[0] === 'theme') {
-      if (path[1] === undefined) {
-        return [
-          {
-            name: 'theme',
-            href: '/theme',
-          },
-        ]
+  // NOTE: rewrite した際に hydration error が起きるため、useEffect で初期化・更新する
+  const [nowChannelPath, setNowChannelPath] = useState<ChannelPath[]>([])
+  useEffect(() => {
+    function calc() {
+      const path = router.asPath
+        .split('/')
+        .filter(p => p !== '')
+        .map(p => {
+          const split = p.split('?')
+          return split[0]
+        })
+        .map(p => {
+          const split = p.split('#')
+          return split[0]
+        })
+
+      // theme は下に uuid が来るため、uuid まで込みで theme とする
+      if (path[0] === 'theme') {
+        if (path[1] === undefined) {
+          return [
+            {
+              name: 'theme',
+              href: '/theme',
+            },
+          ]
+        }
+        const root = {
+          name: 'theme',
+          href: `/theme/${path[1]}`,
+        }
+        return extendChannelPath([root], path.slice(2))
       }
-      const root = {
-        name: 'theme',
-        href: `/theme/${path[1]}`,
-      }
-      return extendChannelPath([root], path.slice(2))
+
+      return convertChannelPath(path)
     }
 
-    return convertChannelPath(path)
+    setNowChannelPath(calc())
   }, [router])
 
   const mainRef = useRef<HTMLDivElement>(null)

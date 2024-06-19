@@ -15,12 +15,17 @@ export const newClient = () => {
     ENDPOINT,
     process.env.NODE_ENV === 'development'
       ? {
-          headers: {
-            'X-Forwarded-User': 'SSlime',
-          },
+          headers:
+            process.env.DEBUG_USER !== undefined
+              ? {
+                  'X-Forwarded-User': process.env.DEBUG_USER,
+                }
+              : {},
+          fetch: fetch,
         }
       : {
           credentials: 'include',
+          fetch: fetch,
         }
   )
 }
