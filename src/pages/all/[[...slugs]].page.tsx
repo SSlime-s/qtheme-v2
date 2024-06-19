@@ -10,7 +10,11 @@ import { SEO } from '@/components/SEO'
 import { Layout } from '@/components/layout'
 import { useSetTopic } from '@/components/layout/Header'
 import { extractShowcaseUser } from '@/utils/extractUser'
-import { useCurrentTheme, useThemeList } from '@/utils/theme/hooks'
+import {
+  prefetchUseThemeList,
+  useCurrentTheme,
+  useThemeList,
+} from '@/utils/theme/hooks'
 import { pageTitle } from '@/utils/title'
 import { assertIsArray } from '@/utils/typeUtils'
 import { useWithAuth } from '@/utils/useWithAuth'
@@ -46,17 +50,27 @@ export const getServerSideProps = (async ({ req, query }) => {
     }
   }
 
+  const initialData = await prefetchUseThemeList(
+    filter === 'all' ? null : filter,
+    null
+  )
+
   return {
     props: {
       userId: userId ?? null,
       filter,
+      initialData,
     },
   }
 }) satisfies GetServerSideProps
 
 type Props = InferGetServerSidePropsType<typeof getServerSideProps>
 
-const AllPage: NextPageWithLayout<Props> = ({ userId, filter }) => {
+const AllPage: NextPageWithLayout<Props> = ({
+  userId,
+  filter,
+  initialData,
+}) => {
   useSetUserId(userId)
 
   const {
@@ -66,7 +80,12 @@ const AllPage: NextPageWithLayout<Props> = ({ userId, filter }) => {
     error,
     isReachingEnd,
     mutate: { loadMore, toggleLike },
-  } = useThemeList(filter === 'all' ? null : filter, null)
+  } = useThemeList(
+    filter === 'all' ? null : filter,
+    null,
+    undefined,
+    initialData
+  )
   const {
     mutate: { changeTheme },
   } = useCurrentTheme()

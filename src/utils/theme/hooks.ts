@@ -6,7 +6,7 @@ import useSWR from 'swr'
 import useSWRInfinite from 'swr/infinite'
 
 import { themeSchema } from '@/model/theme'
-import { useClient } from '@/utils/api'
+import { newClient, useClient } from '@/utils/api'
 import { getSdk as getSdkEditTheme } from '@/utils/graphql/editTheme.generated'
 import {
   getSdk as getSdkGetTheme,
@@ -23,6 +23,7 @@ import { lightTheme } from './default'
 
 import type { Theme as ThemeRes } from '@/apollo/generated/graphql'
 import type { Theme } from '@/model/theme'
+import type { Sdk as SdkGetThemes } from '@/utils/graphql/getThemes.generated'
 
 export const THEMES_PER_PAGE = 20
 
@@ -231,10 +232,40 @@ export const useTheme = (
   }
 }
 
-export const useThemeList = (
+type VariablesUseThemeList = Parameters<SdkGetThemes['Themes']>[0]
+async function fetcherUseThemeList(
+  client: ReturnType<typeof useClient>,
+  variables: VariablesUseThemeList
+) {
+  const sdk = getSdkGetThemes(client)
+  const { getThemes } = await sdk.Themes(variables)
+  if (getThemes === null || getThemes === undefined) {
+    throw new Error('Theme not found')
+  }
+
+  return getThemes
+}
+export async function prefetchUseThemeList(
   type: 'light' | 'dark' | 'other' | null,
   visibility: 'public' | 'private' | 'draft' | null,
   pageSize: number = THEMES_PER_PAGE
+) {
+  const initialVariables = {
+    limit: pageSize,
+    offset: 0,
+    type: type?.toUpperCase() ?? null,
+    visibility: visibility?.toUpperCase() ?? null,
+  } as const satisfies VariablesUseThemeList
+
+  const client = newClient()
+
+  return await fetcherUseThemeList(client, initialVariables)
+}
+export const useThemeList = (
+  type: 'light' | 'dark' | 'other' | null,
+  visibility: 'public' | 'private' | 'draft' | null,
+  pageSize: number = THEMES_PER_PAGE,
+  initialData?: Awaited<ReturnType<SdkGetThemes['Themes']>>['getThemes']
 ) => {
   const client = useClient()
 
@@ -257,13 +288,13 @@ export const useThemeList = (
       ] as const
     },
     async ([_, variables]) => {
-      const sdk = getSdkGetThemes(client)
-      const { getThemes } = await sdk.Themes(variables)
-      if (getThemes === null || getThemes === undefined) {
-        throw new Error('Theme not found')
-      }
-
-      return getThemes
+      return await fetcherUseThemeList(client, variables)
+    },
+    {
+      fallbackData:
+        initialData === undefined || initialData === null
+          ? undefined
+          : [initialData],
     }
   )
 
