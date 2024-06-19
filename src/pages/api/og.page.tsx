@@ -9,7 +9,7 @@ import type { NextRequest } from 'next/server'
 import type { ReactElement } from 'react'
 
 export const config = {
-  runtime: 'experimental-edge',
+  runtime: 'edge',
 }
 
 const res = async (req: NextRequest) => {
