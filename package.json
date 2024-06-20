@@ -2,6 +2,12 @@
   "name": "qtheme-v2",
   "version": "0.1.22",
   "private": true,
+  "scripts": {
+    "build": "turbo build",
+    "dev": "turbo dev",
+    "fix": "turbo fix",
+    "check-types": "turbo check-types"
+  },
   "packageManager": "pnpm@9.4.0",
   "engines": {
     "node": ">=20.0.0",
