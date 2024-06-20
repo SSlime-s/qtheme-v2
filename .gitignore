@@ -48,3 +48,5 @@ mysql/data
 
 /**/generated
 /**/*.generated.ts
+
+.turbo

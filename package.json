@@ -22,5 +22,8 @@
         "react-dom": "18"
       }
     }
+  },
+  "devDependencies": {
+    "turbo": "^2.0.4"
   }
 }
