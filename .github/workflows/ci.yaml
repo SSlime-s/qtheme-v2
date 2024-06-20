@@ -26,13 +26,12 @@ jobs:
       - uses: actions/cache@v3
         with:
           path: |
-            node_modules
             **/*.generated.ts
             **/generated
           key: node_modules-generated-${{ github.sha }}
       - run: pnpm install
 
-  type-check:
+  check-types:
     needs: install
     runs-on: ubuntu-latest
     steps:
@@ -44,18 +43,17 @@ jobs:
       - uses: actions/cache@v3
         with:
           path: |
-            node_modules
             **/*.generated.ts
             **/generated
           key: node_modules-generated-${{ github.sha }}
       - run: |
           echo '/// <reference types="next" />' > ./next-env.d.ts
           echo '/// <reference types="next/image-types/global" />' >> ./next-env.d.ts
-      - run: pnpm run type-check
+      - run: pnpm run check-types
 
   notify-deploy:
     if: startsWith(github.ref, 'refs/tags/v')
-    needs: type-check
+    needs: check-types
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -76,7 +74,7 @@ jobs:
 
   deploy:
     if: startsWith(github.ref, 'refs/tags/v')
-    needs: type-check
+    needs: check-types
     runs-on: ubuntu-latest
     concurrency:
       group: for-prod-${{ github.workflow }}
