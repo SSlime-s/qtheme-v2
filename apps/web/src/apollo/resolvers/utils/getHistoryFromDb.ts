@@ -1,5 +1,5 @@
 import type { Version } from '@/apollo/generated/resolvers'
-import type { PrismaClient } from '@prisma/client'
+import type { PrismaClient } from '@/model/generated/prisma-client'
 
 interface IHistory extends Version {
   id: string

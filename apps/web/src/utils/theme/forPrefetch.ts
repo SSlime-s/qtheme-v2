@@ -8,7 +8,7 @@ import { ThemeDocument } from '../graphql/getTheme.generated'
 
 import type { FormattedTheme } from './hooks'
 import type { Type, Visibility } from '@/apollo/generated/graphql'
-import type { PrismaClient } from '@prisma/client'
+import type { PrismaClient } from '@/model/generated/prisma-client'
 
 /**
  * @warning 権限のチェックは行わない

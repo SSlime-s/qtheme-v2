@@ -8,7 +8,7 @@ import type {
   Type,
   Visibility,
 } from '@/apollo/generated/resolvers'
-import type { Prisma } from '@prisma/client'
+import type { Prisma } from '@/model/generated/prisma-client'
 
 export const getRandomTheme: QueryResolvers<ContextValue>['getRandomTheme'] =
   async (_parent, args, { userId, prisma }) => {
