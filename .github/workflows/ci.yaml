@@ -52,9 +52,10 @@ jobs:
             **/*.generated.ts
             **/generated
           key: node_modules-generated-${{ github.sha }}
+      # TODO: next-env.d.ts を入れる場所をハードコーディングしているのを治す
       - run: |
-          echo '/// <reference types="next" />' > ./next-env.d.ts
-          echo '/// <reference types="next/image-types/global" />' >> ./next-env.d.ts
+          echo '/// <reference types="next" />' > ./apps/web/next-env.d.ts
+          echo '/// <reference types="next/image-types/global" />' >> ./apps/web/next-env.d.ts
       - run: pnpm run check-types
 
   notify-deploy:
