@@ -23,10 +23,12 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           cache: pnpm
+          cache-dependency-path: '**/pnpm-lock.yaml'
           node-version-file: .tool-versions
       - uses: actions/cache@v4
         with:
           path: |
+            **/node_modules
             **/*.generated.ts
             **/generated
           key: node_modules-generated-${{ github.sha }}
@@ -41,10 +43,12 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           cache: pnpm
+          cache-dependency-path: '**/pnpm-lock.yaml'
           node-version-file: .tool-versions
       - uses: actions/cache@v4
         with:
           path: |
+            **/node_modules
             **/*.generated.ts
             **/generated
           key: node_modules-generated-${{ github.sha }}
