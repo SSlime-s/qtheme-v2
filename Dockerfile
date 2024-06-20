@@ -1,9 +1,9 @@
 # for neoshowcase
 FROM node:20.14.0-bookworm-slim
 
-WORKDIR /app
-
 COPY . /app
+
+WORKDIR /app/apps/web
 
 ARG DATABASE_URL
 ARG NEXT_PUBLIC_GOOGLE_TAG_MANAGER_ID
