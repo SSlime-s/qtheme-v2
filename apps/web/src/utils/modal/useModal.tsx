@@ -2,7 +2,7 @@ import { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react'
 
 export const useModal = <
   TitleElement extends HTMLElement = HTMLHeadingElement,
-  TriggerElement extends HTMLElement = HTMLButtonElement
+  TriggerElement extends HTMLElement = HTMLButtonElement,
 >(
   id: string,
   /** 閉じる前に呼び出される関数 false を返すと閉じない */

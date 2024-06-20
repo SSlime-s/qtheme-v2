@@ -19,7 +19,7 @@ interface Props<K extends keyof typeof AdvancedKeys> {
   type?: Type
 }
 export const OptionalSelectors: React.FC<Props<keyof typeof AdvancedKeys>> = <
-  K extends keyof typeof AdvancedKeys
+  K extends keyof typeof AdvancedKeys,
 >({
   key1,
   label,

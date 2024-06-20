@@ -73,7 +73,7 @@ export interface ResolvedBasicTheme {
 }
 
 const resolveWithFallbackForDefaultBorder = <
-  T extends { default?: CSSImageType; border?: CSSColorType } | undefined
+  T extends { default?: CSSImageType; border?: CSSColorType } | undefined,
 >(
   original: T,
   fallback: CSSColorTypeSimple
@@ -90,7 +90,7 @@ const resolveWithFallbackForDefaultBackgroundInactive = <
         background?: CSSImageType
         inactive?: CSSColorType
       }
-    | undefined
+    | undefined,
 >(
   original: T,
   fallback: CSSColorTypeSimple

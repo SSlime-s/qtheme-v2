@@ -32,7 +32,9 @@ export const LoadingBar = styled.div`
 
   background-blend-mode: color;
   background-size: 400% 100%;
-  animation: ${LoadingKeyframes} 3s ease infinite, ${FadeTopKeyframes} 0.5s ease;
+  animation:
+    ${LoadingKeyframes} 3s ease infinite,
+    ${FadeTopKeyframes} 0.5s ease;
   opacity: 0.5;
   pointer-events: none;
 

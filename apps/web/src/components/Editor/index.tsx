@@ -289,7 +289,9 @@ const WhyRecommended = styled.button`
 
   color: ${lightTheme.basic.accent.primary};
 
-  transition: opacity 0.2s ease-out, transform 0.2s ease-out;
+  transition:
+    opacity 0.2s ease-out,
+    transform 0.2s ease-out;
 
   &:hover {
     opacity: 0.8;

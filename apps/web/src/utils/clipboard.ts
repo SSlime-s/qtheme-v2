@@ -42,13 +42,13 @@ export const useClipboardValue = (): string => {
 }
 export const useClipboard = (): [
   value: string,
-  setValue: (value: string) => void
+  setValue: (value: string) => void,
 ] => {
   return useAtom(clipboardAtom)
 }
 export const useCheckedClipboard = (): [
   value: string,
-  setValue: (value: string) => Promise<boolean>
+  setValue: (value: string) => Promise<boolean>,
 ] => {
   const [value, setValue] = useAtom(clipboardRawAtom)
 

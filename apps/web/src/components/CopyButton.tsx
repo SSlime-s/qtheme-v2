@@ -51,9 +51,11 @@ const Button = styled.button<{
     status === 'default'
       ? theme.theme.basic.accent.primary.default
       : status === 'copied'
-      ? theme.theme.basic.accent.online.default
-      : theme.theme.basic.accent.error.default};
-  transition: all 0.2s ease-out, transform 0.1s ease-out;
+        ? theme.theme.basic.accent.online.default
+        : theme.theme.basic.accent.error.default};
+  transition:
+    all 0.2s ease-out,
+    transform 0.1s ease-out;
   transition-property: color, transform;
   cursor: pointer;
   display: grid;

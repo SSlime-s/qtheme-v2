@@ -145,7 +145,9 @@ const ToggleSwitch = styled.input`
     border-radius: 50%;
     background-color: rgba(255, 255, 255);
     border: 1px solid rgba(0, 91, 172, 0.4);
-    transition: transform 0.2s ease-out, background-color 0.2s ease-out;
+    transition:
+      transform 0.2s ease-out,
+      background-color 0.2s ease-out;
   }
   &:checked:after {
     transform: translateX(16px);

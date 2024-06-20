@@ -78,7 +78,12 @@ const GlobalStyle = (isFixed: boolean) => css`
   }
 
   .mono {
-    font-family: SFMono-Regular, Consolas, Liberation Mono, Menlo, monospace;
+    font-family:
+      SFMono-Regular,
+      Consolas,
+      Liberation Mono,
+      Menlo,
+      monospace;
   }
 
   html,

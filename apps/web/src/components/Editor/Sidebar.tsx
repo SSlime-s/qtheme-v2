@@ -56,8 +56,14 @@ const SubmitButtonWrapper = styled.div`
     aspect-ratio: 1 / 1;
     background-color: transparent;
     background-repeat: no-repeat;
-    background-size: 50% 50%, 50% 50%;
-    background-position: 0 0, 100% 0, 100% 100%, 0 100%;
+    background-size:
+      50% 50%,
+      50% 50%;
+    background-position:
+      0 0,
+      100% 0,
+      100% 100%,
+      0 100%;
     background-image: linear-gradient(transparent, transparent),
       linear-gradient(transparent, transparent),
       linear-gradient(transparent, transparent),

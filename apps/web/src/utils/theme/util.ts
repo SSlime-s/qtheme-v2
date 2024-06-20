@@ -17,7 +17,7 @@ export const resolveOnlyDefault = (
 
 export const resolveWithFallback = <
   T extends { fallback: CSSColorTypeSimple },
-  S
+  S,
 >(
   original: T | CSSColorTypeSimple,
   f: (originalObj: T | undefined, fallback: string) => S

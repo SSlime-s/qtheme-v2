@@ -38,10 +38,10 @@ export const Error: React.FC<Props> = ({
     (statusCode === 404
       ? 'コンテンツが見つかりませんでした'
       : statusCode === 403
-      ? 'アクセス権限がありません'
-      : statusCode === 401
-      ? ' 部員限定コンテンツです'
-      : '予期せぬエラーが発生しました')
+        ? 'アクセス権限がありません'
+        : statusCode === 401
+          ? ' 部員限定コンテンツです'
+          : '予期せぬエラーが発生しました')
 
   const loginUrl = useLoginUrl()
 

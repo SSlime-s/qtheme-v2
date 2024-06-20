@@ -251,8 +251,8 @@ const CopyButton = styled.button<{ status: CopyStatus }>`
     status === 'idle'
       ? lightTheme.basic.background.primary
       : status === 'copied'
-      ? lightTheme.basic.accent.online
-      : lightTheme.basic.accent.error};
+        ? lightTheme.basic.accent.online
+        : lightTheme.basic.accent.error};
   opacity: ${({ status }) => (status === 'idle' ? 1 : 0.6)};
 
   ${({ status }) =>
