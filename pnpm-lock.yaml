@@ -32,9 +32,9 @@ importers:
       '@emotion/styled':
         specifier: ^11.11.5
         version: 11.11.5(@emotion/react@11.11.4(@types/react@18.3.3)(react@18.3.1))(@types/react@18.3.3)(react@18.3.1)
-      '@prisma/client':
-        specifier: 5.15.1
-        version: 5.15.1(prisma@5.15.1)
+      '@repo/database':
+        specifier: workspace:*
+        version: link:../../packages/database
       '@types/node':
         specifier: 20.14.5
         version: 20.14.5
@@ -231,9 +231,6 @@ importers:
       prettier:
         specifier: ^3.3.2
         version: 3.3.2
-      prisma:
-        specifier: ^5.15.1
-        version: 5.15.1
       require-from-string:
         specifier: ^2.0.2
         version: 2.0.2
@@ -252,6 +249,22 @@ importers:
       webpack:
         specifier: ^5.89.0
         version: 5.92.0
+
+  packages/database:
+    dependencies:
+      '@prisma/client':
+        specifier: 5.15.1
+        version: 5.15.1(prisma@5.15.1)
+    devDependencies:
+      '@types/node':
+        specifier: 20.14.5
+        version: 20.14.5
+      prisma:
+        specifier: ^5.15.1
+        version: 5.15.1
+      typescript:
+        specifier: 5.4.5
+        version: 5.4.5
 
 packages:
 

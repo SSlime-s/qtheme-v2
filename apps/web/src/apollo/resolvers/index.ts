@@ -9,7 +9,7 @@ import { toggleLike } from './toggleLike'
 import { updateTheme } from './updateTheme'
 
 import type { Resolvers } from '@/apollo/generated/resolvers'
-import type { PrismaClient } from '@/model/generated/prisma-client'
+import type { PrismaClient } from '@repo/database'
 import type { NextApiResponse } from 'next'
 
 export interface ContextValue {

@@ -7,7 +7,7 @@ import type {
   Type,
   Visibility,
 } from '@/apollo/generated/resolvers'
-import type { Prisma } from '@/model/generated/prisma-client'
+import type { Prisma } from '@repo/database'
 
 export const getThemes: QueryResolvers<ContextValue>['getThemes'] = async (
   _,
