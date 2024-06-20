@@ -18,12 +18,12 @@ jobs:
   install:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
           cache: pnpm
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         with:
           path: |
             **/*.generated.ts
@@ -35,12 +35,12 @@ jobs:
     needs: install
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
           cache: pnpm
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         with:
           path: |
             **/*.generated.ts
@@ -59,7 +59,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - uses: actions/github-script@v6
+      - uses: actions/github-script@v7
         id: generate
         with:
           result-encoding: string
@@ -82,7 +82,7 @@ jobs:
     env:
       BRANCH_NAME: tmp-${{ github.ref }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - run: git switch -c ${{ env.BRANCH_NAME }}
       - name: Set Config
         run: |
