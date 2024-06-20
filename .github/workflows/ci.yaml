@@ -32,7 +32,7 @@ jobs:
             **/*.generated.ts
             **/generated
           key: node_modules-generated-${{ github.sha }}
-      - run: pnpm install
+      - run: pnpm install --frozen-lockfile
 
   check-types:
     needs: install
