@@ -28,10 +28,9 @@ jobs:
       - uses: actions/cache@v4
         with:
           path: |
-            **/node_modules
             **/*.generated.ts
             **/generated
-          key: node_modules-generated-${{ github.sha }}
+          key: generated-${{ github.sha }}
       - run: pnpm install --frozen-lockfile
 
   check-types:
@@ -48,10 +47,10 @@ jobs:
       - uses: actions/cache@v4
         with:
           path: |
-            **/node_modules
             **/*.generated.ts
             **/generated
-          key: node_modules-generated-${{ github.sha }}
+          key: generated-${{ github.sha }}
+      - run: pnpm install --frozen-lockfile --ignore-scripts
       # TODO: next-env.d.ts を入れる場所をハードコーディングしているのを治す
       - run: |
           echo '/// <reference types="next" />' > ./apps/web/next-env.d.ts
