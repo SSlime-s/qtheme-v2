@@ -1,9 +1,9 @@
 import { keyframes } from '@emotion/react'
 import styled from '@emotion/styled'
+import { lightTheme } from '@repo/theme/default'
 import { BiPaint, BiWorld } from 'react-icons/bi'
 
 import { ModalTemplate } from '@/utils/modal/ModalTemplate'
-import { lightTheme } from '@/utils/theme/default'
 
 interface Props extends React.ComponentProps<'div'> {
   children?: never

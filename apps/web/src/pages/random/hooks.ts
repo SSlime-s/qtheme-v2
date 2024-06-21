@@ -1,9 +1,9 @@
+import { resolveTheme } from '@repo/theme/resolve'
 import { print } from 'graphql'
 import { useCallback, useMemo } from 'react'
 import useSWR from 'swr'
 
 import { useClient } from '@/utils/api'
-import { resolveTheme } from '@/utils/theme'
 import { themeFromRaw } from '@/utils/theme/hooks'
 
 import { getSdk, RandomDocument } from './getRandom.generated'

@@ -9,6 +9,6 @@
     "typeRoots": ["./node_modules/@types", "./src/@types", "./node_modules"],
     "types": ["vitest/globals"]
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "vitest.config.mts"],
   "exclude": ["node_modules"]
 }

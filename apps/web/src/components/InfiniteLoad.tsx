@@ -1,8 +1,8 @@
 import styled from '@emotion/styled'
+import { lightTheme } from '@repo/theme/default'
 import { useCallback, useEffect, useRef, useState } from 'react'
 
 import { useIsHoverable } from '@/utils/isMobile'
-import { lightTheme } from '@/utils/theme/default'
 
 import { GlassmorphismStyle } from './Glassmorphism'
 

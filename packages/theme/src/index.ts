@@ -4,9 +4,9 @@ Released under the MIT license
 https://opensource.org/licenses/mit-license.php
 */
 
-import { z } from 'zod'
+import { z } from "zod";
 
-import { parseColor } from './color'
+import { parseColor } from "./color";
 
 /**
  * それぞれの型や色の説明などは
@@ -14,35 +14,35 @@ import { parseColor } from './color'
  * を参照すること
  */
 
-export type CSSColorTypeSimple = string
+export type CSSColorTypeSimple = string;
 const CSSColorTypeSimpleSchema = z
   .string()
   .min(1)
-  .refine(value => parseColor(value) !== null, {
-    message: 'Invalid CSSColorTypeSimple',
-  })
+  .refine((value) => parseColor(value) !== null, {
+    message: "Invalid CSSColorTypeSimple",
+  });
 
-export type CSSColorType = string
-const CSSColorTypeSchema = z.string().min(1)
+export type CSSColorType = string;
+const CSSColorTypeSchema = z.string().min(1);
 
-export type CSSImageType = string
-const CSSImageTypeSchema = z.string().min(1)
+export type CSSImageType = string;
+const CSSImageTypeSchema = z.string().min(1);
 
-export type CSSImageColorType = z.infer<typeof CSSImageColorTypeSchema>
+export type CSSImageColorType = z.infer<typeof CSSImageColorTypeSchema>;
 const CSSImageColorTypeSchema = z.union([
   CSSColorTypeSchema,
   CSSImageTypeSchema,
-])
+]);
 
 const maybeCSSColorTypeSimple = <T extends z.ZodTypeAny>(t: T) =>
-  z.union([CSSColorTypeSimpleSchema, t])
+  z.union([CSSColorTypeSimpleSchema, t]);
 
 /**
  * 破壊的変更を防ぐために
  * - fallbackを常に定義すること
  * - fallback以外はoptionalにすること
  */
-export type BasicTheme = z.infer<typeof basicThemeSchema>
+export type BasicTheme = z.infer<typeof basicThemeSchema>;
 export const basicThemeSchema = z.object({
   accent: z.object({
     primary: maybeCSSColorTypeSimple(
@@ -110,9 +110,9 @@ export const basicThemeSchema = z.object({
     primary: CSSColorTypeSimpleSchema,
     secondary: CSSColorTypeSimpleSchema,
   }),
-})
+});
 
-export type SpecificTheme = z.infer<typeof specificThemeSchema>
+export type SpecificTheme = z.infer<typeof specificThemeSchema>;
 const specificThemeSchema = z.object({
   waveformColor: CSSColorTypeSchema,
   waveformGradation: CSSImageTypeSchema,
@@ -123,9 +123,9 @@ const specificThemeSchema = z.object({
   sideBarBackground: z.string(),
 
   stampEdgeEnable: z.boolean(),
-})
+});
 
-export type BrowserTheme = z.infer<typeof browserThemeSchema>
+export type BrowserTheme = z.infer<typeof browserThemeSchema>;
 const browserThemeSchema = z.object({
   themeColor: CSSColorTypeSchema,
   colorScheme: z.string(),
@@ -137,12 +137,12 @@ const browserThemeSchema = z.object({
   scrollbarThumb: CSSColorTypeSchema,
   scrollbarThumbHover: CSSColorTypeSchema,
   scrollbarTrack: CSSColorTypeSchema,
-})
+});
 
-export type MarkdownDefaultTheme = z.infer<typeof markdownDefaultThemeSchema>
-const markdownDefaultThemeSchema = z.enum(['auto', 'light', 'dark'])
+export type MarkdownDefaultTheme = z.infer<typeof markdownDefaultThemeSchema>;
+const markdownDefaultThemeSchema = z.enum(["auto", "light", "dark"]);
 
-export type MarkdownTheme = z.infer<typeof markdownThemeSchema>
+export type MarkdownTheme = z.infer<typeof markdownThemeSchema>;
 const markdownThemeSchema = z.object({
   codeHighlight: markdownDefaultThemeSchema,
   linkText: CSSColorTypeSchema,
@@ -165,18 +165,18 @@ const markdownThemeSchema = z.object({
   embedLinkBackground: CSSColorTypeSchema,
   embedLinkHighlightText: CSSColorTypeSchema,
   embedLinkHighlightBackground: CSSColorTypeSchema,
-})
+});
 
 export type ExtendedOptionalMarkdownTheme = z.infer<
   typeof extendedOptionalMarkdownThemeSchema
->
+>;
 const extendedOptionalMarkdownThemeSchema = z
   .object({
     extends: markdownDefaultThemeSchema,
   })
-  .merge(markdownThemeSchema.partial())
+  .merge(markdownThemeSchema.partial());
 
-export type Theme = z.infer<typeof themeSchema>
+export type Theme = z.infer<typeof themeSchema>;
 export const themeSchema = z.object({
   version: z.literal(2),
   basic: basicThemeSchema,
@@ -185,4 +185,4 @@ export const themeSchema = z.object({
   markdown: z
     .union([markdownDefaultThemeSchema, extendedOptionalMarkdownThemeSchema])
     .optional(),
-})
+});

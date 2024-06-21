@@ -1,3 +1,5 @@
+import { lightTheme } from '@repo/theme/default'
+import { resolveTheme } from '@repo/theme/resolve'
 import dayjs from 'dayjs'
 import { print } from 'graphql'
 import { atom, useAtom } from 'jotai'
@@ -5,7 +7,7 @@ import { useCallback, useMemo, useState } from 'react'
 import useSWR from 'swr'
 import useSWRInfinite from 'swr/infinite'
 
-import { themeSchema } from '@/model/theme'
+import { themeSchema } from '@repo/theme'
 import { newClient, useClient } from '@/utils/api'
 import { getSdk as getSdkEditTheme } from '@/utils/graphql/editTheme.generated'
 import {
@@ -17,12 +19,9 @@ import {
   ThemesDocument,
 } from '@/utils/graphql/getThemes.generated'
 import { getSdk as getSdkToggleLike } from '@/utils/graphql/toggleLike.generated'
-import { resolveTheme } from '@/utils/theme'
-
-import { lightTheme } from './default'
 
 import type { Theme as ThemeRes } from '@/apollo/generated/graphql'
-import type { Theme } from '@/model/theme'
+import type { Theme } from '@repo/theme'
 import type { Sdk as SdkGetThemes } from '@/utils/graphql/getThemes.generated'
 
 export const THEMES_PER_PAGE = 20

@@ -1,9 +1,9 @@
 import styled from '@emotion/styled'
+import { lightTheme, darkTheme } from '@repo/theme/default'
 import { useEffect, useRef } from 'react'
 import WebGLFluid from 'webgl-fluid'
 
-import { parseHexNotationColor } from '@/model/color'
-import { lightTheme, darkTheme } from '@/utils/theme/default'
+import { parseHexNotationColor } from '@repo/theme/color'
 
 import type { ComponentProps } from 'react'
 

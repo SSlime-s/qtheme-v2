@@ -5,7 +5,7 @@ import { BsHash } from 'react-icons/bs'
 
 import { useAccordion, useHiddenTransition } from '@/utils/accordion'
 
-import type { ResolvedTheme } from '@/utils/theme'
+import type { ResolvedTheme } from '@repo/theme/resolve'
 import type { PropsWithChildren } from 'react'
 
 interface Props {

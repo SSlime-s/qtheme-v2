@@ -1,13 +1,12 @@
 import styled from '@emotion/styled'
+import { resolveTheme } from '@repo/theme/resolve'
 import { useCallback, useMemo, useState } from 'react'
 import { useFormContext, useWatch } from 'react-hook-form'
-
-import { resolveTheme } from '@/utils/theme'
 
 import { ColorSelector } from './ColorSelector'
 
 import type { Form } from '@/components/Editor'
-import type { Theme } from '@/model/theme'
+import type { Theme } from '@repo/theme'
 
 const BasicKeys = {
   accent: ['primary', 'notification', 'online', 'error', 'focus'] as const,

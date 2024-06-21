@@ -1,11 +1,11 @@
 import { ThemeProvider } from '@emotion/react'
 import styled from '@emotion/styled'
+import { lightTheme } from '@repo/theme/default'
+import { resolveTheme } from '@repo/theme/resolve'
 import Link from 'next/link'
 import { useCallback, useMemo } from 'react'
 
 import { lineClamp } from '@/styles/lineClamp'
-import { resolveTheme } from '@/utils/theme'
-import { lightTheme } from '@/utils/theme/default'
 import { WrapResolver } from '@/utils/wrapper'
 import { BreakStyle, BudouJa } from '@/utils/wrapper/BudouX'
 import { Linkify } from '@/utils/wrapper/Linkify'

@@ -1,9 +1,9 @@
+import { lightTheme } from '@repo/theme/default'
+import { resolveTheme } from '@repo/theme/resolve'
 import { ImageResponse } from 'next/og'
 
 import { SmallPreview } from '@/components/preview'
-import { themeSchema } from '@/model/theme'
-import { resolveTheme } from '@/utils/theme'
-import { lightTheme } from '@/utils/theme/default'
+import { themeSchema } from '@repo/theme'
 
 import type { NextRequest } from 'next/server'
 import type { ReactElement } from 'react'

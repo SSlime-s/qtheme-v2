@@ -1,15 +1,15 @@
 import { css } from '@emotion/react'
 import styled from '@emotion/styled'
+import { parseHexNotationColor } from '@repo/theme/color'
+import { lightTheme } from '@repo/theme/default'
 import { useSetAtom } from 'jotai'
 import dynamic from 'next/dynamic'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import React from 'react'
 
 import { TransparentCheckerStyle } from '@/components/TransparentChecker'
-import { parseHexNotationColor } from '@/model/color'
 import { fixLayoutAtom } from '@/pages/_app.page'
 import { useControlledAccordion, useHiddenTransition } from '@/utils/accordion'
-import { lightTheme } from '@/utils/theme/default'
 
 // NOTE: react color が SSR で動かないので、SSR では動かないようにする
 const SketchPicker = dynamic(

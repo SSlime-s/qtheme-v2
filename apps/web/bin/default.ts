@@ -4,7 +4,7 @@
 
 import { ulid } from 'ulid'
 
-import { darkTheme, lightTheme } from '../src/utils/theme/default.js'
+import { darkTheme, lightTheme } from 'node_modules/@repo/theme/dist/default.js'
 
 const createdAt = new Date('2019-11-22T00:00:00.000Z')
 const createdAt2 = new Date('2019-11-22T00:00:01.000Z')
@@ -34,8 +34,8 @@ VALUES ('${id}', '${title}', '${description}', '${author}', '${visibility}', '${
   lightTheme
 )}', '${createdAt.toISOString()}'),
         ('${id2}', '${title2}', '${description2}', '${author}', '${visibility}', '${type2}', '${JSON.stringify(
-  darkTheme
-)}', '${createdAt2.toISOString()}')
+          darkTheme
+        )}', '${createdAt2.toISOString()}')
 `
 
 const sql_version = `
@@ -44,8 +44,8 @@ VALUES ('${idForVersion}', '${id}', 1, '${JSON.stringify(
   lightTheme
 )}', '${createdAt.toISOString()}'),
        ('${idForVersion2}', '${id2}', 1, '${JSON.stringify(
-  darkTheme
-)}', '${createdAt2.toISOString()}')
+         darkTheme
+       )}', '${createdAt2.toISOString()}')
 `
 
 console.log('sql_theme\n\n', sql_theme)

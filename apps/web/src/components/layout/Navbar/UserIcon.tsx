@@ -1,4 +1,5 @@
 import styled from '@emotion/styled'
+import { lightTheme } from '@repo/theme/default'
 import Image from 'next/image'
 import NextLink from 'next/link'
 import { BiWorld } from 'react-icons/bi'
@@ -9,7 +10,6 @@ import { MdClose, MdFavorite, MdNavigateNext } from 'react-icons/md'
 import { userIconUrl } from '@/utils/api'
 import { ModalTemplate } from '@/utils/modal/ModalTemplate'
 import { useModal } from '@/utils/modal/useModal'
-import { lightTheme } from '@/utils/theme/default'
 import { useLoginUrl } from '@/utils/useLoginUrl'
 
 interface Props {

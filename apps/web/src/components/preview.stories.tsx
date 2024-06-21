@@ -1,8 +1,7 @@
 import { ThemeProvider } from '@emotion/react'
 import styled from '@emotion/styled'
-
-import { resolveTheme } from '@/utils/theme'
-import { lightTheme, darkTheme } from '@/utils/theme/default'
+import { lightTheme, darkTheme } from '@repo/theme/default'
+import { resolveTheme } from '@repo/theme/resolve'
 
 import { GlassmorphismStyle } from './Glassmorphism'
 import { SmallPreview } from './preview'

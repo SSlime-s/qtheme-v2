@@ -12,7 +12,7 @@ import { BreakStyle, BudouJa } from '@/utils/wrapper/BudouX'
 import { Linkify } from '@/utils/wrapper/Linkify'
 import { ReplaceNewLine } from '@/utils/wrapper/ReplaceNewLine'
 
-import type { ResolvedTheme } from '@/utils/theme'
+import type { ResolvedTheme } from '@repo/theme/resolve'
 import type { PropsWithChildren } from 'react'
 
 interface Props {

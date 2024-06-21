@@ -1,7 +1,6 @@
 import { ThemeProvider } from '@emotion/react'
-
-import { resolveTheme } from '@/utils/theme'
-import { lightTheme } from '@/utils/theme/default'
+import { lightTheme } from '@repo/theme/default'
+import { resolveTheme } from '@repo/theme/resolve'
 
 import { TextBox } from './TextBox'
 

@@ -17,8 +17,8 @@ import type { Connection } from 'mysql2/promise'
 import { ulid } from 'ulid'
 
 import { bumpVersion } from '../src/apollo/resolvers/utils/bumpVersion.js'
-import { basicThemeSchema, Theme } from '../src/model/theme.js'
-import { isDarkColor } from '../src/model/color.js'
+import { basicThemeSchema, Theme } from '../node_modules/@repo/theme/dist/index.js'
+import { isDarkColor } from '../node_modules/@repo/theme/dist/color.js'
 import { createConnection } from 'mysql2/promise'
 
 const connectDb = async () => {

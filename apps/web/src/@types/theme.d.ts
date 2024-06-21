@@ -1,4 +1,4 @@
-import type { ResolvedTheme } from '@/utils/theme'
+import type { ResolvedTheme } from '@repo/theme/resolve'
 import '@emotion/react'
 
 declare module '@emotion/react' {

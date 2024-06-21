@@ -26,6 +26,8 @@ const nextConfig = {
     return config
   },
 
+  // transpilePackages: ['@repo/database', '@repo/theme'],
+
   experimental: {
     externalDir: true,
   },
