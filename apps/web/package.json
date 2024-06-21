@@ -19,11 +19,12 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@repo/database": "workspace:*",
     "@apollo/server": "^4.10.4",
     "@as-integrations/next": "^3.0.0",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
+    "@repo/database": "workspace:*",
+    "@repo/typescript-config": "workspace:*",
     "@types/node": "20.14.5",
     "@types/react": "18.3.3",
     "@types/react-dom": "18.3.0",
@@ -48,7 +49,7 @@
     "sharp": "^0.32.6",
     "swr": "^2.2.4",
     "ts-pattern": "^5.0.5",
-    "typescript": "5.4.5",
+    "typescript": "5.5.2",
     "ulid": "^2.3.0",
     "webgl-fluid": "^0.3.4",
     "xmlhttprequest": "^1.8.0",
