@@ -1,5 +1,6 @@
-import { themeSchema } from '@repo/theme'
 import { z } from 'zod'
+
+import { themeSchema } from '@repo/theme'
 
 export const ulidSchema = z.string().uuid()
 

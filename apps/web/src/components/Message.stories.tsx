@@ -1,4 +1,5 @@
 import { ThemeProvider } from '@emotion/react'
+
 import { lightTheme } from '@repo/theme/default'
 import { resolveTheme } from '@repo/theme/resolve'
 

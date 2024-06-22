@@ -1,8 +1,8 @@
 import { keyframes } from '@emotion/react'
 import styled from '@emotion/styled'
-import { lightTheme } from '@repo/theme/default'
 
 import { ModalTemplate } from '@/utils/modal/ModalTemplate'
+import { lightTheme } from '@repo/theme/default'
 
 interface Props extends React.ComponentProps<'div'> {
   children?: never

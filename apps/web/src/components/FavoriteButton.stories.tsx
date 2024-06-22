@@ -8,7 +8,7 @@ const meta: Meta<typeof FavoriteButton> = {
   title: 'Components/FavoriteButton',
   component: FavoriteButton,
   args: {
-    onClick: fn()
+    onClick: fn(),
   },
   argTypes: {
     isFavorite: { control: 'boolean' },

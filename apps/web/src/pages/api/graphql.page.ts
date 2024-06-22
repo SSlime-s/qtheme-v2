@@ -1,10 +1,10 @@
 import { ApolloServer } from '@apollo/server'
 import { startServerAndCreateNextHandler } from '@as-integrations/next'
-import { prisma } from '@repo/database'
 
 import { resolvers } from '@/apollo/resolvers'
 import typeDefs from '@/apollo/schema.graphql'
 import { extractShowcaseUser } from '@/utils/extractUser'
+import { prisma } from '@repo/database'
 
 import type { ContextValue } from '@/apollo/resolvers'
 import type { NextApiHandler } from 'next'

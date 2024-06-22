@@ -1,5 +1,6 @@
 import { ThemeProvider } from '@emotion/react'
 import styled from '@emotion/styled'
+
 import { lightTheme, darkTheme } from '@repo/theme/default'
 import { resolveTheme } from '@repo/theme/resolve'
 import { SmallPreview } from '@repo/theme-preview'

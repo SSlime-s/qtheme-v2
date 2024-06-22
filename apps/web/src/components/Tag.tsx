@@ -1,8 +1,9 @@
 import { css } from '@emotion/react'
 import styled from '@emotion/styled'
-import { lightTheme } from '@repo/theme/default'
 import Link from 'next/link'
 import React, { useMemo } from 'react'
+
+import { lightTheme } from '@repo/theme/default'
 
 import { ColoredGlassmorphismStyle } from './Glassmorphism'
 

@@ -1,5 +1,4 @@
 import styled from '@emotion/styled'
-import { lightTheme } from '@repo/theme/default'
 import Head from 'next/head'
 import { useMemo } from 'react'
 import { TfiReload } from 'react-icons/tfi'
@@ -25,6 +24,7 @@ import { WrapResolver } from '@/utils/wrapper'
 import { BreakStyle, BudouJa } from '@/utils/wrapper/BudouX'
 import { Linkify } from '@/utils/wrapper/Linkify'
 import { ReplaceNewLine } from '@/utils/wrapper/ReplaceNewLine'
+import { lightTheme } from '@repo/theme/default'
 
 import { useRandomTheme } from './hooks'
 

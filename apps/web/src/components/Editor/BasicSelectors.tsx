@@ -1,7 +1,8 @@
 import styled from '@emotion/styled'
-import { resolveTheme } from '@repo/theme/resolve'
 import { useCallback, useMemo, useState } from 'react'
 import { useFormContext, useWatch } from 'react-hook-form'
+
+import { resolveTheme } from '@repo/theme/resolve'
 
 import { ColorSelector } from './ColorSelector'
 

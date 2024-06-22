@@ -1,7 +1,8 @@
 import styled from '@emotion/styled'
-import { lightTheme } from '@repo/theme/default'
 import { useId } from 'react'
 import { useFormContext } from 'react-hook-form'
+
+import { lightTheme } from '@repo/theme/default'
 
 import type { Form } from '@/components/Editor'
 

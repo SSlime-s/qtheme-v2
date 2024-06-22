@@ -1,9 +1,9 @@
 import styled from '@emotion/styled'
-import { lightTheme } from '@repo/theme/default'
 import { useId } from 'react'
 import { useFormContext } from 'react-hook-form'
 
 import { AutoResizeTextarea } from '@/components/AutoResizeTextarea'
+import { lightTheme } from '@repo/theme/default'
 
 import type { Form } from '@/components/Editor'
 

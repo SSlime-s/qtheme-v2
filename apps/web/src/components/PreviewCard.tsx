@@ -1,8 +1,5 @@
 import { ThemeProvider } from '@emotion/react'
 import styled from '@emotion/styled'
-import { lightTheme } from '@repo/theme/default'
-import { resolveTheme } from '@repo/theme/resolve'
-import { SmallPreview } from '@repo/theme-preview'
 import Link from 'next/link'
 import { useCallback, useMemo } from 'react'
 
@@ -11,6 +8,9 @@ import { WrapResolver } from '@/utils/wrapper'
 import { BreakStyle, BudouJa } from '@/utils/wrapper/BudouX'
 import { Linkify } from '@/utils/wrapper/Linkify'
 import { ReplaceNewLine } from '@/utils/wrapper/ReplaceNewLine'
+import { lightTheme } from '@repo/theme/default'
+import { resolveTheme } from '@repo/theme/resolve'
+import { SmallPreview } from '@repo/theme-preview'
 
 import { FavoriteButton } from './FavoriteButton'
 import { GlassmorphismStyle } from './Glassmorphism'

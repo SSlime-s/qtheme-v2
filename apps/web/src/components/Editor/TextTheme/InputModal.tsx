@@ -1,11 +1,11 @@
 import { css, keyframes } from '@emotion/react'
 import styled from '@emotion/styled'
-import { lightTheme } from '@repo/theme/default'
 import { useCallback, useEffect, useRef, useState } from 'react'
 
 import { AutoResizeTextarea } from '@/components/AutoResizeTextarea'
 import { useAutoRestoreState } from '@/utils/autoRestoreState'
 import { ModalTemplate } from '@/utils/modal/ModalTemplate'
+import { lightTheme } from '@repo/theme/default'
 
 import { wiggleElement } from './WiggleAnimation'
 

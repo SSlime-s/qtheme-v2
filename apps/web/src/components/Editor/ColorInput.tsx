@@ -1,9 +1,9 @@
 import styled from '@emotion/styled'
-import { lightTheme } from '@repo/theme/default'
 import { useCallback } from 'react'
 import { BsTextLeft } from 'react-icons/bs'
 
 import { AutoResizeTextarea } from '@/components/AutoResizeTextarea'
+import { lightTheme } from '@repo/theme/default'
 
 interface Props {
   onChange: (color: string) => void

@@ -1,6 +1,3 @@
-import { themeSchema } from '@repo/theme'
-import { lightTheme } from '@repo/theme/default'
-import { resolveTheme } from '@repo/theme/resolve'
 import dayjs from 'dayjs'
 import { print } from 'graphql'
 import { atom, useAtom } from 'jotai'
@@ -19,6 +16,9 @@ import {
   ThemesDocument,
 } from '@/utils/graphql/getThemes.generated'
 import { getSdk as getSdkToggleLike } from '@/utils/graphql/toggleLike.generated'
+import { themeSchema } from '@repo/theme'
+import { lightTheme } from '@repo/theme/default'
+import { resolveTheme } from '@repo/theme/resolve'
 
 import type { Theme as ThemeRes } from '@/apollo/generated/graphql'
 import type { Sdk as SdkGetThemes } from '@/utils/graphql/getThemes.generated'

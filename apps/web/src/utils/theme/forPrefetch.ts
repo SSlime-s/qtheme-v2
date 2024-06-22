@@ -1,7 +1,8 @@
-import { themeSchema } from '@repo/theme'
 import dayjs from 'dayjs'
 import { print } from 'graphql'
 import { unstable_serialize } from 'swr'
+
+import { themeSchema } from '@repo/theme'
 
 import { ThemeDocument } from '../graphql/getTheme.generated'
 

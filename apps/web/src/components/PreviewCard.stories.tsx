@@ -1,6 +1,7 @@
 import styled from '@emotion/styled'
-import { darkTheme, lightTheme } from '@repo/theme/default'
 import { fn } from '@storybook/test'
+
+import { darkTheme, lightTheme } from '@repo/theme/default'
 
 import { PreviewCard } from './PreviewCard'
 

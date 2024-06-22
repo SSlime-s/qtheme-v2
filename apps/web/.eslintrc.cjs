@@ -49,10 +49,10 @@ module.exports = {
         pathGroupsExcludedImportTypes: ['builtin', 'type'],
         pathGroups: [
           {
-            pattern: '@/**',
+            pattern: '{@,@repo}/**',
             group: 'parent',
             position: 'before',
-          },
+          }
         ],
         alphabetize: {
           order: 'asc',
