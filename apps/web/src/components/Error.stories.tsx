@@ -1,8 +1,8 @@
 import { Error } from './Error'
 
-import type { ComponentMeta, ComponentStory } from '@storybook/react'
+import type { Meta, StoryFn } from '@storybook/react'
 
-export default {
+const meta: Meta<typeof Error> = {
   title: 'Components/Error',
   component: Error,
   argTypes: {
@@ -12,13 +12,15 @@ export default {
       options: [404, 403, 401, 500],
     },
   },
-} as ComponentMeta<typeof Error>
+}
 
-const Template: ComponentStory<typeof Error> = (
-  args: Parameters<typeof Error>[0]
-) => <Error {...args} />
+export default meta
 
-export const Default: ComponentStory<typeof Error> = Template.bind({})
+const Template: StoryFn<typeof Error> = (args: Parameters<typeof Error>[0]) => (
+  <Error {...args} />
+)
+
+export const Default: StoryFn<typeof Error> = Template.bind({})
 Default.args = {
   statusCode: 404,
 }

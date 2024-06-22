@@ -4,12 +4,14 @@ import { resolveTheme } from '@repo/theme/resolve'
 
 import { TextBox } from './TextBox'
 
-import type { ComponentMeta } from '@storybook/react'
+import type { Meta } from '@storybook/react'
 
-export default {
+const meta: Meta<typeof TextBox> = {
   title: 'Components/TextBox',
   component: TextBox,
-} as ComponentMeta<typeof TextBox>
+}
+
+export default meta
 
 export const Default = () => (
   <ThemeProvider theme={{ theme: resolveTheme(lightTheme) }}>

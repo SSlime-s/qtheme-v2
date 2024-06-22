@@ -4,20 +4,22 @@ import { resolveTheme } from '@repo/theme/resolve'
 
 import { Message } from './Message'
 
-import type { ComponentMeta, ComponentStory } from '@storybook/react'
+import type { Meta, StoryFn } from '@storybook/react'
 
-export default {
+const meta: Meta<typeof Message> = {
   title: 'Components/Message',
   component: Message,
-} as ComponentMeta<typeof Message>
+}
 
-const Template: ComponentStory<typeof Message> = args => (
+export default meta
+
+const Template: StoryFn<typeof Message> = args => (
   <ThemeProvider theme={{ theme: resolveTheme(lightTheme) }}>
     <Message {...args} />
   </ThemeProvider>
 )
 
-export const Default = Template.bind({})
+export const Default: StoryFn<typeof Message> = Template.bind({})
 Default.args = {
   iconUser: 'SSlime',
   name: 'SSlime',

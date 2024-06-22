@@ -6,14 +6,16 @@ import { resolveTheme } from '@repo/theme/resolve'
 import { Channel, ChannelAccordion } from './ChannelAccordion'
 
 import type { ResolvedTheme } from '@repo/theme/resolve'
-import type { ComponentMeta, ComponentStory } from '@storybook/react'
+import type { Meta, StoryFn } from '@storybook/react'
 
-export default {
+const meta: Meta<typeof ChannelAccordion> = {
   title: 'Components/Layout/Components/ChannelAccordion',
   component: ChannelAccordion,
-} as ComponentMeta<typeof ChannelAccordion>
+}
 
-const Template: ComponentStory<typeof ChannelAccordion> = function (
+export default meta
+
+const Template: StoryFn<typeof ChannelAccordion> = function (
   this: {
     theme: ResolvedTheme
   },
@@ -40,19 +42,17 @@ const Wrap = styled.div`
   background: ${({ theme }) => theme.theme.basic.background.secondary.default};
 `
 
-export const LightDefault: ComponentStory<typeof ChannelAccordion> =
-  Template.bind({
-    theme: resolveTheme(lightTheme),
-  })
+export const LightDefault: StoryFn<typeof ChannelAccordion> = Template.bind({
+  theme: resolveTheme(lightTheme),
+})
 LightDefault.args = {
   name: 'favorite',
   to: '#',
 }
 
-export const DarkDefault: ComponentStory<typeof ChannelAccordion> =
-  Template.bind({
-    theme: resolveTheme(darkTheme),
-  })
+export const DarkDefault: StoryFn<typeof ChannelAccordion> = Template.bind({
+  theme: resolveTheme(darkTheme),
+})
 DarkDefault.args = {
   name: 'favorite',
   to: '#',

@@ -1,16 +1,20 @@
-const path = require('path')
+import path, { dirname, join } from "node:path";
 
 module.exports = {
   stories: ['../src/**/*.stories.@(js|jsx|ts|tsx)'],
+
   addons: [
-    '@storybook/addon-links',
-    '@storybook/addon-essentials',
-    '@storybook/addon-interactions',
+    getAbsolutePath("@storybook/addon-links"),
+    getAbsolutePath("@storybook/addon-essentials"),
+    getAbsolutePath("@storybook/addon-interactions"),
+    getAbsolutePath("@chromatic-com/storybook")
   ],
-  framework: '@storybook/react',
-  core: {
-    builder: '@storybook/builder-webpack5',
+
+  framework: {
+    name: getAbsolutePath("@storybook/nextjs"),
+    options: {}
   },
+
   webpackFinal: async config => {
     config.resolve.alias = {
       ...config.resolve.alias,
@@ -19,4 +23,14 @@ module.exports = {
 
     return config
   },
+
+  docs: {},
+
+  typescript: {
+    reactDocgen: "react-docgen-typescript"
+  }
+}
+
+function getAbsolutePath(value) {
+  return dirname(require.resolve(join(value, "package.json")));
 }

@@ -1,19 +1,22 @@
 import styled from '@emotion/styled'
 import { darkTheme, lightTheme } from '@repo/theme/default'
+import { fn } from '@storybook/test'
 
 import { PreviewCard } from './PreviewCard'
 
-import type { ComponentMeta, ComponentStory } from '@storybook/react'
+import type { Meta, StoryFn } from '@storybook/react'
 
-export default {
+const meta: Meta<typeof PreviewCard> = {
   title: 'Components/PreviewCard',
   component: PreviewCard,
-  argTypes: {
-    changeTheme: { action: 'changeTheme' },
+  args: {
+    changeTheme: fn(),
   },
-} as ComponentMeta<typeof PreviewCard>
+}
 
-const Template: ComponentStory<typeof PreviewCard> = (
+export default meta
+
+const Template: StoryFn<typeof PreviewCard> = (
   args: Parameters<typeof PreviewCard>[0]
 ) => (
   <Wrap>
@@ -28,9 +31,7 @@ const Wrap = styled.div`
   padding: 32px;
 `
 
-export const LightDefault: ComponentStory<typeof PreviewCard> = Template.bind(
-  {}
-)
+export const LightDefault: StoryFn<typeof PreviewCard> = Template.bind({})
 LightDefault.args = {
   themeInfo: {
     id: 'light',
@@ -47,7 +48,7 @@ LightDefault.args = {
   },
 }
 
-export const DarkDefault: ComponentStory<typeof PreviewCard> = Template.bind({})
+export const DarkDefault: StoryFn<typeof PreviewCard> = Template.bind({})
 DarkDefault.args = {
   themeInfo: {
     id: 'dark',

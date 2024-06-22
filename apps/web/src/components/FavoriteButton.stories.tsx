@@ -1,22 +1,27 @@
+import { fn } from '@storybook/test'
+
 import { FavoriteButton } from './FavoriteButton'
 
-import type { ComponentMeta, ComponentStory } from '@storybook/react'
+import type { Meta, StoryFn } from '@storybook/react'
 
-export default {
+const meta: Meta<typeof FavoriteButton> = {
   title: 'Components/FavoriteButton',
   component: FavoriteButton,
+  args: {
+    onClick: fn()
+  },
   argTypes: {
     isFavorite: { control: 'boolean' },
-    onClick: { action: 'onClick' },
     favoriteCount: { control: 'number' },
   },
-} as ComponentMeta<typeof FavoriteButton>
+}
+export default meta
 
-const Template: ComponentStory<typeof FavoriteButton> = (
+const Template: StoryFn<typeof FavoriteButton> = (
   args: Parameters<typeof FavoriteButton>[0]
 ) => <FavoriteButton {...args} />
 
-export const Default: ComponentStory<typeof FavoriteButton> = Template.bind({})
+export const Default: StoryFn<typeof FavoriteButton> = Template.bind({})
 Default.args = {
   isFavorite: false,
   favoriteCount: 100,

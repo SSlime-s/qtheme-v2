@@ -6,14 +6,16 @@ import { resolveTheme } from '@repo/theme/resolve'
 import { Layout } from '.'
 
 import type { ResolvedTheme } from '@repo/theme/resolve'
-import type { ComponentMeta, ComponentStory } from '@storybook/react'
+import type { Meta, StoryFn } from '@storybook/react'
 
-export default {
+const meta: Meta<typeof Layout> = {
   title: 'Components/Layout',
   component: Layout,
-} as ComponentMeta<typeof Layout>
+}
 
-const Template: ComponentStory<typeof Layout> = function (
+export default meta
+
+const Template: StoryFn<typeof Layout> = function (
   this: {
     theme: ResolvedTheme
   },
@@ -43,28 +45,28 @@ const Content = styled.div`
   gap: 1000px;
 `
 
-export const LightLogin: ComponentStory<typeof Layout> = Template.bind({
+export const LightLogin: StoryFn<typeof Layout> = Template.bind({
   theme: resolveTheme(lightTheme),
 })
 LightLogin.args = {
   userId: 'SSlime',
 }
 
-export const DarkLogin: ComponentStory<typeof Layout> = Template.bind({
+export const DarkLogin: StoryFn<typeof Layout> = Template.bind({
   theme: resolveTheme(darkTheme),
 })
 DarkLogin.args = {
   userId: 'SSlime',
 }
 
-export const LightNotLogin: ComponentStory<typeof Layout> = Template.bind({
+export const LightNotLogin: StoryFn<typeof Layout> = Template.bind({
   theme: resolveTheme(lightTheme),
 })
 LightNotLogin.args = {
   userId: undefined,
 }
 
-export const DarkNotLogin: ComponentStory<typeof Layout> = Template.bind({
+export const DarkNotLogin: StoryFn<typeof Layout> = Template.bind({
   theme: resolveTheme(darkTheme),
 })
 DarkNotLogin.args = {
