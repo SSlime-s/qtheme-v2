@@ -43,8 +43,10 @@
     "build:base": "tsup src/{index,default,color,resolve/index,utils/codec,utils/color}.ts --dts --format cjs,esm --out-dir dist",
     "build": "pnpm run build:base -- --minify",
     "dev": "pnpm run build:base -- --watch",
+    "postinstall": "pnpm run build",
     "check-types": "tsc --noEmit",
-    "test": "vitest run"
+    "test": "vitest run",
+    "clean": "rm -rf dist"
   },
   "dependencies": {
     "lz-string": "^1.5.0",

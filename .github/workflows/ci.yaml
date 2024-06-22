@@ -30,6 +30,7 @@ jobs:
           path: |
             **/*.generated.ts
             **/generated
+            **/dist
           key: generated-${{ github.sha }}
       - run: pnpm install --frozen-lockfile
 
@@ -49,6 +50,7 @@ jobs:
           path: |
             **/*.generated.ts
             **/generated
+            **/dist
           key: generated-${{ github.sha }}
       - run: pnpm install --frozen-lockfile --ignore-scripts
       # TODO: next-env.d.ts を入れる場所をハードコーディングしているのを治す

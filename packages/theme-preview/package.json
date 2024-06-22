@@ -13,7 +13,9 @@
     "build:base": "tsup src/index.tsx --dts --format cjs,esm --out-dir dist",
     "build": "pnpm run build:base -- --minify",
     "dev": "pnpm run build:base -- --watch",
-    "check-types": "tsc --noEmit"
+    "postinstall": "pnpm run build",
+    "check-types": "tsc --noEmit",
+    "clean": "rm -rf dist"
   },
   "dependencies": {
     "@emotion/react": "^11.11.4",
