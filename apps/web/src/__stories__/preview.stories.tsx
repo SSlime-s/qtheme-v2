@@ -2,18 +2,20 @@ import { ThemeProvider } from '@emotion/react'
 import styled from '@emotion/styled'
 import { lightTheme, darkTheme } from '@repo/theme/default'
 import { resolveTheme } from '@repo/theme/resolve'
+import { SmallPreview } from '@repo/theme-preview'
 
-import { GlassmorphismStyle } from './Glassmorphism'
-import { SmallPreview } from './preview'
+import { GlassmorphismStyle } from '../components/Glassmorphism'
 
-import type { ComponentMeta, ComponentStory } from '@storybook/react'
+import type { Meta, StoryFn } from '@storybook/react'
 
-export default {
+const meta: Meta<typeof SmallPreview> = {
   title: 'Components/Preview',
   component: SmallPreview,
-} as ComponentMeta<typeof SmallPreview>
+}
 
-const Template: ComponentStory<typeof SmallPreview> = (
+export default meta
+
+const Template: StoryFn<typeof SmallPreview> = (
   args: Parameters<typeof SmallPreview>[0]
 ) => (
   <ThemeProvider theme={{ theme: args.theme }}>
@@ -53,17 +55,13 @@ const CardGlass = styled.div`
   padding: 40px;
 `
 
-export const LightDefault: ComponentStory<typeof SmallPreview> = Template.bind(
-  {}
-)
+export const LightDefault: StoryFn<typeof SmallPreview> = Template.bind({})
 LightDefault.args = {
   author: 'SSlime',
   theme: resolveTheme(lightTheme),
 }
 
-export const DarkDefault: ComponentStory<typeof SmallPreview> = Template.bind(
-  {}
-)
+export const DarkDefault: StoryFn<typeof SmallPreview> = Template.bind({})
 DarkDefault.args = {
   author: 'SSlime',
   theme: resolveTheme(darkTheme),

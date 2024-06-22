@@ -2,6 +2,7 @@ import { ThemeProvider } from '@emotion/react'
 import styled from '@emotion/styled'
 import { lightTheme } from '@repo/theme/default'
 import { resolveTheme } from '@repo/theme/resolve'
+import { SmallPreview } from '@repo/theme-preview'
 import Link from 'next/link'
 import { useCallback, useMemo } from 'react'
 
@@ -14,7 +15,6 @@ import { ReplaceNewLine } from '@/utils/wrapper/ReplaceNewLine'
 import { FavoriteButton } from './FavoriteButton'
 import { GlassmorphismStyle } from './Glassmorphism'
 import { Tag } from './Tag'
-import { SmallPreview } from './preview'
 
 import type { FormattedTheme } from '@/utils/theme/hooks'
 

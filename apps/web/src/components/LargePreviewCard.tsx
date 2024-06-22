@@ -1,9 +1,9 @@
 import styled from '@emotion/styled'
 import { lightTheme } from '@repo/theme/default'
+import { SmallPreview } from '@repo/theme-preview'
 import { useCallback } from 'react'
 
 import { GlassmorphismStyle } from './Glassmorphism'
-import { SmallPreview } from './preview'
 
 import type { FormattedTheme } from '@/utils/theme/hooks'
 import type { ResolvedTheme } from '@repo/theme/resolve'

@@ -6,7 +6,7 @@ import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai'
 
 import { ColoredGlassmorphismStyle } from './Glassmorphism'
 
-interface Props {
+export interface Props {
   isFavorite: boolean
   onClick: (after: boolean) => void
   favoriteCount: number
