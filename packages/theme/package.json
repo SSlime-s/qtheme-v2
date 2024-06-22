@@ -6,7 +6,7 @@
       "import": "./dist/index.mjs",
       "require": "./dist/index.js",
       "types": "./dist/index.d.ts",
-      "default": "./dist/default.mjs"
+      "default": "./dist/index.mjs"
     },
     "./default": {
       "import": "./dist/default.mjs",
@@ -52,6 +52,7 @@
   },
   "devDependencies": {
     "@repo/typescript-config": "workspace:*",
+    "@types/node": "20.14.5",
     "ts-patch": "^3.2.0",
     "tsup": "^8.1.0",
     "typescript": "5.5.2",
