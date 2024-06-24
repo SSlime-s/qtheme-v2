@@ -8,6 +8,7 @@
     "check-types": {
       "dependsOn": ["^check-types"]
     },
+    "lint:fix": {},
     "fix": {
       "dependsOn": ["^fix"]
     },

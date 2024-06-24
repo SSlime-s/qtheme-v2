@@ -5,8 +5,11 @@
   "scripts": {
     "build": "turbo build",
     "dev": "turbo dev",
-    "fix": "turbo fix",
-    "check-types": "turbo check-types"
+    "fix": "turbo lint:fix && pnpm run format",
+    "check-types": "turbo check-types",
+    "format:base": "prettier '{apps,packages}/*/src/**/*.{js,jsx,ts,tsx,graphql,yaml,css,html,json,md,mdx}' --cache",
+    "format": "pnpm run format:base --write",
+    "format:check": "pnpm run format:base --check"
   },
   "packageManager": "pnpm@9.4.0",
   "engines": {
@@ -30,6 +33,7 @@
     }
   },
   "devDependencies": {
+    "prettier": "^3.3.2",
     "turbo": "^2.0.4"
   }
 }

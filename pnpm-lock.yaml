@@ -14,6 +14,9 @@ importers:
 
   .:
     devDependencies:
+      prettier:
+        specifier: ^3.3.2
+        version: 3.3.2
       turbo:
         specifier: ^2.0.4
         version: 2.0.4
@@ -237,9 +240,6 @@ importers:
       eslint-plugin-storybook:
         specifier: ^0.8.0
         version: 0.8.0(eslint@8.57.0)(typescript@5.5.2)
-      prettier:
-        specifier: ^3.3.2
-        version: 3.3.2
       require-from-string:
         specifier: ^2.0.2
         version: 2.0.2
