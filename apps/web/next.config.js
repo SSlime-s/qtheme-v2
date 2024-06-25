@@ -16,12 +16,18 @@ const nextConfig = {
 		],
 	},
 
-	webpack: (config, _options) => {
+	webpack: (config, { webpack }) => {
 		config.module.rules.push({
 			test: /\.(graphql|gql)$/,
 			exclude: /node_modules/,
 			loader: "graphql-tag/loader",
 		});
+
+		config.plugins.push(
+			new webpack.NormalModuleReplacementPlugin(/^node:/, (resource) => {
+				resource.request = resource.request.replace(/^node:/, "");
+			}),
+		);
 
 		return config;
 	},
