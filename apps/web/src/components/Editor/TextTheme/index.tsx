@@ -18,163 +18,163 @@ import type { Form } from "@/components/Editor";
 
 type CopyStatus = "idle" | "copied" | "failed";
 export const TextTheme: React.FC = () => {
-  const { control, getValues, setValue, setError } = useFormContext<Form>();
+	const { control, getValues, setValue, setError } = useFormContext<Form>();
 
-  const [inputValue, setInputValue] = useState(
-    JSON.stringify(getValues("theme")),
-  );
+	const [inputValue, setInputValue] = useState(
+		JSON.stringify(getValues("theme")),
+	);
 
-  const [clipboard, setClipboard] = useCheckedClipboard();
-  const isThemeCopying = useMemo(() => {
-    if (clipboard === inputValue) {
-      return false;
-    }
+	const [clipboard, setClipboard] = useCheckedClipboard();
+	const isThemeCopying = useMemo(() => {
+		if (clipboard === inputValue) {
+			return false;
+		}
 
-    let theme: unknown;
-    try {
-      theme = JSON.parse(clipboard);
-    } catch (e) {
-      return false;
-    }
+		let theme: unknown;
+		try {
+			theme = JSON.parse(clipboard);
+		} catch (e) {
+			return false;
+		}
 
-    return themeSchema.safeParse(theme).success;
-  }, [clipboard, inputValue]);
+		return themeSchema.safeParse(theme).success;
+	}, [clipboard, inputValue]);
 
-  const [copyStatus, setCopyStatus] = useState<CopyStatus>("idle");
-  const copy = useCallback(async () => {
-    const success = await setClipboard(inputValue);
-    setCopyStatus(success ? "copied" : "failed");
-    setTimeout(() => {
-      setCopyStatus("idle");
-    }, 700);
-  }, [inputValue, setClipboard]);
+	const [copyStatus, setCopyStatus] = useState<CopyStatus>("idle");
+	const copy = useCallback(async () => {
+		const success = await setClipboard(inputValue);
+		setCopyStatus(success ? "copied" : "failed");
+		setTimeout(() => {
+			setCopyStatus("idle");
+		}, 700);
+	}, [inputValue, setClipboard]);
 
-  const theme = useWatch({
-    control,
-    name: "theme",
-  });
-  useEffect(() => {
-    setInputValue(JSON.stringify(theme));
-  }, [theme]);
+	const theme = useWatch({
+		control,
+		name: "theme",
+	});
+	useEffect(() => {
+		setInputValue(JSON.stringify(theme));
+	}, [theme]);
 
-  const {
-    isOpen: isConfirmOpen,
-    waitConfirm,
-    ok,
-    cancel,
-    modalProps: confirmModalProps,
-  } = useConfirmModal("pages/edit/components/TextTheme/InputModal/confirm");
+	const {
+		isOpen: isConfirmOpen,
+		waitConfirm,
+		ok,
+		cancel,
+		modalProps: confirmModalProps,
+	} = useConfirmModal("pages/edit/components/TextTheme/InputModal/confirm");
 
-  const isPreventCloseRef = useRef(false);
-  const preventClose = useCallback(async () => {
-    const needPrevent = isPreventCloseRef.current;
-    if (needPrevent) {
-      const confirmed = await waitConfirm();
-      if (confirmed) {
-        isPreventCloseRef.current = false;
-        return true;
-      }
-    }
-    return !needPrevent;
-  }, [waitConfirm]);
-  const setNeedPreventClose = useCallback((needPreventClose: boolean) => {
-    isPreventCloseRef.current = needPreventClose;
-  }, []);
-  const { isOpen, open, close, triggerRef, modalProps, titleProps, titleRef } =
-    useModal("pages/edit/components/TextTheme/InputModal", preventClose);
+	const isPreventCloseRef = useRef(false);
+	const preventClose = useCallback(async () => {
+		const needPrevent = isPreventCloseRef.current;
+		if (needPrevent) {
+			const confirmed = await waitConfirm();
+			if (confirmed) {
+				isPreventCloseRef.current = false;
+				return true;
+			}
+		}
+		return !needPrevent;
+	}, [waitConfirm]);
+	const setNeedPreventClose = useCallback((needPreventClose: boolean) => {
+		isPreventCloseRef.current = needPreventClose;
+	}, []);
+	const { isOpen, open, close, triggerRef, modalProps, titleProps, titleRef } =
+		useModal("pages/edit/components/TextTheme/InputModal", preventClose);
 
-  useEffect(() => {
-    if (!isOpen) {
-      return;
-    }
+	useEffect(() => {
+		if (!isOpen) {
+			return;
+		}
 
-    const handleUnload = async (e: BeforeUnloadEvent) => {
-      if (isPreventCloseRef.current) {
-        e.preventDefault();
-        e.returnValue = "";
-      }
-    };
-    window.addEventListener("beforeunload", handleUnload);
-    return () => {
-      window.removeEventListener("beforeunload", handleUnload);
-    };
-  }, [isOpen]);
+		const handleUnload = async (e: BeforeUnloadEvent) => {
+			if (isPreventCloseRef.current) {
+				e.preventDefault();
+				e.returnValue = "";
+			}
+		};
+		window.addEventListener("beforeunload", handleUnload);
+		return () => {
+			window.removeEventListener("beforeunload", handleUnload);
+		};
+	}, [isOpen]);
 
-  const handleChange = useCallback(
-    (value: string): boolean => {
-      setInputValue(value);
+	const handleChange = useCallback(
+		(value: string): boolean => {
+			setInputValue(value);
 
-      let parsedValue: object;
-      try {
-        parsedValue = JSON.parse(value);
-      } catch (e) {
-        setError("theme", {
-          type: "validate",
-          message: `テーマの形式が不正です: ${e}`,
-        });
-        return false;
-      }
+			let parsedValue: object;
+			try {
+				parsedValue = JSON.parse(value);
+			} catch (e) {
+				setError("theme", {
+					type: "validate",
+					message: `テーマの形式が不正です: ${e}`,
+				});
+				return false;
+			}
 
-      if (themeSchema.safeParse(parsedValue).success) {
-        setValue("theme", JSON.parse(value), {
-          shouldValidate: true,
-          shouldDirty: true,
-        });
-        isPreventCloseRef.current = false;
-        return true;
-      }
+			if (themeSchema.safeParse(parsedValue).success) {
+				setValue("theme", JSON.parse(value), {
+					shouldValidate: true,
+					shouldDirty: true,
+				});
+				isPreventCloseRef.current = false;
+				return true;
+			}
 
-      setError("theme", {
-        type: "validate",
-        message: "テーマの形式が不正です",
-      });
-      return false;
-    },
-    [setError, setValue],
-  );
+			setError("theme", {
+				type: "validate",
+				message: "テーマの形式が不正です",
+			});
+			return false;
+		},
+		[setError, setValue],
+	);
 
-  return (
-    <Wrap>
-      <Title>Input / Output</Title>
-      <ImportButton
-        hidden={!isThemeCopying}
-        onClick={handleChange.bind(null, clipboard)}
-      >
-        クリップボードからインポート
-      </ImportButton>
+	return (
+		<Wrap>
+			<Title>Input / Output</Title>
+			<ImportButton
+				hidden={!isThemeCopying}
+				onClick={handleChange.bind(null, clipboard)}
+			>
+				クリップボードからインポート
+			</ImportButton>
 
-      <TextsWrap>
-        <InputButton ref={triggerRef} onClick={open}>
-          <InputButtonContent>{inputValue}</InputButtonContent>
-        </InputButton>
+			<TextsWrap>
+				<InputButton ref={triggerRef} onClick={open}>
+					<InputButtonContent>{inputValue}</InputButtonContent>
+				</InputButton>
 
-        <CopyButton onClick={copy} status={copyStatus}>
-          <LogicalHidden hidden={copyStatus !== "idle"}>Copy</LogicalHidden>
-          {copyStatus === "copied" && <BsCheckLg />}
-          {copyStatus === "failed" && <BsXLg />}
-        </CopyButton>
-      </TextsWrap>
+				<CopyButton onClick={copy} status={copyStatus}>
+					<LogicalHidden hidden={copyStatus !== "idle"}>Copy</LogicalHidden>
+					{copyStatus === "copied" && <BsCheckLg />}
+					{copyStatus === "failed" && <BsXLg />}
+				</CopyButton>
+			</TextsWrap>
 
-      {isOpen && (
-        <InputModal
-          {...modalProps}
-          onOutsideClick={close}
-          titleProps={{
-            ...titleProps,
-            ref: titleRef,
-          }}
-          value={inputValue}
-          onClose={close}
-          onSave={handleChange}
-          setNeedPreventClose={setNeedPreventClose}
-        />
-      )}
+			{isOpen && (
+				<InputModal
+					{...modalProps}
+					onOutsideClick={close}
+					titleProps={{
+						...titleProps,
+						ref: titleRef,
+					}}
+					value={inputValue}
+					onClose={close}
+					onSave={handleChange}
+					setNeedPreventClose={setNeedPreventClose}
+				/>
+			)}
 
-      {isConfirmOpen && (
-        <ConfirmModal {...confirmModalProps} onOk={ok} onCancel={cancel} />
-      )}
-    </Wrap>
-  );
+			{isConfirmOpen && (
+				<ConfirmModal {...confirmModalProps} onOk={ok} onCancel={cancel} />
+			)}
+		</Wrap>
+	);
 };
 
 const Wrap = styled.div``;
@@ -244,20 +244,20 @@ const CopyButton = styled.button<{ status: CopyStatus }>`
   backdrop-filter: blur(4px);
   padding: 4px 8px;
   color: ${({ status }) =>
-    status === "idle"
-      ? lightTheme.basic.ui.primary
-      : lightTheme.basic.background.primary};
+		status === "idle"
+			? lightTheme.basic.ui.primary
+			: lightTheme.basic.background.primary};
   background-color: ${({ status }) =>
-    status === "idle"
-      ? lightTheme.basic.background.primary
-      : status === "copied"
-        ? lightTheme.basic.accent.online
-        : lightTheme.basic.accent.error};
+		status === "idle"
+			? lightTheme.basic.background.primary
+			: status === "copied"
+				? lightTheme.basic.accent.online
+				: lightTheme.basic.accent.error};
   opacity: ${({ status }) => (status === "idle" ? 1 : 0.6)};
 
   ${({ status }) =>
-    status === "failed" &&
-    css`
+		status === "failed" &&
+		css`
       animation: ${FailKeyframe} 0.3s ease-out;
     `}
 

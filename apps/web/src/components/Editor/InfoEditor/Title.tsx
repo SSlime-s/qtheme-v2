@@ -7,29 +7,29 @@ import { lightTheme } from "@repo/theme/default";
 import type { Form } from "@/components/Editor";
 
 export const Title: React.FC = () => {
-  const id = useId();
-  const errorId = useId();
-  const { register, formState } = useFormContext<Form>();
+	const id = useId();
+	const errorId = useId();
+	const { register, formState } = useFormContext<Form>();
 
-  return (
-    <div>
-      <Label htmlFor={id}>Title (required)</Label>
-      <Input
-        id={id}
-        {...register("title", {
-          required: "タイトルは必須です",
-        })}
-        placeholder="Title"
-        aria-invalid={formState.errors.title !== undefined}
-        aria-describedby={errorId}
-      />
-      <ErrorWrap aria-live="polite">
-        {formState.errors.title && (
-          <Error id={errorId}>{formState.errors.title.message}</Error>
-        )}
-      </ErrorWrap>
-    </div>
-  );
+	return (
+		<div>
+			<Label htmlFor={id}>Title (required)</Label>
+			<Input
+				id={id}
+				{...register("title", {
+					required: "タイトルは必須です",
+				})}
+				placeholder="Title"
+				aria-invalid={formState.errors.title !== undefined}
+				aria-describedby={errorId}
+			/>
+			<ErrorWrap aria-live="polite">
+				{formState.errors.title && (
+					<Error id={errorId}>{formState.errors.title.message}</Error>
+				)}
+			</ErrorWrap>
+		</div>
+	);
 };
 const Label = styled.label`
   display: block;

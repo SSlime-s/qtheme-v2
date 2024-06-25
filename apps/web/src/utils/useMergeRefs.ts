@@ -11,20 +11,20 @@ import * as React from "react";
 type ReactRef<T> = React.Ref<T> | React.MutableRefObject<T>;
 
 export function assignRef<T = unknown>(ref: ReactRef<T> | undefined, value: T) {
-  if (ref == null) return;
+	if (ref == null) return;
 
-  if (typeof ref === "function") {
-    ref(value);
-    return;
-  }
+	if (typeof ref === "function") {
+		ref(value);
+		return;
+	}
 
-  try {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    ref.current = value;
-  } catch (error) {
-    throw new Error(`Cannot assign value '${value}' to ref '${ref}'`);
-  }
+	try {
+		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+		// @ts-ignore
+		ref.current = value;
+	} catch (error) {
+		throw new Error(`Cannot assign value '${value}' to ref '${ref}'`);
+	}
 }
 
 /**
@@ -40,15 +40,15 @@ export function assignRef<T = unknown>(ref: ReactRef<T> | undefined, value: T) {
  * });
  */
 export function useMergeRefs<T>(...refs: (ReactRef<T> | undefined)[]) {
-  // biome-ignore lint/correctness/useExhaustiveDependencies: 元コードから変えない
-  return React.useMemo(() => {
-    if (refs.every((ref) => ref == null)) {
-      return null;
-    }
-    return (node: T) => {
-      for (const ref of refs) {
-        if (ref) assignRef(ref, node);
-      }
-    };
-  }, refs);
+	// biome-ignore lint/correctness/useExhaustiveDependencies: 元コードから変えない
+	return React.useMemo(() => {
+		if (refs.every((ref) => ref == null)) {
+			return null;
+		}
+		return (node: T) => {
+			for (const ref of refs) {
+				if (ref) assignRef(ref, node);
+			}
+		};
+	}, refs);
 }

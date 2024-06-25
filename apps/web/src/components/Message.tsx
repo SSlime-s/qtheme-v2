@@ -6,43 +6,43 @@ import Link from "next/link";
 import { userIconUrl } from "@/utils/api";
 
 interface Props {
-  iconUser: string;
-  name?: string;
-  tag: string;
-  date: string;
-  content: React.ReactNode;
-  stamps?: React.ReactNode;
+	iconUser: string;
+	name?: string;
+	tag: string;
+	date: string;
+	content: React.ReactNode;
+	stamps?: React.ReactNode;
 
-  nonHover?: boolean;
-  className?: string;
+	nonHover?: boolean;
+	className?: string;
 }
 
 export const Message = ({
-  iconUser,
-  name: nameRaw,
-  tag,
-  date,
-  content,
-  stamps,
-  nonHover = false,
-  className,
+	iconUser,
+	name: nameRaw,
+	tag,
+	date,
+	content,
+	stamps,
+	nonHover = false,
+	className,
 }: Props) => {
-  const name = nameRaw ?? iconUser;
+	const name = nameRaw ?? iconUser;
 
-  return (
-    <Wrap className={className} nonHover={nonHover}>
-      <Icon href={`/user/${name}`}>
-        <Image src={userIconUrl(iconUser)} alt={name} width={40} height={40} />
-      </Icon>
-      <Header>
-        <NameWrap>{name}</NameWrap>
-        <TagWrap>{tag}</TagWrap>
-        <DateWrap>{date}</DateWrap>
-      </Header>
-      <Content>{content}</Content>
-      {stamps !== undefined ? <Stamps>{stamps}</Stamps> : null}
-    </Wrap>
-  );
+	return (
+		<Wrap className={className} nonHover={nonHover}>
+			<Icon href={`/user/${name}`}>
+				<Image src={userIconUrl(iconUser)} alt={name} width={40} height={40} />
+			</Icon>
+			<Header>
+				<NameWrap>{name}</NameWrap>
+				<TagWrap>{tag}</TagWrap>
+				<DateWrap>{date}</DateWrap>
+			</Header>
+			<Content>{content}</Content>
+			{stamps !== undefined ? <Stamps>{stamps}</Stamps> : null}
+		</Wrap>
+	);
 };
 
 export const H1 = styled.p`
@@ -88,8 +88,8 @@ const Wrap = styled.div<{ nonHover: boolean }>`
   width: 100%;
 
   ${({ nonHover, theme }) =>
-    !nonHover &&
-    css`
+		!nonHover &&
+		css`
       &:hover {
         background: ${theme.theme.specific.messageHoverBackground};
       }

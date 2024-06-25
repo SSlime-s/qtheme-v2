@@ -10,30 +10,30 @@ import type { ResolvedTheme } from "@repo/theme/resolve";
 import type { Meta, StoryFn } from "@storybook/react";
 
 const meta: Meta<typeof Layout> = {
-  title: "Components/Layout",
-  component: Layout,
+	title: "Components/Layout",
+	component: Layout,
 };
 
 export default meta;
 
 const Template: StoryFn<typeof Layout> = function (
-  this: {
-    theme: ResolvedTheme;
-  },
-  args: Parameters<typeof Layout>[0],
+	this: {
+		theme: ResolvedTheme;
+	},
+	args: Parameters<typeof Layout>[0],
 ) {
-  return (
-    <ThemeProvider theme={{ theme: this.theme }}>
-      <Wrap>
-        <Layout {...args}>
-          <Content>
-            <div>top</div>
-            <div>bottom</div>
-          </Content>
-        </Layout>
-      </Wrap>
-    </ThemeProvider>
-  );
+	return (
+		<ThemeProvider theme={{ theme: this.theme }}>
+			<Wrap>
+				<Layout {...args}>
+					<Content>
+						<div>top</div>
+						<div>bottom</div>
+					</Content>
+				</Layout>
+			</Wrap>
+		</ThemeProvider>
+	);
 };
 const Wrap = styled.div`
   height: 100%;
@@ -47,29 +47,29 @@ const Content = styled.div`
 `;
 
 export const LightLogin: StoryFn<typeof Layout> = Template.bind({
-  theme: resolveTheme(lightTheme),
+	theme: resolveTheme(lightTheme),
 });
 LightLogin.args = {
-  userId: "SSlime",
+	userId: "SSlime",
 };
 
 export const DarkLogin: StoryFn<typeof Layout> = Template.bind({
-  theme: resolveTheme(darkTheme),
+	theme: resolveTheme(darkTheme),
 });
 DarkLogin.args = {
-  userId: "SSlime",
+	userId: "SSlime",
 };
 
 export const LightNotLogin: StoryFn<typeof Layout> = Template.bind({
-  theme: resolveTheme(lightTheme),
+	theme: resolveTheme(lightTheme),
 });
 LightNotLogin.args = {
-  userId: undefined,
+	userId: undefined,
 };
 
 export const DarkNotLogin: StoryFn<typeof Layout> = Template.bind({
-  theme: resolveTheme(darkTheme),
+	theme: resolveTheme(darkTheme),
 });
 DarkNotLogin.args = {
-  userId: undefined,
+	userId: undefined,
 };

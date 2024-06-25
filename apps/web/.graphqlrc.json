@@ -1,4 +1,4 @@
 {
-  "schema": "src/apollo/schema.graphql",
-  "documents": "src/**/*.graphql"
+	"schema": "src/apollo/schema.graphql",
+	"documents": "src/**/*.graphql"
 }

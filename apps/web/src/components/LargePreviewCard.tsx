@@ -10,42 +10,42 @@ import type { FormattedTheme } from "@/utils/theme/hooks";
 import type { ResolvedTheme } from "@repo/theme/resolve";
 
 type Props = {
-  theme: FormattedTheme;
-  resolvedTheme: ResolvedTheme;
+	theme: FormattedTheme;
+	resolvedTheme: ResolvedTheme;
 } & (
-  | {
-      changeTheme: (id: string, theme: FormattedTheme) => void;
-      noId?: false;
-    }
-  | {
-      changeTheme: (id: undefined, theme: FormattedTheme) => void;
-      noId: true;
-    }
+	| {
+			changeTheme: (id: string, theme: FormattedTheme) => void;
+			noId?: false;
+	  }
+	| {
+			changeTheme: (id: undefined, theme: FormattedTheme) => void;
+			noId: true;
+	  }
 );
 export const LargePreviewCard: React.FC<Props> = ({
-  theme,
-  resolvedTheme,
-  changeTheme,
-  noId,
+	theme,
+	resolvedTheme,
+	changeTheme,
+	noId,
 }) => {
-  const changeHandler = useCallback(() => {
-    if (noId === true) {
-      changeTheme(undefined, theme);
-    } else {
-      changeTheme(theme.id, theme);
-    }
-  }, [changeTheme, noId, theme]);
+	const changeHandler = useCallback(() => {
+		if (noId === true) {
+			changeTheme(undefined, theme);
+		} else {
+			changeTheme(theme.id, theme);
+		}
+	}, [changeTheme, noId, theme]);
 
-  return (
-    <Card>
-      <CardInner onClick={changeHandler}>
-        <SmallPreview theme={resolvedTheme} author={theme.author} />
-        <ChangeCurrentButton>
-          <span>change current to this</span>
-        </ChangeCurrentButton>
-      </CardInner>
-    </Card>
-  );
+	return (
+		<Card>
+			<CardInner onClick={changeHandler}>
+				<SmallPreview theme={resolvedTheme} author={theme.author} />
+				<ChangeCurrentButton>
+					<span>change current to this</span>
+				</ChangeCurrentButton>
+			</CardInner>
+		</Card>
+	);
 };
 
 const Card = styled.div`

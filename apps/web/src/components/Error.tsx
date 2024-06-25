@@ -11,58 +11,58 @@ import { OtherError } from "./svg/OtherError";
 import { Unauthorized } from "./svg/Unauthorized";
 
 interface Props {
-  color?: string;
-  message?: string;
-  statusCode?: number;
+	color?: string;
+	message?: string;
+	statusCode?: number;
 }
 export const Error: React.FC<Props> = ({
-  color,
-  message: rawMessage,
-  statusCode,
+	color,
+	message: rawMessage,
+	statusCode,
 }) => {
-  const Icon = useMemo(() => {
-    if (statusCode === 404) {
-      return NotFound;
-    }
-    if (statusCode === 403) {
-      return Forbidden;
-    }
-    if (statusCode === 401) {
-      return Unauthorized;
-    }
-    return OtherError;
-  }, [statusCode]);
+	const Icon = useMemo(() => {
+		if (statusCode === 404) {
+			return NotFound;
+		}
+		if (statusCode === 403) {
+			return Forbidden;
+		}
+		if (statusCode === 401) {
+			return Unauthorized;
+		}
+		return OtherError;
+	}, [statusCode]);
 
-  const message =
-    rawMessage ??
-    (statusCode === 404
-      ? "コンテンツが見つかりませんでした"
-      : statusCode === 403
-        ? "アクセス権限がありません"
-        : statusCode === 401
-          ? " 部員限定コンテンツです"
-          : "予期せぬエラーが発生しました");
+	const message =
+		rawMessage ??
+		(statusCode === 404
+			? "コンテンツが見つかりませんでした"
+			: statusCode === 403
+				? "アクセス権限がありません"
+				: statusCode === 401
+					? " 部員限定コンテンツです"
+					: "予期せぬエラーが発生しました");
 
-  const loginUrl = useLoginUrl();
+	const loginUrl = useLoginUrl();
 
-  return (
-    <Wrap>
-      <Inner textColor={color}>
-        <Icon color={color} size={256} />
-        <Message>
-          {message}
-          {statusCode === 401 && (
-            <>
-              <LoginLink href={loginUrl}>
-                すでに部員の方はこちら
-                <HiArrowRight />
-              </LoginLink>
-            </>
-          )}
-        </Message>
-      </Inner>
-    </Wrap>
-  );
+	return (
+		<Wrap>
+			<Inner textColor={color}>
+				<Icon color={color} size={256} />
+				<Message>
+					{message}
+					{statusCode === 401 && (
+						<>
+							<LoginLink href={loginUrl}>
+								すでに部員の方はこちら
+								<HiArrowRight />
+							</LoginLink>
+						</>
+					)}
+				</Message>
+			</Inner>
+		</Wrap>
+	);
 };
 const Wrap = styled.div`
   display: grid;
@@ -75,7 +75,7 @@ const Inner = styled.div<{ textColor?: string }>`
   flex-direction: column;
   align-items: center;
   color: ${({ textColor, theme }) =>
-    textColor ?? theme.theme.basic.ui.primary.default};
+		textColor ?? theme.theme.basic.ui.primary.default};
 `;
 const Message = styled.div`
   text-align: center;

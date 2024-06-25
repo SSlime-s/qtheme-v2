@@ -4,23 +4,23 @@ import type { IncomingMessage } from "node:http";
 
 const showcaseUserKey = "x-forwarded-user";
 export const extractShowcaseUser = (req: IncomingMessage | NextRequest) => {
-  if (
-    process.env.NODE_ENV === "development" &&
-    process.env.DEBUG_USER !== undefined
-  ) {
-    return process.env.DEBUG_USER;
-  }
+	if (
+		process.env.NODE_ENV === "development" &&
+		process.env.DEBUG_USER !== undefined
+	) {
+		return process.env.DEBUG_USER;
+	}
 
-  let userId: string | undefined;
-  if (req instanceof NextRequest) {
-    userId = req.headers.get(showcaseUserKey) ?? undefined;
-  } else {
-    const unsafeUserId = req.headers[showcaseUserKey];
-    if (Array.isArray(unsafeUserId)) {
-      userId = unsafeUserId.join("");
-    } else {
-      userId = unsafeUserId;
-    }
-  }
-  return userId === "" ? undefined : userId ?? undefined;
+	let userId: string | undefined;
+	if (req instanceof NextRequest) {
+		userId = req.headers.get(showcaseUserKey) ?? undefined;
+	} else {
+		const unsafeUserId = req.headers[showcaseUserKey];
+		if (Array.isArray(unsafeUserId)) {
+			userId = unsafeUserId.join("");
+		} else {
+			userId = unsafeUserId;
+		}
+	}
+	return userId === "" ? undefined : userId ?? undefined;
 };

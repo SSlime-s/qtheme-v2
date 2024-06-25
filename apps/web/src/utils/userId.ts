@@ -9,20 +9,20 @@ import { WhoamiDocument, getSdk } from "./graphql/whoami.generated";
  * @deprecated remove this (nop)
  */
 export const useSetUserId = (_userId: string | null) => {
-  // nop
+	// nop
 };
 
 export const useUserId = () => {
-  const client = useClient();
-  const sdk = useMemo(() => {
-    return getSdk(client);
-  }, [client]);
+	const client = useClient();
+	const sdk = useMemo(() => {
+		return getSdk(client);
+	}, [client]);
 
-  const { data } = useSWR(print(WhoamiDocument), async () => {
-    const { getMe } = await sdk.Whoami();
+	const { data } = useSWR(print(WhoamiDocument), async () => {
+		const { getMe } = await sdk.Whoami();
 
-    return getMe ?? null;
-  });
+		return getMe ?? null;
+	});
 
-  return data ?? null;
+	return data ?? null;
 };

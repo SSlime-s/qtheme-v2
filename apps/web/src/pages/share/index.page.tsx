@@ -31,148 +31,148 @@ import type { GetServerSideProps, InferGetServerSidePropsType } from "next";
 const DUMMY_AUTHOR = "traP";
 
 export const getServerSideProps = (async ({ req }) => {
-  const userId = extractShowcaseUser(req);
+	const userId = extractShowcaseUser(req);
 
-  return {
-    props: {
-      userId: userId ?? null,
-    },
-  };
+	return {
+		props: {
+			userId: userId ?? null,
+		},
+	};
 }) satisfies GetServerSideProps;
 
 type Props = InferGetServerSidePropsType<typeof getServerSideProps>;
 
 const ThemePage: NextPageWithLayout<Props> = ({ userId }) => {
-  useSetUserId(userId);
+	useSetUserId(userId);
 
-  const author = DUMMY_AUTHOR;
+	const author = DUMMY_AUTHOR;
 
-  const { t } = useRouter().query as { t?: string };
-  const theme = useMemo(() => {
-    if (t === undefined) {
-      return undefined;
-    }
+	const { t } = useRouter().query as { t?: string };
+	const theme = useMemo(() => {
+		if (t === undefined) {
+			return undefined;
+		}
 
-    return decodeTheme(t);
-  }, [t]);
+		return decodeTheme(t);
+	}, [t]);
 
-  const dummyFormattedTheme = useMemo<FormattedTheme | undefined>(() => {
-    if (theme === undefined || t === undefined) {
-      return undefined;
-    }
-    if (theme instanceof Error) {
-      return undefined;
-    }
+	const dummyFormattedTheme = useMemo<FormattedTheme | undefined>(() => {
+		if (theme === undefined || t === undefined) {
+			return undefined;
+		}
+		if (theme instanceof Error) {
+			return undefined;
+		}
 
-    return {
-      ...theme,
-      author,
-      visibility: "public",
-      createdAt: new Date().toISOString(),
-      id: t,
-      isLike: false,
-      likes: 0,
-    };
-  }, [author, t, theme]);
+		return {
+			...theme,
+			author,
+			visibility: "public",
+			createdAt: new Date().toISOString(),
+			id: t,
+			isLike: false,
+			likes: 0,
+		};
+	}, [author, t, theme]);
 
-  const resolvedTheme = useMemo(() => {
-    if (theme === undefined) {
-      return undefined;
-    }
-    if (theme instanceof Error) {
-      return undefined;
-    }
+	const resolvedTheme = useMemo(() => {
+		if (theme === undefined) {
+			return undefined;
+		}
+		if (theme instanceof Error) {
+			return undefined;
+		}
 
-    return resolveTheme(theme.theme);
-  }, [theme]);
+		return resolveTheme(theme.theme);
+	}, [theme]);
 
-  const themeString = useMemo(() => {
-    if (theme === undefined) {
-      return undefined;
-    }
-    if (theme instanceof Error) {
-      return undefined;
-    }
+	const themeString = useMemo(() => {
+		if (theme === undefined) {
+			return undefined;
+		}
+		if (theme instanceof Error) {
+			return undefined;
+		}
 
-    return JSON.stringify(theme.theme);
-  }, [theme]);
+		return JSON.stringify(theme.theme);
+	}, [theme]);
 
-  const {
-    mutate: { changeTheme },
-  } = useCurrentTheme();
+	const {
+		mutate: { changeTheme },
+	} = useCurrentTheme();
 
-  if (theme instanceof Error) {
-    return <ErrorPage statusCode={404} />;
-  }
+	if (theme instanceof Error) {
+		return <ErrorPage statusCode={404} />;
+	}
 
-  if (
-    theme === undefined ||
-    resolvedTheme === undefined ||
-    themeString === undefined ||
-    dummyFormattedTheme === undefined
-  ) {
-    return <LoadingBar />;
-  }
+	if (
+		theme === undefined ||
+		resolvedTheme === undefined ||
+		themeString === undefined ||
+		dummyFormattedTheme === undefined
+	) {
+		return <LoadingBar />;
+	}
 
-  return (
-    <>
-      <Head>
-        <title>{pageTitle(theme.title)}</title>
-      </Head>
-      <SEO
-        title={theme.title}
-        description={theme.description}
-        imageUrl={ogImageUrl(theme.theme, author)}
-        url={`/share?t=${t}`}
-      />
-      <Wrap>
-        <MainWrap>
-          <Message
-            iconUser={author}
-            content={
-              <>
-                <H1>{theme.title}</H1>
-                <FullWidthContent>
-                  <LargePreviewCard
-                    theme={dummyFormattedTheme}
-                    resolvedTheme={resolvedTheme}
-                    changeTheme={changeTheme}
-                    noId
-                  />
-                </FullWidthContent>
-              </>
-            }
-            date={""}
-            tag={theme.type}
-            name={author}
-            // biome-ignore lint/complexity/noUselessFragments: あとで追加するかも
-            stamps={<></>}
-          />
-          <Message
-            iconUser={author}
-            content={
-              <>
-                <H2>詳細</H2>
-                <BreakP>
-                  <WrapResolver Wrapper={[Linkify, BudouJa, ReplaceNewLine]}>
-                    {theme.description}
-                  </WrapResolver>
-                </BreakP>
-              </>
-            }
-            date={""}
-            tag={theme.type}
-            name={author}
-          />
-        </MainWrap>
-        <CopyBox
-          defaultValue={themeString}
-          after={<After text={themeString} />}
-          readOnly
-        />
-      </Wrap>
-    </>
-  );
+	return (
+		<>
+			<Head>
+				<title>{pageTitle(theme.title)}</title>
+			</Head>
+			<SEO
+				title={theme.title}
+				description={theme.description}
+				imageUrl={ogImageUrl(theme.theme, author)}
+				url={`/share?t=${t}`}
+			/>
+			<Wrap>
+				<MainWrap>
+					<Message
+						iconUser={author}
+						content={
+							<>
+								<H1>{theme.title}</H1>
+								<FullWidthContent>
+									<LargePreviewCard
+										theme={dummyFormattedTheme}
+										resolvedTheme={resolvedTheme}
+										changeTheme={changeTheme}
+										noId
+									/>
+								</FullWidthContent>
+							</>
+						}
+						date={""}
+						tag={theme.type}
+						name={author}
+						// biome-ignore lint/complexity/noUselessFragments: あとで追加するかも
+						stamps={<></>}
+					/>
+					<Message
+						iconUser={author}
+						content={
+							<>
+								<H2>詳細</H2>
+								<BreakP>
+									<WrapResolver Wrapper={[Linkify, BudouJa, ReplaceNewLine]}>
+										{theme.description}
+									</WrapResolver>
+								</BreakP>
+							</>
+						}
+						date={""}
+						tag={theme.type}
+						name={author}
+					/>
+				</MainWrap>
+				<CopyBox
+					defaultValue={themeString}
+					after={<After text={themeString} />}
+					readOnly
+				/>
+			</Wrap>
+		</>
+	);
 };
 ThemePage.getLayout = (page) => <Layout>{page}</Layout>;
 export default ThemePage;
@@ -210,16 +210,16 @@ const CopyBox = styled(TextBox)`
 `;
 
 interface AfterProps {
-  text: string;
+	text: string;
 }
 const After: React.FC<AfterProps> = ({ text }) => {
-  return (
-    <AfterWrap>
-      <CopyButtonWrap>
-        <CopyButton text={text} />
-      </CopyButtonWrap>
-    </AfterWrap>
-  );
+	return (
+		<AfterWrap>
+			<CopyButtonWrap>
+				<CopyButton text={text} />
+			</CopyButtonWrap>
+		</AfterWrap>
+	);
 };
 const AfterWrap = styled.div`
   height: 100%;

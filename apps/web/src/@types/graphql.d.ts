@@ -1,7 +1,7 @@
 declare module "*.graphql" {
-  import type { DocumentNode } from "graphql";
+	import type { DocumentNode } from "graphql";
 
-  const Schema: DocumentNode;
+	const Schema: DocumentNode;
 
-  export = Schema;
+	export = Schema;
 }

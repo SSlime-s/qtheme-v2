@@ -5,20 +5,20 @@ import ReactDOM from "react-dom";
 import type { PropsWithChildren } from "react";
 
 const ModalPortalRaw: React.FC<PropsWithChildren> = ({ children }) => {
-  return ReactDOM.createPortal(children, document.body);
+	return ReactDOM.createPortal(children, document.body);
 };
 const ModalPortal = dynamic(() => Promise.resolve(ModalPortalRaw), {
-  ssr: false,
+	ssr: false,
 });
 
 export const Modal: React.FC<
-  PropsWithChildren<React.ComponentProps<"div">>
+	PropsWithChildren<React.ComponentProps<"div">>
 > = ({ children, ...props }) => {
-  return (
-    <ModalPortal>
-      <Overlay {...props}>{children}</Overlay>
-    </ModalPortal>
-  );
+	return (
+		<ModalPortal>
+			<Overlay {...props}>{children}</Overlay>
+		</ModalPortal>
+	);
 };
 const Overlay = styled.div`
   position: fixed;

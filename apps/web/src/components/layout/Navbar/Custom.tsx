@@ -7,35 +7,35 @@ import { TbNewSection } from "react-icons/tb";
 import { useCurrentTheme } from "@/utils/theme/hooks";
 
 export const NavbarCustom: React.FC = () => {
-  const { currentRawTheme } = useCurrentTheme();
+	const { currentRawTheme } = useCurrentTheme();
 
-  return (
-    <Wrap>
-      <BigButton
-        href={{
-          pathname: "/edit",
-          query: {
-            new: "",
-          },
-        }}
-      >
-        <TbNewSection css={IconStyle} />
-        新規テーマ作成
-      </BigButton>
-      <BigButton
-        href={{
-          pathname: "/edit",
-          query: {
-            init: JSON.stringify(currentRawTheme),
-            new: "",
-          },
-        }}
-      >
-        <BiImport css={IconStyle} />
-        現在のテーマから作成
-      </BigButton>
-    </Wrap>
-  );
+	return (
+		<Wrap>
+			<BigButton
+				href={{
+					pathname: "/edit",
+					query: {
+						new: "",
+					},
+				}}
+			>
+				<TbNewSection css={IconStyle} />
+				新規テーマ作成
+			</BigButton>
+			<BigButton
+				href={{
+					pathname: "/edit",
+					query: {
+						init: JSON.stringify(currentRawTheme),
+						new: "",
+					},
+				}}
+			>
+				<BiImport css={IconStyle} />
+				現在のテーマから作成
+			</BigButton>
+		</Wrap>
+	);
 };
 const Wrap = styled.div`
   display: flex;

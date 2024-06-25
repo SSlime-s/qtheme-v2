@@ -7,59 +7,59 @@ import { lightTheme } from "@repo/theme/default";
 import { GlassmorphismStyle } from "./Glassmorphism";
 
 interface Props {
-  loadMore: () => Promise<void> | void;
-  isReachingEnd: boolean;
+	loadMore: () => Promise<void> | void;
+	isReachingEnd: boolean;
 }
 export const InfiniteLoad: React.FC<Props> = ({ loadMore, isReachingEnd }) => {
-  const isHoverable = useIsHoverable();
+	const isHoverable = useIsHoverable();
 
-  const [isLoading, setIsLoading] = useState(false);
-  const checkedLoadMore = useCallback(async () => {
-    if (isLoading) {
-      return;
-    }
-    if (isReachingEnd ?? true) {
-      return;
-    }
-    setIsLoading(true);
-    await loadMore();
-    setIsLoading(false);
-  }, [isLoading, isReachingEnd, loadMore]);
+	const [isLoading, setIsLoading] = useState(false);
+	const checkedLoadMore = useCallback(async () => {
+		if (isLoading) {
+			return;
+		}
+		if (isReachingEnd ?? true) {
+			return;
+		}
+		setIsLoading(true);
+		await loadMore();
+		setIsLoading(false);
+	}, [isLoading, isReachingEnd, loadMore]);
 
-  const bottomRef = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    if (isHoverable) {
-      return;
-    }
+	const bottomRef = useRef<HTMLDivElement>(null);
+	useEffect(() => {
+		if (isHoverable) {
+			return;
+		}
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          void checkedLoadMore();
-        }
-      },
-      {
-        threshold: 0.5,
-      },
-    );
-    if (bottomRef.current) {
-      observer.observe(bottomRef.current);
-    }
-    return () => {
-      observer.disconnect();
-    };
-  }, [checkedLoadMore, isHoverable]);
+		const observer = new IntersectionObserver(
+			([entry]) => {
+				if (entry.isIntersecting) {
+					void checkedLoadMore();
+				}
+			},
+			{
+				threshold: 0.5,
+			},
+		);
+		if (bottomRef.current) {
+			observer.observe(bottomRef.current);
+		}
+		return () => {
+			observer.disconnect();
+		};
+	}, [checkedLoadMore, isHoverable]);
 
-  return (
-    <>
-      {isReachingEnd === false && isHoverable && (
-        <LoadMoreButton aria-busy={isLoading} onClick={checkedLoadMore}>
-          <span>もっと見る</span>
-        </LoadMoreButton>
-      )}
-      <Stopper ref={bottomRef} />
-    </>
-  );
+	return (
+		<>
+			{isReachingEnd === false && isHoverable && (
+				<LoadMoreButton aria-busy={isLoading} onClick={checkedLoadMore}>
+					<span>もっと見る</span>
+				</LoadMoreButton>
+			)}
+			<Stopper ref={bottomRef} />
+		</>
+	);
 };
 
 const LoadMoreButton = styled.button`

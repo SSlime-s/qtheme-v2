@@ -12,8 +12,8 @@ import { LoadingBar } from "../LoadingBar";
 
 import { Header } from "./Header";
 import {
-  convertChannelPath,
-  extendChannelPath,
+	convertChannelPath,
+	extendChannelPath,
 } from "./Header/convertChannelPath";
 import { Navbar } from "./Navbar";
 import { DefaultSidebarContent, Sidebar } from "./Sidebar";
@@ -22,113 +22,113 @@ import type { PropsWithChildren } from "react";
 import type { ChannelPath } from "./Header/convertChannelPath";
 
 interface Props {
-  userId?: string;
-  noSidebar?: boolean;
+	userId?: string;
+	noSidebar?: boolean;
 }
 
 export const Layout: React.FC<PropsWithChildren<Props>> = ({
-  userId: _u,
-  children,
-  noSidebar = false,
+	userId: _u,
+	children,
+	noSidebar = false,
 }) => {
-  const isMobile = useIsMobile();
-  const router = useRouter();
-  const isPageLoading = usePageLoading();
+	const isMobile = useIsMobile();
+	const router = useRouter();
+	const isPageLoading = usePageLoading();
 
-  // NOTE: rewrite した際に hydration error が起きるため、useEffect で初期化・更新する
-  const [nowChannelPath, setNowChannelPath] = useState<ChannelPath[]>([]);
-  useEffect(() => {
-    function calc() {
-      const path = router.asPath
-        .split("/")
-        .filter((p) => p !== "")
-        .map((p) => {
-          const split = p.split("?");
-          return split[0];
-        })
-        .map((p) => {
-          const split = p.split("#");
-          return split[0];
-        });
+	// NOTE: rewrite した際に hydration error が起きるため、useEffect で初期化・更新する
+	const [nowChannelPath, setNowChannelPath] = useState<ChannelPath[]>([]);
+	useEffect(() => {
+		function calc() {
+			const path = router.asPath
+				.split("/")
+				.filter((p) => p !== "")
+				.map((p) => {
+					const split = p.split("?");
+					return split[0];
+				})
+				.map((p) => {
+					const split = p.split("#");
+					return split[0];
+				});
 
-      // theme は下に uuid が来るため、uuid まで込みで theme とする
-      if (path[0] === "theme") {
-        if (path[1] === undefined) {
-          return [
-            {
-              name: "theme",
-              href: "/theme",
-            },
-          ];
-        }
-        const root = {
-          name: "theme",
-          href: `/theme/${path[1]}`,
-        };
-        return extendChannelPath([root], path.slice(2));
-      }
+			// theme は下に uuid が来るため、uuid まで込みで theme とする
+			if (path[0] === "theme") {
+				if (path[1] === undefined) {
+					return [
+						{
+							name: "theme",
+							href: "/theme",
+						},
+					];
+				}
+				const root = {
+					name: "theme",
+					href: `/theme/${path[1]}`,
+				};
+				return extendChannelPath([root], path.slice(2));
+			}
 
-      return convertChannelPath(path);
-    }
+			return convertChannelPath(path);
+		}
 
-    setNowChannelPath(calc());
-  }, [router]);
+		setNowChannelPath(calc());
+	}, [router]);
 
-  const mainRef = useRef<HTMLDivElement>(null);
-  const scrollToSelf = useCallback(() => {
-    if (!isMobile) {
-      return;
-    }
-    mainRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-  }, [isMobile]);
+	const mainRef = useRef<HTMLDivElement>(null);
+	const scrollToSelf = useCallback(() => {
+		if (!isMobile) {
+			return;
+		}
+		mainRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+	}, [isMobile]);
 
-  useEffect(() => {
-    if (!isMobile) {
-      return;
-    }
-    mainRef.current?.scrollIntoView({ behavior: "auto", block: "start" });
-  }, [isMobile]);
-  // biome-ignore lint/correctness/useExhaustiveDependencies: router.asPath が変わるときにもスクロールする
-  useEffect(() => {
-    if (!isMobile) {
-      return;
-    }
-    scrollToSelf();
-  }, [isMobile, router.asPath, scrollToSelf]);
+	useEffect(() => {
+		if (!isMobile) {
+			return;
+		}
+		mainRef.current?.scrollIntoView({ behavior: "auto", block: "start" });
+	}, [isMobile]);
+	// biome-ignore lint/correctness/useExhaustiveDependencies: router.asPath が変わるときにもスクロールする
+	useEffect(() => {
+		if (!isMobile) {
+			return;
+		}
+		scrollToSelf();
+	}, [isMobile, router.asPath, scrollToSelf]);
 
-  const navBarRef = useRef<HTMLDivElement>(null);
-  const openNavBar = useCallback(() => {
-    if (!isMobile) {
-      return;
-    }
-    navBarRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-  }, [isMobile]);
+	const navBarRef = useRef<HTMLDivElement>(null);
+	const openNavBar = useCallback(() => {
+		if (!isMobile) {
+			return;
+		}
+		navBarRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+	}, [isMobile]);
 
-  return (
-    <Container>
-      <Navbar scrollRef={navBarRef} />
-      <Header channelPath={nowChannelPath} openNavBar={openNavBar} />
-      <DummyMain ref={mainRef} />
-      <Main onClickCapture={scrollToSelf}>
-        {isPageLoading && <Loading />}
-        {children}
-      </Main>
-      <Sidebar id="app-sidebar">
-        {!noSidebar && <DefaultSidebarContent />}
-      </Sidebar>
-      <ToastContainer />
-    </Container>
-  );
+	return (
+		<Container>
+			<Navbar scrollRef={navBarRef} />
+			<Header channelPath={nowChannelPath} openNavBar={openNavBar} />
+			<DummyMain ref={mainRef} />
+			<Main onClickCapture={scrollToSelf}>
+				{isPageLoading && <Loading />}
+				{children}
+			</Main>
+			<Sidebar id="app-sidebar">
+				{!noSidebar && <DefaultSidebarContent />}
+			</Sidebar>
+			<ToastContainer />
+		</Container>
+	);
 };
 const SidebarPortalRaw: React.FC<PropsWithChildren> = ({ children }) => {
-  return ReactDOM.createPortal(
-    children,
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    document.getElementById("app-sidebar")!,
-  );
+	return ReactDOM.createPortal(
+		children,
+		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+		document.getElementById("app-sidebar")!,
+	);
 };
 export const SidebarPortal = dynamic(() => Promise.resolve(SidebarPortalRaw), {
-  ssr: false,
+	ssr: false,
 });
 
 const Container = styled.div`
@@ -154,12 +154,12 @@ const Container = styled.div`
 
   & * {
     scrollbar-color: ${({ theme }) =>
-      `${theme.theme.browser.scrollbarThumb} ${theme.theme.browser.scrollbarTrack}`};
+			`${theme.theme.browser.scrollbarThumb} ${theme.theme.browser.scrollbarTrack}`};
     /* transition: scrollbar-color 0.3s; */
     &:hover,
     &:active {
       scrollbar-color: ${({ theme }) =>
-        `${theme.theme.browser.scrollbarThumbHover} ${theme.theme.browser.scrollbarTrack}`};
+				`${theme.theme.browser.scrollbarThumbHover} ${theme.theme.browser.scrollbarTrack}`};
     }
 
     &::-webkit-scrollbar {

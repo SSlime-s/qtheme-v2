@@ -10,111 +10,111 @@ import { lightTheme } from "@repo/theme/default";
 import { wiggleElement } from "./WiggleAnimation";
 
 const checkValidJson = (value: string): boolean => {
-  try {
-    JSON.parse(value);
-    return true;
-  } catch (e) {
-    return false;
-  }
+	try {
+		JSON.parse(value);
+		return true;
+	} catch (e) {
+		return false;
+	}
 };
 const format = (value: string) => {
-  try {
-    return `${JSON.stringify(JSON.parse(value), null, 2)}\n`;
-  } catch (e) {
-    return value;
-  }
+	try {
+		return `${JSON.stringify(JSON.parse(value), null, 2)}\n`;
+	} catch (e) {
+		return value;
+	}
 };
 const unformat = (value: string) => {
-  try {
-    return JSON.stringify(JSON.parse(value));
-  } catch (e) {
-    return value;
-  }
+	try {
+		return JSON.stringify(JSON.parse(value));
+	} catch (e) {
+		return value;
+	}
 };
 
 type State = "idle" | "failed";
 
 interface Props extends React.ComponentProps<"div"> {
-  children?: never;
+	children?: never;
 
-  onOutsideClick?: () => void;
-  titleProps?: React.ComponentProps<"h1">;
+	onOutsideClick?: () => void;
+	titleProps?: React.ComponentProps<"h1">;
 
-  value: string;
-  onClose: () => void;
-  onSave: (value: string) => boolean;
-  setNeedPreventClose?: (needPreventClose: boolean) => void;
+	value: string;
+	onClose: () => void;
+	onSave: (value: string) => boolean;
+	setNeedPreventClose?: (needPreventClose: boolean) => void;
 }
 export const InputModal: React.FC<Props> = ({
-  titleProps,
-  value,
-  onClose,
-  onSave,
-  setNeedPreventClose,
-  ...props
+	titleProps,
+	value,
+	onClose,
+	onSave,
+	setNeedPreventClose,
+	...props
 }) => {
-  const [innerValue, setInnerValue] = useState(format(value));
-  useEffect(() => {
-    setInnerValue(format(value));
-    setNeedPreventClose?.(false);
-  }, [setNeedPreventClose, value]);
+	const [innerValue, setInnerValue] = useState(format(value));
+	useEffect(() => {
+		setInnerValue(format(value));
+		setNeedPreventClose?.(false);
+	}, [setNeedPreventClose, value]);
 
-  const onChange = useCallback(
-    (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-      setInnerValue(e.target.value);
-      setNeedPreventClose?.(value !== unformat(e.target.value));
-    },
-    [setNeedPreventClose, value],
-  );
+	const onChange = useCallback(
+		(e: React.ChangeEvent<HTMLTextAreaElement>) => {
+			setInnerValue(e.target.value);
+			setNeedPreventClose?.(value !== unformat(e.target.value));
+		},
+		[setNeedPreventClose, value],
+	);
 
-  const handleSave = useCallback((): boolean => {
-    const success = onSave(unformat(innerValue));
-    if (success) {
-      onClose();
-      return true;
-    }
-    return false;
-  }, [innerValue, onClose, onSave]);
+	const handleSave = useCallback((): boolean => {
+		const success = onSave(unformat(innerValue));
+		if (success) {
+			onClose();
+			return true;
+		}
+		return false;
+	}, [innerValue, onClose, onSave]);
 
-  const formatButtonRef = useRef<HTMLButtonElement>(null);
-  const [formatState, setFormatState] = useAutoRestoreState<State>("idle", 700);
-  const handleFormat = useCallback((): boolean => {
-    if (!checkValidJson(innerValue)) {
-      setFormatState("failed");
+	const formatButtonRef = useRef<HTMLButtonElement>(null);
+	const [formatState, setFormatState] = useAutoRestoreState<State>("idle", 700);
+	const handleFormat = useCallback((): boolean => {
+		if (!checkValidJson(innerValue)) {
+			setFormatState("failed");
 
-      if (formatButtonRef.current !== null) {
-        wiggleElement(formatButtonRef.current);
-      }
-      return false;
-    }
-    setInnerValue((value) => format(value));
-    return true;
-  }, [innerValue, setFormatState]);
+			if (formatButtonRef.current !== null) {
+				wiggleElement(formatButtonRef.current);
+			}
+			return false;
+		}
+		setInnerValue((value) => format(value));
+		return true;
+	}, [innerValue, setFormatState]);
 
-  return (
-    <Wrap {...props} glass defaultSize>
-      <Inner>
-        <Title {...titleProps}>テーマを入力</Title>
-        <TextAreaWrap>
-          <TextArea value={innerValue} onChange={onChange} className="mono" />
-        </TextAreaWrap>
-        <ControlsWrap>
-          <FormatButton
-            onClick={handleFormat}
-            type="button"
-            state={formatState}
-            ref={formatButtonRef}
-          >
-            format
-          </FormatButton>
-          <Button onClick={onClose} type="button">
-            保存せず閉じる
-          </Button>
-          <SaveButton onClick={handleSave}>保存して閉じる</SaveButton>
-        </ControlsWrap>
-      </Inner>
-    </Wrap>
-  );
+	return (
+		<Wrap {...props} glass defaultSize>
+			<Inner>
+				<Title {...titleProps}>テーマを入力</Title>
+				<TextAreaWrap>
+					<TextArea value={innerValue} onChange={onChange} className="mono" />
+				</TextAreaWrap>
+				<ControlsWrap>
+					<FormatButton
+						onClick={handleFormat}
+						type="button"
+						state={formatState}
+						ref={formatButtonRef}
+					>
+						format
+					</FormatButton>
+					<Button onClick={onClose} type="button">
+						保存せず閉じる
+					</Button>
+					<SaveButton onClick={handleSave}>保存して閉じる</SaveButton>
+				</ControlsWrap>
+			</Inner>
+		</Wrap>
+	);
 };
 const popupKeyframes = keyframes`
   0% {
@@ -189,8 +189,8 @@ const FormatButton = styled(Button)<{ state: State }>`
   margin-right: auto;
 
   ${({ state }) =>
-    state === "failed" &&
-    css`
+		state === "failed" &&
+		css`
       border-color: ${lightTheme.basic.accent.error};
       color: ${lightTheme.basic.accent.error};
 

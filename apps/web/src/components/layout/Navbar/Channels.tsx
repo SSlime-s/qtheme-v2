@@ -5,63 +5,63 @@ import { useRouter } from "next/router";
 import { useMemo } from "react";
 
 import {
-  Channel,
-  ChannelAccordion,
+	Channel,
+	ChannelAccordion,
 } from "@/components/layout/components/ChannelAccordion";
 import { useUserId } from "@/utils/userId";
 
 import type { ReadonlyTree, Tree } from "@/utils/typeUtils";
 
 const lightDark = [
-  {
-    value: "light",
-  },
-  {
-    value: "dark",
-  },
+	{
+		value: "light",
+	},
+	{
+		value: "dark",
+	},
 ] as const satisfies ReadonlyTree<string>["children"];
 const loginHome = [
-  {
-    value: "favorite",
-    children: lightDark,
-  },
+	{
+		value: "favorite",
+		children: lightDark,
+	},
 ] as const satisfies readonly ReadonlyTree<string>[];
 const nonLoginHome = [
-  {
-    value: "random",
-    children: lightDark,
-  },
+	{
+		value: "random",
+		children: lightDark,
+	},
 ] as const satisfies readonly ReadonlyTree<string>[];
 const loginChannels = [
-  {
-    value: "random",
-    children: lightDark,
-  },
-  {
-    value: "all",
-    children: lightDark,
-  },
+	{
+		value: "random",
+		children: lightDark,
+	},
+	{
+		value: "all",
+		children: lightDark,
+	},
 ] as const satisfies readonly ReadonlyTree<string>[];
 const nonLoginChannels = [
-  {
-    value: "all",
-    children: lightDark,
-  },
+	{
+		value: "all",
+		children: lightDark,
+	},
 ] as const satisfies readonly ReadonlyTree<string>[];
 
 export const NavbarChannels: React.FC = () => {
-  const userId = useUserId();
-  const isLogin = userId !== null;
+	const userId = useUserId();
+	const isLogin = userId !== null;
 
-  const home = isLogin ? loginHome : nonLoginHome;
-  const channels = isLogin ? loginChannels : nonLoginChannels;
+	const home = isLogin ? loginHome : nonLoginHome;
+	const channels = isLogin ? loginChannels : nonLoginChannels;
 
-  return (
-    <Wrap>
-      <ChannelGroup name="ホーム" channelNames={home} />
-      <ChannelGroup name="チャンネル" channelNames={channels} />
-    </Wrap>
-  );
+	return (
+		<Wrap>
+			<ChannelGroup name="ホーム" channelNames={home} />
+			<ChannelGroup name="チャンネル" channelNames={channels} />
+		</Wrap>
+	);
 };
 const Wrap = styled.div`
   display: flex;
@@ -70,44 +70,44 @@ const Wrap = styled.div`
 `;
 
 interface ChannelInfo {
-  name: string;
-  href: string;
+	name: string;
+	href: string;
 }
 const urlResolver = (
-  channelNames: ReadonlyTree<string>,
-  base = "/",
+	channelNames: ReadonlyTree<string>,
+	base = "/",
 ): Tree<ChannelInfo> => {
-  const now = {
-    name: channelNames.value,
-    href: path.join(base, channelNames.value),
-  };
-  return {
-    value: now,
-    children: channelNames.children?.map((child) => {
-      return urlResolver(child, path.join(base, now.href));
-    }),
-  };
+	const now = {
+		name: channelNames.value,
+		href: path.join(base, channelNames.value),
+	};
+	return {
+		value: now,
+		children: channelNames.children?.map((child) => {
+			return urlResolver(child, path.join(base, now.href));
+		}),
+	};
 };
 
 interface ChannelGroup {
-  name: string;
-  channelNames: readonly ReadonlyTree<string>[];
+	name: string;
+	channelNames: readonly ReadonlyTree<string>[];
 }
 const ChannelGroup: React.FC<ChannelGroup> = ({ name, channelNames }) => {
-  const channelTree = useMemo(() => {
-    return channelNames.map((c) => urlResolver(c));
-  }, [channelNames]);
+	const channelTree = useMemo(() => {
+		return channelNames.map((c) => urlResolver(c));
+	}, [channelNames]);
 
-  return (
-    <ChannelGroupWrap>
-      <ChannelGroupLabel>{name}</ChannelGroupLabel>
-      <ChannelGroupContent>
-        {channelTree.map((c) => {
-          return <Channels key={c.value.href} {...c} />;
-        })}
-      </ChannelGroupContent>
-    </ChannelGroupWrap>
-  );
+	return (
+		<ChannelGroupWrap>
+			<ChannelGroupLabel>{name}</ChannelGroupLabel>
+			<ChannelGroupContent>
+				{channelTree.map((c) => {
+					return <Channels key={c.value.href} {...c} />;
+				})}
+			</ChannelGroupContent>
+		</ChannelGroupWrap>
+	);
 };
 const ChannelGroupWrap = styled.div`
   display: flex;
@@ -123,28 +123,28 @@ const ChannelGroupContent = styled.div`
 `;
 
 const Channels: React.FC<ReadonlyTree<ChannelInfo>> = ({ value, children }) => {
-  const { asPath } = useRouter();
-  const formattedPath = asPath.split("?")[0].split("#")[0];
+	const { asPath } = useRouter();
+	const formattedPath = asPath.split("?")[0].split("#")[0];
 
-  if (children === undefined || children.length === 0) {
-    return (
-      <Channel
-        name={value.name}
-        to={value.href}
-        selected={formattedPath === value.href}
-      />
-    );
-  }
+	if (children === undefined || children.length === 0) {
+		return (
+			<Channel
+				name={value.name}
+				to={value.href}
+				selected={formattedPath === value.href}
+			/>
+		);
+	}
 
-  return (
-    <ChannelAccordion
-      name={value.name}
-      to={value.href}
-      selected={formattedPath === value.href}
-    >
-      {children.map((child) => {
-        return <Channels key={child.value.href} {...child} />;
-      })}
-    </ChannelAccordion>
-  );
+	return (
+		<ChannelAccordion
+			name={value.name}
+			to={value.href}
+			selected={formattedPath === value.href}
+		>
+			{children.map((child) => {
+				return <Channels key={child.value.href} {...child} />;
+			})}
+		</ChannelAccordion>
+	);
 };

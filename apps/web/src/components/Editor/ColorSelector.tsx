@@ -13,145 +13,145 @@ import { lightTheme } from "@repo/theme/default";
 
 // NOTE: react color が SSR で動かないので、SSR では動かないようにする
 const SketchPicker = dynamic(
-  () => import("react-color").then((mod) => mod.SketchPicker),
-  {
-    ssr: false,
-  },
+	() => import("react-color").then((mod) => mod.SketchPicker),
+	{
+		ssr: false,
+	},
 );
 
 interface Props {
-  allowText?: boolean;
-  suggestedColors?: string[];
-  onChange: (color: string) => void;
-  value: string;
+	allowText?: boolean;
+	suggestedColors?: string[];
+	onChange: (color: string) => void;
+	value: string;
 
-  isExpanded: boolean;
-  setExpanded?: (expanded: boolean) => void;
+	isExpanded: boolean;
+	setExpanded?: (expanded: boolean) => void;
 }
 const ColorSelectorRaw: React.FC<Props> = ({
-  allowText: _allowText,
-  suggestedColors,
-  onChange,
-  value,
+	allowText: _allowText,
+	suggestedColors,
+	onChange,
+	value,
 
-  isExpanded,
-  setExpanded,
+	isExpanded,
+	setExpanded,
 }) => {
-  const setIsFixed = useSetAtom(fixLayoutAtom);
-  const rgbValue = useMemo(() => {
-    const ret = parseHexNotationColor(value);
-    if (ret === null) {
-      return { r: 0, g: 0, b: 0, a: 1 };
-    }
-    const { type: _, ...rest } = ret;
-    return rest;
-  }, [value]);
+	const setIsFixed = useSetAtom(fixLayoutAtom);
+	const rgbValue = useMemo(() => {
+		const ret = parseHexNotationColor(value);
+		if (ret === null) {
+			return { r: 0, g: 0, b: 0, a: 1 };
+		}
+		const { type: _, ...rest } = ret;
+		return rest;
+	}, [value]);
 
-  const [innerColor, setInnerColor] = useState(rgbValue);
-  const onChangePartial = useCallback(
-    (color: { rgb: { r: number; g: number; b: number; a?: number } }) => {
-      setInnerColor({
-        ...color.rgb,
-        a: color.rgb.a ?? 1,
-      });
-    },
-    [],
-  );
-  const onChangeComplete = useCallback(
-    (color: { hex: string; rgb: { a?: number } }) => {
-      if (color.rgb.a === undefined || color.rgb.a === 1) {
-        onChange(color.hex);
-        return;
-      }
-      const trimmedHex = color.hex.replace(/^#/, "");
-      if (trimmedHex.length === 3) {
-        const alphaHex = Math.round((color.rgb.a ?? 1) * 15).toString(16);
-        onChange(`#${trimmedHex}${alphaHex}`);
-        return;
-      }
+	const [innerColor, setInnerColor] = useState(rgbValue);
+	const onChangePartial = useCallback(
+		(color: { rgb: { r: number; g: number; b: number; a?: number } }) => {
+			setInnerColor({
+				...color.rgb,
+				a: color.rgb.a ?? 1,
+			});
+		},
+		[],
+	);
+	const onChangeComplete = useCallback(
+		(color: { hex: string; rgb: { a?: number } }) => {
+			if (color.rgb.a === undefined || color.rgb.a === 1) {
+				onChange(color.hex);
+				return;
+			}
+			const trimmedHex = color.hex.replace(/^#/, "");
+			if (trimmedHex.length === 3) {
+				const alphaHex = Math.round((color.rgb.a ?? 1) * 15).toString(16);
+				onChange(`#${trimmedHex}${alphaHex}`);
+				return;
+			}
 
-      if (trimmedHex.length === 6) {
-        const alphaHex = Math.round((color.rgb.a ?? 1) * 255)
-          .toString(16)
-          .padStart(2, "0");
-        onChange(`#${trimmedHex}${alphaHex}`);
-        return;
-      }
-    },
-    [onChange],
-  );
+			if (trimmedHex.length === 6) {
+				const alphaHex = Math.round((color.rgb.a ?? 1) * 255)
+					.toString(16)
+					.padStart(2, "0");
+				onChange(`#${trimmedHex}${alphaHex}`);
+				return;
+			}
+		},
+		[onChange],
+	);
 
-  useEffect(() => {
-    setInnerColor(rgbValue);
-  }, [rgbValue]);
+	useEffect(() => {
+		setInnerColor(rgbValue);
+	}, [rgbValue]);
 
-  const { toggle, contentRef, contentHeight, ariaToggle, ariaContent } =
-    useControlledAccordion<HTMLDivElement>(isExpanded, setExpanded, 2);
+	const { toggle, contentRef, contentHeight, ariaToggle, ariaContent } =
+		useControlledAccordion<HTMLDivElement>(isExpanded, setExpanded, 2);
 
-  const onTouchStart = useCallback(() => {
-    setIsFixed(true);
-  }, [setIsFixed]);
-  const onTouchEnd = useCallback(() => {
-    setIsFixed(false);
-  }, [setIsFixed]);
-  useEffect(() => {
-    if (!isExpanded) {
-      return;
-    }
-    const content = contentRef.current;
-    if (content === null) {
-      return;
-    }
-    const abortController = new AbortController();
-    const { signal } = abortController;
-    content.addEventListener("touchstart", onTouchStart, {
-      signal,
-      passive: true,
-    });
-    content.addEventListener("touchend", onTouchEnd, {
-      signal,
-      passive: true,
-    });
-    content.addEventListener("touchcancel", onTouchEnd, {
-      signal,
-      passive: true,
-    });
-    return () => {
-      abortController.abort();
-    };
-  }, [isExpanded, onTouchStart, onTouchEnd, contentRef]);
+	const onTouchStart = useCallback(() => {
+		setIsFixed(true);
+	}, [setIsFixed]);
+	const onTouchEnd = useCallback(() => {
+		setIsFixed(false);
+	}, [setIsFixed]);
+	useEffect(() => {
+		if (!isExpanded) {
+			return;
+		}
+		const content = contentRef.current;
+		if (content === null) {
+			return;
+		}
+		const abortController = new AbortController();
+		const { signal } = abortController;
+		content.addEventListener("touchstart", onTouchStart, {
+			signal,
+			passive: true,
+		});
+		content.addEventListener("touchend", onTouchEnd, {
+			signal,
+			passive: true,
+		});
+		content.addEventListener("touchcancel", onTouchEnd, {
+			signal,
+			passive: true,
+		});
+		return () => {
+			abortController.abort();
+		};
+	}, [isExpanded, onTouchStart, onTouchEnd, contentRef]);
 
-  const { ref: wrapRef, style: hiddenStyle } = useHiddenTransition(isExpanded);
+	const { ref: wrapRef, style: hiddenStyle } = useHiddenTransition(isExpanded);
 
-  return (
-    <Wrap className="mono">
-      <ColorPreview onClick={toggle} {...ariaToggle}>
-        <ColorPreviewColor color={value} />
-        <ColorPreviewText>{value}</ColorPreviewText>
-      </ColorPreview>
-      <ContentWrap
-        ref={wrapRef}
-        height={contentHeight}
-        {...ariaContent}
-        css={hiddenStyle}
-      >
-        <div ref={contentRef}>
-          <SketchPicker
-            color={innerColor}
-            onChange={onChangePartial}
-            onChangeComplete={onChangeComplete}
-            presetColors={suggestedColors}
-            disableAlpha={false}
-            width="min(100%, 300px)"
-            css={css`
+	return (
+		<Wrap className="mono">
+			<ColorPreview onClick={toggle} {...ariaToggle}>
+				<ColorPreviewColor color={value} />
+				<ColorPreviewText>{value}</ColorPreviewText>
+			</ColorPreview>
+			<ContentWrap
+				ref={wrapRef}
+				height={contentHeight}
+				{...ariaContent}
+				css={hiddenStyle}
+			>
+				<div ref={contentRef}>
+					<SketchPicker
+						color={innerColor}
+						onChange={onChangePartial}
+						onChangeComplete={onChangeComplete}
+						presetColors={suggestedColors}
+						disableAlpha={false}
+						width="min(100%, 300px)"
+						css={css`
               box-sizing: border-box !important;
               margin: 1px;
             `}
-          />
-        </div>
-      </ContentWrap>
-    </Wrap>
-  );
+					/>
+				</div>
+			</ContentWrap>
+		</Wrap>
+	);
 };
 export const ColorSelector = React.memo(ColorSelectorRaw);
 
@@ -179,7 +179,7 @@ const ColorPreview = styled.button`
   }
 `;
 const ColorPreviewColor = styled.div<{
-  color: string;
+	color: string;
 }>`
   aspect-ratio: 1 / 1;
   height: calc(1.5rem + 8px);

@@ -3,40 +3,40 @@ import { useCallback, useId } from "react";
 import { BiSearch } from "react-icons/bi";
 
 export const FilterBox: React.FC<{
-  word: string;
-  setWord: (word: string) => void;
-  placeholder?: string;
+	word: string;
+	setWord: (word: string) => void;
+	placeholder?: string;
 }> = ({ word, setWord, placeholder }) => {
-  const id = useId();
+	const id = useId();
 
-  const onSubmit = useCallback(
-    () => (e: React.FormEvent<HTMLFormElement>) => {
-      e.preventDefault();
-    },
-    [],
-  );
+	const onSubmit = useCallback(
+		() => (e: React.FormEvent<HTMLFormElement>) => {
+			e.preventDefault();
+		},
+		[],
+	);
 
-  const onChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      setWord(e.target.value);
-    },
-    [setWord],
-  );
+	const onChange = useCallback(
+		(e: React.ChangeEvent<HTMLInputElement>) => {
+			setWord(e.target.value);
+		},
+		[setWord],
+	);
 
-  return (
-    <Form onSubmit={onSubmit}>
-      <InputWrap>
-        <BiSearch />
-        <Input
-          type="search"
-          id={id}
-          placeholder={placeholder}
-          value={word}
-          onChange={onChange}
-        />
-      </InputWrap>
-    </Form>
-  );
+	return (
+		<Form onSubmit={onSubmit}>
+			<InputWrap>
+				<BiSearch />
+				<Input
+					type="search"
+					id={id}
+					placeholder={placeholder}
+					value={word}
+					onChange={onChange}
+				/>
+			</InputWrap>
+		</Form>
+	);
 };
 
 const Form = styled.form`

@@ -10,56 +10,56 @@ import type { Form } from "@/components/Editor";
 
 const AlwaysSyncAtom = atom<boolean>(false);
 export const SyncControls: React.FC = () => {
-  const {
-    mutate: { changeTmpTheme, resetTmpTheme },
-  } = useCurrentTheme();
-  const { control, getValues } = useFormContext<Form>();
-  const theme = useWatch({ control, name: "theme" });
-  const [alwaysSync, setAlwaysSync] = useAtom(AlwaysSyncAtom);
-  const [isSynced, setIsSynced] = useState(false);
+	const {
+		mutate: { changeTmpTheme, resetTmpTheme },
+	} = useCurrentTheme();
+	const { control, getValues } = useFormContext<Form>();
+	const theme = useWatch({ control, name: "theme" });
+	const [alwaysSync, setAlwaysSync] = useAtom(AlwaysSyncAtom);
+	const [isSynced, setIsSynced] = useState(false);
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: theme の更新に合わせて isSynced をリセットする
-  useEffect(() => {
-    setIsSynced(false);
-  }, [theme]);
-  useEffect(() => {
-    if (!alwaysSync) {
-      return;
-    }
-    changeTmpTheme(theme);
-    setIsSynced(true);
-  }, [alwaysSync, changeTmpTheme, theme]);
-  useEffect(() => {
-    return () => {
-      resetTmpTheme();
-    };
-  }, [resetTmpTheme]);
-  const sync = useCallback(() => {
-    const theme = getValues("theme");
-    changeTmpTheme(theme);
-    setIsSynced(true);
-  }, [changeTmpTheme, getValues]);
+	// biome-ignore lint/correctness/useExhaustiveDependencies: theme の更新に合わせて isSynced をリセットする
+	useEffect(() => {
+		setIsSynced(false);
+	}, [theme]);
+	useEffect(() => {
+		if (!alwaysSync) {
+			return;
+		}
+		changeTmpTheme(theme);
+		setIsSynced(true);
+	}, [alwaysSync, changeTmpTheme, theme]);
+	useEffect(() => {
+		return () => {
+			resetTmpTheme();
+		};
+	}, [resetTmpTheme]);
+	const sync = useCallback(() => {
+		const theme = getValues("theme");
+		changeTmpTheme(theme);
+		setIsSynced(true);
+	}, [changeTmpTheme, getValues]);
 
-  const toggleAlwaysSync = useCallback(() => {
-    setAlwaysSync((prev) => !prev);
-  }, [setAlwaysSync]);
+	const toggleAlwaysSync = useCallback(() => {
+		setAlwaysSync((prev) => !prev);
+	}, [setAlwaysSync]);
 
-  return (
-    <Wrap>
-      <SyncButton onClick={sync} disabled={isSynced} aria-pressed={isSynced}>
-        <Dummy hidden>Synced</Dummy>
-        <Real>{isSynced ? "Synced" : "Sync "}</Real>
-      </SyncButton>
-      <Label>
-        <ToggleSwitch
-          type="checkbox"
-          checked={alwaysSync}
-          onChange={toggleAlwaysSync}
-        />
-        Always Sync
-      </Label>
-    </Wrap>
-  );
+	return (
+		<Wrap>
+			<SyncButton onClick={sync} disabled={isSynced} aria-pressed={isSynced}>
+				<Dummy hidden>Synced</Dummy>
+				<Real>{isSynced ? "Synced" : "Sync "}</Real>
+			</SyncButton>
+			<Label>
+				<ToggleSwitch
+					type="checkbox"
+					checked={alwaysSync}
+					onChange={toggleAlwaysSync}
+				/>
+				Always Sync
+			</Label>
+		</Wrap>
+	);
 };
 const Wrap = styled.div`
   display: flex;
@@ -69,10 +69,10 @@ const Wrap = styled.div`
 `;
 const SyncButton = styled.button`
   ${ColoredGlassmorphismStyle(
-    "rgba(0, 91, 172, 0.3)",
-    "rgba(0, 91, 172, 0.1)",
-    "rgba(0, 91, 172, 0.3)",
-  )}
+		"rgba(0, 91, 172, 0.3)",
+		"rgba(0, 91, 172, 0.1)",
+		"rgba(0, 91, 172, 0.3)",
+	)}
 
   box-shadow: none;
   border-radius: 4px;
@@ -88,10 +88,10 @@ const SyncButton = styled.button`
   }
   &:disabled {
     ${ColoredGlassmorphismStyle(
-      "rgba(255, 255, 255, 0.3)",
-      "rgba(255, 255, 255, 0.1)",
-      "rgba(0, 91, 172, 0.3)",
-    )}
+			"rgba(255, 255, 255, 0.3)",
+			"rgba(255, 255, 255, 0.1)",
+			"rgba(0, 91, 172, 0.3)",
+		)}
 
     box-shadow: none;
     border-radius: 4px;

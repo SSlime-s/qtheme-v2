@@ -16,121 +16,121 @@ import type { ResolvedTheme } from "@repo/theme/resolve";
 import type { PropsWithChildren } from "react";
 
 interface Props {
-  id?: string;
+	id?: string;
 }
 export const Sidebar: React.FC<PropsWithChildren<Props>> = ({
-  children,
-  id,
+	children,
+	id,
 }) => {
-  const isMobile = useIsMobile();
-  const ref = useRef<HTMLDivElement>(null);
-  const [isOpen, setIsOpen] = useState(false);
-  useEffect(() => {
-    if (ref.current === null) return;
-    if (!isMobile) return;
+	const isMobile = useIsMobile();
+	const ref = useRef<HTMLDivElement>(null);
+	const [isOpen, setIsOpen] = useState(false);
+	useEffect(() => {
+		if (ref.current === null) return;
+		if (!isMobile) return;
 
-    setIsOpen(false);
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const entry = entries[0];
-        if (entry.isIntersecting) {
-          if (entry.intersectionRatio >= 0.6) {
-            setIsOpen(true);
-          } else {
-            setIsOpen(false);
-          }
-        }
-      },
-      {
-        root: null,
-        threshold: [0, 0.4, 0.6],
-      },
-    );
-    observer.observe(ref.current);
-    return () => {
-      observer.disconnect();
-    };
-  }, [isMobile]);
+		setIsOpen(false);
+		const observer = new IntersectionObserver(
+			(entries) => {
+				const entry = entries[0];
+				if (entry.isIntersecting) {
+					if (entry.intersectionRatio >= 0.6) {
+						setIsOpen(true);
+					} else {
+						setIsOpen(false);
+					}
+				}
+			},
+			{
+				root: null,
+				threshold: [0, 0.4, 0.6],
+			},
+		);
+		observer.observe(ref.current);
+		return () => {
+			observer.disconnect();
+		};
+	}, [isMobile]);
 
-  const scrollToSelf = useCallback(() => {
-    if (!isMobile) {
-      return;
-    }
-    ref.current?.scrollIntoView({ behavior: "smooth", block: "end" });
-  }, [isMobile]);
+	const scrollToSelf = useCallback(() => {
+		if (!isMobile) {
+			return;
+		}
+		ref.current?.scrollIntoView({ behavior: "smooth", block: "end" });
+	}, [isMobile]);
 
-  return (
-    <>
-      <Cover hidden={!isOpen} />
-      <Wrap ref={ref} id={id}>
-        <OpenButton onClick={scrollToSelf} hidden={!isMobile || isOpen}>
-          <MdKeyboardDoubleArrowLeft role="img" aria-label="open" />
-        </OpenButton>
-        {children}
-      </Wrap>
-    </>
-  );
+	return (
+		<>
+			<Cover hidden={!isOpen} />
+			<Wrap ref={ref} id={id}>
+				<OpenButton onClick={scrollToSelf} hidden={!isMobile || isOpen}>
+					<MdKeyboardDoubleArrowLeft role="img" aria-label="open" />
+				</OpenButton>
+				{children}
+			</Wrap>
+		</>
+	);
 };
 export const DefaultSidebarContent: React.FC = () => {
-  const {
-    currentThemeInfo,
-    mutate: { changeToDefaultTheme },
-  } = useCurrentTheme();
-  const [isConfirm, setIsConfirm] = useState(false);
-  const [confirmTimeoutId, setConfirmTimeoutId] = useState<NodeJS.Timeout>();
-  const confirmedToDefaultTheme = useCallback(() => {
-    if (isConfirm) {
-      changeToDefaultTheme();
-      setIsConfirm(false);
-      if (confirmTimeoutId) {
-        clearTimeout(confirmTimeoutId);
-        setConfirmTimeoutId(undefined);
-      }
-      return;
-    }
+	const {
+		currentThemeInfo,
+		mutate: { changeToDefaultTheme },
+	} = useCurrentTheme();
+	const [isConfirm, setIsConfirm] = useState(false);
+	const [confirmTimeoutId, setConfirmTimeoutId] = useState<NodeJS.Timeout>();
+	const confirmedToDefaultTheme = useCallback(() => {
+		if (isConfirm) {
+			changeToDefaultTheme();
+			setIsConfirm(false);
+			if (confirmTimeoutId) {
+				clearTimeout(confirmTimeoutId);
+				setConfirmTimeoutId(undefined);
+			}
+			return;
+		}
 
-    setIsConfirm(true);
-    const timeoutId = setTimeout(() => {
-      setIsConfirm(false);
-      setConfirmTimeoutId(undefined);
-    }, 2000);
-    setConfirmTimeoutId(timeoutId);
-  }, [changeToDefaultTheme, confirmTimeoutId, isConfirm]);
+		setIsConfirm(true);
+		const timeoutId = setTimeout(() => {
+			setIsConfirm(false);
+			setConfirmTimeoutId(undefined);
+		}, 2000);
+		setConfirmTimeoutId(timeoutId);
+	}, [changeToDefaultTheme, confirmTimeoutId, isConfirm]);
 
-  return (
-    <>
-      {currentThemeInfo === null ? (
-        <Block>
-          <Title>現在のテーマ</Title>
-          <p>テーマが選択されていません</p>
-        </Block>
-      ) : (
-        <LinkBlock href={`/theme/${currentThemeInfo?.id}`}>
-          <Title>現在のテーマ</Title>
-          <BreakP>
-            <BudouJa>{currentThemeInfo.title}</BudouJa>
-          </BreakP>
-        </LinkBlock>
-      )}
-      {currentThemeInfo !== null && (
-        <>
-          <Block>
-            <Title>詳細</Title>
-            <BreakP>
-              <WrapResolver Wrapper={[Linkify, BudouJa, ReplaceNewLine]}>
-                {currentThemeInfo.description}
-              </WrapResolver>
-            </BreakP>
-          </Block>
+	return (
+		<>
+			{currentThemeInfo === null ? (
+				<Block>
+					<Title>現在のテーマ</Title>
+					<p>テーマが選択されていません</p>
+				</Block>
+			) : (
+				<LinkBlock href={`/theme/${currentThemeInfo?.id}`}>
+					<Title>現在のテーマ</Title>
+					<BreakP>
+						<BudouJa>{currentThemeInfo.title}</BudouJa>
+					</BreakP>
+				</LinkBlock>
+			)}
+			{currentThemeInfo !== null && (
+				<>
+					<Block>
+						<Title>詳細</Title>
+						<BreakP>
+							<WrapResolver Wrapper={[Linkify, BudouJa, ReplaceNewLine]}>
+								{currentThemeInfo.description}
+							</WrapResolver>
+						</BreakP>
+					</Block>
 
-          <ResetButton onClick={confirmedToDefaultTheme}>
-            {isConfirm ? "もう一度クリックで確定" : "デフォルトテーマに戻す"}
-            <RxReset />
-          </ResetButton>
-        </>
-      )}
-    </>
-  );
+					<ResetButton onClick={confirmedToDefaultTheme}>
+						{isConfirm ? "もう一度クリックで確定" : "デフォルトテーマに戻す"}
+						<RxReset />
+					</ResetButton>
+				</>
+			)}
+		</>
+	);
 };
 
 const Wrap = styled.aside`
@@ -167,9 +167,9 @@ const OpenButton = styled.button`
   }
 `;
 export const BlockStyle = ({
-  theme,
+	theme,
 }: {
-  theme: { theme: ResolvedTheme };
+	theme: { theme: ResolvedTheme };
 }) => css`
   background: ${theme.theme.basic.background.primary.default};
   color: ${theme.theme.basic.ui.secondary.default};

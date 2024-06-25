@@ -10,24 +10,24 @@ import { GlassmorphismStyle } from "../components/Glassmorphism";
 import type { Meta, StoryFn } from "@storybook/react";
 
 const meta: Meta<typeof SmallPreview> = {
-  title: "Components/Preview",
-  component: SmallPreview,
+	title: "Components/Preview",
+	component: SmallPreview,
 };
 
 export default meta;
 
 const Template: StoryFn<typeof SmallPreview> = (
-  args: Parameters<typeof SmallPreview>[0],
+	args: Parameters<typeof SmallPreview>[0],
 ) => (
-  <ThemeProvider theme={{ theme: args.theme }}>
-    <Wrap>
-      <WrapCard>
-        <CardGlass>
-          <SmallPreview {...args} />
-        </CardGlass>
-      </WrapCard>
-    </Wrap>
-  </ThemeProvider>
+	<ThemeProvider theme={{ theme: args.theme }}>
+		<Wrap>
+			<WrapCard>
+				<CardGlass>
+					<SmallPreview {...args} />
+				</CardGlass>
+			</WrapCard>
+		</Wrap>
+	</ThemeProvider>
 );
 const Wrap = styled.div`
   height: 100%;
@@ -58,12 +58,12 @@ const CardGlass = styled.div`
 
 export const LightDefault: StoryFn<typeof SmallPreview> = Template.bind({});
 LightDefault.args = {
-  author: "SSlime",
-  theme: resolveTheme(lightTheme),
+	author: "SSlime",
+	theme: resolveTheme(lightTheme),
 };
 
 export const DarkDefault: StoryFn<typeof SmallPreview> = Template.bind({});
 DarkDefault.args = {
-  author: "SSlime",
-  theme: resolveTheme(darkTheme),
+	author: "SSlime",
+	theme: resolveTheme(darkTheme),
 };

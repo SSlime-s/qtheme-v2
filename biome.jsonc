@@ -1,35 +1,32 @@
 {
-  "$schema": "https://biomejs.dev/schemas/1.8.2/schema.json",
-  "organizeImports": {
-    "enabled": true,
-  },
-  "linter": {
-    "enabled": true,
-    "rules": {
-      "recommended": true,
-      "nursery": {
-        "noUnusedFunctionParameters": "warn",
-      },
-      // FIXME: 以下のルールはすぐの修正が困難なため、一時的に無効化している
-      "suspicious": {
-        "noDoubleEquals": "off",
-        "noShadowRestrictedNames": "off",
-      },
-      "style": {
-        "noNonNullAssertion": "off",
-      },
-    },
-  },
-  "formatter": {
-    "indentStyle": "space",
-    "indentWidth": 2,
-  },
-  "vcs": {
-    "enabled": true,
-    "clientKind": "git",
-    "useIgnoreFile": true,
-  },
-  "files": {
-    "ignore": ["mysql"],
-  },
+	"$schema": "https://biomejs.dev/schemas/1.8.2/schema.json",
+	"organizeImports": {
+		"enabled": true
+	},
+	"linter": {
+		"enabled": true,
+		"rules": {
+			"recommended": true,
+			"nursery": {
+				"noUnusedFunctionParameters": "warn"
+			},
+			// FIXME: 以下のルールはすぐの修正が困難なため、一時的に無効化している
+			"suspicious": {
+				"noDoubleEquals": "off",
+				"noShadowRestrictedNames": "off"
+			},
+			"style": {
+				"noNonNullAssertion": "off"
+			}
+		}
+	},
+	"formatter": {},
+	"vcs": {
+		"enabled": true,
+		"clientKind": "git",
+		"useIgnoreFile": true
+	},
+	"files": {
+		"ignore": ["mysql"]
+	}
 }

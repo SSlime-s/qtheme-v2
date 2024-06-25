@@ -8,21 +8,21 @@ import type { PropsWithChildren } from "react";
 type Props = IWrapper;
 
 export const ReplaceNewLine: React.FC<PropsWithChildren<Props>> = ({
-  children,
-  Wrapper,
+	children,
+	Wrapper,
 }) => {
-  const parsed = children.split(/(\n)/).map((v, i) => {
-    if (v === "\n") {
-      // FIXME
-      // biome-ignore lint/suspicious/noArrayIndexKey: FIXME
-      return <br key={i} />;
-    }
+	const parsed = children.split(/(\n)/).map((v, i) => {
+		if (v === "\n") {
+			// FIXME
+			// biome-ignore lint/suspicious/noArrayIndexKey: FIXME
+			return <br key={i} />;
+		}
 
-    const wrapped = <WrapResolver Wrapper={Wrapper}>{v}</WrapResolver>;
-    // FIXME
-    // biome-ignore lint/suspicious/noArrayIndexKey: FIXME
-    return <React.Fragment key={i}>{wrapped}</React.Fragment>;
-  });
+		const wrapped = <WrapResolver Wrapper={Wrapper}>{v}</WrapResolver>;
+		// FIXME
+		// biome-ignore lint/suspicious/noArrayIndexKey: FIXME
+		return <React.Fragment key={i}>{wrapped}</React.Fragment>;
+	});
 
-  return <>{parsed}</>;
+	return <>{parsed}</>;
 };

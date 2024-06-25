@@ -8,14 +8,14 @@ import { TextBox } from "./TextBox";
 import type { Meta } from "@storybook/react";
 
 const meta: Meta<typeof TextBox> = {
-  title: "Components/TextBox",
-  component: TextBox,
+	title: "Components/TextBox",
+	component: TextBox,
 };
 
 export default meta;
 
 export const Default = () => (
-  <ThemeProvider theme={{ theme: resolveTheme(lightTheme) }}>
-    <TextBox placeholder="placeholder" />
-  </ThemeProvider>
+	<ThemeProvider theme={{ theme: resolveTheme(lightTheme) }}>
+		<TextBox placeholder="placeholder" />
+	</ThemeProvider>
 );

@@ -6,39 +6,39 @@ import { AutoResizeTextarea } from "@/components/AutoResizeTextarea";
 import { lightTheme } from "@repo/theme/default";
 
 interface Props {
-  onChange: (color: string) => void;
-  value: string;
-  placeholder?: string;
+	onChange: (color: string) => void;
+	value: string;
+	placeholder?: string;
 }
 export const ColorInput: React.FC<Props> = ({
-  onChange,
-  value,
-  placeholder,
+	onChange,
+	value,
+	placeholder,
 }) => {
-  const handleChange = useCallback(
-    (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-      onChange(e.target.value);
-    },
-    [onChange],
-  );
+	const handleChange = useCallback(
+		(e: React.ChangeEvent<HTMLTextAreaElement>) => {
+			onChange(e.target.value);
+		},
+		[onChange],
+	);
 
-  return (
-    <Wrap className="mono">
-      <PrefixWrap>
-        <Prefix>
-          <BsTextLeft />
-        </Prefix>
-      </PrefixWrap>
-      <InputWrap>
-        <Input
-          value={value}
-          onChange={handleChange}
-          placeholder={placeholder}
-          rows={1}
-        />
-      </InputWrap>
-    </Wrap>
-  );
+	return (
+		<Wrap className="mono">
+			<PrefixWrap>
+				<Prefix>
+					<BsTextLeft />
+				</Prefix>
+			</PrefixWrap>
+			<InputWrap>
+				<Input
+					value={value}
+					onChange={handleChange}
+					placeholder={placeholder}
+					rows={1}
+				/>
+			</InputWrap>
+		</Wrap>
+	);
 };
 
 const Wrap = styled.div`

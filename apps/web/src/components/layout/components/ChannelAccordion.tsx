@@ -9,48 +9,48 @@ import type { ResolvedTheme } from "@repo/theme/resolve";
 import type { PropsWithChildren } from "react";
 
 interface Props {
-  name: string;
-  to: string;
-  selected?: boolean;
+	name: string;
+	to: string;
+	selected?: boolean;
 }
 
 export const ChannelAccordion: React.FC<PropsWithChildren<Props>> = ({
-  name,
-  selected,
-  to,
-  children,
+	name,
+	selected,
+	to,
+	children,
 }) => {
-  const { isOpen, toggle, contentRef, contentHeight, ariaToggle, ariaContent } =
-    useAccordion<HTMLDivElement>(8);
-  const { ref: wrapRef, style: hiddenStyle } = useHiddenTransition(isOpen);
+	const { isOpen, toggle, contentRef, contentHeight, ariaToggle, ariaContent } =
+		useAccordion<HTMLDivElement>(8);
+	const { ref: wrapRef, style: hiddenStyle } = useHiddenTransition(isOpen);
 
-  return (
-    <Wrap>
-      <ChannelWrap aria-current={selected === true ? "page" : "false"}>
-        <ToggleButton
-          onClick={toggle}
-          selected={selected}
-          aria-label={
-            selected === true
-              ? `${name}以下を折りたたむ`
-              : `${name}以下を展開する`
-          }
-          {...ariaToggle}
-        >
-          <BsHash />
-        </ToggleButton>
-        <ChannelLink href={to}>{name}</ChannelLink>
-      </ChannelWrap>
-      <ContentWrap
-        ref={wrapRef}
-        data-height={contentHeight}
-        {...ariaContent}
-        css={hiddenStyle}
-      >
-        <div ref={contentRef}>{children}</div>
-      </ContentWrap>
-    </Wrap>
-  );
+	return (
+		<Wrap>
+			<ChannelWrap aria-current={selected === true ? "page" : "false"}>
+				<ToggleButton
+					onClick={toggle}
+					selected={selected}
+					aria-label={
+						selected === true
+							? `${name}以下を折りたたむ`
+							: `${name}以下を展開する`
+					}
+					{...ariaToggle}
+				>
+					<BsHash />
+				</ToggleButton>
+				<ChannelLink href={to}>{name}</ChannelLink>
+			</ChannelWrap>
+			<ContentWrap
+				ref={wrapRef}
+				data-height={contentHeight}
+				{...ariaContent}
+				css={hiddenStyle}
+			>
+				<div ref={contentRef}>{children}</div>
+			</ContentWrap>
+		</Wrap>
+	);
 };
 const Wrap = styled.div`
   margin: 4px 0;
@@ -70,7 +70,7 @@ const ChannelWrap = styled.div`
   padding-left: 8px;
 `;
 const ToggleButton = styled.button<{
-  selected?: boolean;
+	selected?: boolean;
 }>`
   display: grid;
   justify-self: end;
@@ -81,9 +81,9 @@ const ToggleButton = styled.button<{
   padding: 0;
   cursor: pointer;
   border: ${({ theme, ...props }) =>
-    props.selected === true
-      ? theme.theme.basic.accent.primary.default
-      : theme.theme.basic.ui.primary.default}
+		props.selected === true
+			? theme.theme.basic.accent.primary.default
+			: theme.theme.basic.ui.primary.default}
     2px solid;
   border-radius: 4px;
   background: transparent;
@@ -93,17 +93,17 @@ const ToggleButton = styled.button<{
 
   &[aria-expanded='true'] {
     background: ${({ theme, ...props }) =>
-      props.selected === true
-        ? theme.theme.basic.accent.primary.default
-        : theme.theme.basic.ui.primary.default};
+			props.selected === true
+				? theme.theme.basic.accent.primary.default
+				: theme.theme.basic.ui.primary.default};
     color: ${({ theme }) => theme.theme.specific.channelHashOpened};
   }
 
   &:hover::before {
     background: ${({ theme, ...props }) =>
-      props.selected === true
-        ? theme.theme.basic.accent.primary.default
-        : theme.theme.basic.ui.primary.default};
+			props.selected === true
+				? theme.theme.basic.accent.primary.default
+				: theme.theme.basic.ui.primary.default};
     opacity: 0.2;
     content: '';
     border-radius: 4px;
@@ -112,9 +112,9 @@ const ToggleButton = styled.button<{
   }
 `;
 const ChannelTextStyle = ({
-  theme,
+	theme,
 }: {
-  theme: { theme: ResolvedTheme };
+	theme: { theme: ResolvedTheme };
 }) => css`
   width: 100%;
   padding-left: calc(8px + 3px);
@@ -145,12 +145,12 @@ const ChannelLink = styled(Link)`
   }
 `;
 const ContentWrap = styled.div<{
-  "data-height"?: number;
+	"data-height"?: number;
 }>`
   overflow: hidden;
   transition: height 0.3s ease;
   height: ${({ "data-height": height }) =>
-    height === undefined ? "auto" : height}px;
+		height === undefined ? "auto" : height}px;
   padding-left: 12px;
 
   &[aria-hidden='true'] {
@@ -159,16 +159,16 @@ const ContentWrap = styled.div<{
 `;
 
 export const Channel: React.FC<Props> = ({ name, to, selected }) => {
-  return (
-    <Wrap>
-      <Link href={to}>
-        <ChannelWrap aria-current={selected === true ? "page" : "false"}>
-          <CenteredBsHash />
-          <ChannelText>{name}</ChannelText>
-        </ChannelWrap>
-      </Link>
-    </Wrap>
-  );
+	return (
+		<Wrap>
+			<Link href={to}>
+				<ChannelWrap aria-current={selected === true ? "page" : "false"}>
+					<CenteredBsHash />
+					<ChannelText>{name}</ChannelText>
+				</ChannelWrap>
+			</Link>
+		</Wrap>
+	);
 };
 const CenteredBsHash = styled(BsHash)`
   place-self: center;

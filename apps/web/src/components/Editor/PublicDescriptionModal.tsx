@@ -6,39 +6,39 @@ import { ModalTemplate } from "@/utils/modal/ModalTemplate";
 import { lightTheme } from "@repo/theme/default";
 
 interface Props extends React.ComponentProps<"div"> {
-  children?: never;
+	children?: never;
 
-  titleProps?: React.ComponentProps<"h1">;
+	titleProps?: React.ComponentProps<"h1">;
 
-  close: () => void;
+	close: () => void;
 }
 export const PublicDescriptionModal: React.FC<Props> = ({
-  titleProps,
-  close,
-  ...props
+	titleProps,
+	close,
+	...props
 }) => {
-  return (
-    <Wrap glass onOutsideClick={close} {...props}>
-      <Title {...titleProps}>Public が推奨な理由</Title>
-      <p>
-        <ul>
-          <Li>
-            <Marker>
-              <BiWorld />
-            </Marker>
-            traP 外の人にも見てもらうことができます
-          </Li>
-          <Li>
-            <Marker>
-              <BiPaint />
-            </Marker>
-            traQ にリンクが共有されたときに、テーマの概要がわかるようになります
-          </Li>
-        </ul>
-      </p>
-      <CloseButton onClick={close}>わかった！</CloseButton>
-    </Wrap>
-  );
+	return (
+		<Wrap glass onOutsideClick={close} {...props}>
+			<Title {...titleProps}>Public が推奨な理由</Title>
+			<p>
+				<ul>
+					<Li>
+						<Marker>
+							<BiWorld />
+						</Marker>
+						traP 外の人にも見てもらうことができます
+					</Li>
+					<Li>
+						<Marker>
+							<BiPaint />
+						</Marker>
+						traQ にリンクが共有されたときに、テーマの概要がわかるようになります
+					</Li>
+				</ul>
+			</p>
+			<CloseButton onClick={close}>わかった！</CloseButton>
+		</Wrap>
+	);
 };
 
 const popupKeyframes = keyframes`

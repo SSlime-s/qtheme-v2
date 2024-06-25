@@ -3,85 +3,85 @@ import styled from "@emotion/styled";
 import { OptionalSelectors } from "./OptionalSelectors";
 
 export const AdvancedKeys = {
-  browser: [
-    "themeColor",
-    // 'colorScheme',
-    "selectionText",
-    "selectionBackground",
-    "caret",
-    "scrollbarThumb",
-    "scrollbarThumbHover",
-    "scrollbarTrack",
-  ] as const,
-  specific: [
-    "waveformColor",
-    "waveformGradation",
+	browser: [
+		"themeColor",
+		// 'colorScheme',
+		"selectionText",
+		"selectionBackground",
+		"caret",
+		"scrollbarThumb",
+		"scrollbarThumbHover",
+		"scrollbarTrack",
+	] as const,
+	specific: [
+		"waveformColor",
+		"waveformGradation",
 
-    "navigationBarDesktopBackground",
-    "navigationBarMobileBackground",
-    "mainViewBackground",
-    "sideBarBackground",
+		"navigationBarDesktopBackground",
+		"navigationBarMobileBackground",
+		"mainViewBackground",
+		"sideBarBackground",
 
-    // TODO: boolean の実装が面倒なので後回し
-    // 'stampEdgeEnable',
-  ] as const,
+		// TODO: boolean の実装が面倒なので後回し
+		// 'stampEdgeEnable',
+	] as const,
 } as const;
 export const AdvancedKeysKeys = [
-  "browser",
-  "specific",
+	"browser",
+	"specific",
 ] as const satisfies ReadonlyArray<keyof typeof AdvancedKeys>;
 export const DescriptionMap = {
-  browser: {
-    themeColor: "スマホブラウザでのアドレスバーでの色",
-    selectionText: "テキスト選択時の文字色",
-    selectionBackground: "テキスト選択時の背景色",
-    caret: "テキストカーソルの色",
-    scrollbarThumb: "スクロールバーのスクロール部分の色",
-    scrollbarThumbHover: "スクロールバーのスクロール部分のホバー時の色",
-    scrollbarTrack: "スクロールバーの背景色",
-  },
-  specific: {
-    waveformColor: "波形の色",
-    waveformGradation: "波形のグラデーション",
+	browser: {
+		themeColor: "スマホブラウザでのアドレスバーでの色",
+		selectionText: "テキスト選択時の文字色",
+		selectionBackground: "テキスト選択時の背景色",
+		caret: "テキストカーソルの色",
+		scrollbarThumb: "スクロールバーのスクロール部分の色",
+		scrollbarThumbHover: "スクロールバーのスクロール部分のホバー時の色",
+		scrollbarTrack: "スクロールバーの背景色",
+	},
+	specific: {
+		waveformColor: "波形の色",
+		waveformGradation: "波形のグラデーション",
 
-    navigationBarDesktopBackground: "デスクトップ版のナビゲーションバーの背景",
-    navigationBarMobileBackground: "モバイル版のナビゲーションバーの背景",
-    mainViewBackground: "メインビューの背景",
-    sideBarBackground: "サイドバーの背景",
+		navigationBarDesktopBackground: "デスクトップ版のナビゲーションバーの背景",
+		navigationBarMobileBackground: "モバイル版のナビゲーションバーの背景",
+		mainViewBackground: "メインビューの背景",
+		sideBarBackground: "サイドバーの背景",
 
-    // stampEdgeEnable: 'スタンプの枠線を有効化するか',
-  },
+		// stampEdgeEnable: 'スタンプの枠線を有効化するか',
+	},
 } as const satisfies {
-  [K in keyof typeof AdvancedKeys]: Record<
-    (typeof AdvancedKeys)[K][number],
-    string
-  >;
+	[K in keyof typeof AdvancedKeys]: Record<
+		(typeof AdvancedKeys)[K][number],
+		string
+	>;
 };
 export const AdvancedSelectors: React.FC = () => {
-  return (
-    <div>
-      <SelectorGroup>
-        <SelectorGroupLabel>Browser</SelectorGroupLabel>
-        {AdvancedKeys.browser.map((key) => (
-          <Selector key={key}>
-            <OptionalSelectors key1="browser" label={key} />
-          </Selector>
-        ))}
+	return (
+		<div>
+			<SelectorGroup>
+				<SelectorGroupLabel>Browser</SelectorGroupLabel>
+				{AdvancedKeys.browser.map((key) => (
+					<Selector key={key}>
+						<OptionalSelectors key1="browser" label={key} />
+					</Selector>
+				))}
 
-        <SelectorGroupLabel>Specific</SelectorGroupLabel>
-        {AdvancedKeys.specific.map((key) => (
-          <Selector key={key}>
-            <OptionalSelectors
-              key1="specific"
-              label={key}
-              // type={key === 'stampEdgeEnable' ? 'boolean' : 'text'}
-              type="text"
-            />
-          </Selector>
-        ))}
-      </SelectorGroup>
-    </div>
-  );
+				<SelectorGroupLabel>Specific</SelectorGroupLabel>
+				{AdvancedKeys.specific.map((key) => (
+					<Selector key={key}>
+						<OptionalSelectors
+							key1="specific"
+							label={key}
+							// type={key === 'stampEdgeEnable' ? 'boolean' : 'text'}
+							type="text"
+						/>
+					</Selector>
+				))}
+			</SelectorGroup>
+		</div>
+	);
 };
 const SelectorGroup = styled.div`
   margin-bottom: 16px;

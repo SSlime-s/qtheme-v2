@@ -10,18 +10,18 @@ import type { ToastOptions } from "@/utils/toast";
 import type { Theme } from "@emotion/react";
 
 type Props = Omit<ToastOptions, "durationMs" | "key"> & {
-  toastKey: string;
+	toastKey: string;
 };
 const Toast: React.FC<Props> = ({ type, content, toastKey, onClick }) => {
-  const Wrap = useMemo(() => {
-    return onClick ? WrapButton : WrapDiv;
-  }, [onClick]);
+	const Wrap = useMemo(() => {
+		return onClick ? WrapButton : WrapDiv;
+	}, [onClick]);
 
-  return (
-    <Wrap onClick={onClick} key={toastKey} data-type={type}>
-      {content}
-    </Wrap>
-  );
+	return (
+		<Wrap onClick={onClick} key={toastKey} data-type={type}>
+			{content}
+		</Wrap>
+	);
 };
 const slideIn = keyframes`
   from {
@@ -69,22 +69,22 @@ const WrapButton = styled.button<{ "data-type": ToastOptions["type"] }>`
 `;
 
 const RawToastContainer: React.FC = () => {
-  const toasts = useToastList();
+	const toasts = useToastList();
 
-  return ReactDOM.createPortal(
-    <Container>
-      {toasts.map(({ key, ...t }) => (
-        <Toast key={key} toastKey={key} {...t} />
-      ))}
-    </Container>,
-    document.getElementById("toast") as HTMLElement,
-  );
+	return ReactDOM.createPortal(
+		<Container>
+			{toasts.map(({ key, ...t }) => (
+				<Toast key={key} toastKey={key} {...t} />
+			))}
+		</Container>,
+		document.getElementById("toast") as HTMLElement,
+	);
 };
 export const ToastContainer = dynamic(
-  () => Promise.resolve(RawToastContainer),
-  {
-    ssr: false,
-  },
+	() => Promise.resolve(RawToastContainer),
+	{
+		ssr: false,
+	},
 );
 const Container = styled.div`
   position: absolute;

@@ -8,15 +8,15 @@ import { lightTheme } from "@repo/theme/default";
 import type { Form } from "@/components/Editor";
 
 export const Description: React.FC = () => {
-  const id = useId();
-  const { register } = useFormContext<Form>();
+	const id = useId();
+	const { register } = useFormContext<Form>();
 
-  return (
-    <div>
-      <Label htmlFor={id}>Description</Label>
-      <Input id={id} {...register("description")} placeholder="Description" />
-    </div>
-  );
+	return (
+		<div>
+			<Label htmlFor={id}>Description</Label>
+			<Input id={id} {...register("description")} placeholder="Description" />
+		</div>
+	);
 };
 const Label = styled.label`
   display: block;

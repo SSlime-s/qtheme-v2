@@ -51,16 +51,16 @@ const SkeletonKeyframes = keyframes`
   }
 `;
 export const Skeleton = styled.div<{
-  width?: string;
-  height?: string;
-  borderRadius?: string;
+	width?: string;
+	height?: string;
+	borderRadius?: string;
 }>`
   position: relative;
   width: ${({ width }) => width ?? "100%"};
   height: ${({ height }) => height ?? "100%"};
   ${({ borderRadius }) =>
-    borderRadius !== undefined &&
-    css`
+		borderRadius !== undefined &&
+		css`
       border-radius: ${borderRadius};
     `}
   background: ${({ theme }) => theme.theme.basic.ui.secondary.default};

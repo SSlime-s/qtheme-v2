@@ -20,8 +20,8 @@ import { Layout } from "@/components/layout";
 import { isMobile } from "@/utils/isMobile";
 import { useConfirmModal } from "@/utils/modal/ConfirmModal/hooks";
 import {
-  prefetchThemeIdList,
-  prefetchUseTheme,
+	prefetchThemeIdList,
+	prefetchUseTheme,
 } from "@/utils/theme/forPrefetch";
 import { useCurrentTheme, useTheme } from "@/utils/theme/hooks";
 import { pageTitle } from "@/utils/title";
@@ -39,166 +39,166 @@ import type { ParsedUrlQuery } from "node:querystring";
 import type { NextPageWithLayout } from "@/pages/_app.page";
 import type { FormattedTheme } from "@/utils/theme/hooks";
 import type {
-  GetStaticPaths,
-  GetStaticProps,
-  InferGetStaticPropsType,
+	GetStaticPaths,
+	GetStaticProps,
+	InferGetStaticPropsType,
 } from "next";
 import type React from "react";
 
 interface Params extends ParsedUrlQuery {
-  id: string;
+	id: string;
 }
 
 // MEMO: 認証管理は middleware でやる
 export const getStaticProps = (async ({ params }) => {
-  const prefetchData =
-    params === undefined ? {} : await prefetchUseTheme(prisma, params.id);
+	const prefetchData =
+		params === undefined ? {} : await prefetchUseTheme(prisma, params.id);
 
-  return {
-    props: {
-      fallback: prefetchData,
-    },
-  };
-  // biome-ignore lint/suspicious/noExplicitAny: 許して
+	return {
+		props: {
+			fallback: prefetchData,
+		},
+	};
+	// biome-ignore lint/suspicious/noExplicitAny: 許して
 }) satisfies GetStaticProps<{ fallback: Record<string, any> }, Params>;
 
 export const getStaticPaths = (async () => {
-  const ids = await prefetchThemeIdList(prisma);
+	const ids = await prefetchThemeIdList(prisma);
 
-  return {
-    paths: ids.map((id) => ({ params: { id } })),
-    fallback: true,
-  };
+	return {
+		paths: ids.map((id) => ({ params: { id } })),
+		fallback: true,
+	};
 }) satisfies GetStaticPaths<Params>;
 
 type Props =
-  | InferGetStaticPropsType<typeof getStaticProps>
-  // SSG による fallback の生成時は Props が undefined になる
-  | Record<PropertyKey, undefined>;
+	| InferGetStaticPropsType<typeof getStaticProps>
+	// SSG による fallback の生成時は Props が undefined になる
+	| Record<PropertyKey, undefined>;
 
 const ThemePage: NextPageWithLayout<Props> = ({ fallback, ...props }) => {
-  // NOTE: fallback が undefined だと、fallback が {} から undefined に上書きされてしまうため、注意する
-  const value =
-    fallback === undefined
-      ? {}
-      : {
-          fallback,
-        };
+	// NOTE: fallback が undefined だと、fallback が {} から undefined に上書きされてしまうため、注意する
+	const value =
+		fallback === undefined
+			? {}
+			: {
+					fallback,
+				};
 
-  return (
-    <SWRConfig value={value}>
-      <ThemePageInner {...props} />
-    </SWRConfig>
-  );
+	return (
+		<SWRConfig value={value}>
+			<ThemePageInner {...props} />
+		</SWRConfig>
+	);
 };
 ThemePage.getLayout = (page) => <Layout>{page}</Layout>;
 export default ThemePage;
 
 const ThemePageInner: React.FC<Omit<Props, "fallback">> = () => {
-  const userId = useUserId();
-  const { id } = useRouter().query as { id: string | undefined };
-  const {
-    theme,
-    resolvedTheme,
-    error,
-    mutate: { toggleLike, deleteTheme },
-  } = useTheme(id);
-  const {
-    mutate: { changeTheme },
-  } = useCurrentTheme();
+	const userId = useUserId();
+	const { id } = useRouter().query as { id: string | undefined };
+	const {
+		theme,
+		resolvedTheme,
+		error,
+		mutate: { toggleLike, deleteTheme },
+	} = useTheme(id);
+	const {
+		mutate: { changeTheme },
+	} = useCurrentTheme();
 
-  const toggleLikeWithAuth = useWithAuth(
-    userId,
-    toggleLike,
-    "favorite は部員限定です",
-  );
+	const toggleLikeWithAuth = useWithAuth(
+		userId,
+		toggleLike,
+		"favorite は部員限定です",
+	);
 
-  const themeString = useMemo(() => {
-    if (theme === undefined) {
-      return "";
-    }
-    return JSON.stringify(theme.theme);
-  }, [theme]);
+	const themeString = useMemo(() => {
+		if (theme === undefined) {
+			return "";
+		}
+		return JSON.stringify(theme.theme);
+	}, [theme]);
 
-  if (error !== undefined) {
-    console.error(error);
-    const isNotFound = (error.message as string)
-      .trimStart()
-      .startsWith("Not found");
-    return <Error statusCode={isNotFound ? 404 : 500} />;
-  }
+	if (error !== undefined) {
+		console.error(error);
+		const isNotFound = (error.message as string)
+			.trimStart()
+			.startsWith("Not found");
+		return <Error statusCode={isNotFound ? 404 : 500} />;
+	}
 
-  if (theme === undefined) {
-    return <LoadingBar />;
-  }
+	if (theme === undefined) {
+		return <LoadingBar />;
+	}
 
-  return (
-    <>
-      <Head>
-        <title>{pageTitle(theme.title)}</title>
-      </Head>
-      <SEO
-        title={theme.title}
-        description={theme.description}
-        imageUrl={ogImageUrl(theme.theme, theme.author)}
-        url={`/theme/${theme.id}`}
-      />
-      <Wrap>
-        <MainWrap>
-          <Message
-            iconUser={theme.author}
-            content={
-              <>
-                <H1>{theme.title}</H1>
-                <FullWidthContent>
-                  <LargePreviewCard
-                    theme={theme}
-                    resolvedTheme={resolvedTheme}
-                    changeTheme={changeTheme}
-                  />
-                </FullWidthContent>
-              </>
-            }
-            date={theme.createdAt}
-            tag={theme.type}
-            name={theme.author}
-            stamps={
-              <FullWidthContent>
-                <Controls
-                  theme={theme}
-                  toggleLike={toggleLikeWithAuth}
-                  userId={userId}
-                  deleteTheme={deleteTheme}
-                />
-              </FullWidthContent>
-            }
-          />
-          <Message
-            iconUser={theme.author}
-            content={
-              <>
-                <H2>詳細</H2>
-                <BreakP>
-                  <WrapResolver Wrapper={[Linkify, BudouJa, ReplaceNewLine]}>
-                    {theme.description}
-                  </WrapResolver>
-                </BreakP>
-              </>
-            }
-            date={theme.createdAt}
-            tag={theme.type}
-            name={theme.author}
-          />
-        </MainWrap>
-        <CopyBox
-          defaultValue={themeString}
-          after={<After text={themeString} />}
-          aria-label="テーマのjson"
-          readOnly
-        />
-      </Wrap>
-    </>
-  );
+	return (
+		<>
+			<Head>
+				<title>{pageTitle(theme.title)}</title>
+			</Head>
+			<SEO
+				title={theme.title}
+				description={theme.description}
+				imageUrl={ogImageUrl(theme.theme, theme.author)}
+				url={`/theme/${theme.id}`}
+			/>
+			<Wrap>
+				<MainWrap>
+					<Message
+						iconUser={theme.author}
+						content={
+							<>
+								<H1>{theme.title}</H1>
+								<FullWidthContent>
+									<LargePreviewCard
+										theme={theme}
+										resolvedTheme={resolvedTheme}
+										changeTheme={changeTheme}
+									/>
+								</FullWidthContent>
+							</>
+						}
+						date={theme.createdAt}
+						tag={theme.type}
+						name={theme.author}
+						stamps={
+							<FullWidthContent>
+								<Controls
+									theme={theme}
+									toggleLike={toggleLikeWithAuth}
+									userId={userId}
+									deleteTheme={deleteTheme}
+								/>
+							</FullWidthContent>
+						}
+					/>
+					<Message
+						iconUser={theme.author}
+						content={
+							<>
+								<H2>詳細</H2>
+								<BreakP>
+									<WrapResolver Wrapper={[Linkify, BudouJa, ReplaceNewLine]}>
+										{theme.description}
+									</WrapResolver>
+								</BreakP>
+							</>
+						}
+						date={theme.createdAt}
+						tag={theme.type}
+						name={theme.author}
+					/>
+				</MainWrap>
+				<CopyBox
+					defaultValue={themeString}
+					after={<After text={themeString} />}
+					aria-label="テーマのjson"
+					readOnly
+				/>
+			</Wrap>
+		</>
+	);
 };
 
 const Wrap = styled.div`
@@ -234,86 +234,86 @@ const CopyBox = styled(TextBox)`
 `;
 
 interface ControlsProps {
-  theme: FormattedTheme;
-  toggleLike: (isLike: boolean) => Promise<void>;
-  deleteTheme: () => Promise<void>;
-  userId: string | null;
+	theme: FormattedTheme;
+	toggleLike: (isLike: boolean) => Promise<void>;
+	deleteTheme: () => Promise<void>;
+	userId: string | null;
 }
 const Controls: React.FC<ControlsProps> = ({
-  theme,
-  toggleLike,
-  userId,
-  deleteTheme,
+	theme,
+	toggleLike,
+	userId,
+	deleteTheme,
 }) => {
-  const {
-    modalProps,
-    cancel,
-    isOpen,
-    ok,
-    titleProps,
-    titleRef,
-    triggerRef,
-    waitConfirm,
-  } = useConfirmModal("theme/[id]/delete");
+	const {
+		modalProps,
+		cancel,
+		isOpen,
+		ok,
+		titleProps,
+		titleRef,
+		triggerRef,
+		waitConfirm,
+	} = useConfirmModal("theme/[id]/delete");
 
-  const router = useRouter();
-  const handleDelete = useCallback(async () => {
-    const confirmed = await waitConfirm();
-    if (!confirmed) {
-      return;
-    }
-    if (confirmed) {
-      try {
-        await deleteTheme();
-        await router.push(`/user/${theme.author}`);
-      } catch (e) {
-        console.error(e);
-      }
-    }
-  }, [deleteTheme, router, theme.author, waitConfirm]);
+	const router = useRouter();
+	const handleDelete = useCallback(async () => {
+		const confirmed = await waitConfirm();
+		if (!confirmed) {
+			return;
+		}
+		if (confirmed) {
+			try {
+				await deleteTheme();
+				await router.push(`/user/${theme.author}`);
+			} catch (e) {
+				console.error(e);
+			}
+		}
+	}, [deleteTheme, router, theme.author, waitConfirm]);
 
-  return (
-    <ControlsWrap>
-      <FavoriteButton
-        isFavorite={theme.isLike}
-        onClick={toggleLike}
-        favoriteCount={theme.likes}
-      />
-      {theme.author === userId && (
-        <>
-          <UpdateButton href={`/theme/${theme.id}/edit`} title="編集">
-            <AiFillEdit />
-            編集
-          </UpdateButton>
-          <DeleteButton onClick={handleDelete} ref={triggerRef}>
-            <AiFillDelete />
-            削除
-          </DeleteButton>
+	return (
+		<ControlsWrap>
+			<FavoriteButton
+				isFavorite={theme.isLike}
+				onClick={toggleLike}
+				favoriteCount={theme.likes}
+			/>
+			{theme.author === userId && (
+				<>
+					<UpdateButton href={`/theme/${theme.id}/edit`} title="編集">
+						<AiFillEdit />
+						編集
+					</UpdateButton>
+					<DeleteButton onClick={handleDelete} ref={triggerRef}>
+						<AiFillDelete />
+						削除
+					</DeleteButton>
 
-          {isOpen && (
-            <ConfirmModal
-              {...modalProps}
-              titleProps={{
-                ...titleProps,
-                ref: titleRef,
-              }}
-              onCancel={cancel}
-              onOk={ok}
-            />
-          )}
-        </>
-      )}
-    </ControlsWrap>
-  );
+					{isOpen && (
+						<ConfirmModal
+							{...modalProps}
+							titleProps={{
+								...titleProps,
+								ref: titleRef,
+							}}
+							onCancel={cancel}
+							onOk={ok}
+						/>
+					)}
+				</>
+			)}
+		</ControlsWrap>
+	);
 };
 const ControlsWrap = styled.div`
   display: flex;
 `;
 const ControlButtonStyle = css`
   ${ColoredGlassmorphismStyle(
-    "rgba(255, 255, 255, 0.5)",
-    "rgba(255, 255, 255, 0.3)",
-  )}
+		"rgba(255, 255, 255, 0.5)",
+		"rgba(255, 255, 255, 0.3)",
+	)}
   border-radius: 8px;
 
   display: flex;
@@ -343,16 +343,16 @@ const DeleteButton = styled.button`
 `;
 
 interface AfterProps {
-  text: string;
+	text: string;
 }
 const After: React.FC<AfterProps> = ({ text }) => {
-  return (
-    <AfterWrap>
-      <CopyButtonWrap>
-        <CopyButton text={text} title="テーマのコピー" />
-      </CopyButtonWrap>
-    </AfterWrap>
-  );
+	return (
+		<AfterWrap>
+			<CopyButtonWrap>
+				<CopyButton text={text} title="テーマのコピー" />
+			</CopyButtonWrap>
+		</AfterWrap>
+	);
 };
 const AfterWrap = styled.div`
   height: 100%;

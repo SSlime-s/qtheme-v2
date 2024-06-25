@@ -10,92 +10,92 @@ import { isMobile, useIsMobile } from "@/utils/isMobile";
 import type { ChannelPath } from "./convertChannelPath";
 
 interface Props {
-  channelPath: ChannelPath[];
-  openNavBar: () => void;
+	channelPath: ChannelPath[];
+	openNavBar: () => void;
 }
 
 const topicAtom = atom<string | null>(null);
 export const useSetTopic = () => {
-  return useSetAtom(topicAtom);
+	return useSetAtom(topicAtom);
 };
 export const Header: React.FC<Props> = ({ channelPath, openNavBar }) => {
-  const isMobile = useIsMobile();
+	const isMobile = useIsMobile();
 
-  const topic = useAtomValue(topicAtom);
+	const topic = useAtomValue(topicAtom);
 
-  const now: ChannelPath | undefined = useMemo(() => {
-    const pathElement = channelPath[channelPath.length - 1];
-    if (pathElement === undefined) return undefined;
-    return pathElement;
-  }, [channelPath]);
+	const now: ChannelPath | undefined = useMemo(() => {
+		const pathElement = channelPath[channelPath.length - 1];
+		if (pathElement === undefined) return undefined;
+		return pathElement;
+	}, [channelPath]);
 
-  const root: ChannelPath | undefined = useMemo(() => {
-    const pathElement = channelPath[0];
-    if (pathElement === undefined) return undefined;
-    return pathElement;
-  }, [channelPath]);
+	const root: ChannelPath | undefined = useMemo(() => {
+		const pathElement = channelPath[0];
+		if (pathElement === undefined) return undefined;
+		return pathElement;
+	}, [channelPath]);
 
-  const rest: ChannelPath[] = useMemo(() => {
-    return channelPath.slice(1, -1);
-  }, [channelPath]);
+	const rest: ChannelPath[] = useMemo(() => {
+		return channelPath.slice(1, -1);
+	}, [channelPath]);
 
-  const isRoot = useMemo(() => {
-    return channelPath.length === 1;
-  }, [channelPath]);
+	const isRoot = useMemo(() => {
+		return channelPath.length === 1;
+	}, [channelPath]);
 
-  const ref = useRef<HTMLDivElement>(null);
-  const scrollToSelf = useCallback(() => {
-    if (!isMobile) {
-      return;
-    }
-    ref.current?.scrollIntoView({
-      behavior: "smooth",
-      block: "start",
-    });
-  }, [isMobile]);
+	const ref = useRef<HTMLDivElement>(null);
+	const scrollToSelf = useCallback(() => {
+		if (!isMobile) {
+			return;
+		}
+		ref.current?.scrollIntoView({
+			behavior: "smooth",
+			block: "start",
+		});
+	}, [isMobile]);
 
-  // return <Wrap>#favorite/path</Wrap>
-  return (
-    <>
-      <DummyWrap ref={ref} />
-      <Wrap onClickCapture={scrollToSelf}>
-        <MenuButton onClick={openNavBar} hidden={!isMobile}>
-          <Image src={Logo} alt="Open NavBar" width={24} height={24} />
-        </MenuButton>
-        <PathWrap>
-          {isRoot ? (
-            <NowPath>
-              <HashWrap>#</HashWrap>
-              {now?.name}
-            </NowPath>
-          ) : (
-            <>
-              <RestPath>
-                <RootLink href={root?.href ?? "/"}>
-                  <HashWrap>#</HashWrap>
-                  {root?.name}
-                </RootLink>
-                <Separator />
-              </RestPath>
-              {rest.map((path) => {
-                return (
-                  <RestPath key={path.href}>
-                    <Link href={path.href}>{path.name}</Link>
-                    <Separator />
-                  </RestPath>
-                );
-              })}
-              <NowPath>{now?.name}</NowPath>
-            </>
-          )}
-        </PathWrap>
-        {topic !== null && <Topic>{topic}</Topic>}
-      </Wrap>
-    </>
-  );
+	// return <Wrap>#favorite/path</Wrap>
+	return (
+		<>
+			<DummyWrap ref={ref} />
+			<Wrap onClickCapture={scrollToSelf}>
+				<MenuButton onClick={openNavBar} hidden={!isMobile}>
+					<Image src={Logo} alt="Open NavBar" width={24} height={24} />
+				</MenuButton>
+				<PathWrap>
+					{isRoot ? (
+						<NowPath>
+							<HashWrap>#</HashWrap>
+							{now?.name}
+						</NowPath>
+					) : (
+						<>
+							<RestPath>
+								<RootLink href={root?.href ?? "/"}>
+									<HashWrap>#</HashWrap>
+									{root?.name}
+								</RootLink>
+								<Separator />
+							</RestPath>
+							{rest.map((path) => {
+								return (
+									<RestPath key={path.href}>
+										<Link href={path.href}>{path.name}</Link>
+										<Separator />
+									</RestPath>
+								);
+							})}
+							<NowPath>{now?.name}</NowPath>
+						</>
+					)}
+				</PathWrap>
+				{topic !== null && <Topic>{topic}</Topic>}
+			</Wrap>
+		</>
+	);
 };
 const Separator: React.FC = () => {
-  return <SeparatorWrap>/</SeparatorWrap>;
+	return <SeparatorWrap>/</SeparatorWrap>;
 };
 
 const Wrap = styled.header`

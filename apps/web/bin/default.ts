@@ -5,8 +5,8 @@
 import { ulid } from "ulid";
 
 import {
-  darkTheme,
-  lightTheme,
+	darkTheme,
+	lightTheme,
 } from "node_modules/@repo/theme/dist/default.js";
 
 const createdAt = new Date("2019-11-22T00:00:00.000Z");
@@ -34,21 +34,21 @@ const type2 = "dark";
 const sql_theme = `
 INSERT INTO themes (id, title, description, author_user_id, visibility, type, theme, created_at)
 VALUES ('${id}', '${title}', '${description}', '${author}', '${visibility}', '${type}', '${JSON.stringify(
-  lightTheme,
+	lightTheme,
 )}', '${createdAt.toISOString()}'),
         ('${id2}', '${title2}', '${description2}', '${author}', '${visibility}', '${type2}', '${JSON.stringify(
-          darkTheme,
-        )}', '${createdAt2.toISOString()}')
+					darkTheme,
+				)}', '${createdAt2.toISOString()}')
 `;
 
 const sql_version = `
 INSERT INTO theme_versions (id, theme_id, version, theme, created_at)
 VALUES ('${idForVersion}', '${id}', 1, '${JSON.stringify(
-  lightTheme,
+	lightTheme,
 )}', '${createdAt.toISOString()}'),
        ('${idForVersion2}', '${id2}', 1, '${JSON.stringify(
-         darkTheme,
-       )}', '${createdAt2.toISOString()}')
+					darkTheme,
+				)}', '${createdAt2.toISOString()}')
 `;
 
 console.log("sql_theme\n\n", sql_theme);

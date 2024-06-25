@@ -4,62 +4,62 @@ import { useEffect, useRef } from "react";
 import { lineClamp } from "@/styles/lineClamp";
 
 export interface Props
-  extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
-  before?: React.ReactNode;
-  after?: React.ReactNode;
+	extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
+	before?: React.ReactNode;
+	after?: React.ReactNode;
 
-  readOnly?: boolean;
+	readOnly?: boolean;
 }
 
 export const TextBox: React.FC<Props> = ({ readOnly, ...props }) => {
-  if (readOnly === true) {
-    return <ReadOnlyTextBox {...props} />;
-  }
+	if (readOnly === true) {
+		return <ReadOnlyTextBox {...props} />;
+	}
 
-  const { before, after, ...restProps } = props;
+	const { before, after, ...restProps } = props;
 
-  return (
-    <Wrap>
-      {before != null && <Before>{before}</Before>}
-      <Input {...restProps} />
-      {after != null && <After>{after}</After>}
-    </Wrap>
-  );
+	return (
+		<Wrap>
+			{before != null && <Before>{before}</Before>}
+			<Input {...restProps} />
+			{after != null && <After>{after}</After>}
+		</Wrap>
+	);
 };
 
 const ReadOnlyTextBox: React.FC<Props> = ({
-  before,
-  after,
-  className,
-  ...props
+	before,
+	after,
+	className,
+	...props
 }) => {
-  const textAreaRef = useRef<HTMLTextAreaElement>(null);
+	const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
-  useEffect(() => {
-    if (textAreaRef.current === null) return;
-    const textArea = textAreaRef.current;
-    const selectAll = () => {
-      textArea.focus();
-      textArea.select();
-    };
-    textArea.addEventListener("focus", selectAll);
+	useEffect(() => {
+		if (textAreaRef.current === null) return;
+		const textArea = textAreaRef.current;
+		const selectAll = () => {
+			textArea.focus();
+			textArea.select();
+		};
+		textArea.addEventListener("focus", selectAll);
 
-    return () => {
-      textArea.removeEventListener("focus", selectAll);
-    };
-  }, []);
+		return () => {
+			textArea.removeEventListener("focus", selectAll);
+		};
+	}, []);
 
-  return (
-    <Wrap className={className}>
-      {before != null && <Before>{before}</Before>}
-      <Input ref={textAreaRef} {...props} readOnly rows={1} />
-      {after != null && (
-        <After>
-          <AfterContent>{after}</AfterContent>
-        </After>
-      )}
-    </Wrap>
-  );
+	return (
+		<Wrap className={className}>
+			{before != null && <Before>{before}</Before>}
+			<Input ref={textAreaRef} {...props} readOnly rows={1} />
+			{after != null && (
+				<After>
+					<AfterContent>{after}</AfterContent>
+				</After>
+			)}
+		</Wrap>
+	);
 };
 
 const Wrap = styled.div`

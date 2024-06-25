@@ -8,30 +8,30 @@ import { lightTheme } from "@repo/theme/default";
 import { ColoredGlassmorphismStyle } from "./Glassmorphism";
 
 export interface Props {
-  isFavorite: boolean;
-  onClick: (after: boolean) => void;
-  favoriteCount: number;
+	isFavorite: boolean;
+	onClick: (after: boolean) => void;
+	favoriteCount: number;
 }
 
 export const FavoriteButton: React.FC<Props> = ({
-  isFavorite,
-  onClick,
-  favoriteCount,
+	isFavorite,
+	onClick,
+	favoriteCount,
 }) => {
-  const handleClick = useCallback(() => {
-    onClick(!isFavorite);
-  }, [isFavorite, onClick]);
+	const handleClick = useCallback(() => {
+		onClick(!isFavorite);
+	}, [isFavorite, onClick]);
 
-  return (
-    <Wrap onClick={handleClick} is-favorite={isFavorite}>
-      {isFavorite ? <AiFillHeart /> : <AiOutlineHeart />}
-      <span>{favoriteCount}</span>
-    </Wrap>
-  );
+	return (
+		<Wrap onClick={handleClick} is-favorite={isFavorite}>
+			{isFavorite ? <AiFillHeart /> : <AiOutlineHeart />}
+			<span>{favoriteCount}</span>
+		</Wrap>
+	);
 };
 
 const Wrap = styled.button<{
-  "is-favorite": boolean;
+	"is-favorite": boolean;
 }>`
   /* background-image はアニメーションできないためグラデーションつけるのを諦める */
   ${ColoredGlassmorphismStyle("rgba(255, 255, 255, 0.5)")}
@@ -66,8 +66,8 @@ const Wrap = styled.button<{
   }
 
   ${({ "is-favorite": isFavorite }) =>
-    isFavorite &&
-    css`
+		isFavorite &&
+		css`
       ${ColoredGlassmorphismStyle("rgba(236, 72, 153, 0.5)")}
       background-image: none;
       background-color: rgba(236, 72, 153, 0.3);

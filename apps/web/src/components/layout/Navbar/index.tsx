@@ -19,60 +19,60 @@ import type { ButtonHTMLAttributes, HTMLAttributes, RefObject } from "react";
 
 type NavbarState = "channel" | "user" | "custom";
 const states = [
-  "channel",
-  "user",
-  "custom",
+	"channel",
+	"user",
+	"custom",
 ] as const satisfies ReadonlyArray<NavbarState>;
 const titlesMap = {
-  channel: "ホーム",
-  user: "ユーザー",
-  custom: "カスタム",
+	channel: "ホーム",
+	user: "ユーザー",
+	custom: "カスタム",
 } as const satisfies Record<NavbarState, string>;
 const NavbarAtom = atom<NavbarState>("channel");
 interface Props {
-  scrollRef: RefObject<HTMLDivElement>;
+	scrollRef: RefObject<HTMLDivElement>;
 }
 export const Navbar: React.FC<Props> = ({ scrollRef }) => {
-  const isMobile = useIsMobile();
+	const isMobile = useIsMobile();
 
-  const [state, setState] = useAtom(NavbarAtom);
-  const { ariaTabListProps, ariaTabProps, ariaPanelProps } =
-    useControlledNamedTabList(states, state, setState);
+	const [state, setState] = useAtom(NavbarAtom);
+	const { ariaTabListProps, ariaTabProps, ariaPanelProps } =
+		useControlledNamedTabList(states, state, setState);
 
-  const userId = useUserId();
+	const userId = useUserId();
 
-  return (
-    <>
-      <DummyWrap ref={scrollRef} />
-      <Wrap>
-        <TabListWrap>
-          <Image
-            src={Logo}
-            alt="QTheme"
-            width={24}
-            height={24}
-            hidden={isMobile}
-          />
-          <TabList {...ariaTabListProps}>
-            {states.map((s) => (
-              <Button key={s} state={s} {...ariaTabProps[s]} />
-            ))}
-          </TabList>
-        </TabListWrap>
-        <Selector>
-          <UserIcon userId={userId ?? undefined} />
-        </Selector>
-        {states.map((s) => (
-          <NavPanel key={s} state={s} {...ariaPanelProps[s]} />
-        ))}
-      </Wrap>
-    </>
-  );
+	return (
+		<>
+			<DummyWrap ref={scrollRef} />
+			<Wrap>
+				<TabListWrap>
+					<Image
+						src={Logo}
+						alt="QTheme"
+						width={24}
+						height={24}
+						hidden={isMobile}
+					/>
+					<TabList {...ariaTabListProps}>
+						{states.map((s) => (
+							<Button key={s} state={s} {...ariaTabProps[s]} />
+						))}
+					</TabList>
+				</TabListWrap>
+				<Selector>
+					<UserIcon userId={userId ?? undefined} />
+				</Selector>
+				{states.map((s) => (
+					<NavPanel key={s} state={s} {...ariaPanelProps[s]} />
+				))}
+			</Wrap>
+		</>
+	);
 };
 const Wrap = styled.nav`
   grid-area: nav;
   background: ${({ theme }) =>
-    theme.theme.specific.navigationBarDesktopBackground};
+		theme.theme.specific.navigationBarDesktopBackground};
   display: grid;
   grid-template-columns: 60px 1fr;
   grid-template-rows: 1fr max-content;
@@ -91,7 +91,7 @@ const Wrap = styled.nav`
     position: sticky;
     left: 0;
     background: ${({ theme }) =>
-      theme.theme.specific.navigationBarMobileBackground};
+			theme.theme.specific.navigationBarMobileBackground};
     padding: 16px;
   }
 `;
@@ -157,27 +157,27 @@ const TabList = styled.div`
 `;
 
 interface ButtonProps {
-  state: NavbarState;
+	state: NavbarState;
 }
 const Button: React.FC<
-  ButtonProps & ButtonHTMLAttributes<HTMLButtonElement>
+	ButtonProps & ButtonHTMLAttributes<HTMLButtonElement>
 > = ({ state, ...props }) => {
-  const setCurrent = useSetAtom(NavbarAtom);
-  const changeCurrent = useCallback(() => {
-    setCurrent(state);
-  }, [setCurrent, state]);
+	const setCurrent = useSetAtom(NavbarAtom);
+	const changeCurrent = useCallback(() => {
+		setCurrent(state);
+	}, [setCurrent, state]);
 
-  return (
-    <IconButton {...props} onClick={changeCurrent} title={titlesMap[state]}>
-      {state === "channel" ? (
-        <MdHome />
-      ) : state === "user" ? (
-        <FaUser />
-      ) : (
-        <FaWrench />
-      )}
-    </IconButton>
-  );
+	return (
+		<IconButton {...props} onClick={changeCurrent} title={titlesMap[state]}>
+			{state === "channel" ? (
+				<MdHome />
+			) : state === "user" ? (
+				<FaUser />
+			) : (
+				<FaWrench />
+			)}
+		</IconButton>
+	);
 };
 
 const IconButton = styled.button`
@@ -216,26 +216,26 @@ const IconButton = styled.button`
 `;
 
 interface NavPanelProps {
-  state: NavbarState;
+	state: NavbarState;
 }
 const NavPanel: React.FC<NavPanelProps & HTMLAttributes<HTMLDivElement>> = ({
-  state,
-  ...props
+	state,
+	...props
 }) => {
-  const title = useMemo(() => titlesMap[state], [state]);
+	const title = useMemo(() => titlesMap[state], [state]);
 
-  return (
-    <Panel {...props} hasRPad={state !== "channel"}>
-      <Title>{title}</Title>
-      {state === "channel" ? (
-        <NavbarChannels />
-      ) : state === "user" ? (
-        <NavbarUsers />
-      ) : (
-        <NavbarCustom />
-      )}
-    </Panel>
-  );
+	return (
+		<Panel {...props} hasRPad={state !== "channel"}>
+			<Title>{title}</Title>
+			{state === "channel" ? (
+				<NavbarChannels />
+			) : state === "user" ? (
+				<NavbarUsers />
+			) : (
+				<NavbarCustom />
+			)}
+		</Panel>
+	);
 };
 const Panel = styled.div<{ hasRPad: boolean }>`
   grid-area: panel;

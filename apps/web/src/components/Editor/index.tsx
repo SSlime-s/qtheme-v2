@@ -1,12 +1,12 @@
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 import {
-  useCallback,
-  useEffect,
-  useId,
-  useMemo,
-  useRef,
-  useState,
+	useCallback,
+	useEffect,
+	useId,
+	useMemo,
+	useRef,
+	useState,
 } from "react";
 import type React from "react";
 import { FormProvider, useFormContext, useWatch } from "react-hook-form";
@@ -38,138 +38,138 @@ import type { UseFormReturn } from "react-hook-form";
 const ColorsTab = ["Basic", "Advanced"] as const;
 
 export type Form = Pick<
-  ThemeInfo,
-  "title" | "description" | "type" | "visibility" | "theme"
+	ThemeInfo,
+	"title" | "description" | "type" | "visibility" | "theme"
 >;
 interface Props extends UseFormReturn<Form> {
-  userId: string | null;
-  submit: (value: Form) => Promise<void>;
+	userId: string | null;
+	submit: (value: Form) => Promise<void>;
 }
 export const Editor: React.FC<Props> = ({ userId, submit, ...methods }) => {
-  const { ariaPanelProps, ariaTabListProps, ariaTabProps, switchTab } =
-    useNamedTabList(ColorsTab);
+	const { ariaPanelProps, ariaTabListProps, ariaTabProps, switchTab } =
+		useNamedTabList(ColorsTab);
 
-  const selectBasicTab = useCallback(() => switchTab("Basic"), [switchTab]);
-  const selectAdvancedTab = useCallback(
-    () => switchTab("Advanced"),
-    [switchTab],
-  );
+	const selectBasicTab = useCallback(() => switchTab("Basic"), [switchTab]);
+	const selectAdvancedTab = useCallback(
+		() => switchTab("Advanced"),
+		[switchTab],
+	);
 
-  const [isWide, setIsWide] = useState(false);
-  const containerRef = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    const container = containerRef.current;
-    if (container === null) {
-      return;
-    }
-    const observer = new ResizeObserver((entries) => {
-      for (const entry of entries) {
-        const { width } = entry.contentRect;
-        setIsWide(width > 450 + 300 + 16 * 3);
-      }
-    });
-    observer.observe(container);
-    return () => {
-      observer.disconnect();
-    };
-  }, []);
+	const [isWide, setIsWide] = useState(false);
+	const containerRef = useRef<HTMLDivElement>(null);
+	useEffect(() => {
+		const container = containerRef.current;
+		if (container === null) {
+			return;
+		}
+		const observer = new ResizeObserver((entries) => {
+			for (const entry of entries) {
+				const { width } = entry.contentRect;
+				setIsWide(width > 450 + 300 + 16 * 3);
+			}
+		});
+		observer.observe(container);
+		return () => {
+			observer.disconnect();
+		};
+	}, []);
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const onSubmit = useCallback(
-    async (data: Form) => {
-      if (isSubmitting) {
-        return;
-      }
-      setIsSubmitting(true);
-      try {
-        await submit(data);
-      } catch (e) {
-        console.error(e);
-      } finally {
-        setIsSubmitting(false);
-      }
-    },
-    [isSubmitting, submit],
-  );
-  const handleSubmit = useCallback(
-    () => methods.handleSubmit(onSubmit)(),
-    [methods.handleSubmit, onSubmit],
-  );
+	const [isSubmitting, setIsSubmitting] = useState(false);
+	const onSubmit = useCallback(
+		async (data: Form) => {
+			if (isSubmitting) {
+				return;
+			}
+			setIsSubmitting(true);
+			try {
+				await submit(data);
+			} catch (e) {
+				console.error(e);
+			} finally {
+				setIsSubmitting(false);
+			}
+		},
+		[isSubmitting, submit],
+	);
+	const handleSubmit = useCallback(
+		() => methods.handleSubmit(onSubmit)(),
+		[methods.handleSubmit, onSubmit],
+	);
 
-  const watched = useWatch({ control: methods.control });
-  const shareUrl = useMemo(() => {
-    const encoded = encodeTheme(watched as RecursiveRequired<typeof watched>);
-    return `${
-      typeof window === "undefined" ? "" : window.location.origin
-    }/share?t=${encoded}`;
-  }, [watched]);
+	const watched = useWatch({ control: methods.control });
+	const shareUrl = useMemo(() => {
+		const encoded = encodeTheme(watched as RecursiveRequired<typeof watched>);
+		return `${
+			typeof window === "undefined" ? "" : window.location.origin
+		}/share?t=${encoded}`;
+	}, [watched]);
 
-  return (
-    <>
-      <FormProvider {...methods}>
-        <Wrap ref={containerRef} isWide={isWide}>
-          <Controls>
-            <Title />
-            <Description />
-            <Selects />
-          </Controls>
-          <PreviewBox>
-            <Preview userId={userId} />
-            <SyncControls />
-          </PreviewBox>
-          <TextThemeBox>
-            <TextTheme />
-          </TextThemeBox>
+	return (
+		<>
+			<FormProvider {...methods}>
+				<Wrap ref={containerRef} isWide={isWide}>
+					<Controls>
+						<Title />
+						<Description />
+						<Selects />
+					</Controls>
+					<PreviewBox>
+						<Preview userId={userId} />
+						<SyncControls />
+					</PreviewBox>
+					<TextThemeBox>
+						<TextTheme />
+					</TextThemeBox>
 
-          <Colors>
-            <Tabs {...ariaTabListProps}>
-              <Tab
-                {...ariaTabProps.Basic}
-                onClick={selectBasicTab}
-                title="Basic"
-              >
-                Basic
-              </Tab>
-              <Tab
-                {...ariaTabProps.Advanced}
-                onClick={selectAdvancedTab}
-                title="Advanced"
-              >
-                Advanced
-              </Tab>
-            </Tabs>
+					<Colors>
+						<Tabs {...ariaTabListProps}>
+							<Tab
+								{...ariaTabProps.Basic}
+								onClick={selectBasicTab}
+								title="Basic"
+							>
+								Basic
+							</Tab>
+							<Tab
+								{...ariaTabProps.Advanced}
+								onClick={selectAdvancedTab}
+								title="Advanced"
+							>
+								Advanced
+							</Tab>
+						</Tabs>
 
-            <TabPanel {...ariaPanelProps.Basic}>
-              <BasicSelectors />
-            </TabPanel>
-            <TabPanel {...ariaPanelProps.Advanced}>
-              <AdvancedSelectors />
-            </TabPanel>
-          </Colors>
-        </Wrap>
+						<TabPanel {...ariaPanelProps.Basic}>
+							<BasicSelectors />
+						</TabPanel>
+						<TabPanel {...ariaPanelProps.Advanced}>
+							<AdvancedSelectors />
+						</TabPanel>
+					</Colors>
+				</Wrap>
 
-        <SidebarPortal>
-          <Sidebar
-            submit={handleSubmit}
-            isSubmitting={isSubmitting}
-            shareUrl={shareUrl}
-          />
-        </SidebarPortal>
-      </FormProvider>
-    </>
-  );
+				<SidebarPortal>
+					<Sidebar
+						submit={handleSubmit}
+						isSubmitting={isSubmitting}
+						shareUrl={shareUrl}
+					/>
+				</SidebarPortal>
+			</FormProvider>
+		</>
+	);
 };
 
 const Wrap = styled.div<{ isWide: boolean }>`
   display: grid;
   ${({ isWide }) =>
-    isWide
-      ? css`
+		isWide
+			? css`
           grid-template-areas: 'controls colors' 'preview colors' 'text-theme colors';
           grid-template-columns: 1fr 300px;
           grid-template-rows: max-content max-content 1fr;
         `
-      : css`
+			: css`
           grid-template-areas: 'controls' 'preview' 'text-theme' 'colors';
         `}
   min-height: 100%;
@@ -249,33 +249,33 @@ const Tab = styled.button`
 const TabPanel = styled.div``;
 
 const VisibilityPublicDescription: React.FC = () => {
-  const { close, isOpen, modalProps, open, titleProps, titleRef, triggerRef } =
-    useModal("editor/visibility");
+	const { close, isOpen, modalProps, open, titleProps, titleRef, triggerRef } =
+		useModal("editor/visibility");
 
-  const titlePropsWithRef = useMemo(
-    () => ({
-      ...titleProps,
-      ref: titleRef,
-    }),
-    [titleProps, titleRef],
-  );
+	const titlePropsWithRef = useMemo(
+		() => ({
+			...titleProps,
+			ref: titleRef,
+		}),
+		[titleProps, titleRef],
+	);
 
-  return (
-    <VisibilityPublicDescriptionWrap>
-      <Strong>推奨</Strong>
-      <WhyRecommended onClick={open} ref={triggerRef} title="なぜ推奨なのか？">
-        <BiHelpCircle />
-      </WhyRecommended>
-      traP 外の人でも見ることができます
-      {isOpen && (
-        <PublicDescriptionModal
-          {...modalProps}
-          titleProps={titlePropsWithRef}
-          close={close}
-        />
-      )}
-    </VisibilityPublicDescriptionWrap>
-  );
+	return (
+		<VisibilityPublicDescriptionWrap>
+			<Strong>推奨</Strong>
+			<WhyRecommended onClick={open} ref={triggerRef} title="なぜ推奨なのか？">
+				<BiHelpCircle />
+			</WhyRecommended>
+			traP 外の人でも見ることができます
+			{isOpen && (
+				<PublicDescriptionModal
+					{...modalProps}
+					titleProps={titlePropsWithRef}
+					close={close}
+				/>
+			)}
+		</VisibilityPublicDescriptionWrap>
+	);
 };
 const VisibilityPublicDescriptionWrap = styled.div`
   display: flex;
@@ -307,39 +307,39 @@ const WhyRecommended = styled.button`
 `;
 
 const visibilityDescription = {
-  public: <VisibilityPublicDescription />,
-  private: "traP 内の人だけが見ることができます",
-  draft: "あなただけが見ることができます",
+	public: <VisibilityPublicDescription />,
+	private: "traP 内の人だけが見ることができます",
+	draft: "あなただけが見ることができます",
 } as const satisfies Record<"public" | "private" | "draft", ReactNode>;
 const Selects: React.FC = () => {
-  const { control, register } = useFormContext<Form>();
-  const visibility = useWatch({
-    control,
-    name: "visibility",
-  });
+	const { control, register } = useFormContext<Form>();
+	const visibility = useWatch({
+		control,
+		name: "visibility",
+	});
 
-  const descriptionId = useId();
+	const descriptionId = useId();
 
-  return (
-    <>
-      <SelectsWrap>
-        <Select {...register("type")} aria-label="タイプ">
-          <option value="light">Light</option>
-          <option value="dark">Dark</option>
-        </Select>
-        <Select
-          {...register("visibility")}
-          aria-describedby={descriptionId}
-          aria-label="公開範囲"
-        >
-          <option value="public">Public</option>
-          <option value="private">Private</option>
-          <option value="draft">Draft</option>
-        </Select>
-      </SelectsWrap>
-      <span id={descriptionId}>{visibilityDescription[visibility]}</span>
-    </>
-  );
+	return (
+		<>
+			<SelectsWrap>
+				<Select {...register("type")} aria-label="タイプ">
+					<option value="light">Light</option>
+					<option value="dark">Dark</option>
+				</Select>
+				<Select
+					{...register("visibility")}
+					aria-describedby={descriptionId}
+					aria-label="公開範囲"
+				>
+					<option value="public">Public</option>
+					<option value="private">Private</option>
+					<option value="draft">Draft</option>
+				</Select>
+			</SelectsWrap>
+			<span id={descriptionId}>{visibilityDescription[visibility]}</span>
+		</>
+	);
 };
 const SelectsWrap = styled.div`
   display: flex;
@@ -365,19 +365,19 @@ const Select = styled.select`
 `;
 
 const Preview: React.FC<{ userId: string | null }> = ({ userId }) => {
-  const { control } = useFormContext<Form>();
-  const theme = useWatch({ control, name: "theme" });
-  const resolvedTheme = useMemo(() => {
-    return resolveTheme(theme);
-  }, [theme]);
+	const { control } = useFormContext<Form>();
+	const theme = useWatch({ control, name: "theme" });
+	const resolvedTheme = useMemo(() => {
+		return resolveTheme(theme);
+	}, [theme]);
 
-  return (
-    <div
-      css={css`
+	return (
+		<div
+			css={css`
         max-width: 400px;
       `}
-    >
-      <SmallPreview author={userId ?? "traP"} theme={resolvedTheme} />
-    </div>
-  );
+		>
+			<SmallPreview author={userId ?? "traP"} theme={resolvedTheme} />
+		</div>
+	);
 };

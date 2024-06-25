@@ -5,13 +5,13 @@ import { GlassmorphismStyle } from "@/components/Glassmorphism";
 import type { NextPage } from "next";
 
 const Test: NextPage = () => {
-  return (
-    <Wrap>
-      <Card>
-        <h2>Test</h2>
-      </Card>
-    </Wrap>
-  );
+	return (
+		<Wrap>
+			<Card>
+				<h2>Test</h2>
+			</Card>
+		</Wrap>
+	);
 };
 export default Test;
 

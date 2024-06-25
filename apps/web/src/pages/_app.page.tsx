@@ -17,54 +17,54 @@ import type { AppProps } from "next/app";
 import type { ReactElement, ReactNode } from "react";
 
 export type NextPageWithLayout<P = Record<string, unknown>, IP = P> = NextPage<
-  P,
-  IP
+	P,
+	IP
 > & {
-  getLayout?: (page: ReactElement) => ReactNode;
+	getLayout?: (page: ReactElement) => ReactNode;
 };
 
 type AppPropsWithLayout = AppProps & {
-  Component: NextPageWithLayout;
+	Component: NextPageWithLayout;
 };
 
 export const inter = Inter({
-  weight: ["400", "700"],
-  subsets: ["latin"],
+	weight: ["400", "700"],
+	subsets: ["latin"],
 });
 
 export const mPlus1p = M_PLUS_1p({
-  weight: ["400", "700"],
-  preload: false,
+	weight: ["400", "700"],
+	preload: false,
 });
 
 export const fixLayoutAtom = atom<boolean>(false);
 export default function App({ Component, pageProps }: AppPropsWithLayout) {
-  const getLayout = Component.getLayout ?? ((x) => x);
-  const { currentTheme } = useCurrentTheme();
-  const router = useRouter();
-  const key = router.pathname !== "/edit" ? "default" : `edit ${router.asPath}`;
+	const getLayout = Component.getLayout ?? ((x) => x);
+	const { currentTheme } = useCurrentTheme();
+	const router = useRouter();
+	const key = router.pathname !== "/edit" ? "default" : `edit ${router.asPath}`;
 
-  const [isFixed] = useAtom(fixLayoutAtom);
+	const [isFixed] = useAtom(fixLayoutAtom);
 
-  return (
-    <>
-      <GoogleTagManager
-        googleTagManagerId={googleTagManagerId as GoogleTagManagerId}
-      />
-      <Head>
-        <title>QTheme v2</title>
-        <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
-        <meta name="theme-color" content="#fff" />
-      </Head>
-      <SEO type="website" />
-      <Global styles={isFixed ? GlobalStyleFixed : GlobalStyleNotFixed} />
-      <ThemeProvider theme={{ theme: currentTheme }}>
-        {getLayout(<Component key={key} {...pageProps} />)}
-      </ThemeProvider>
-    </>
-  );
+	return (
+		<>
+			<GoogleTagManager
+				googleTagManagerId={googleTagManagerId as GoogleTagManagerId}
+			/>
+			<Head>
+				<title>QTheme v2</title>
+				<meta charSet="utf-8" />
+				<meta name="viewport" content="width=device-width, initial-scale=1" />
+				<link rel="icon" href="/favicon.ico" />
+				<meta name="theme-color" content="#fff" />
+			</Head>
+			<SEO type="website" />
+			<Global styles={isFixed ? GlobalStyleFixed : GlobalStyleNotFixed} />
+			<ThemeProvider theme={{ theme: currentTheme }}>
+				{getLayout(<Component key={key} {...pageProps} />)}
+			</ThemeProvider>
+		</>
+	);
 }
 const GlobalStyle = (isFixed: boolean) => css`
   html {
@@ -94,15 +94,15 @@ const GlobalStyle = (isFixed: boolean) => css`
 
     ${isMobile} {
       ${
-        isFixed
-          ? css`
+				isFixed
+					? css`
             overflow-x: hidden;
           `
-          : css`
+					: css`
             overflow-x: auto;
             overflow-x: overlay;
           `
-      }
+			}
       scroll-snap-type: x mandatory;
     }
   }

@@ -19,69 +19,69 @@ import { Tag } from "./Tag";
 import type { FormattedTheme } from "@/utils/theme/hooks";
 
 interface Props {
-  themeInfo: FormattedTheme;
-  changeTheme?: (id: string, theme: FormattedTheme) => void;
-  onFavorite?: (id: string, isFavorite: boolean) => void;
+	themeInfo: FormattedTheme;
+	changeTheme?: (id: string, theme: FormattedTheme) => void;
+	onFavorite?: (id: string, isFavorite: boolean) => void;
 }
 
 export const PreviewCard: React.FC<Props> = ({
-  themeInfo,
-  changeTheme,
-  onFavorite,
+	themeInfo,
+	changeTheme,
+	onFavorite,
 }) => {
-  const resolvedTheme = useMemo(() => {
-    return resolveTheme(themeInfo.theme);
-  }, [themeInfo]);
-  const providerTheme = useMemo(() => {
-    return { theme: resolvedTheme };
-  }, [resolvedTheme]);
+	const resolvedTheme = useMemo(() => {
+		return resolveTheme(themeInfo.theme);
+	}, [themeInfo]);
+	const providerTheme = useMemo(() => {
+		return { theme: resolvedTheme };
+	}, [resolvedTheme]);
 
-  const changeToCurrent = useCallback(() => {
-    changeTheme?.(themeInfo.id, themeInfo);
-    void navigator.clipboard.writeText(JSON.stringify(themeInfo.theme));
-  }, [changeTheme, themeInfo]);
-  const handleFavorite = useCallback(() => {
-    onFavorite?.(themeInfo.id, !themeInfo.isLike);
-  }, [onFavorite, themeInfo]);
+	const changeToCurrent = useCallback(() => {
+		changeTheme?.(themeInfo.id, themeInfo);
+		void navigator.clipboard.writeText(JSON.stringify(themeInfo.theme));
+	}, [changeTheme, themeInfo]);
+	const handleFavorite = useCallback(() => {
+		onFavorite?.(themeInfo.id, !themeInfo.isLike);
+	}, [onFavorite, themeInfo]);
 
-  return (
-    <ThemeProvider theme={providerTheme}>
-      <Wrap>
-        <Title>{themeInfo.title}</Title>
-        <Author>{themeInfo.author}</Author>
-        <TagWrap>
-          <Tag variant={themeInfo.type} tag="div">
-            {themeInfo.type}
-          </Tag>
-          <Tag variant={themeInfo.visibility} tag="div">
-            {themeInfo.visibility}
-          </Tag>
-        </TagWrap>
-        <Description>
-          <WrapResolver Wrapper={[Linkify, BudouJa, ReplaceNewLine]}>
-            {themeInfo.description}
-          </WrapResolver>
-        </Description>
+	return (
+		<ThemeProvider theme={providerTheme}>
+			<Wrap>
+				<Title>{themeInfo.title}</Title>
+				<Author>{themeInfo.author}</Author>
+				<TagWrap>
+					<Tag variant={themeInfo.type} tag="div">
+						{themeInfo.type}
+					</Tag>
+					<Tag variant={themeInfo.visibility} tag="div">
+						{themeInfo.visibility}
+					</Tag>
+				</TagWrap>
+				<Description>
+					<WrapResolver Wrapper={[Linkify, BudouJa, ReplaceNewLine]}>
+						{themeInfo.description}
+					</WrapResolver>
+				</Description>
 
-        <PreviewWrap onClick={changeToCurrent}>
-          <ButtonWrap>click to change & copy</ButtonWrap>
-          <SmallPreview theme={resolvedTheme} author={themeInfo.author} />
-        </PreviewWrap>
+				<PreviewWrap onClick={changeToCurrent}>
+					<ButtonWrap>click to change & copy</ButtonWrap>
+					<SmallPreview theme={resolvedTheme} author={themeInfo.author} />
+				</PreviewWrap>
 
-        <ControlWrap>
-          <FavoriteButton
-            isFavorite={themeInfo.isLike}
-            onClick={handleFavorite}
-            favoriteCount={themeInfo.likes}
-          />
-        </ControlWrap>
+				<ControlWrap>
+					<FavoriteButton
+						isFavorite={themeInfo.isLike}
+						onClick={handleFavorite}
+						favoriteCount={themeInfo.likes}
+					/>
+				</ControlWrap>
 
-        <DetailButton href={`/theme/${themeInfo.id}`}>
-          <span>view detail</span>
-        </DetailButton>
-      </Wrap>
-    </ThemeProvider>
-  );
+				<DetailButton href={`/theme/${themeInfo.id}`}>
+					<span>view detail</span>
+				</DetailButton>
+			</Wrap>
+		</ThemeProvider>
+	);
 };
 
 const Wrap = styled.article`

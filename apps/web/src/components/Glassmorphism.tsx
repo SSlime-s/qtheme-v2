@@ -1,9 +1,9 @@
 import { css } from "@emotion/react";
 
 export const ColoredGlassmorphismStyle = (
-  from: string,
-  to: string = from,
-  border: string = from,
+	from: string,
+	to: string = from,
+	border: string = from,
 ) => css`
   border-radius: 20px;
   background: radial-gradient(ellipse at 0% 0%, ${from} 0%, ${to} 100%);
@@ -13,7 +13,7 @@ export const ColoredGlassmorphismStyle = (
   overflow: hidden;
 `;
 export const GlassmorphismStyle = ColoredGlassmorphismStyle(
-  "rgba(255, 255, 255, 0.5)",
-  "rgba(255, 255, 255, 0.4)",
-  "rgba(255, 255, 255, 0.5)",
+	"rgba(255, 255, 255, 0.5)",
+	"rgba(255, 255, 255, 0.4)",
+	"rgba(255, 255, 255, 0.5)",
 );

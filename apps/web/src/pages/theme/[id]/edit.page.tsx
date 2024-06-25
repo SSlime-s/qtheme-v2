@@ -20,120 +20,120 @@ import type { FormattedTheme } from "@/utils/theme/hooks";
 import type { GetServerSideProps, InferGetServerSidePropsType } from "next";
 
 export const getServerSideProps = (async ({ req }) => {
-  const userId = extractShowcaseUser(req);
+	const userId = extractShowcaseUser(req);
 
-  return {
-    props: {
-      userId: userId ?? null,
-    },
-  };
+	return {
+		props: {
+			userId: userId ?? null,
+		},
+	};
 }) satisfies GetServerSideProps;
 
 type Props = InferGetServerSidePropsType<typeof getServerSideProps>;
 
 const ThemeEditPage: NextPageWithLayout<Props> = ({ userId }) => {
-  useSetUserId(userId);
+	useSetUserId(userId);
 
-  const { id } = useRouter().query as { id: string };
-  const {
-    theme,
-    mutate: { updateTheme },
-  } = useTheme(id);
+	const { id } = useRouter().query as { id: string };
+	const {
+		theme,
+		mutate: { updateTheme },
+	} = useTheme(id);
 
-  if (userId === null) {
-    return (
-      <>
-        <Error statusCode={401} />
-      </>
-    );
-  }
+	if (userId === null) {
+		return (
+			<>
+				<Error statusCode={401} />
+			</>
+		);
+	}
 
-  if (theme === undefined) {
-    return (
-      <>
-        <Head>
-          <title>{pageTitle("#edit")}</title>
-          <meta name="robots" content="noindex" />
-          <meta name="googlebot" content="noindex" />
-        </Head>
-        <SEO url={`/theme/${id}/edit`} />
-        <LoadingBar />
-      </>
-    );
-  }
+	if (theme === undefined) {
+		return (
+			<>
+				<Head>
+					<title>{pageTitle("#edit")}</title>
+					<meta name="robots" content="noindex" />
+					<meta name="googlebot" content="noindex" />
+				</Head>
+				<SEO url={`/theme/${id}/edit`} />
+				<LoadingBar />
+			</>
+		);
+	}
 
-  if (userId !== theme?.author) {
-    return (
-      <>
-        <Error statusCode={403} />
-      </>
-    );
-  }
+	if (userId !== theme?.author) {
+		return (
+			<>
+				<Error statusCode={403} />
+			</>
+		);
+	}
 
-  return (
-    <>
-      <Head>
-        <title>{pageTitle(`#edit - ${theme.title}`)}</title>
-        <meta name="robots" content="noindex" />
-        <meta name="googlebot" content="noindex" />
-      </Head>
-      <SEO url={`/theme/${id}/edit`} />
-      <Edit
-        id={id}
-        defaultTheme={theme}
-        updateTheme={updateTheme}
-        userId={userId}
-      />
-    </>
-  );
+	return (
+		<>
+			<Head>
+				<title>{pageTitle(`#edit - ${theme.title}`)}</title>
+				<meta name="robots" content="noindex" />
+				<meta name="googlebot" content="noindex" />
+			</Head>
+			<SEO url={`/theme/${id}/edit`} />
+			<Edit
+				id={id}
+				defaultTheme={theme}
+				updateTheme={updateTheme}
+				userId={userId}
+			/>
+		</>
+	);
 };
 ThemeEditPage.getLayout = (page) => <Layout noSidebar>{page}</Layout>;
 export default ThemeEditPage;
 
 interface EditProps {
-  id: string;
-  defaultTheme: FormattedTheme;
-  updateTheme: (
-    theme: Pick<
-      FormattedTheme,
-      "type" | "title" | "description" | "visibility" | "theme"
-    >,
-  ) => Promise<void>;
-  userId: string | null;
+	id: string;
+	defaultTheme: FormattedTheme;
+	updateTheme: (
+		theme: Pick<
+			FormattedTheme,
+			"type" | "title" | "description" | "visibility" | "theme"
+		>,
+	) => Promise<void>;
+	userId: string | null;
 }
 const Edit: React.FC<EditProps> = ({
-  id,
-  defaultTheme,
-  updateTheme,
-  userId,
+	id,
+	defaultTheme,
+	updateTheme,
+	userId,
 }) => {
-  const methods = useForm<Form>({
-    defaultValues: {
-      title: defaultTheme.title,
-      description: defaultTheme.description,
-      type: defaultTheme.type === "other" ? "light" : defaultTheme.type,
-      visibility: defaultTheme.visibility,
-      theme: defaultTheme.theme,
-    },
-  });
+	const methods = useForm<Form>({
+		defaultValues: {
+			title: defaultTheme.title,
+			description: defaultTheme.description,
+			type: defaultTheme.type === "other" ? "light" : defaultTheme.type,
+			visibility: defaultTheme.visibility,
+			theme: defaultTheme.theme,
+		},
+	});
 
-  const { push } = useRouter();
+	const { push } = useRouter();
 
-  const { unbind } = useBlockLeave(methods.formState.isDirty);
+	const { unbind } = useBlockLeave(methods.formState.isDirty);
 
-  const submit = useCallback(
-    async (data: Form) => {
-      await updateTheme(data);
-      methods.reset({}, { keepValues: true });
-      unbind();
-      await push(`/theme/${id}`);
-    },
-    [id, methods, push, unbind, updateTheme],
-  );
+	const submit = useCallback(
+		async (data: Form) => {
+			await updateTheme(data);
+			methods.reset({}, { keepValues: true });
+			unbind();
+			await push(`/theme/${id}`);
+		},
+		[id, methods, push, unbind, updateTheme],
+	);
 
-  return (
-    <>
-      <Editor userId={userId} submit={submit} {...methods} />
-    </>
-  );
+	return (
+		<>
+			<Editor userId={userId} submit={submit} {...methods} />
+		</>
+	);
 };

@@ -13,79 +13,79 @@ import { useLoginUrl } from "@/utils/useLoginUrl";
 import { lightTheme } from "@repo/theme/default";
 
 interface Props {
-  userId?: string;
+	userId?: string;
 }
 export const UserIcon: React.FC<Props> = ({ userId }) => {
-  const { isOpen, open, close, modalProps, titleProps, titleRef, triggerRef } =
-    useModal("layout/Navbar/User");
+	const { isOpen, open, close, modalProps, titleProps, titleRef, triggerRef } =
+		useModal("layout/Navbar/User");
 
-  const loginUrl = useLoginUrl();
+	const loginUrl = useLoginUrl();
 
-  if (userId !== undefined) {
-    return (
-      <NextLink href={`/user/${userId}`}>
-        <UserIconImage
-          src={userIconUrl(userId)}
-          height={36}
-          width={36}
-          alt="My Page"
-        />
-      </NextLink>
-    );
-  }
+	if (userId !== undefined) {
+		return (
+			<NextLink href={`/user/${userId}`}>
+				<UserIconImage
+					src={userIconUrl(userId)}
+					height={36}
+					width={36}
+					alt="My Page"
+				/>
+			</NextLink>
+		);
+	}
 
-  return (
-    <>
-      <UserIconButton onClick={open} ref={triggerRef}>
-        <FaRegUserCircle />
-      </UserIconButton>
+	return (
+		<>
+			<UserIconButton onClick={open} ref={triggerRef}>
+				<FaRegUserCircle />
+			</UserIconButton>
 
-      {isOpen && (
-        <Wrap {...modalProps} onOutsideClick={close} glass>
-          <Header>
-            <Title {...titleProps} ref={titleRef}>
-              traP部員になると？
-            </Title>
+			{isOpen && (
+				<Wrap {...modalProps} onOutsideClick={close} glass>
+					<Header>
+						<Title {...titleProps} ref={titleRef}>
+							traP部員になると？
+						</Title>
 
-            <CloseButton onClick={close}>
-              <MdClose />
-            </CloseButton>
-          </Header>
+						<CloseButton onClick={close}>
+							<MdClose />
+						</CloseButton>
+					</Header>
 
-          <Ol>
-            <Li>
-              <Marker>
-                <BiWorld />
-              </Marker>
-              作成したテーマを保存し、公開することができます
-            </Li>
-            <Li>
-              <Marker>
-                <FaLock />
-              </Marker>
-              部員限定のテーマを見れるようになります
-            </Li>
-            <Li>
-              <Marker>
-                <MdFavorite />
-              </Marker>
-              他の人が作成したテーマをお気に入りに登録し、あとから見返すことができます
-            </Li>
-          </Ol>
+					<Ol>
+						<Li>
+							<Marker>
+								<BiWorld />
+							</Marker>
+							作成したテーマを保存し、公開することができます
+						</Li>
+						<Li>
+							<Marker>
+								<FaLock />
+							</Marker>
+							部員限定のテーマを見れるようになります
+						</Li>
+						<Li>
+							<Marker>
+								<MdFavorite />
+							</Marker>
+							他の人が作成したテーマをお気に入りに登録し、あとから見返すことができます
+						</Li>
+					</Ol>
 
-          <Link href="https://trap.jp/about/" target="_blank" rel="noreferrer">
-            traPとは
-            <HiOutlineExternalLink />
-          </Link>
+					<Link href="https://trap.jp/about/" target="_blank" rel="noreferrer">
+						traPとは
+						<HiOutlineExternalLink />
+					</Link>
 
-          <LoginButton href={loginUrl}>
-            すでに部員の方はこちら
-            <MdNavigateNext />
-          </LoginButton>
-        </Wrap>
-      )}
-    </>
-  );
+					<LoginButton href={loginUrl}>
+						すでに部員の方はこちら
+						<MdNavigateNext />
+					</LoginButton>
+				</Wrap>
+			)}
+		</>
+	);
 };
 const UserIconImage = styled(Image)`
   height: 36px;

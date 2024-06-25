@@ -1,14 +1,14 @@
 {
-  "extends": "@repo/typescript-config/nextjs.json",
-  "compilerOptions": {
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["./src/*"]
-    },
-    "jsxImportSource": "@emotion/react",
-    "typeRoots": ["./node_modules/@types", "./src/@types", "./node_modules"],
-    "types": ["vitest/globals"]
-  },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "vitest.config.mts"],
-  "exclude": ["node_modules"]
+	"extends": "@repo/typescript-config/nextjs.json",
+	"compilerOptions": {
+		"baseUrl": ".",
+		"paths": {
+			"@/*": ["./src/*"]
+		},
+		"jsxImportSource": "@emotion/react",
+		"typeRoots": ["./node_modules/@types", "./src/@types", "./node_modules"],
+		"types": ["vitest/globals"]
+	},
+	"include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "vitest.config.mts"],
+	"exclude": ["node_modules"]
 }

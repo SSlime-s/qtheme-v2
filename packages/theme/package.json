@@ -1,64 +1,64 @@
 {
-  "name": "@repo/theme",
-  "version": "0.0.0",
-  "exports": {
-    ".": {
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.js",
-      "types": "./dist/index.d.ts",
-      "default": "./dist/index.mjs"
-    },
-    "./default": {
-      "import": "./dist/default.mjs",
-      "require": "./dist/default.js",
-      "types": "./dist/default.d.ts",
-      "default": "./dist/default.mjs"
-    },
-    "./color": {
-      "import": "./dist/color.mjs",
-      "require": "./dist/color.js",
-      "types": "./dist/color.d.ts",
-      "default": "./dist/color.mjs"
-    },
-    "./resolve": {
-      "import": "./dist/resolve/index.mjs",
-      "require": "./dist/resolve/index.js",
-      "types": "./dist/resolve/index.d.ts",
-      "default": "./dist/resolve/index.mjs"
-    },
-    "./utils/codec": {
-      "import": "./dist/utils/codec.mjs",
-      "require": "./dist/utils/codec.js",
-      "types": "./dist/utils/codec.d.ts",
-      "default": "./dist/utils/codec.mjs"
-    },
-    "./utils/color": {
-      "import": "./dist/utils/color.mjs",
-      "require": "./dist/utils/color.js",
-      "types": "./dist/utils/color.d.ts",
-      "default": "./dist/utils/color.mjs"
-    }
-  },
-  "scripts": {
-    "build:base": "tsup src/{index,default,color,resolve/index,utils/codec,utils/color}.ts --dts --format cjs,esm --out-dir dist",
-    "build": "pnpm run build:base -- --minify",
-    "dev": "pnpm run build:base -- --watch",
-    "postinstall": "pnpm run build",
-    "check-types": "tsc --noEmit",
-    "test": "vitest run",
-    "clean": "rm -rf dist"
-  },
-  "dependencies": {
-    "lz-string": "^1.5.0",
-    "zod": "^3.23.8"
-  },
-  "devDependencies": {
-    "@repo/typescript-config": "workspace:*",
-    "@types/node": "20.14.5",
-    "ts-patch": "^3.2.0",
-    "tsup": "^8.1.0",
-    "typescript": "5.5.2",
-    "typescript-transform-paths": "^3.4.6",
-    "vitest": "^0.31.4"
-  }
+	"name": "@repo/theme",
+	"version": "0.0.0",
+	"exports": {
+		".": {
+			"import": "./dist/index.mjs",
+			"require": "./dist/index.js",
+			"types": "./dist/index.d.ts",
+			"default": "./dist/index.mjs"
+		},
+		"./default": {
+			"import": "./dist/default.mjs",
+			"require": "./dist/default.js",
+			"types": "./dist/default.d.ts",
+			"default": "./dist/default.mjs"
+		},
+		"./color": {
+			"import": "./dist/color.mjs",
+			"require": "./dist/color.js",
+			"types": "./dist/color.d.ts",
+			"default": "./dist/color.mjs"
+		},
+		"./resolve": {
+			"import": "./dist/resolve/index.mjs",
+			"require": "./dist/resolve/index.js",
+			"types": "./dist/resolve/index.d.ts",
+			"default": "./dist/resolve/index.mjs"
+		},
+		"./utils/codec": {
+			"import": "./dist/utils/codec.mjs",
+			"require": "./dist/utils/codec.js",
+			"types": "./dist/utils/codec.d.ts",
+			"default": "./dist/utils/codec.mjs"
+		},
+		"./utils/color": {
+			"import": "./dist/utils/color.mjs",
+			"require": "./dist/utils/color.js",
+			"types": "./dist/utils/color.d.ts",
+			"default": "./dist/utils/color.mjs"
+		}
+	},
+	"scripts": {
+		"build:base": "tsup src/{index,default,color,resolve/index,utils/codec,utils/color}.ts --dts --format cjs,esm --out-dir dist",
+		"build": "pnpm run build:base -- --minify",
+		"dev": "pnpm run build:base -- --watch",
+		"postinstall": "pnpm run build",
+		"check-types": "tsc --noEmit",
+		"test": "vitest run",
+		"clean": "rm -rf dist"
+	},
+	"dependencies": {
+		"lz-string": "^1.5.0",
+		"zod": "^3.23.8"
+	},
+	"devDependencies": {
+		"@repo/typescript-config": "workspace:*",
+		"@types/node": "20.14.5",
+		"ts-patch": "^3.2.0",
+		"tsup": "^8.1.0",
+		"typescript": "5.5.2",
+		"typescript-transform-paths": "^3.4.6",
+		"vitest": "^0.31.4"
+	}
 }

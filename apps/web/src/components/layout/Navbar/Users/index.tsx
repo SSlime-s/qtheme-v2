@@ -11,55 +11,55 @@ import { FilterBox } from "./FilterBox";
 import { useAuthors } from "./useAuthors";
 
 export const NavbarUsers: React.FC = () => {
-  const {
-    data: { raw: rawData, filtered, filterWord },
-    error,
-    isLoading,
-    mutate: { setFilterWord },
-  } = useAuthors();
-  const placeholder = "ra, ^SSl, ime$, ^traP$, ...";
+	const {
+		data: { raw: rawData, filtered, filterWord },
+		error,
+		isLoading,
+		mutate: { setFilterWord },
+	} = useAuthors();
+	const placeholder = "ra, ^SSl, ime$, ^traP$, ...";
 
-  if (isLoading) {
-    return (
-      <Wrap>
-        <FilterBox
-          word={filterWord}
-          setWord={setFilterWord}
-          placeholder={placeholder}
-        />
-        {Array.from({ length: 8 }, (_, i) => (
-          // biome-ignore lint/suspicious/noArrayIndexKey: 固定なので問題ない
-          <UserSkeleton key={i} />
-        ))}
-      </Wrap>
-    );
-  }
+	if (isLoading) {
+		return (
+			<Wrap>
+				<FilterBox
+					word={filterWord}
+					setWord={setFilterWord}
+					placeholder={placeholder}
+				/>
+				{Array.from({ length: 8 }, (_, i) => (
+					// biome-ignore lint/suspicious/noArrayIndexKey: 固定なので問題ない
+					<UserSkeleton key={i} />
+				))}
+			</Wrap>
+		);
+	}
 
-  if (error !== undefined) {
-    return (
-      <Wrap>
-        <Error statusCode={500} />
-      </Wrap>
-    );
-  }
+	if (error !== undefined) {
+		return (
+			<Wrap>
+				<Error statusCode={500} />
+			</Wrap>
+		);
+	}
 
-  if (rawData === undefined || rawData.length === 0) {
-    return <Wrap>ユーザーがいません</Wrap>;
-  }
+	if (rawData === undefined || rawData.length === 0) {
+		return <Wrap>ユーザーがいません</Wrap>;
+	}
 
-  return (
-    <Wrap>
-      <FilterBox
-        word={filterWord}
-        setWord={setFilterWord}
-        placeholder={placeholder}
-      />
-      {filtered.length === 0 && <Empty>該当するユーザーはいません</Empty>}
-      {filtered.map(({ name, count }) => (
-        <UserCard key={name} name={name} count={count} />
-      ))}
-    </Wrap>
-  );
+	return (
+		<Wrap>
+			<FilterBox
+				word={filterWord}
+				setWord={setFilterWord}
+				placeholder={placeholder}
+			/>
+			{filtered.length === 0 && <Empty>該当するユーザーはいません</Empty>}
+			{filtered.map(({ name, count }) => (
+				<UserCard key={name} name={name} count={count} />
+			))}
+		</Wrap>
+	);
 };
 
 const Wrap = styled.div`
@@ -74,54 +74,54 @@ const Empty = styled.div`
 `;
 
 const UserCard: React.FC<{
-  name: string;
-  count: number;
+	name: string;
+	count: number;
 }> = ({ name, count }) => {
-  return (
-    <CardWrap href={`/user/${name}`}>
-      <Icon src={userIconUrl(name)} alt="" width={36} height={36} />
-      <Name>{name}</Name>
-      <Count>{count}投稿</Count>
-    </CardWrap>
-  );
+	return (
+		<CardWrap href={`/user/${name}`}>
+			<Icon src={userIconUrl(name)} alt="" width={36} height={36} />
+			<Name>{name}</Name>
+			<Count>{count}投稿</Count>
+		</CardWrap>
+	);
 };
 const UserSkeleton: React.FC = () => {
-  return (
-    <CardWrapSkelton
-      tabIndex={0}
-      role="progressbar"
-      aria-busy={true}
-      aria-valuemin={0}
-      aria-valuemax={100}
-      aria-valuetext="Loading..."
-    >
-      <Skeleton
-        width="36px"
-        height="36px"
-        borderRadius="9999px"
-        css={css`
+	return (
+		<CardWrapSkelton
+			tabIndex={0}
+			role="progressbar"
+			aria-busy={true}
+			aria-valuemin={0}
+			aria-valuemax={100}
+			aria-valuetext="Loading..."
+		>
+			<Skeleton
+				width="36px"
+				height="36px"
+				borderRadius="9999px"
+				css={css`
           grid-area: icon;
         `}
-      />
-      <Skeleton
-        width="100px"
-        height="14px"
-        borderRadius="9999px"
-        css={css`
+			/>
+			<Skeleton
+				width="100px"
+				height="14px"
+				borderRadius="9999px"
+				css={css`
           grid-area: name;
         `}
-      />
-      <Skeleton
-        width="40px"
-        height="12px"
-        borderRadius="9999px"
-        css={css`
+			/>
+			<Skeleton
+				width="40px"
+				height="12px"
+				borderRadius="9999px"
+				css={css`
           grid-area: count;
           align-self: flex-end;
         `}
-      />
-    </CardWrapSkelton>
-  );
+			/>
+		</CardWrapSkelton>
+	);
 };
 const CardBaseStyle = css`
   display: grid;

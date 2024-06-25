@@ -20,99 +20,99 @@ import { useRandomTheme } from "./random/hooks";
 import type { GetServerSideProps, NextPage } from "next";
 
 const Fluid = dynamic(
-  () => import("@/components/Fluid.client").then((mod) => mod.Fluid),
-  {
-    ssr: false,
-  },
+	() => import("@/components/Fluid.client").then((mod) => mod.Fluid),
+	{
+		ssr: false,
+	},
 );
 
 export const getServerSideProps = (async ({ req }) => {
-  const userId = extractShowcaseUser(req);
+	const userId = extractShowcaseUser(req);
 
-  // 部員とわかってる人はトップページを表示しない
-  if (userId !== undefined) {
-    return {
-      redirect: {
-        destination: "/random",
-        permanent: false,
-      },
-    };
-  }
+	// 部員とわかってる人はトップページを表示しない
+	if (userId !== undefined) {
+		return {
+			redirect: {
+				destination: "/random",
+				permanent: false,
+			},
+		};
+	}
 
-  return {
-    props: {},
-  };
+	return {
+		props: {},
+	};
 }) satisfies GetServerSideProps;
 
 const Home: NextPage = () => {
-  const [isShowTopPage, setIsShowTopPage] = useState(true);
-  const [isRendered, setIsRendered] = useState(false);
+	const [isShowTopPage, setIsShowTopPage] = useState(true);
+	const [isRendered, setIsRendered] = useState(false);
 
-  const router = useRouter();
-  useEffect(() => {
-    if (localStorage.getItem("isShowTopPage") === "0") {
-      void router.replace("/random");
-      return;
-    }
-    setIsRendered(true);
-  }, [router]);
+	const router = useRouter();
+	useEffect(() => {
+		if (localStorage.getItem("isShowTopPage") === "0") {
+			void router.replace("/random");
+			return;
+		}
+		setIsRendered(true);
+	}, [router]);
 
-  const onToggleShowTopPage = useCallback(() => {
-    setIsShowTopPage((prev) => !prev);
-    localStorage.setItem("isShowTopPage", isShowTopPage ? "0" : "1");
-  }, [isShowTopPage]);
+	const onToggleShowTopPage = useCallback(() => {
+		setIsShowTopPage((prev) => !prev);
+		localStorage.setItem("isShowTopPage", isShowTopPage ? "0" : "1");
+	}, [isShowTopPage]);
 
-  const { theme, resolvedTheme } = useRandomTheme(null);
+	const { theme, resolvedTheme } = useRandomTheme(null);
 
-  const loginUrl = useLoginUrl();
+	const loginUrl = useLoginUrl();
 
-  const isMobile = useIsMobile();
+	const isMobile = useIsMobile();
 
-  return (
-    <>
-      <TopContainer hidden={!isRendered}>
-        {theme !== null && resolvedTheme !== null && (
-          <SmallPreview
-            css={BackgroundStyle}
-            theme={resolvedTheme}
-            author={theme.author}
-          />
-        )}
-        <BlurBackground />
-        <FluidBackground />
-        <TopContentWrap>
-          <TrimMarkGroup size={32} margin={isMobile ? 16 : 32} />
+	return (
+		<>
+			<TopContainer hidden={!isRendered}>
+				{theme !== null && resolvedTheme !== null && (
+					<SmallPreview
+						css={BackgroundStyle}
+						theme={resolvedTheme}
+						author={theme.author}
+					/>
+				)}
+				<BlurBackground />
+				<FluidBackground />
+				<TopContentWrap>
+					<TrimMarkGroup size={32} margin={isMobile ? 16 : 32} />
 
-          <Title>
-            <Logo />
-          </Title>
-          <ViewLink href="/random">
-            <span>テーマを見てみる</span>
-            <HiArrowRight />
-          </ViewLink>
+					<Title>
+						<Logo />
+					</Title>
+					<ViewLink href="/random">
+						<span>テーマを見てみる</span>
+						<HiArrowRight />
+					</ViewLink>
 
-          <LoginButton href={loginUrl}>
-            すでに部員の方はこちら
-            <HiArrowRight />
-          </LoginButton>
+					<LoginButton href={loginUrl}>
+						すでに部員の方はこちら
+						<HiArrowRight />
+					</LoginButton>
 
-          <Label>
-            <Checkbox
-              type="checkbox"
-              checked={!isShowTopPage}
-              onChange={onToggleShowTopPage}
-            />
-            <span>このページを今後表示しない</span>
-          </Label>
-          {theme !== null && (
-            <CurrentLink href={`/theme/${theme.id}`}>
-              {theme.title} by {theme.author}
-            </CurrentLink>
-          )}
-        </TopContentWrap>
-      </TopContainer>
-    </>
-  );
+					<Label>
+						<Checkbox
+							type="checkbox"
+							checked={!isShowTopPage}
+							onChange={onToggleShowTopPage}
+						/>
+						<span>このページを今後表示しない</span>
+					</Label>
+					{theme !== null && (
+						<CurrentLink href={`/theme/${theme.id}`}>
+							{theme.title} by {theme.author}
+						</CurrentLink>
+					)}
+				</TopContentWrap>
+			</TopContainer>
+		</>
+	);
 };
 export default Home;
 

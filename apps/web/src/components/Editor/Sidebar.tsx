@@ -4,28 +4,28 @@ import styled from "@emotion/styled";
 import { BlockStyle } from "@/components/layout/Sidebar";
 
 interface Props {
-  submit?: () => void;
-  isSubmitting?: boolean;
-  shareUrl?: string;
+	submit?: () => void;
+	isSubmitting?: boolean;
+	shareUrl?: string;
 }
 
 export const Sidebar: React.FC<Props> = ({
-  submit,
-  isSubmitting,
-  shareUrl,
+	submit,
+	isSubmitting,
+	shareUrl,
 }) => {
-  return (
-    <>
-      <SubmitButtonWrapper data-is-submitting={isSubmitting}>
-        <SubmitButton onClick={submit} disabled={isSubmitting}>
-          Submit
-        </SubmitButton>
-      </SubmitButtonWrapper>
-      <ShareButton href={shareUrl} target="_blank" rel="noopener noreferrer">
-        Share
-      </ShareButton>
-    </>
-  );
+	return (
+		<>
+			<SubmitButtonWrapper data-is-submitting={isSubmitting}>
+				<SubmitButton onClick={submit} disabled={isSubmitting}>
+					Submit
+				</SubmitButton>
+			</SubmitButtonWrapper>
+			<ShareButton href={shareUrl} target="_blank" rel="noopener noreferrer">
+				Share
+			</ShareButton>
+		</>
+	);
 };
 
 const rotateKeyframe = keyframes`

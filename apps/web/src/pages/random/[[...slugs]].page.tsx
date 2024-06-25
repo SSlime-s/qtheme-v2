@@ -32,145 +32,145 @@ import type { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import type { NextPageWithLayout } from "../_app.page";
 
 export const getServerSideProps = (async ({ req, query }) => {
-  const userId = extractShowcaseUser(req);
+	const userId = extractShowcaseUser(req);
 
-  const { slugs } = query;
-  let filter: "all" | "light" | "dark" | "invalid";
-  if (slugs === undefined || slugs.length === 0) {
-    filter = "all";
-  } else if (slugs.length === 1) {
-    assertIsArray(slugs);
-    if (["light", "dark"].includes(slugs[0].toLowerCase())) {
-      filter = slugs[0].toLowerCase() as "light" | "dark";
-    } else {
-      filter = "invalid";
-    }
-  } else {
-    filter = "invalid";
-  }
+	const { slugs } = query;
+	let filter: "all" | "light" | "dark" | "invalid";
+	if (slugs === undefined || slugs.length === 0) {
+		filter = "all";
+	} else if (slugs.length === 1) {
+		assertIsArray(slugs);
+		if (["light", "dark"].includes(slugs[0].toLowerCase())) {
+			filter = slugs[0].toLowerCase() as "light" | "dark";
+		} else {
+			filter = "invalid";
+		}
+	} else {
+		filter = "invalid";
+	}
 
-  if (filter === "invalid") {
-    return {
-      redirect: {
-        destination: "/random",
-        permanent: false,
-      },
-    };
-  }
+	if (filter === "invalid") {
+		return {
+			redirect: {
+				destination: "/random",
+				permanent: false,
+			},
+		};
+	}
 
-  return {
-    props: {
-      userId: userId ?? null,
-      filter,
-    },
-  };
+	return {
+		props: {
+			userId: userId ?? null,
+			filter,
+		},
+	};
 }) satisfies GetServerSideProps;
 
 type Props = InferGetServerSidePropsType<typeof getServerSideProps>;
 
 const RandomPage: NextPageWithLayout<Props> = ({ userId, filter }) => {
-  useSetUserId(userId);
+	useSetUserId(userId);
 
-  const {
-    theme,
-    resolvedTheme,
-    isLoading,
-    error,
-    mutate: { changeNext, toggleLike },
-  } = useRandomTheme(filter === "all" ? null : filter);
-  const {
-    mutate: { changeTheme },
-  } = useCurrentTheme();
+	const {
+		theme,
+		resolvedTheme,
+		isLoading,
+		error,
+		mutate: { changeNext, toggleLike },
+	} = useRandomTheme(filter === "all" ? null : filter);
+	const {
+		mutate: { changeTheme },
+	} = useCurrentTheme();
 
-  const toggleLikeWithAuth = useWithAuth(
-    userId,
-    toggleLike,
-    "favorite は部員限定です",
-  );
+	const toggleLikeWithAuth = useWithAuth(
+		userId,
+		toggleLike,
+		"favorite は部員限定です",
+	);
 
-  const themeString = useMemo(() => {
-    if (theme === null) {
-      return "";
-    }
-    return JSON.stringify(theme.theme);
-  }, [theme]);
+	const themeString = useMemo(() => {
+		if (theme === null) {
+			return "";
+		}
+		return JSON.stringify(theme.theme);
+	}, [theme]);
 
-  if (error !== undefined) {
-    return <Error statusCode={500} />;
-  }
-  if (isLoading || theme === null || resolvedTheme === null) {
-    return <LoadingBar />;
-  }
+	if (error !== undefined) {
+		return <Error statusCode={500} />;
+	}
+	if (isLoading || theme === null || resolvedTheme === null) {
+		return <LoadingBar />;
+	}
 
-  return (
-    <>
-      <Head>
-        <title>
-          {pageTitle(`#random${filter !== "all" ? `/${filter}` : ""}`)}
-        </title>
-      </Head>
-      <SEO
-        title={`#random${filter !== "all" ? `/${filter}` : ""}`}
-        url={`/random${filter !== "all" ? `/${filter}` : ""}`}
-      />
-      <Wrap>
-        <MainWrap>
-          <ChangeNextButton onClick={changeNext}>
-            次のテーマを表示 <TfiReload />
-          </ChangeNextButton>
-          <Message
-            iconUser={theme.author}
-            content={
-              <>
-                <H1>{theme.title}</H1>
-                <LargePreviewCard
-                  theme={theme}
-                  resolvedTheme={resolvedTheme}
-                  changeTheme={changeTheme}
-                />
-              </>
-            }
-            date={theme.createdAt}
-            tag={theme.type}
-            name={theme.author}
-            stamps={
-              <FavoriteButton
-                isFavorite={theme.isLike}
-                onClick={toggleLikeWithAuth}
-                favoriteCount={theme.likes}
-              />
-            }
-          />
-          <Message
-            iconUser={theme.author}
-            content={
-              <>
-                <H2>詳細</H2>
-                <BreakP>
-                  <WrapResolver Wrapper={[Linkify, BudouJa, ReplaceNewLine]}>
-                    {theme.description}
-                  </WrapResolver>
-                </BreakP>
-              </>
-            }
-            date={theme.createdAt}
-            tag={theme.type}
-            name={theme.author}
-          />
-        </MainWrap>
-        <CopyBox
-          defaultValue={themeString}
-          after={<After text={themeString} changeNext={changeNext} />}
-          aria-label="テーマのjson"
-          readOnly
-        />
-      </Wrap>
-    </>
-  );
+	return (
+		<>
+			<Head>
+				<title>
+					{pageTitle(`#random${filter !== "all" ? `/${filter}` : ""}`)}
+				</title>
+			</Head>
+			<SEO
+				title={`#random${filter !== "all" ? `/${filter}` : ""}`}
+				url={`/random${filter !== "all" ? `/${filter}` : ""}`}
+			/>
+			<Wrap>
+				<MainWrap>
+					<ChangeNextButton onClick={changeNext}>
+						次のテーマを表示 <TfiReload />
+					</ChangeNextButton>
+					<Message
+						iconUser={theme.author}
+						content={
+							<>
+								<H1>{theme.title}</H1>
+								<LargePreviewCard
+									theme={theme}
+									resolvedTheme={resolvedTheme}
+									changeTheme={changeTheme}
+								/>
+							</>
+						}
+						date={theme.createdAt}
+						tag={theme.type}
+						name={theme.author}
+						stamps={
+							<FavoriteButton
+								isFavorite={theme.isLike}
+								onClick={toggleLikeWithAuth}
+								favoriteCount={theme.likes}
+							/>
+						}
+					/>
+					<Message
+						iconUser={theme.author}
+						content={
+							<>
+								<H2>詳細</H2>
+								<BreakP>
+									<WrapResolver Wrapper={[Linkify, BudouJa, ReplaceNewLine]}>
+										{theme.description}
+									</WrapResolver>
+								</BreakP>
+							</>
+						}
+						date={theme.createdAt}
+						tag={theme.type}
+						name={theme.author}
+					/>
+				</MainWrap>
+				<CopyBox
+					defaultValue={themeString}
+					after={<After text={themeString} changeNext={changeNext} />}
+					aria-label="テーマのjson"
+					readOnly
+				/>
+			</Wrap>
+		</>
+	);
 };
 export default RandomPage;
 RandomPage.getLayout = (page) => {
-  return <Layout>{page}</Layout>;
+	return <Layout>{page}</Layout>;
 };
 
 const Wrap = styled.div`
@@ -222,20 +222,20 @@ const CopyBox = styled(TextBox)`
 `;
 
 interface AfterProps {
-  text: string;
-  changeNext?: () => void;
+	text: string;
+	changeNext?: () => void;
 }
 const After: React.FC<AfterProps> = ({ text, changeNext }) => {
-  return (
-    <AfterWrap>
-      <CopyButtonWrap>
-        <CopyButton text={text} title="テーマをコピー" />
-      </CopyButtonWrap>
-      <NextButton onClick={changeNext} title="次のテーマを表示">
-        <TfiReload />
-      </NextButton>
-    </AfterWrap>
-  );
+	return (
+		<AfterWrap>
+			<CopyButtonWrap>
+				<CopyButton text={text} title="テーマをコピー" />
+			</CopyButtonWrap>
+			<NextButton onClick={changeNext} title="次のテーマを表示">
+				<TfiReload />
+			</NextButton>
+		</AfterWrap>
+	);
 };
 const AfterWrap = styled.div`
   height: 100%;

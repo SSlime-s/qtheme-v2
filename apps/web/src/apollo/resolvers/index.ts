@@ -13,34 +13,34 @@ import type { PrismaClient } from "@repo/database";
 import type { NextApiResponse } from "next";
 
 export interface ContextValue {
-  userId?: string;
-  revalidate?: NextApiResponse["revalidate"];
-  prisma: PrismaClient;
+	userId?: string;
+	revalidate?: NextApiResponse["revalidate"];
+	prisma: PrismaClient;
 }
 
 export const resolvers: Resolvers<ContextValue> = {
-  Visibility: {
-    PUBLIC: "public",
-    PRIVATE: "private",
-    DRAFT: "draft",
-  },
-  Type: {
-    LIGHT: "light",
-    DARK: "dark",
-    OTHER: "other",
-  },
-  Query: {
-    getRandomTheme,
-    getTheme,
-    getThemes,
-    getAuthors,
-    getMe,
-  },
+	Visibility: {
+		PUBLIC: "public",
+		PRIVATE: "private",
+		DRAFT: "draft",
+	},
+	Type: {
+		LIGHT: "light",
+		DARK: "dark",
+		OTHER: "other",
+	},
+	Query: {
+		getRandomTheme,
+		getTheme,
+		getThemes,
+		getAuthors,
+		getMe,
+	},
 
-  Mutation: {
-    createTheme,
-    updateTheme,
-    deleteTheme,
-    toggleLike,
-  },
+	Mutation: {
+		createTheme,
+		updateTheme,
+		deleteTheme,
+		toggleLike,
+	},
 };

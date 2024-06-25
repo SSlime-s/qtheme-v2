@@ -1,15 +1,15 @@
 {
-  "extends": "@repo/typescript-config/base.json",
-  "compilerOptions": {
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["./src/*"]
-    },
-    "types": ["vitest/globals"],
-    "noEmit": false,
-    "outDir": "./dist",
-    "incremental": false
-  },
-  "include": ["**/*.ts", "**/*.tsx", "vitest.config.mts"],
-  "exclude": ["node_modules", "dist"]
+	"extends": "@repo/typescript-config/base.json",
+	"compilerOptions": {
+		"baseUrl": ".",
+		"paths": {
+			"@/*": ["./src/*"]
+		},
+		"types": ["vitest/globals"],
+		"noEmit": false,
+		"outDir": "./dist",
+		"incremental": false
+	},
+	"include": ["**/*.ts", "**/*.tsx", "vitest.config.mts"],
+	"exclude": ["node_modules", "dist"]
 }

@@ -11,46 +11,46 @@ import type { PropsWithChildren } from "react";
 type Props = IWrapper;
 
 export const Linkify: React.FC<PropsWithChildren<Props>> = ({
-  children,
-  Wrapper,
+	children,
+	Wrapper,
 }) => {
-  return (
-    <NativeLinkify
-      options={{
-        render: useMemo(() => renderLink(Wrapper), [Wrapper]),
-      }}
-    >
-      {children}
-    </NativeLinkify>
-  );
+	return (
+		<NativeLinkify
+			options={{
+				render: useMemo(() => renderLink(Wrapper), [Wrapper]),
+			}}
+		>
+			{children}
+		</NativeLinkify>
+	);
 };
 
 const WrappedLink: React.FC<
-  ComponentProps<"a"> & Omit<IWrapper, "children">
+	ComponentProps<"a"> & Omit<IWrapper, "children">
 > = ({ children, Wrapper, ...props }) => {
-  if (typeof children !== "string") {
-    return <>{children}</>;
-  }
+	if (typeof children !== "string") {
+		return <>{children}</>;
+	}
 
-  return (
-    <a target="_blank" rel="noopener noreferrer" {...props}>
-      <WrapResolver Wrapper={Wrapper}>{children}</WrapResolver>
-    </a>
-  );
+	return (
+		<a target="_blank" rel="noopener noreferrer" {...props}>
+			<WrapResolver Wrapper={Wrapper}>{children}</WrapResolver>
+		</a>
+	);
 };
 const renderLink =
-  (Wrapper: IWrapper["Wrapper"]) =>
-  // eslint-disable-next-line react/display-name
-  ({
-    attributes,
-    content,
-  }: {
-    attributes: ComponentProps<"a">;
-    content: string;
-  }) => {
-    return (
-      <WrappedLink Wrapper={Wrapper} {...attributes}>
-        {content}
-      </WrappedLink>
-    );
-  };
+	(Wrapper: IWrapper["Wrapper"]) =>
+	// eslint-disable-next-line react/display-name
+	({
+		attributes,
+		content,
+	}: {
+		attributes: ComponentProps<"a">;
+		content: string;
+	}) => {
+		return (
+			<WrappedLink Wrapper={Wrapper} {...attributes}>
+				{content}
+			</WrappedLink>
+		);
+	};

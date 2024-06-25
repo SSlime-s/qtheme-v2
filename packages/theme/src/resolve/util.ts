@@ -8,22 +8,22 @@ https://opensource.org/licenses/mit-license.php
 import type { CSSColorType, CSSColorTypeSimple } from "@/index";
 
 export interface OnlyDefault<T> {
-  default: T;
+	default: T;
 }
 
 export const resolveOnlyDefault = (
-  original: CSSColorTypeSimple,
+	original: CSSColorTypeSimple,
 ): OnlyDefault<CSSColorType> => ({ default: original });
 
 export const resolveWithFallback = <
-  T extends { fallback: CSSColorTypeSimple },
-  S,
+	T extends { fallback: CSSColorTypeSimple },
+	S,
 >(
-  original: T | CSSColorTypeSimple,
-  f: (originalObj: T | undefined, fallback: string) => S,
+	original: T | CSSColorTypeSimple,
+	f: (originalObj: T | undefined, fallback: string) => S,
 ) => {
-  if (typeof original === "string") {
-    return f(undefined, original);
-  }
-  return f(original, original.fallback);
+	if (typeof original === "string") {
+		return f(undefined, original);
+	}
+	return f(original, original.fallback);
 };

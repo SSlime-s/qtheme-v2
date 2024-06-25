@@ -1,22 +1,22 @@
 {
-  "name": "@repo/database",
-  "version": "0.0.0",
-  "private": true,
-  "exports": {
-    ".": "./src/client.ts"
-  },
-  "scripts": {
-    "generate": "prisma generate",
-    "postinstall": "pnpm run generate",
-    "check-types": "tsc --noEmit"
-  },
-  "dependencies": {
-    "@prisma/client": "5.15.1"
-  },
-  "devDependencies": {
-    "@repo/typescript-config": "workspace:*",
-    "@types/node": "20.14.5",
-    "prisma": "^5.15.1",
-    "typescript": "5.5.2"
-  }
+	"name": "@repo/database",
+	"version": "0.0.0",
+	"private": true,
+	"exports": {
+		".": "./src/client.ts"
+	},
+	"scripts": {
+		"generate": "prisma generate",
+		"postinstall": "pnpm run generate",
+		"check-types": "tsc --noEmit"
+	},
+	"dependencies": {
+		"@prisma/client": "5.15.1"
+	},
+	"devDependencies": {
+		"@repo/typescript-config": "workspace:*",
+		"@types/node": "20.14.5",
+		"prisma": "^5.15.1",
+		"typescript": "5.5.2"
+	}
 }

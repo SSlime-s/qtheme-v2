@@ -5,29 +5,29 @@ import { ModalTemplate } from "@/utils/modal/ModalTemplate";
 import { lightTheme } from "@repo/theme/default";
 
 interface Props extends React.ComponentProps<"div"> {
-  children?: never;
+	children?: never;
 
-  titleProps?: React.ComponentProps<"h1">;
+	titleProps?: React.ComponentProps<"h1">;
 
-  onOk: () => void;
-  onCancel: () => void;
+	onOk: () => void;
+	onCancel: () => void;
 }
 export const ConfirmModal: React.FC<Props> = ({
-  titleProps,
-  onOk,
-  onCancel,
-  ...props
+	titleProps,
+	onOk,
+	onCancel,
+	...props
 }) => {
-  return (
-    <Wrap glass {...props}>
-      <Title {...titleProps}>変更を保存せずに閉じますか？</Title>
+	return (
+		<Wrap glass {...props}>
+			<Title {...titleProps}>変更を保存せずに閉じますか？</Title>
 
-      <ControlsWrap>
-        <Button onClick={onCancel}>戻る</Button>
-        <WarningButton onClick={onOk}>保存せず閉じる</WarningButton>
-      </ControlsWrap>
-    </Wrap>
-  );
+			<ControlsWrap>
+				<Button onClick={onCancel}>戻る</Button>
+				<WarningButton onClick={onOk}>保存せず閉じる</WarningButton>
+			</ControlsWrap>
+		</Wrap>
+	);
 };
 
 const popupKeyframes = keyframes`
