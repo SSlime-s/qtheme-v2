@@ -1,58 +1,58 @@
-import styled from '@emotion/styled'
-import { atom, useAtomValue, useSetAtom } from 'jotai'
-import Image from 'next/image'
-import Link from 'next/link'
-import { useCallback, useMemo, useRef } from 'react'
+import styled from "@emotion/styled";
+import { atom, useAtomValue, useSetAtom } from "jotai";
+import Image from "next/image";
+import Link from "next/link";
+import { useCallback, useMemo, useRef } from "react";
 
-import Logo from '@/assets/QTheme.png'
-import { isMobile, useIsMobile } from '@/utils/isMobile'
+import Logo from "@/assets/QTheme.png";
+import { isMobile, useIsMobile } from "@/utils/isMobile";
 
-import type { ChannelPath } from './convertChannelPath'
+import type { ChannelPath } from "./convertChannelPath";
 
 interface Props {
-  channelPath: ChannelPath[]
-  openNavBar: () => void
+  channelPath: ChannelPath[];
+  openNavBar: () => void;
 }
 
-const topicAtom = atom<string | null>(null)
+const topicAtom = atom<string | null>(null);
 export const useSetTopic = () => {
-  return useSetAtom(topicAtom)
-}
+  return useSetAtom(topicAtom);
+};
 export const Header: React.FC<Props> = ({ channelPath, openNavBar }) => {
-  const isMobile = useIsMobile()
+  const isMobile = useIsMobile();
 
-  const topic = useAtomValue(topicAtom)
+  const topic = useAtomValue(topicAtom);
 
   const now: ChannelPath | undefined = useMemo(() => {
-    const pathElement = channelPath[channelPath.length - 1]
-    if (pathElement === undefined) return undefined
-    return pathElement
-  }, [channelPath])
+    const pathElement = channelPath[channelPath.length - 1];
+    if (pathElement === undefined) return undefined;
+    return pathElement;
+  }, [channelPath]);
 
   const root: ChannelPath | undefined = useMemo(() => {
-    const pathElement = channelPath[0]
-    if (pathElement === undefined) return undefined
-    return pathElement
-  }, [channelPath])
+    const pathElement = channelPath[0];
+    if (pathElement === undefined) return undefined;
+    return pathElement;
+  }, [channelPath]);
 
   const rest: ChannelPath[] = useMemo(() => {
-    return channelPath.slice(1, -1)
-  }, [channelPath])
+    return channelPath.slice(1, -1);
+  }, [channelPath]);
 
   const isRoot = useMemo(() => {
-    return channelPath.length === 1
-  }, [channelPath])
+    return channelPath.length === 1;
+  }, [channelPath]);
 
-  const ref = useRef<HTMLDivElement>(null)
+  const ref = useRef<HTMLDivElement>(null);
   const scrollToSelf = useCallback(() => {
     if (!isMobile) {
-      return
+      return;
     }
     ref.current?.scrollIntoView({
-      behavior: 'smooth',
-      block: 'start',
-    })
-  }, [isMobile])
+      behavior: "smooth",
+      block: "start",
+    });
+  }, [isMobile]);
 
   // return <Wrap>#favorite/path</Wrap>
   return (
@@ -60,7 +60,7 @@ export const Header: React.FC<Props> = ({ channelPath, openNavBar }) => {
       <DummyWrap ref={ref} />
       <Wrap onClickCapture={scrollToSelf}>
         <MenuButton onClick={openNavBar} hidden={!isMobile}>
-          <Image src={Logo} alt='Open NavBar' width={24} height={24} />
+          <Image src={Logo} alt="Open NavBar" width={24} height={24} />
         </MenuButton>
         <PathWrap>
           {isRoot ? (
@@ -71,19 +71,19 @@ export const Header: React.FC<Props> = ({ channelPath, openNavBar }) => {
           ) : (
             <>
               <RestPath>
-                <RootLink href={root?.href ?? '/'}>
+                <RootLink href={root?.href ?? "/"}>
                   <HashWrap>#</HashWrap>
                   {root?.name}
                 </RootLink>
                 <Separator />
               </RestPath>
-              {rest.map(path => {
+              {rest.map((path) => {
                 return (
                   <RestPath key={path.href}>
                     <Link href={path.href}>{path.name}</Link>
                     <Separator />
                   </RestPath>
-                )
+                );
               })}
               <NowPath>{now?.name}</NowPath>
             </>
@@ -92,11 +92,11 @@ export const Header: React.FC<Props> = ({ channelPath, openNavBar }) => {
         {topic !== null && <Topic>{topic}</Topic>}
       </Wrap>
     </>
-  )
-}
+  );
+};
 const Separator: React.FC = () => {
-  return <SeparatorWrap>/</SeparatorWrap>
-}
+  return <SeparatorWrap>/</SeparatorWrap>;
+};
 
 const Wrap = styled.header`
   grid-area: header;
@@ -112,7 +112,7 @@ const Wrap = styled.header`
     left: 0;
     z-index: 20;
   }
-`
+`;
 const DummyWrap = styled.div`
   grid-area: header;
   display: hidden;
@@ -121,7 +121,7 @@ const DummyWrap = styled.div`
     display: block;
     pointer-events: none;
   }
-`
+`;
 const MenuButton = styled.button`
   margin-right: 8px;
   height: 36px;
@@ -135,22 +135,22 @@ const MenuButton = styled.button`
   &[hidden] {
     display: none;
   }
-`
+`;
 const PathWrap = styled.div`
   color: ${({ theme }) => theme.theme.basic.ui.primary.default};
   user-select: none;
   font-weight: bold;
-`
+`;
 const HashWrap = styled.span`
   font-size: 1.5rem;
   margin-right: 0.125rem;
-`
-const RootLink = styled(Link)``
+`;
+const RootLink = styled(Link)``;
 const NowPath = styled.span`
   color: ${({ theme }) => theme.theme.basic.ui.primary.default};
   font-size: 1.5rem;
   margin-left: 0.125rem;
-`
+`;
 const RestPath = styled.span`
   color: ${({ theme }) => theme.theme.basic.ui.secondary.inactive};
   font-size: 1rem;
@@ -159,12 +159,12 @@ const RestPath = styled.span`
     color: ${({ theme }) => theme.theme.basic.ui.secondary.default};
     transition: color 0.1s;
   }
-`
+`;
 const SeparatorWrap = styled.span`
   color: ${({ theme }) => theme.theme.basic.ui.secondary.inactive};
   font-size: 1rem;
   margin: 0 0.125rem;
-`
+`;
 const Topic = styled.div`
   color: ${({ theme }) => theme.theme.basic.ui.secondary.default};
   height: 16px;
@@ -177,4 +177,4 @@ const Topic = styled.div`
   text-overflow: ellipsis;
   white-space: nowrap;
   line-height: 16px;
-`
+`;

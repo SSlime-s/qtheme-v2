@@ -5,41 +5,41 @@ https://opensource.org/licenses/mit-license.php
 */
 // ref: https://github.com/traPtitech/traQ_S-UI/blob/master/src/lib/theme/resolve/index.ts
 
-import { isDarkColor, transparentizeWithFallback } from '@/color'
+import { isDarkColor, transparentizeWithFallback } from "@/color";
 
-import { resolveBasicTheme } from './basic'
-import { resolveMarkdownTheme } from './markdown'
+import { resolveBasicTheme } from "./basic";
+import { resolveMarkdownTheme } from "./markdown";
 
-import type { ResolvedBasicTheme } from './basic'
-import type { ResolvedMarkdownTheme } from './markdown'
-import type { Theme, CSSColorType, BrowserTheme, SpecificTheme } from '@/index'
+import type { BrowserTheme, CSSColorType, SpecificTheme, Theme } from "@/index";
+import type { ResolvedBasicTheme } from "./basic";
+import type { ResolvedMarkdownTheme } from "./markdown";
 
 export interface ResolvedTheme {
-  basic: ResolvedBasicTheme
-  browser: BrowserTheme
-  specific: ResolvedSpecificTheme
-  markdown: ResolvedMarkdownTheme
+  basic: ResolvedBasicTheme;
+  browser: BrowserTheme;
+  specific: ResolvedSpecificTheme;
+  markdown: ResolvedMarkdownTheme;
 }
 
 type ResolvedSpecificTheme = SpecificTheme & {
-  channelHashOpened: CSSColorType
-  channelUnreadBadgeText: CSSColorType
-  messageHoverBackground: CSSColorType
-  stampIncludeMeBackground: CSSColorType
-  stampCountText: CSSColorType
-  stampPickerOpenerBorder: CSSColorType
-  loadingSpinnerGapUiSecondary: CSSColorType
-  sliderBackground: CSSColorType
-}
+  channelHashOpened: CSSColorType;
+  channelUnreadBadgeText: CSSColorType;
+  messageHoverBackground: CSSColorType;
+  stampIncludeMeBackground: CSSColorType;
+  stampCountText: CSSColorType;
+  stampPickerOpenerBorder: CSSColorType;
+  loadingSpinnerGapUiSecondary: CSSColorType;
+  sliderBackground: CSSColorType;
+};
 
 const resolveBrowserTheme = (
   original: Partial<BrowserTheme> | undefined,
-  basic: ResolvedBasicTheme
+  basic: ResolvedBasicTheme,
 ): BrowserTheme => ({
   themeColor: original?.themeColor ?? basic.accent.primary.default,
   colorScheme:
     original?.colorScheme ??
-    (isDarkColor(basic.background.primary.fallback) ? 'dark' : 'light'),
+    (isDarkColor(basic.background.primary.fallback) ? "dark" : "light"),
 
   selectionText: original?.selectionText ?? basic.background.primary.border,
   selectionBackground:
@@ -53,17 +53,17 @@ const resolveBrowserTheme = (
   scrollbarThumbHover:
     original?.scrollbarThumbHover ??
     transparentizeWithFallback(basic.ui.secondary.fallback, 0.8),
-  scrollbarTrack: original?.scrollbarTrack ?? 'transparent',
-})
+  scrollbarTrack: original?.scrollbarTrack ?? "transparent",
+});
 
 const resolveSpecificTheme = (
   original: Partial<SpecificTheme> | undefined,
-  basic: ResolvedBasicTheme
+  basic: ResolvedBasicTheme,
 ): ResolvedSpecificTheme => ({
   waveformColor: original?.waveformColor ?? basic.accent.primary.default,
   waveformGradation:
     original?.waveformGradation ??
-    'repeating-linear-gradient(90deg, #ccc, #333, #ccc 25%)',
+    "repeating-linear-gradient(90deg, #ccc, #333, #ccc 25%)",
   navigationBarDesktopBackground:
     original?.navigationBarDesktopBackground ??
     basic.background.secondary.default,
@@ -81,33 +81,33 @@ const resolveSpecificTheme = (
   channelUnreadBadgeText: basic.background.secondary.border,
   messageHoverBackground: transparentizeWithFallback(
     basic.background.secondary.fallback,
-    0.5
+    0.5,
   ),
   stampIncludeMeBackground: transparentizeWithFallback(
     basic.accent.primary.fallback,
-    0.3
+    0.3,
   ),
   stampCountText: transparentizeWithFallback(basic.ui.primary.fallback, 0.6),
   stampPickerOpenerBorder: transparentizeWithFallback(
     basic.ui.primary.fallback,
-    0.6
+    0.6,
   ),
   loadingSpinnerGapUiSecondary: transparentizeWithFallback(
     basic.ui.secondary.fallback,
-    0.5
+    0.5,
   ),
   sliderBackground: transparentizeWithFallback(
     basic.ui.secondary.fallback,
-    0.5
+    0.5,
   ),
-})
+});
 
 export const resolveTheme = (original: Theme): ResolvedTheme => {
-  const resolvedBasicTheme = resolveBasicTheme(original.basic)
+  const resolvedBasicTheme = resolveBasicTheme(original.basic);
   return {
     basic: resolvedBasicTheme,
     browser: resolveBrowserTheme(original.browser, resolvedBasicTheme),
     specific: resolveSpecificTheme(original.specific, resolvedBasicTheme),
     markdown: resolveMarkdownTheme(original.markdown, resolvedBasicTheme),
-  }
-}
+  };
+};

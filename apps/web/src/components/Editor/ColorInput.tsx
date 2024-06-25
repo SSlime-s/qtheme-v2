@@ -1,14 +1,14 @@
-import styled from '@emotion/styled'
-import { useCallback } from 'react'
-import { BsTextLeft } from 'react-icons/bs'
+import styled from "@emotion/styled";
+import { useCallback } from "react";
+import { BsTextLeft } from "react-icons/bs";
 
-import { AutoResizeTextarea } from '@/components/AutoResizeTextarea'
-import { lightTheme } from '@repo/theme/default'
+import { AutoResizeTextarea } from "@/components/AutoResizeTextarea";
+import { lightTheme } from "@repo/theme/default";
 
 interface Props {
-  onChange: (color: string) => void
-  value: string
-  placeholder?: string
+  onChange: (color: string) => void;
+  value: string;
+  placeholder?: string;
 }
 export const ColorInput: React.FC<Props> = ({
   onChange,
@@ -17,13 +17,13 @@ export const ColorInput: React.FC<Props> = ({
 }) => {
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-      onChange(e.target.value)
+      onChange(e.target.value);
     },
-    [onChange]
-  )
+    [onChange],
+  );
 
   return (
-    <Wrap className='mono'>
+    <Wrap className="mono">
       <PrefixWrap>
         <Prefix>
           <BsTextLeft />
@@ -38,8 +38,8 @@ export const ColorInput: React.FC<Props> = ({
         />
       </InputWrap>
     </Wrap>
-  )
-}
+  );
+};
 
 const Wrap = styled.div`
   display: grid;
@@ -59,11 +59,11 @@ const Wrap = styled.div`
   &:focus-within {
     border-color: ${lightTheme.basic.accent.focus};
   }
-`
+`;
 const PrefixWrap = styled.div`
   height: 100%;
   border-right: 1px solid #ced6db;
-`
+`;
 const Prefix = styled.div`
   display: grid;
   place-items: center;
@@ -72,13 +72,13 @@ const Prefix = styled.div`
   font-size: 24px;
   backdrop-filter: blur(4px);
   border-radius: 4px 0 0 4px;
-`
+`;
 const InputWrap = styled.div`
   width: 100%;
   height: max-content;
-`
+`;
 const Input = styled(AutoResizeTextarea)`
   width: 100%;
   line-height: 1.2;
   padding: calc(max(0px, (32px - 1.2rem) / 2));
-`
+`;

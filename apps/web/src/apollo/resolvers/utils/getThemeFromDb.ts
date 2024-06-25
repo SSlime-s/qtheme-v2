@@ -1,30 +1,30 @@
-import type { Theme, Type, Visibility } from '@/apollo/generated/resolvers'
-import type { Prisma, PrismaClient } from '@repo/database'
+import type { Theme, Type, Visibility } from "@/apollo/generated/resolvers";
+import type { Prisma, PrismaClient } from "@repo/database";
 
 export const getThemeFromDb = async (
-  prisma: Pick<PrismaClient, 'themes' | 'likes'>,
+  prisma: Pick<PrismaClient, "themes" | "likes">,
   id: string,
-  userId?: string
+  userId?: string,
 ) => {
   try {
     const visibilityCondition: Prisma.themesWhereInput =
       userId === undefined
         ? {
-            visibility: 'public',
+            visibility: "public",
           }
         : {
             OR: [
               {
                 visibility: {
-                  in: ['public', 'private'],
+                  in: ["public", "private"],
                 },
               },
               {
-                visibility: 'draft',
+                visibility: "draft",
                 author_user_id: userId,
               },
             ],
-          }
+          };
 
     const theme = await prisma.themes.findUnique({
       select: {
@@ -46,10 +46,10 @@ export const getThemeFromDb = async (
         ...visibilityCondition,
         id,
       },
-    })
+    });
 
     if (theme === null) {
-      return null
+      return null;
     }
 
     const getIsLike = async (userId: string): Promise<boolean> => {
@@ -61,12 +61,12 @@ export const getThemeFromDb = async (
           user_id: userId,
           theme_id: id,
         },
-      })
+      });
 
-      return like !== null
-    }
+      return like !== null;
+    };
 
-    const is_like = userId === undefined ? false : await getIsLike(userId)
+    const is_like = userId === undefined ? false : await getIsLike(userId);
 
     const {
       author_user_id,
@@ -75,19 +75,19 @@ export const getThemeFromDb = async (
       created_at,
       _count: { likes },
       ...restTheme
-    } = theme
+    } = theme;
 
     return {
       ...restTheme,
       author: author_user_id,
-      type: (type ?? 'other') as Type,
+      type: (type ?? "other") as Type,
       visibility: visibility as Visibility,
       createdAt: created_at,
       isLike: is_like,
       likes,
-    } satisfies Theme
+    } satisfies Theme;
   } catch (err: unknown) {
-    console.error(err)
-    throw err
+    console.error(err);
+    throw err;
   }
-}
+};

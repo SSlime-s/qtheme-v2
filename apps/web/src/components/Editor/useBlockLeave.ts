@@ -1,31 +1,31 @@
-import { useRouter } from 'next/router'
-import { useCallback, useEffect, useMemo } from 'react'
+import { useRouter } from "next/router";
+import { useCallback, useEffect, useMemo } from "react";
 
 export const useBlockLeave = (isBlock: boolean) => {
-  const abortController = useMemo(() => new AbortController(), [])
+  const abortController = useMemo(() => new AbortController(), []);
 
   // ブラウザネイティブの離脱をブロック
   useEffect(() => {
     if (!isBlock) {
-      return
+      return;
     }
     const handleUnload = async (e: BeforeUnloadEvent) => {
-      e.preventDefault()
-      e.returnValue = ''
-    }
-    window.addEventListener('beforeunload', handleUnload, {
+      e.preventDefault();
+      e.returnValue = "";
+    };
+    window.addEventListener("beforeunload", handleUnload, {
       signal: abortController.signal,
-    })
+    });
     return () => {
-      window.removeEventListener('beforeunload', handleUnload)
-    }
-  }, [abortController.signal, isBlock])
+      window.removeEventListener("beforeunload", handleUnload);
+    };
+  }, [abortController.signal, isBlock]);
 
   // Next.js のルーティングをブロック
-  const router = useRouter()
+  const router = useRouter();
   useEffect(() => {
     if (!isBlock) {
-      return
+      return;
     }
 
     const handleRouteChange = (
@@ -33,36 +33,36 @@ export const useBlockLeave = (isBlock: boolean) => {
       {
         shallow,
       }: {
-        shallow?: boolean
-      }
+        shallow?: boolean;
+      },
     ) => {
       if (to === router.asPath) {
-        return
+        return;
       }
       if (shallow === true) {
-        return
+        return;
       }
-      if (!confirm('離脱してもよろしいですか? (変更は保存されません)')) {
-        router.events.emit('routeChangeError')
-        throw 'routeChange aborted.'
+      if (!confirm("離脱してもよろしいですか? (変更は保存されません)")) {
+        router.events.emit("routeChangeError");
+        throw "routeChange aborted.";
       }
-    }
-    router.events.on('routeChangeStart', handleRouteChange)
+    };
+    router.events.on("routeChangeStart", handleRouteChange);
     const abort = () => {
-      router.events.off('routeChangeStart', handleRouteChange)
-    }
-    abortController.signal.addEventListener('abort', abort)
+      router.events.off("routeChangeStart", handleRouteChange);
+    };
+    abortController.signal.addEventListener("abort", abort);
     return () => {
-      router.events.off('routeChangeStart', handleRouteChange)
-      abortController.signal.removeEventListener('abort', abort)
-    }
-  }, [abortController.signal, isBlock, router])
+      router.events.off("routeChangeStart", handleRouteChange);
+      abortController.signal.removeEventListener("abort", abort);
+    };
+  }, [abortController.signal, isBlock, router]);
 
   const unbind = useCallback(() => {
-    abortController.abort()
-  }, [abortController])
+    abortController.abort();
+  }, [abortController]);
 
   return {
     unbind,
-  }
-}
+  };
+};

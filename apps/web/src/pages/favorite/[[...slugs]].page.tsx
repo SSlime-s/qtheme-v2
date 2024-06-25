@@ -1,50 +1,50 @@
-import styled from '@emotion/styled'
-import Head from 'next/head'
-import { useEffect, useMemo } from 'react'
+import styled from "@emotion/styled";
+import Head from "next/head";
+import { useEffect, useMemo } from "react";
 
-import { Error } from '@/components/Error'
-import { InfiniteLoad } from '@/components/InfiniteLoad'
-import { LoadingBar } from '@/components/LoadingBar'
-import { PreviewCard } from '@/components/PreviewCard'
-import { SEO } from '@/components/SEO'
-import { Layout } from '@/components/layout'
-import { useSetTopic } from '@/components/layout/Header'
-import { extractShowcaseUser } from '@/utils/extractUser'
-import { useCurrentTheme } from '@/utils/theme/hooks'
-import { pageTitle } from '@/utils/title'
-import { assertIsArray } from '@/utils/typeUtils'
-import { useSetUserId } from '@/utils/userId'
+import { Error } from "@/components/Error";
+import { InfiniteLoad } from "@/components/InfiniteLoad";
+import { LoadingBar } from "@/components/LoadingBar";
+import { PreviewCard } from "@/components/PreviewCard";
+import { SEO } from "@/components/SEO";
+import { Layout } from "@/components/layout";
+import { useSetTopic } from "@/components/layout/Header";
+import { extractShowcaseUser } from "@/utils/extractUser";
+import { useCurrentTheme } from "@/utils/theme/hooks";
+import { pageTitle } from "@/utils/title";
+import { assertIsArray } from "@/utils/typeUtils";
+import { useSetUserId } from "@/utils/userId";
 
-import { useFavoritesList } from './hook'
+import { useFavoritesList } from "./hook";
 
-import type { NextPageWithLayout } from '@/pages/_app.page'
-import type { GetServerSideProps, InferGetServerSidePropsType } from 'next'
+import type { NextPageWithLayout } from "@/pages/_app.page";
+import type { GetServerSideProps, InferGetServerSidePropsType } from "next";
 
 export const getServerSideProps = (async ({ req, query }) => {
-  const userId = extractShowcaseUser(req)
+  const userId = extractShowcaseUser(req);
 
-  const { slugs } = query
-  let filter: 'all' | 'light' | 'dark' | 'invalid'
+  const { slugs } = query;
+  let filter: "all" | "light" | "dark" | "invalid";
   if (slugs === undefined || slugs.length === 0) {
-    filter = 'all'
+    filter = "all";
   } else if (slugs.length === 1) {
-    assertIsArray(slugs)
-    if (['light', 'dark'].includes(slugs[0].toLowerCase())) {
-      filter = slugs[0].toLowerCase() as 'light' | 'dark'
+    assertIsArray(slugs);
+    if (["light", "dark"].includes(slugs[0].toLowerCase())) {
+      filter = slugs[0].toLowerCase() as "light" | "dark";
     } else {
-      filter = 'invalid'
+      filter = "invalid";
     }
   } else {
-    filter = 'invalid'
+    filter = "invalid";
   }
 
-  if (filter === 'invalid') {
+  if (filter === "invalid") {
     return {
       redirect: {
-        destination: '/all',
+        destination: "/all",
         permanent: false,
       },
-    }
+    };
   }
 
   return {
@@ -52,21 +52,21 @@ export const getServerSideProps = (async ({ req, query }) => {
       userId: userId ?? null,
       filter,
     },
-  }
-}) satisfies GetServerSideProps
+  };
+}) satisfies GetServerSideProps;
 
-type Props = InferGetServerSidePropsType<typeof getServerSideProps>
+type Props = InferGetServerSidePropsType<typeof getServerSideProps>;
 
 const FavoritePage: NextPageWithLayout<Props> = ({ userId, filter }) => {
-  useSetUserId(userId)
+  useSetUserId(userId);
 
   const title = useMemo(() => {
-    if (filter === 'all') {
-      return '#favorite'
-    } else {
-      return `#favorite/${filter}`
+    if (filter === "all") {
+      return "#favorite";
     }
-  }, [filter])
+
+    return `#favorite/${filter}`;
+  }, [filter]);
 
   if (userId === null) {
     return (
@@ -76,7 +76,7 @@ const FavoritePage: NextPageWithLayout<Props> = ({ userId, filter }) => {
         </Head>
         <Error statusCode={401} />
       </>
-    )
+    );
   }
   return (
     <>
@@ -85,17 +85,17 @@ const FavoritePage: NextPageWithLayout<Props> = ({ userId, filter }) => {
       </Head>
       <FavoritePageContent userId={userId} filter={filter} />
     </>
-  )
-}
-FavoritePage.getLayout = page => <Layout>{page}</Layout>
-export default FavoritePage
+  );
+};
+FavoritePage.getLayout = (page) => <Layout>{page}</Layout>;
+export default FavoritePage;
 
 const FavoritePageContent: React.FC<
   Props & {
-    userId: NonNullable<Props['userId']>
+    userId: NonNullable<Props["userId"]>;
   }
 > = ({ userId, filter }) => {
-  useSetUserId(userId)
+  useSetUserId(userId);
 
   const {
     themes,
@@ -104,37 +104,37 @@ const FavoritePageContent: React.FC<
     isLoading,
     isReachingEnd,
     mutate: { loadMore, toggleLike },
-  } = useFavoritesList(filter === 'all' ? null : filter, null)
+  } = useFavoritesList(filter === "all" ? null : filter, null);
   const {
     mutate: { changeTheme },
-  } = useCurrentTheme()
+  } = useCurrentTheme();
 
-  const setTopic = useSetTopic()
+  const setTopic = useSetTopic();
   useEffect(() => {
-    setTopic(`${total} themes`)
+    setTopic(`${total} themes`);
 
     return () => {
-      setTopic(null)
-    }
-  }, [total, setTopic])
+      setTopic(null);
+    };
+  }, [total, setTopic]);
 
   if (isLoading) {
-    return <LoadingBar />
+    return <LoadingBar />;
   }
 
   if (error !== undefined) {
-    return <Error statusCode={500} />
+    return <Error statusCode={500} />;
   }
 
   return (
     <>
       <SEO
-        title={`#favorite${filter !== 'all' ? `/${filter}` : ''}`}
-        url={`/favorite${filter !== 'all' ? `/${filter}` : ''}`}
+        title={`#favorite${filter !== "all" ? `/${filter}` : ""}`}
+        url={`/favorite${filter !== "all" ? `/${filter}` : ""}`}
       />
       <Wrap>
         <Grid>
-          {themes.map(theme => {
+          {themes.map((theme) => {
             return (
               <PreviewCard
                 key={theme.id}
@@ -142,7 +142,7 @@ const FavoritePageContent: React.FC<
                 onFavorite={toggleLike}
                 changeTheme={changeTheme}
               />
-            )
+            );
           })}
         </Grid>
         <InfiniteLoad
@@ -151,15 +151,15 @@ const FavoritePageContent: React.FC<
         />
       </Wrap>
     </>
-  )
-}
+  );
+};
 
 const Wrap = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
-`
+`;
 const Grid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
@@ -167,4 +167,4 @@ const Grid = styled.div`
   padding: 32px;
   justify-items: center;
   width: 100%;
-`
+`;

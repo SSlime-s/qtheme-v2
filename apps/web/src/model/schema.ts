@@ -1,15 +1,15 @@
-import { z } from 'zod'
+import { z } from "zod";
 
-import { themeSchema } from '@repo/theme'
+import { themeSchema } from "@repo/theme";
 
-export const ulidSchema = z.string().uuid()
+export const ulidSchema = z.string().uuid();
 
-export const themeTypeSchema = z.union([z.literal('light'), z.literal('dark')])
+export const themeTypeSchema = z.union([z.literal("light"), z.literal("dark")]);
 export const visibilityTypeSchema = z.union([
-  z.literal('public'),
-  z.literal('private'),
-  z.literal('draft'),
-])
+  z.literal("public"),
+  z.literal("private"),
+  z.literal("draft"),
+]);
 
 export const themeInfoSchema = z.object({
   id: ulidSchema,
@@ -21,5 +21,5 @@ export const themeInfoSchema = z.object({
   created_at: z.date(),
   theme: themeSchema,
   likes: z.number(),
-})
-export type ThemeInfo = z.infer<typeof themeInfoSchema>
+});
+export type ThemeInfo = z.infer<typeof themeInfoSchema>;

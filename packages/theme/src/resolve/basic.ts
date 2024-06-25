@@ -5,109 +5,109 @@ https://opensource.org/licenses/mit-license.php
 */
 // ref: https://github.com/traPtitech/traQ_S-UI/blob/master/src/lib/theme/resolve/basic.ts
 
-import { transparentizeWithFallback } from '@/color'
+import { transparentizeWithFallback } from "@/color";
 
-import { resolveOnlyDefault, resolveWithFallback } from './util'
+import { resolveOnlyDefault, resolveWithFallback } from "./util";
 
-import type { OnlyDefault } from './util'
 import type {
   BasicTheme,
   CSSColorType,
   CSSColorTypeSimple,
   CSSImageType,
-} from '@/index'
+} from "@/index";
+import type { OnlyDefault } from "./util";
 
 export interface ResolvedBasicTheme {
   accent: {
     primary: {
-      default: CSSColorType
-      background: CSSImageType
-      inactive: CSSColorType
-      fallback: CSSColorTypeSimple
-    }
+      default: CSSColorType;
+      background: CSSImageType;
+      inactive: CSSColorType;
+      fallback: CSSColorTypeSimple;
+    };
     notification: {
-      default: CSSColorType
-      background: CSSImageType
-      fallback: CSSColorTypeSimple
-    }
-    online: OnlyDefault<CSSColorType>
-    error: OnlyDefault<CSSColorType>
-    focus: OnlyDefault<CSSColorType>
-  }
+      default: CSSColorType;
+      background: CSSImageType;
+      fallback: CSSColorTypeSimple;
+    };
+    online: OnlyDefault<CSSColorType>;
+    error: OnlyDefault<CSSColorType>;
+    focus: OnlyDefault<CSSColorType>;
+  };
   background: {
     primary: {
-      default: CSSImageType
-      border: CSSColorType
-      fallback: CSSColorTypeSimple
-    }
+      default: CSSImageType;
+      border: CSSColorType;
+      fallback: CSSColorTypeSimple;
+    };
     secondary: {
-      default: CSSImageType
-      border: CSSColorType
-      fallback: CSSColorTypeSimple
-    }
+      default: CSSImageType;
+      border: CSSColorType;
+      fallback: CSSColorTypeSimple;
+    };
     tertiary: {
-      default: CSSImageType
-      border: CSSColorType
-      fallback: CSSColorTypeSimple
-    }
-  }
+      default: CSSImageType;
+      border: CSSColorType;
+      fallback: CSSColorTypeSimple;
+    };
+  };
   ui: {
     primary: {
-      default: CSSColorType
-      background: CSSImageType
-      inactive: CSSColorType
-      fallback: CSSColorTypeSimple
-    }
+      default: CSSColorType;
+      background: CSSImageType;
+      inactive: CSSColorType;
+      fallback: CSSColorTypeSimple;
+    };
     secondary: {
-      default: CSSColorType
-      background: CSSImageType
-      inactive: CSSColorType
-      fallback: CSSColorTypeSimple
-    }
-    tertiary: OnlyDefault<CSSColorType>
-  }
+      default: CSSColorType;
+      background: CSSImageType;
+      inactive: CSSColorType;
+      fallback: CSSColorTypeSimple;
+    };
+    tertiary: OnlyDefault<CSSColorType>;
+  };
   text: {
-    primary: OnlyDefault<CSSColorType>
-    secondary: OnlyDefault<CSSColorType>
-  }
+    primary: OnlyDefault<CSSColorType>;
+    secondary: OnlyDefault<CSSColorType>;
+  };
 }
 
 const resolveWithFallbackForDefaultBorder = <
   T extends { default?: CSSImageType; border?: CSSColorType } | undefined,
 >(
   original: T,
-  fallback: CSSColorTypeSimple
+  fallback: CSSColorTypeSimple,
 ) => ({
   default: original?.default ?? fallback,
   border: original?.border ?? fallback,
   fallback,
-})
+});
 
 const resolveWithFallbackForDefaultBackgroundInactive = <
   T extends
     | {
-        default?: CSSColorType
-        background?: CSSImageType
-        inactive?: CSSColorType
+        default?: CSSColorType;
+        background?: CSSImageType;
+        inactive?: CSSColorType;
       }
     | undefined,
 >(
   original: T,
-  fallback: CSSColorTypeSimple
+  fallback: CSSColorTypeSimple,
 ) => ({
   default: original?.default ?? fallback,
   background: original?.background ?? fallback,
   inactive: original?.inactive ?? transparentizeWithFallback(fallback, 0.5),
   fallback,
-})
+});
 
 const resolveBasicThemeAccent = (
-  original: BasicTheme['accent']
-): ResolvedBasicTheme['accent'] => {
+  original: BasicTheme["accent"],
+): ResolvedBasicTheme["accent"] => {
   return {
     primary: resolveWithFallback(
       original.primary,
-      resolveWithFallbackForDefaultBackgroundInactive
+      resolveWithFallbackForDefaultBackgroundInactive,
     ),
     notification: resolveWithFallback(
       original.notification,
@@ -115,57 +115,57 @@ const resolveBasicThemeAccent = (
         default: original?.default ?? fallback,
         background: original?.background ?? fallback,
         fallback,
-      })
+      }),
     ),
     online: resolveOnlyDefault(original.online),
     error: resolveOnlyDefault(original.error),
     focus: resolveOnlyDefault(original.focus),
-  }
-}
+  };
+};
 
 const resolveBasicThemeBackground = (
-  original: BasicTheme['background']
-): ResolvedBasicTheme['background'] => ({
+  original: BasicTheme["background"],
+): ResolvedBasicTheme["background"] => ({
   primary: resolveWithFallback(
     original.primary,
-    resolveWithFallbackForDefaultBorder
+    resolveWithFallbackForDefaultBorder,
   ),
   secondary: resolveWithFallback(
     original.secondary,
-    resolveWithFallbackForDefaultBorder
+    resolveWithFallbackForDefaultBorder,
   ),
   tertiary: resolveWithFallback(
     original.tertiary,
-    resolveWithFallbackForDefaultBorder
+    resolveWithFallbackForDefaultBorder,
   ),
-})
+});
 
 const resolveBasicThemeUi = (
-  original: BasicTheme['ui']
-): ResolvedBasicTheme['ui'] => ({
+  original: BasicTheme["ui"],
+): ResolvedBasicTheme["ui"] => ({
   primary: resolveWithFallback(
     original.primary,
-    resolveWithFallbackForDefaultBackgroundInactive
+    resolveWithFallbackForDefaultBackgroundInactive,
   ),
   secondary: resolveWithFallback(
     original.secondary,
-    resolveWithFallbackForDefaultBackgroundInactive
+    resolveWithFallbackForDefaultBackgroundInactive,
   ),
   tertiary: resolveOnlyDefault(original.tertiary),
-})
+});
 
 const resolveBasicThemeText = (
-  original: BasicTheme['text']
-): ResolvedBasicTheme['text'] => ({
+  original: BasicTheme["text"],
+): ResolvedBasicTheme["text"] => ({
   primary: resolveOnlyDefault(original.primary),
   secondary: resolveOnlyDefault(original.secondary),
-})
+});
 
 export const resolveBasicTheme = (
-  original: BasicTheme
+  original: BasicTheme,
 ): ResolvedBasicTheme => ({
   accent: resolveBasicThemeAccent(original.accent),
   background: resolveBasicThemeBackground(original.background),
   ui: resolveBasicThemeUi(original.ui),
   text: resolveBasicThemeText(original.text),
-})
+});

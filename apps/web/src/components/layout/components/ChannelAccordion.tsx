@@ -1,17 +1,17 @@
-import { css } from '@emotion/react'
-import styled from '@emotion/styled'
-import Link from 'next/link'
-import { BsHash } from 'react-icons/bs'
+import { css } from "@emotion/react";
+import styled from "@emotion/styled";
+import Link from "next/link";
+import { BsHash } from "react-icons/bs";
 
-import { useAccordion, useHiddenTransition } from '@/utils/accordion'
+import { useAccordion, useHiddenTransition } from "@/utils/accordion";
 
-import type { ResolvedTheme } from '@repo/theme/resolve'
-import type { PropsWithChildren } from 'react'
+import type { ResolvedTheme } from "@repo/theme/resolve";
+import type { PropsWithChildren } from "react";
 
 interface Props {
-  name: string
-  to: string
-  selected?: boolean
+  name: string;
+  to: string;
+  selected?: boolean;
 }
 
 export const ChannelAccordion: React.FC<PropsWithChildren<Props>> = ({
@@ -21,12 +21,12 @@ export const ChannelAccordion: React.FC<PropsWithChildren<Props>> = ({
   children,
 }) => {
   const { isOpen, toggle, contentRef, contentHeight, ariaToggle, ariaContent } =
-    useAccordion<HTMLDivElement>(8)
-  const { ref: wrapRef, style: hiddenStyle } = useHiddenTransition(isOpen)
+    useAccordion<HTMLDivElement>(8);
+  const { ref: wrapRef, style: hiddenStyle } = useHiddenTransition(isOpen);
 
   return (
     <Wrap>
-      <ChannelWrap aria-current={selected === true ? 'page' : 'false'}>
+      <ChannelWrap aria-current={selected === true ? "page" : "false"}>
         <ToggleButton
           onClick={toggle}
           selected={selected}
@@ -50,11 +50,11 @@ export const ChannelAccordion: React.FC<PropsWithChildren<Props>> = ({
         <div ref={contentRef}>{children}</div>
       </ContentWrap>
     </Wrap>
-  )
-}
+  );
+};
 const Wrap = styled.div`
   margin: 4px 0;
-`
+`;
 const ChannelWrap = styled.div`
   display: grid;
   grid-template-columns: 29px 1fr;
@@ -68,9 +68,9 @@ const ChannelWrap = styled.div`
   }
   position: relative;
   padding-left: 8px;
-`
+`;
 const ToggleButton = styled.button<{
-  selected?: boolean
+  selected?: boolean;
 }>`
   display: grid;
   justify-self: end;
@@ -81,9 +81,9 @@ const ToggleButton = styled.button<{
   padding: 0;
   cursor: pointer;
   border: ${({ theme, ...props }) =>
-      props.selected === true
-        ? theme.theme.basic.accent.primary.default
-        : theme.theme.basic.ui.primary.default}
+    props.selected === true
+      ? theme.theme.basic.accent.primary.default
+      : theme.theme.basic.ui.primary.default}
     2px solid;
   border-radius: 4px;
   background: transparent;
@@ -110,11 +110,11 @@ const ToggleButton = styled.button<{
     position: absolute;
     inset: -4px;
   }
-`
+`;
 const ChannelTextStyle = ({
   theme,
 }: {
-  theme: { theme: ResolvedTheme }
+  theme: { theme: ResolvedTheme };
 }) => css`
   width: 100%;
   padding-left: calc(8px + 3px);
@@ -136,49 +136,49 @@ const ChannelTextStyle = ({
   [aria-current='page'] &:after {
     background: ${theme.theme.basic.accent.primary.default};
   }
-`
+`;
 const ChannelLink = styled(Link)`
   ${ChannelTextStyle}
 
   &:hover:after {
     background: ${({ theme }) => theme.theme.basic.ui.primary.default};
   }
-`
+`;
 const ContentWrap = styled.div<{
-  'data-height'?: number
+  "data-height"?: number;
 }>`
   overflow: hidden;
   transition: height 0.3s ease;
-  height: ${({ 'data-height': height }) =>
-    height === undefined ? 'auto' : height}px;
+  height: ${({ "data-height": height }) =>
+    height === undefined ? "auto" : height}px;
   padding-left: 12px;
 
   &[aria-hidden='true'] {
     height: 0;
   }
-`
+`;
 
 export const Channel: React.FC<Props> = ({ name, to, selected }) => {
   return (
     <Wrap>
       <Link href={to}>
-        <ChannelWrap aria-current={selected === true ? 'page' : 'false'}>
+        <ChannelWrap aria-current={selected === true ? "page" : "false"}>
           <CenteredBsHash />
           <ChannelText>{name}</ChannelText>
         </ChannelWrap>
       </Link>
     </Wrap>
-  )
-}
+  );
+};
 const CenteredBsHash = styled(BsHash)`
   place-self: center;
   justify-self: end;
   font-size: 24px;
-`
+`;
 const ChannelText = styled.div`
   ${ChannelTextStyle}
 
   *:hover > *:not([aria-current='page']) > &:after {
     background: ${({ theme }) => theme.theme.basic.ui.primary.default};
   }
-`
+`;

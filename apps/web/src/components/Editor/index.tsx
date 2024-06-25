@@ -1,101 +1,108 @@
-import { css } from '@emotion/react'
-import styled from '@emotion/styled'
-import { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react'
-import React from 'react'
-import { FormProvider, useFormContext, useWatch } from 'react-hook-form'
-import { BiHelpCircle } from 'react-icons/bi'
+import { css } from "@emotion/react";
+import styled from "@emotion/styled";
+import {
+  useCallback,
+  useEffect,
+  useId,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
+import type React from "react";
+import { FormProvider, useFormContext, useWatch } from "react-hook-form";
+import { BiHelpCircle } from "react-icons/bi";
 
-import { GlassmorphismStyle } from '@/components/Glassmorphism'
-import { SidebarPortal } from '@/components/layout'
-import { useModal } from '@/utils/modal/useModal'
-import { useNamedTabList } from '@/utils/tablist'
-import { darkTheme, lightTheme } from '@repo/theme/default'
-import { resolveTheme } from '@repo/theme/resolve'
-import { encodeTheme } from '@repo/theme/utils/codec'
-import { SmallPreview } from '@repo/theme-preview'
+import { GlassmorphismStyle } from "@/components/Glassmorphism";
+import { SidebarPortal } from "@/components/layout";
+import { useModal } from "@/utils/modal/useModal";
+import { useNamedTabList } from "@/utils/tablist";
+import { SmallPreview } from "@repo/theme-preview";
+import { darkTheme, lightTheme } from "@repo/theme/default";
+import { resolveTheme } from "@repo/theme/resolve";
+import { encodeTheme } from "@repo/theme/utils/codec";
 
-import { AdvancedSelectors } from './AdvancedSelectors'
-import { BasicSelectors } from './BasicSelectors'
-import { Description } from './InfoEditor/Description'
-import { Title } from './InfoEditor/Title'
-import { PublicDescriptionModal } from './PublicDescriptionModal'
-import { Sidebar } from './Sidebar'
-import { SyncControls } from './SyncControls'
-import { TextTheme } from './TextTheme'
+import { AdvancedSelectors } from "./AdvancedSelectors";
+import { BasicSelectors } from "./BasicSelectors";
+import { Description } from "./InfoEditor/Description";
+import { Title } from "./InfoEditor/Title";
+import { PublicDescriptionModal } from "./PublicDescriptionModal";
+import { Sidebar } from "./Sidebar";
+import { SyncControls } from "./SyncControls";
+import { TextTheme } from "./TextTheme";
 
-import type { ThemeInfo } from '@/model/schema'
-import type { RecursiveRequired } from '@/utils/typeUtils'
-import type { ReactNode } from 'react'
-import type { UseFormReturn } from 'react-hook-form'
+import type { ThemeInfo } from "@/model/schema";
+import type { RecursiveRequired } from "@/utils/typeUtils";
+import type { ReactNode } from "react";
+import type { UseFormReturn } from "react-hook-form";
 
-const ColorsTab = ['Basic', 'Advanced'] as const
+const ColorsTab = ["Basic", "Advanced"] as const;
 
 export type Form = Pick<
   ThemeInfo,
-  'title' | 'description' | 'type' | 'visibility' | 'theme'
->
+  "title" | "description" | "type" | "visibility" | "theme"
+>;
 interface Props extends UseFormReturn<Form> {
-  userId: string | null
-  submit: (value: Form) => Promise<void>
+  userId: string | null;
+  submit: (value: Form) => Promise<void>;
 }
 export const Editor: React.FC<Props> = ({ userId, submit, ...methods }) => {
   const { ariaPanelProps, ariaTabListProps, ariaTabProps, switchTab } =
-    useNamedTabList(ColorsTab)
+    useNamedTabList(ColorsTab);
 
-  const selectBasicTab = useCallback(() => switchTab('Basic'), [switchTab])
+  const selectBasicTab = useCallback(() => switchTab("Basic"), [switchTab]);
   const selectAdvancedTab = useCallback(
-    () => switchTab('Advanced'),
-    [switchTab]
-  )
+    () => switchTab("Advanced"),
+    [switchTab],
+  );
 
-  const [isWide, setIsWide] = useState(false)
-  const containerRef = useRef<HTMLDivElement>(null)
+  const [isWide, setIsWide] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    const container = containerRef.current
+    const container = containerRef.current;
     if (container === null) {
-      return
+      return;
     }
-    const observer = new ResizeObserver(entries => {
+    const observer = new ResizeObserver((entries) => {
       for (const entry of entries) {
-        const { width } = entry.contentRect
-        setIsWide(width > 450 + 300 + 16 * 3)
+        const { width } = entry.contentRect;
+        setIsWide(width > 450 + 300 + 16 * 3);
       }
-    })
-    observer.observe(container)
+    });
+    observer.observe(container);
     return () => {
-      observer.disconnect()
-    }
-  }, [])
+      observer.disconnect();
+    };
+  }, []);
 
-  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const onSubmit = useCallback(
     async (data: Form) => {
       if (isSubmitting) {
-        return
+        return;
       }
-      setIsSubmitting(true)
+      setIsSubmitting(true);
       try {
-        await submit(data)
+        await submit(data);
       } catch (e) {
-        console.error(e)
+        console.error(e);
       } finally {
-        setIsSubmitting(false)
+        setIsSubmitting(false);
       }
     },
-    [isSubmitting, submit]
-  )
+    [isSubmitting, submit],
+  );
   const handleSubmit = useCallback(
     () => methods.handleSubmit(onSubmit)(),
-    [methods, onSubmit]
-  )
+    [methods.handleSubmit, onSubmit],
+  );
 
-  const watched = useWatch({ control: methods.control })
+  const watched = useWatch({ control: methods.control });
   const shareUrl = useMemo(() => {
-    const encoded = encodeTheme(watched as RecursiveRequired<typeof watched>)
+    const encoded = encodeTheme(watched as RecursiveRequired<typeof watched>);
     return `${
-      typeof window === 'undefined' ? '' : window.location.origin
-    }/share?t=${encoded}`
-  }, [watched])
+      typeof window === "undefined" ? "" : window.location.origin
+    }/share?t=${encoded}`;
+  }, [watched]);
 
   return (
     <>
@@ -119,14 +126,14 @@ export const Editor: React.FC<Props> = ({ userId, submit, ...methods }) => {
               <Tab
                 {...ariaTabProps.Basic}
                 onClick={selectBasicTab}
-                title='Basic'
+                title="Basic"
               >
                 Basic
               </Tab>
               <Tab
                 {...ariaTabProps.Advanced}
                 onClick={selectAdvancedTab}
-                title='Advanced'
+                title="Advanced"
               >
                 Advanced
               </Tab>
@@ -150,8 +157,8 @@ export const Editor: React.FC<Props> = ({ userId, submit, ...methods }) => {
         </SidebarPortal>
       </FormProvider>
     </>
-  )
-}
+  );
+};
 
 const Wrap = styled.div<{ isWide: boolean }>`
   display: grid;
@@ -169,7 +176,7 @@ const Wrap = styled.div<{ isWide: boolean }>`
   gap: 16px;
   padding: 16px;
   position: relative;
-`
+`;
 const Controls = styled.div`
   grid-area: controls;
   ${GlassmorphismStyle}
@@ -177,7 +184,7 @@ const Controls = styled.div`
   display: flex;
   flex-direction: column;
   gap: 8px;
-`
+`;
 const PreviewBox = styled.div`
   grid-area: preview;
   ${GlassmorphismStyle}
@@ -190,19 +197,19 @@ const PreviewBox = styled.div`
   top: 16px;
   z-index: 10;
   margin-bottom: auto;
-`
+`;
 const TextThemeBox = styled.div`
   grid-area: text-theme;
   ${GlassmorphismStyle}
   padding: 16px;
   margin-bottom: auto;
-`
+`;
 const Colors = styled.div`
   grid-area: colors;
   ${GlassmorphismStyle}
 
   padding: 16px;
-`
+`;
 const Tabs = styled.div`
   display: flex;
   background-color: rgba(230, 230, 230, 0.5);
@@ -213,7 +220,7 @@ const Tabs = styled.div`
   padding: 16px 16px 0;
   overflow-x: auto;
   overscroll-behavior-x: contain;
-`
+`;
 const Tab = styled.button`
   transition: all 0.2s ease-out;
   transition-property: color, border-color;
@@ -238,25 +245,25 @@ const Tab = styled.button`
     color: #222;
     border-color: #222;
   }
-`
-const TabPanel = styled.div``
+`;
+const TabPanel = styled.div``;
 
 const VisibilityPublicDescription: React.FC = () => {
   const { close, isOpen, modalProps, open, titleProps, titleRef, triggerRef } =
-    useModal('editor/visibility')
+    useModal("editor/visibility");
 
   const titlePropsWithRef = useMemo(
     () => ({
       ...titleProps,
       ref: titleRef,
     }),
-    [titleProps, titleRef]
-  )
+    [titleProps, titleRef],
+  );
 
   return (
     <VisibilityPublicDescriptionWrap>
       <Strong>推奨</Strong>
-      <WhyRecommended onClick={open} ref={triggerRef} title='なぜ推奨なのか？'>
+      <WhyRecommended onClick={open} ref={triggerRef} title="なぜ推奨なのか？">
         <BiHelpCircle />
       </WhyRecommended>
       traP 外の人でも見ることができます
@@ -268,17 +275,17 @@ const VisibilityPublicDescription: React.FC = () => {
         />
       )}
     </VisibilityPublicDescriptionWrap>
-  )
-}
+  );
+};
 const VisibilityPublicDescriptionWrap = styled.div`
   display: flex;
   align-items: center;
   line-height: 1;
   height: 1.5rem;
-`
+`;
 const Strong = styled.strong`
   font-weight: bold;
-`
+`;
 const WhyRecommended = styled.button`
   cursor: pointer;
   display: grid;
@@ -297,47 +304,47 @@ const WhyRecommended = styled.button`
     opacity: 0.8;
     transform: scale(1.1);
   }
-`
+`;
 
 const visibilityDescription = {
   public: <VisibilityPublicDescription />,
-  private: 'traP 内の人だけが見ることができます',
-  draft: 'あなただけが見ることができます',
-} as const satisfies Record<'public' | 'private' | 'draft', ReactNode>
+  private: "traP 内の人だけが見ることができます",
+  draft: "あなただけが見ることができます",
+} as const satisfies Record<"public" | "private" | "draft", ReactNode>;
 const Selects: React.FC = () => {
-  const { control, register } = useFormContext<Form>()
+  const { control, register } = useFormContext<Form>();
   const visibility = useWatch({
     control,
-    name: 'visibility',
-  })
+    name: "visibility",
+  });
 
-  const descriptionId = useId()
+  const descriptionId = useId();
 
   return (
     <>
       <SelectsWrap>
-        <Select {...register('type')} aria-label='タイプ'>
-          <option value='light'>Light</option>
-          <option value='dark'>Dark</option>
+        <Select {...register("type")} aria-label="タイプ">
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
         </Select>
         <Select
-          {...register('visibility')}
+          {...register("visibility")}
           aria-describedby={descriptionId}
-          aria-label='公開範囲'
+          aria-label="公開範囲"
         >
-          <option value='public'>Public</option>
-          <option value='private'>Private</option>
-          <option value='draft'>Draft</option>
+          <option value="public">Public</option>
+          <option value="private">Private</option>
+          <option value="draft">Draft</option>
         </Select>
       </SelectsWrap>
       <span id={descriptionId}>{visibilityDescription[visibility]}</span>
     </>
-  )
-}
+  );
+};
 const SelectsWrap = styled.div`
   display: flex;
   gap: 16px;
-`
+`;
 const Select = styled.select`
   padding: 4px 8px;
   border-radius: 4px;
@@ -355,14 +362,14 @@ const Select = styled.select`
   }
 
   cursor: pointer;
-`
+`;
 
 const Preview: React.FC<{ userId: string | null }> = ({ userId }) => {
-  const { control } = useFormContext<Form>()
-  const theme = useWatch({ control, name: 'theme' })
+  const { control } = useFormContext<Form>();
+  const theme = useWatch({ control, name: "theme" });
   const resolvedTheme = useMemo(() => {
-    return resolveTheme(theme)
-  }, [theme])
+    return resolveTheme(theme);
+  }, [theme]);
 
   return (
     <div
@@ -370,7 +377,7 @@ const Preview: React.FC<{ userId: string | null }> = ({ userId }) => {
         max-width: 400px;
       `}
     >
-      <SmallPreview author={userId ?? 'traP'} theme={resolvedTheme} />
+      <SmallPreview author={userId ?? "traP"} theme={resolvedTheme} />
     </div>
-  )
-}
+  );
+};

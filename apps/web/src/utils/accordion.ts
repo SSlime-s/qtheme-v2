@@ -1,61 +1,68 @@
-import { css } from '@emotion/react'
-import { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react'
+import { css } from "@emotion/react";
+import {
+  useCallback,
+  useEffect,
+  useId,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 
 export const useControlledAccordion = <E extends HTMLElement = HTMLDivElement>(
   isOpen: boolean,
   onToggle?: (isOpen: boolean) => void,
-  contentMargin = 0
+  contentMargin = 0,
 ) => {
-  const contentId = useId()
-  const ref = useRef<E>(null)
+  const contentId = useId();
+  const ref = useRef<E>(null);
 
-  const [contentHeight, setContentHeight] = useState<number>()
+  const [contentHeight, setContentHeight] = useState<number>();
 
   const toggle = useCallback(() => {
-    onToggle?.(!isOpen)
-  }, [isOpen, onToggle])
+    onToggle?.(!isOpen);
+  }, [isOpen, onToggle]);
   const open = useCallback(() => {
-    onToggle?.(true)
-  }, [onToggle])
+    onToggle?.(true);
+  }, [onToggle]);
   const close = useCallback(() => {
-    onToggle?.(false)
-  }, [onToggle])
+    onToggle?.(false);
+  }, [onToggle]);
 
   useEffect(() => {
     if (ref.current === null) {
-      return
+      return;
     }
 
-    const content = ref.current
+    const content = ref.current;
     const setHeight = () => {
       if (content.scrollHeight === 0 && isOpen) {
-        return
+        return;
       }
-      setContentHeight(content.scrollHeight + contentMargin)
-    }
+      setContentHeight(content.scrollHeight + contentMargin);
+    };
 
-    setHeight()
-    const observer = new ResizeObserver(setHeight)
-    observer.observe(content)
+    setHeight();
+    const observer = new ResizeObserver(setHeight);
+    observer.observe(content);
 
     return () => {
-      observer.disconnect()
-    }
-  }, [contentMargin, isOpen])
+      observer.disconnect();
+    };
+  }, [contentMargin, isOpen]);
 
   const ariaToggle = useMemo(() => {
     return {
-      'aria-controls': contentId,
-      'aria-expanded': isOpen,
-    }
-  }, [contentId, isOpen])
+      "aria-controls": contentId,
+      "aria-expanded": isOpen,
+    };
+  }, [contentId, isOpen]);
   const ariaContent = useMemo(() => {
     return {
       id: contentId,
       // FIXME: ページ内検索で引っかからないように hidden もつけるべき
-      'aria-hidden': !isOpen,
-    }
-  }, [contentId, isOpen])
+      "aria-hidden": !isOpen,
+    };
+  }, [contentId, isOpen]);
 
   return {
     isOpen,
@@ -66,54 +73,54 @@ export const useControlledAccordion = <E extends HTMLElement = HTMLDivElement>(
     contentHeight,
     ariaToggle,
     ariaContent,
-  }
-}
+  };
+};
 
 export const useAccordion = <E extends HTMLElement = HTMLDivElement>(
-  contentMargin = 0
+  contentMargin = 0,
 ) => {
-  const [isOpen, setIsOpen] = useState(false)
-  return useControlledAccordion<E>(isOpen, setIsOpen, contentMargin)
-}
+  const [isOpen, setIsOpen] = useState(false);
+  return useControlledAccordion<E>(isOpen, setIsOpen, contentMargin);
+};
 
 export const useHiddenTransition = (isOpen: boolean) => {
-  const [isHidden, setIsHidden] = useState(!isOpen)
-  const ref = useRef<HTMLDivElement>(null)
+  const [isHidden, setIsHidden] = useState(!isOpen);
+  const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (isOpen) {
-      setIsHidden(false)
+      setIsHidden(false);
     }
-  }, [isOpen])
+  }, [isOpen]);
 
   useEffect(() => {
-    const { current } = ref
+    const { current } = ref;
     if (current === null) {
-      return
+      return;
     }
     const onTransitionEnd = () => {
       if (!isOpen) {
-        setIsHidden(true)
+        setIsHidden(true);
       }
-    }
-    current.addEventListener('transitionend', onTransitionEnd)
+    };
+    current.addEventListener("transitionend", onTransitionEnd);
     return () => {
-      current.removeEventListener('transitionend', onTransitionEnd)
-    }
-  }, [isOpen])
+      current.removeEventListener("transitionend", onTransitionEnd);
+    };
+  }, [isOpen]);
 
   const style = useMemo(() => {
     if (isHidden) {
       return css`
         display: none;
-      `
+      `;
     }
-    return undefined
-  }, [isHidden])
+    return undefined;
+  }, [isHidden]);
 
   return {
     ref,
     isHidden,
     style,
-  }
-}
+  };
+};

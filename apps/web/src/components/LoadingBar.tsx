@@ -1,5 +1,5 @@
-import { css, keyframes } from '@emotion/react'
-import styled from '@emotion/styled'
+import { css, keyframes } from "@emotion/react";
+import styled from "@emotion/styled";
 
 const LoadingKeyframes = keyframes`
   0% {
@@ -11,7 +11,7 @@ const LoadingKeyframes = keyframes`
   100% {
     background-position: 0% 50%;
   }
-`
+`;
 const FadeTopKeyframes = keyframes`
   0% {
     opacity: 0;
@@ -21,7 +21,7 @@ const FadeTopKeyframes = keyframes`
     opacity: 0.5;
     transform: translateY(0);
   }
-`
+`;
 export const LoadingBar = styled.div`
   background: linear-gradient(
       0,
@@ -40,7 +40,7 @@ export const LoadingBar = styled.div`
 
   height: 12px;
   width: 100%;
-`
+`;
 
 const SkeletonKeyframes = keyframes`
   0% {
@@ -49,15 +49,15 @@ const SkeletonKeyframes = keyframes`
   100% {
     transform: translateX(100%);
   }
-`
+`;
 export const Skeleton = styled.div<{
-  width?: string
-  height?: string
-  borderRadius?: string
+  width?: string;
+  height?: string;
+  borderRadius?: string;
 }>`
   position: relative;
-  width: ${({ width }) => width ?? '100%'};
-  height: ${({ height }) => height ?? '100%'};
+  width: ${({ width }) => width ?? "100%"};
+  height: ${({ height }) => height ?? "100%"};
   ${({ borderRadius }) =>
     borderRadius !== undefined &&
     css`
@@ -79,4 +79,4 @@ export const Skeleton = styled.div<{
     );
     animation: ${SkeletonKeyframes} 1.2s ease infinite;
   }
-`
+`;

@@ -1,23 +1,23 @@
-import { GraphQLError } from 'graphql'
-import { P, match } from 'ts-pattern'
+import { GraphQLError } from "graphql";
+import { P, match } from "ts-pattern";
 
-import type { ContextValue } from '.'
 import type {
   QueryResolvers,
   Theme,
   Type,
   Visibility,
-} from '@/apollo/generated/resolvers'
-import type { Prisma } from '@repo/database'
+} from "@/apollo/generated/resolvers";
+import type { Prisma } from "@repo/database";
+import type { ContextValue } from ".";
 
-export const getRandomTheme: QueryResolvers<ContextValue>['getRandomTheme'] =
+export const getRandomTheme: QueryResolvers<ContextValue>["getRandomTheme"] =
   async (_parent, args, { userId, prisma }) => {
-    const { visibility, type } = args
-    if (visibility === 'draft') {
-      throw new GraphQLError('Invalid visibility')
+    const { visibility, type } = args;
+    if (visibility === "draft") {
+      throw new GraphQLError("Invalid visibility");
     }
-    if (visibility === 'private' && userId === undefined) {
-      throw new GraphQLError('Forbidden')
+    if (visibility === "private" && userId === undefined) {
+      throw new GraphQLError("Forbidden");
     }
 
     try {
@@ -27,28 +27,28 @@ export const getRandomTheme: QueryResolvers<ContextValue>['getRandomTheme'] =
       ])
         .returnType<Prisma.themesWhereInput>()
         .with([true, P._], () => ({
-          visibility: 'public',
+          visibility: "public",
         }))
         .with([false, true], () => ({
           visibility: {
-            in: ['public', 'private'],
+            in: ["public", "private"],
           },
         }))
         .with([false, false], () => ({
           visibility: visibility!,
         }))
-        .exhaustive()
+        .exhaustive();
 
-      const theme = await prisma.$transaction(async prisma => {
+      const theme = await prisma.$transaction(async (prisma) => {
         const where: Prisma.themesWhereInput = {
           ...visibilityCondition,
           type: type ?? undefined,
-        }
+        };
 
         const themeCount = await prisma.themes.count({
           where,
-        })
-        const random = Math.floor(Math.random() * themeCount)
+        });
+        const random = Math.floor(Math.random() * themeCount);
         const theme = await prisma.themes.findFirst({
           select: {
             id: true,
@@ -67,11 +67,11 @@ export const getRandomTheme: QueryResolvers<ContextValue>['getRandomTheme'] =
           },
           where,
           skip: random,
-        })
-        return theme
-      })
+        });
+        return theme;
+      });
       if (theme === null) {
-        throw new GraphQLError('Not found')
+        throw new GraphQLError("Not found");
       }
 
       const getIsLike = async (userId: string): Promise<boolean> => {
@@ -83,11 +83,11 @@ export const getRandomTheme: QueryResolvers<ContextValue>['getRandomTheme'] =
             user_id: userId,
             theme_id: theme.id,
           },
-        })
-        return like !== null
-      }
+        });
+        return like !== null;
+      };
 
-      const is_like = userId === undefined ? false : await getIsLike(userId)
+      const is_like = userId === undefined ? false : await getIsLike(userId);
 
       const {
         _count: { likes },
@@ -96,22 +96,22 @@ export const getRandomTheme: QueryResolvers<ContextValue>['getRandomTheme'] =
         type: type_,
         visibility: visibility_,
         ...themeRest
-      } = theme
+      } = theme;
 
       return {
         ...themeRest,
         likes,
         createdAt,
         author,
-        type: (type_ ?? 'other') as Type,
+        type: (type_ ?? "other") as Type,
         visibility: visibility_ as Visibility,
         isLike: is_like,
-      } satisfies Theme
+      } satisfies Theme;
     } catch (err: unknown) {
-      console.error(err)
+      console.error(err);
       if (err instanceof GraphQLError) {
-        throw err
+        throw err;
       }
-      throw new GraphQLError(`Internal server error: ${err}`)
+      throw new GraphQLError(`Internal server error: ${err}`);
     }
-  }
+  };

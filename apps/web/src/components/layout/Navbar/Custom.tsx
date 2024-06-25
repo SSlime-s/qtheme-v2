@@ -1,21 +1,21 @@
-import { css } from '@emotion/react'
-import styled from '@emotion/styled'
-import Link from 'next/link'
-import { BiImport } from 'react-icons/bi'
-import { TbNewSection } from 'react-icons/tb'
+import { css } from "@emotion/react";
+import styled from "@emotion/styled";
+import Link from "next/link";
+import { BiImport } from "react-icons/bi";
+import { TbNewSection } from "react-icons/tb";
 
-import { useCurrentTheme } from '@/utils/theme/hooks'
+import { useCurrentTheme } from "@/utils/theme/hooks";
 
 export const NavbarCustom: React.FC = () => {
-  const { currentRawTheme } = useCurrentTheme()
+  const { currentRawTheme } = useCurrentTheme();
 
   return (
     <Wrap>
       <BigButton
         href={{
-          pathname: '/edit',
+          pathname: "/edit",
           query: {
-            new: '',
+            new: "",
           },
         }}
       >
@@ -24,10 +24,10 @@ export const NavbarCustom: React.FC = () => {
       </BigButton>
       <BigButton
         href={{
-          pathname: '/edit',
+          pathname: "/edit",
           query: {
             init: JSON.stringify(currentRawTheme),
-            new: '',
+            new: "",
           },
         }}
       >
@@ -35,16 +35,16 @@ export const NavbarCustom: React.FC = () => {
         現在のテーマから作成
       </BigButton>
     </Wrap>
-  )
-}
+  );
+};
 const Wrap = styled.div`
   display: flex;
   flex-direction: column;
   gap: 16px;
-`
+`;
 const IconStyle = css`
   font-size: 1.5rem;
-`
+`;
 const BigButton = styled(Link)`
   color: ${({ theme }) => theme.theme.basic.ui.secondary.default};
   background: ${({ theme }) => theme.theme.basic.background.primary.default};
@@ -56,4 +56,4 @@ const BigButton = styled(Link)`
   display: flex;
   gap: 4px;
   align-items: center;
-`
+`;

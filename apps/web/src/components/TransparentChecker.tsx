@@ -1,4 +1,4 @@
-import { css } from '@emotion/react'
+import { css } from "@emotion/react";
 
 export const TransparentCheckerStyle = css`
   background: rgb(204, 204, 204);
@@ -16,4 +16,4 @@ export const TransparentCheckerStyle = css`
     8px 8px,
     8px 8px,
     16px 16px;
-`
+`;

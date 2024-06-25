@@ -1,31 +1,31 @@
-import { GraphQLError } from 'graphql'
-import { P, match } from 'ts-pattern'
+import { GraphQLError } from "graphql";
+import { P, match } from "ts-pattern";
 
-import type { ContextValue } from '.'
 import type {
   QueryResolvers,
   Type,
   Visibility,
-} from '@/apollo/generated/resolvers'
-import type { Prisma } from '@repo/database'
+} from "@/apollo/generated/resolvers";
+import type { Prisma } from "@repo/database";
+import type { ContextValue } from ".";
 
-export const getThemes: QueryResolvers<ContextValue>['getThemes'] = async (
+export const getThemes: QueryResolvers<ContextValue>["getThemes"] = async (
   _,
   args,
-  { userId, prisma }
+  { userId, prisma },
 ) => {
-  const { limit, offset, visibility, type, only_like, author } = args
-  if (visibility === 'draft') {
-    throw new GraphQLError('Invalid visibility')
+  const { limit, offset, visibility, type, only_like, author } = args;
+  if (visibility === "draft") {
+    throw new GraphQLError("Invalid visibility");
   }
-  if (visibility === 'private' && userId == undefined) {
-    throw new GraphQLError('Forbidden')
+  if (visibility === "private" && userId == undefined) {
+    throw new GraphQLError("Forbidden");
   }
   if (only_like === true && userId == undefined) {
-    throw new GraphQLError('Forbidden')
+    throw new GraphQLError("Forbidden");
   }
   if (limit == undefined && offset != undefined) {
-    throw new GraphQLError('Invalid offset')
+    throw new GraphQLError("Invalid offset");
   }
 
   try {
@@ -39,32 +39,32 @@ export const getThemes: QueryResolvers<ContextValue>['getThemes'] = async (
         visibility: visibility ?? undefined,
       }))
       .with([true, true, P._], () => ({
-        visibility: 'public',
+        visibility: "public",
       }))
       .with([true, false, true], () => ({
         visibility: {
-          in: ['public', 'private'],
+          in: ["public", "private"],
         },
       }))
       .with([true, false, false], () => ({
         OR: [
           {
             visibility: {
-              in: ['public', 'private'],
+              in: ["public", "private"],
             },
           },
           {
-            visibility: 'draft',
+            visibility: "draft",
             author_user_id: userId,
           },
         ],
       }))
-      .exhaustive()
+      .exhaustive();
     const mergedThemeCondition: Prisma.themesWhereInput = {
       ...visibilityCondition,
       type: type ?? undefined,
       author_user_id: author ?? undefined,
-    }
+    };
     if (only_like === true) {
       const themes = await prisma.likes.findMany({
         select: {
@@ -91,17 +91,17 @@ export const getThemes: QueryResolvers<ContextValue>['getThemes'] = async (
           themes: mergedThemeCondition,
         },
         orderBy: {
-          created_at: 'desc',
+          created_at: "desc",
         },
         take: limit ?? undefined,
         skip: offset ?? undefined,
-      })
+      });
       const total = await prisma.likes.count({
         where: {
           user_id: userId,
           themes: mergedThemeCondition,
         },
-      })
+      });
 
       return {
         themes: themes.map(({ themes }) => {
@@ -115,7 +115,7 @@ export const getThemes: QueryResolvers<ContextValue>['getThemes'] = async (
             created_at,
             theme,
             _count: { likes },
-          } = themes
+          } = themes;
 
           return {
             id,
@@ -123,87 +123,88 @@ export const getThemes: QueryResolvers<ContextValue>['getThemes'] = async (
             description,
             author: author_user_id,
             visibility: visibility as Visibility,
-            type: (type ?? 'other') as Type,
+            type: (type ?? "other") as Type,
             createdAt: created_at,
             theme: theme,
             likes,
             isLike: true,
-          }
+          };
         }),
         total,
-      }
-    } else {
-      const themes = await prisma.themes.findMany({
-        select: {
-          id: true,
-          title: true,
-          description: true,
-          author_user_id: true,
-          visibility: true,
-          type: true,
-          created_at: true,
-          theme: true,
-          _count: {
-            select: {
-              likes: true,
-            },
-          },
-          likes: {
-            select: {
-              theme_id: true,
-            },
-            where: {
-              user_id: userId,
-            },
-          },
-        },
-        where: mergedThemeCondition,
-        orderBy: {
-          created_at: 'desc',
-        },
-        take: limit ?? undefined,
-        skip: offset ?? undefined,
-      })
-      const total = await prisma.themes.count({
-        where: mergedThemeCondition,
-      })
-
-      return {
-        themes: themes.map(theme => {
-          const {
-            id,
-            title,
-            description,
-            author_user_id,
-            visibility,
-            type,
-            created_at,
-            theme: theme_,
-            _count: { likes },
-            likes: likes_,
-          } = theme
-
-          return {
-            id,
-            title,
-            description,
-            author: author_user_id,
-            visibility: visibility as Visibility,
-            type: (type ?? 'other') as Type,
-            createdAt: created_at,
-            theme: theme_,
-            likes,
-            isLike: userId != undefined && likes_.length === 1,
-          }
-        }),
-        total,
-      }
+      };
     }
+
+    // only_like !== true
+    const themes = await prisma.themes.findMany({
+      select: {
+        id: true,
+        title: true,
+        description: true,
+        author_user_id: true,
+        visibility: true,
+        type: true,
+        created_at: true,
+        theme: true,
+        _count: {
+          select: {
+            likes: true,
+          },
+        },
+        likes: {
+          select: {
+            theme_id: true,
+          },
+          where: {
+            user_id: userId,
+          },
+        },
+      },
+      where: mergedThemeCondition,
+      orderBy: {
+        created_at: "desc",
+      },
+      take: limit ?? undefined,
+      skip: offset ?? undefined,
+    });
+    const total = await prisma.themes.count({
+      where: mergedThemeCondition,
+    });
+
+    return {
+      themes: themes.map((theme) => {
+        const {
+          id,
+          title,
+          description,
+          author_user_id,
+          visibility,
+          type,
+          created_at,
+          theme: theme_,
+          _count: { likes },
+          likes: likes_,
+        } = theme;
+
+        return {
+          id,
+          title,
+          description,
+          author: author_user_id,
+          visibility: visibility as Visibility,
+          type: (type ?? "other") as Type,
+          createdAt: created_at,
+          theme: theme_,
+          likes,
+          isLike: userId != undefined && likes_.length === 1,
+        };
+      }),
+      total,
+    };
   } catch (err: unknown) {
-    console.error(err)
+    console.error(err);
     if (err instanceof GraphQLError) {
-      throw err
+      throw err;
     }
-    throw new GraphQLError(`Internal server error: ${err}`)
+    throw new GraphQLError(`Internal server error: ${err}`);
   }
-}
+};

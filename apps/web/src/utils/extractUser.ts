@@ -1,26 +1,26 @@
-import { NextRequest } from 'next/server'
+import { NextRequest } from "next/server";
 
-import type { IncomingMessage } from 'http'
+import type { IncomingMessage } from "node:http";
 
-const showcaseUserKey = 'x-forwarded-user'
+const showcaseUserKey = "x-forwarded-user";
 export const extractShowcaseUser = (req: IncomingMessage | NextRequest) => {
   if (
-    process.env.NODE_ENV === 'development' &&
+    process.env.NODE_ENV === "development" &&
     process.env.DEBUG_USER !== undefined
   ) {
-    return process.env.DEBUG_USER
+    return process.env.DEBUG_USER;
   }
 
-  let userId: string | undefined
+  let userId: string | undefined;
   if (req instanceof NextRequest) {
-    userId = req.headers.get(showcaseUserKey) ?? undefined
+    userId = req.headers.get(showcaseUserKey) ?? undefined;
   } else {
-    const unsafeUserId = req.headers[showcaseUserKey]
+    const unsafeUserId = req.headers[showcaseUserKey];
     if (Array.isArray(unsafeUserId)) {
-      userId = unsafeUserId.join('')
+      userId = unsafeUserId.join("");
     } else {
-      userId = unsafeUserId
+      userId = unsafeUserId;
     }
   }
-  return userId === '' ? undefined : userId ?? undefined
-}
+  return userId === "" ? undefined : userId ?? undefined;
+};

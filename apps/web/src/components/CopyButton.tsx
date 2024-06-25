@@ -1,56 +1,56 @@
-import styled from '@emotion/styled'
-import { useCallback, useState } from 'react'
-import { BsClipboard, BsClipboardCheck, BsClipboardX } from 'react-icons/bs'
+import styled from "@emotion/styled";
+import { useCallback, useState } from "react";
+import { BsClipboard, BsClipboardCheck, BsClipboardX } from "react-icons/bs";
 
 interface Props {
-  text: string
-  onClick?: () => void
-  onCopy?: () => void
-  onCopyError?: () => void
+  text: string;
+  onClick?: () => void;
+  onCopy?: () => void;
+  onCopyError?: () => void;
 }
-type CopyState = 'default' | 'copied' | 'error'
+type CopyState = "default" | "copied" | "error";
 export const CopyButton: React.FC<
   Props & React.HTMLAttributes<HTMLButtonElement>
 > = ({ text, onClick, onCopy, onCopyError, ...props }) => {
-  const [status, setStatus] = useState<CopyState>('default')
+  const [status, setStatus] = useState<CopyState>("default");
 
   const copy = useCallback(async () => {
     try {
-      await navigator.clipboard.writeText(text)
-      setStatus('copied')
-      setTimeout(() => setStatus('default'), 700)
-      onCopy?.()
+      await navigator.clipboard.writeText(text);
+      setStatus("copied");
+      setTimeout(() => setStatus("default"), 700);
+      onCopy?.();
     } catch (e) {
-      setStatus('error')
-      setTimeout(() => setStatus('default'), 700)
-      onCopyError?.()
+      setStatus("error");
+      setTimeout(() => setStatus("default"), 700);
+      onCopyError?.();
     }
-  }, [text, onCopy, onCopyError])
+  }, [text, onCopy, onCopyError]);
 
   const handleClick = useCallback(() => {
-    onClick?.()
-    void copy()
-  }, [copy, onClick])
+    onClick?.();
+    void copy();
+  }, [copy, onClick]);
 
   return (
     <Button onClick={handleClick} status={status} {...props}>
-      {status === 'default' ? (
+      {status === "default" ? (
         <BsClipboard />
-      ) : status === 'copied' ? (
+      ) : status === "copied" ? (
         <BsClipboardCheck />
       ) : (
         <BsClipboardX />
       )}
     </Button>
-  )
-}
+  );
+};
 const Button = styled.button<{
-  status: CopyState
+  status: CopyState;
 }>`
   color: ${({ theme, status }) =>
-    status === 'default'
+    status === "default"
       ? theme.theme.basic.accent.primary.default
-      : status === 'copied'
+      : status === "copied"
         ? theme.theme.basic.accent.online.default
         : theme.theme.basic.accent.error.default};
   transition:
@@ -64,4 +64,4 @@ const Button = styled.button<{
   &:hover {
     transform: scale(1.1);
   }
-`
+`;

@@ -1,26 +1,26 @@
-import { GraphQLError } from 'graphql'
-import { ulid } from 'ulid'
+import { GraphQLError } from "graphql";
+import { ulid } from "ulid";
 
-import { bumpVersion } from './utils/bumpVersion'
-import { publishThemeWebhook } from './utils/sendTraqWebhook'
+import { bumpVersion } from "./utils/bumpVersion";
+import { publishThemeWebhook } from "./utils/sendTraqWebhook";
 
-import type { ContextValue } from '.'
 import type {
   MutationResolvers,
   Theme,
   Type,
   Visibility,
-} from '@/apollo/generated/resolvers'
+} from "@/apollo/generated/resolvers";
+import type { ContextValue } from ".";
 
-export const createTheme: MutationResolvers<ContextValue>['createTheme'] =
+export const createTheme: MutationResolvers<ContextValue>["createTheme"] =
   async (_, args, { userId, revalidate, prisma }) => {
     if (userId === undefined) {
-      throw new GraphQLError('Forbidden')
+      throw new GraphQLError("Forbidden");
     }
     try {
-      return await prisma.$transaction(async prisma => {
-        const { title, description, visibility, type, theme } = args
-        const id = ulid()
+      return await prisma.$transaction(async (prisma) => {
+        const { title, description, visibility, type, theme } = args;
+        const id = ulid();
         const created = await prisma.themes.create({
           data: {
             id,
@@ -31,11 +31,11 @@ export const createTheme: MutationResolvers<ContextValue>['createTheme'] =
             type,
             theme,
           },
-        })
-        const version_id = ulid()
-        const version = bumpVersion()
+        });
+        const version_id = ulid();
+        const version = bumpVersion();
         if (version === null) {
-          throw new GraphQLError('Internal server error')
+          throw new GraphQLError("Internal server error");
         }
 
         await prisma.theme_versions.create({
@@ -45,19 +45,19 @@ export const createTheme: MutationResolvers<ContextValue>['createTheme'] =
             version,
             theme,
           },
-        })
+        });
 
-        if (visibility !== 'draft') {
+        if (visibility !== "draft") {
           await publishThemeWebhook({
             author: userId,
             themeId: id,
             title,
           }).catch((err: unknown) => {
-            console.error(err)
-          })
+            console.error(err);
+          });
         }
 
-        await revalidate?.(`/theme/${id}`)
+        await revalidate?.(`/theme/${id}`);
 
         {
           const {
@@ -66,24 +66,24 @@ export const createTheme: MutationResolvers<ContextValue>['createTheme'] =
             type,
             visibility,
             ...createdRest
-          } = created
+          } = created;
 
           return {
             ...createdRest,
             author: author_user_id,
             createdAt: created_at,
-            type: (type ?? 'other') as Type,
+            type: (type ?? "other") as Type,
             visibility: visibility as Visibility,
             likes: 0,
             isLike: false,
-          } satisfies Theme
+          } satisfies Theme;
         }
-      })
+      });
     } catch (err: unknown) {
-      console.error(err)
+      console.error(err);
       if (err instanceof GraphQLError) {
-        throw err
+        throw err;
       }
-      throw new GraphQLError(`Internal server error: ${err}`)
+      throw new GraphQLError(`Internal server error: ${err}`);
     }
-  }
+  };

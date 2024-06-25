@@ -1,27 +1,27 @@
-import { ThemeProvider } from '@emotion/react'
-import styled from '@emotion/styled'
-import Link from 'next/link'
-import { useCallback, useMemo } from 'react'
+import { ThemeProvider } from "@emotion/react";
+import styled from "@emotion/styled";
+import Link from "next/link";
+import { useCallback, useMemo } from "react";
 
-import { lineClamp } from '@/styles/lineClamp'
-import { WrapResolver } from '@/utils/wrapper'
-import { BreakStyle, BudouJa } from '@/utils/wrapper/BudouX'
-import { Linkify } from '@/utils/wrapper/Linkify'
-import { ReplaceNewLine } from '@/utils/wrapper/ReplaceNewLine'
-import { lightTheme } from '@repo/theme/default'
-import { resolveTheme } from '@repo/theme/resolve'
-import { SmallPreview } from '@repo/theme-preview'
+import { lineClamp } from "@/styles/lineClamp";
+import { WrapResolver } from "@/utils/wrapper";
+import { BreakStyle, BudouJa } from "@/utils/wrapper/BudouX";
+import { Linkify } from "@/utils/wrapper/Linkify";
+import { ReplaceNewLine } from "@/utils/wrapper/ReplaceNewLine";
+import { SmallPreview } from "@repo/theme-preview";
+import { lightTheme } from "@repo/theme/default";
+import { resolveTheme } from "@repo/theme/resolve";
 
-import { FavoriteButton } from './FavoriteButton'
-import { GlassmorphismStyle } from './Glassmorphism'
-import { Tag } from './Tag'
+import { FavoriteButton } from "./FavoriteButton";
+import { GlassmorphismStyle } from "./Glassmorphism";
+import { Tag } from "./Tag";
 
-import type { FormattedTheme } from '@/utils/theme/hooks'
+import type { FormattedTheme } from "@/utils/theme/hooks";
 
 interface Props {
-  themeInfo: FormattedTheme
-  changeTheme?: (id: string, theme: FormattedTheme) => void
-  onFavorite?: (id: string, isFavorite: boolean) => void
+  themeInfo: FormattedTheme;
+  changeTheme?: (id: string, theme: FormattedTheme) => void;
+  onFavorite?: (id: string, isFavorite: boolean) => void;
 }
 
 export const PreviewCard: React.FC<Props> = ({
@@ -30,19 +30,19 @@ export const PreviewCard: React.FC<Props> = ({
   onFavorite,
 }) => {
   const resolvedTheme = useMemo(() => {
-    return resolveTheme(themeInfo.theme)
-  }, [themeInfo])
+    return resolveTheme(themeInfo.theme);
+  }, [themeInfo]);
   const providerTheme = useMemo(() => {
-    return { theme: resolvedTheme }
-  }, [resolvedTheme])
+    return { theme: resolvedTheme };
+  }, [resolvedTheme]);
 
   const changeToCurrent = useCallback(() => {
-    changeTheme?.(themeInfo.id, themeInfo)
-    void navigator.clipboard.writeText(JSON.stringify(themeInfo.theme))
-  }, [changeTheme, themeInfo])
+    changeTheme?.(themeInfo.id, themeInfo);
+    void navigator.clipboard.writeText(JSON.stringify(themeInfo.theme));
+  }, [changeTheme, themeInfo]);
   const handleFavorite = useCallback(() => {
-    onFavorite?.(themeInfo.id, !themeInfo.isLike)
-  }, [onFavorite, themeInfo])
+    onFavorite?.(themeInfo.id, !themeInfo.isLike);
+  }, [onFavorite, themeInfo]);
 
   return (
     <ThemeProvider theme={providerTheme}>
@@ -50,10 +50,10 @@ export const PreviewCard: React.FC<Props> = ({
         <Title>{themeInfo.title}</Title>
         <Author>{themeInfo.author}</Author>
         <TagWrap>
-          <Tag variant={themeInfo.type} tag='div'>
+          <Tag variant={themeInfo.type} tag="div">
             {themeInfo.type}
           </Tag>
-          <Tag variant={themeInfo.visibility} tag='div'>
+          <Tag variant={themeInfo.visibility} tag="div">
             {themeInfo.visibility}
           </Tag>
         </TagWrap>
@@ -81,8 +81,8 @@ export const PreviewCard: React.FC<Props> = ({
         </DetailButton>
       </Wrap>
     </ThemeProvider>
-  )
-}
+  );
+};
 
 const Wrap = styled.article`
   ${GlassmorphismStyle}
@@ -94,26 +94,26 @@ const Wrap = styled.article`
   display: flex;
   flex-direction: column;
   color: #333;
-`
+`;
 const TagWrap = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: end;
   gap: 8px;
   margin: 8px 0;
-`
+`;
 const Title = styled.h1`
   font-size: 1.25rem;
   font-weight: bold;
   margin-bottom: auto;
   overflow-wrap: anywhere;
-`
+`;
 const Author = styled.h2`
   font-size: 1rem;
   font-weight: bold;
   text-align: right;
   overflow-wrap: anywhere;
-`
+`;
 const Description = styled.p`
   ${BreakStyle}
   ${lineClamp(2)}
@@ -125,7 +125,7 @@ const Description = styled.p`
       text-decoration: underline;
     }
   }
-`
+`;
 const PreviewWrap = styled.button`
   ${GlassmorphismStyle}
   border-radius: 8px;
@@ -147,17 +147,17 @@ const PreviewWrap = styled.button`
     outline: 1px solid ${lightTheme.basic.accent.primary};
     outline-offset: 1px;
   }
-`
+`;
 const ButtonWrap = styled.div`
   text-align: center;
-`
+`;
 
 const ControlWrap = styled.div`
   display: flex;
   justify-content: flex-end;
   margin-bottom: 16px;
   margin-right: -20px;
-`
+`;
 
 const DetailButton = styled(Link)`
   background: rgba(255, 255, 255, 0.1);
@@ -190,4 +190,4 @@ const DetailButton = styled(Link)`
     outline: 1px solid ${lightTheme.basic.accent.primary};
     outline-offset: -2px;
   }
-`
+`;

@@ -1,107 +1,108 @@
-import styled from '@emotion/styled'
-import Head from 'next/head'
-import { useRouter } from 'next/router'
-import React, { useMemo } from 'react'
+import styled from "@emotion/styled";
+import Head from "next/head";
+import { useRouter } from "next/router";
+import type React from "react";
+import { useMemo } from "react";
 
-import { CopyButton } from '@/components/CopyButton'
-import { Error as ErrorPage } from '@/components/Error'
-import { LargePreviewCard } from '@/components/LargePreviewCard'
-import { LoadingBar } from '@/components/LoadingBar'
-import { FullWidthContent, H1, H2, Message } from '@/components/Message'
-import { SEO, ogImageUrl } from '@/components/SEO'
-import { TextBox } from '@/components/TextBox'
-import { Layout } from '@/components/layout'
-import { extractShowcaseUser } from '@/utils/extractUser'
-import { isMobile } from '@/utils/isMobile'
-import { useCurrentTheme } from '@/utils/theme/hooks'
-import { pageTitle } from '@/utils/title'
-import { useSetUserId } from '@/utils/userId'
-import { WrapResolver } from '@/utils/wrapper'
-import { BreakStyle, BudouJa } from '@/utils/wrapper/BudouX'
-import { Linkify } from '@/utils/wrapper/Linkify'
-import { ReplaceNewLine } from '@/utils/wrapper/ReplaceNewLine'
-import { resolveTheme } from '@repo/theme/resolve'
-import { decodeTheme } from '@repo/theme/utils/codec'
+import { CopyButton } from "@/components/CopyButton";
+import { Error as ErrorPage } from "@/components/Error";
+import { LargePreviewCard } from "@/components/LargePreviewCard";
+import { LoadingBar } from "@/components/LoadingBar";
+import { FullWidthContent, H1, H2, Message } from "@/components/Message";
+import { SEO, ogImageUrl } from "@/components/SEO";
+import { TextBox } from "@/components/TextBox";
+import { Layout } from "@/components/layout";
+import { extractShowcaseUser } from "@/utils/extractUser";
+import { isMobile } from "@/utils/isMobile";
+import { useCurrentTheme } from "@/utils/theme/hooks";
+import { pageTitle } from "@/utils/title";
+import { useSetUserId } from "@/utils/userId";
+import { WrapResolver } from "@/utils/wrapper";
+import { BreakStyle, BudouJa } from "@/utils/wrapper/BudouX";
+import { Linkify } from "@/utils/wrapper/Linkify";
+import { ReplaceNewLine } from "@/utils/wrapper/ReplaceNewLine";
+import { resolveTheme } from "@repo/theme/resolve";
+import { decodeTheme } from "@repo/theme/utils/codec";
 
-import type { NextPageWithLayout } from '@/pages/_app.page'
-import type { FormattedTheme } from '@/utils/theme/hooks'
-import type { GetServerSideProps, InferGetServerSidePropsType } from 'next'
+import type { NextPageWithLayout } from "@/pages/_app.page";
+import type { FormattedTheme } from "@/utils/theme/hooks";
+import type { GetServerSideProps, InferGetServerSidePropsType } from "next";
 
-const DUMMY_AUTHOR = 'traP'
+const DUMMY_AUTHOR = "traP";
 
 export const getServerSideProps = (async ({ req }) => {
-  const userId = extractShowcaseUser(req)
+  const userId = extractShowcaseUser(req);
 
   return {
     props: {
       userId: userId ?? null,
     },
-  }
-}) satisfies GetServerSideProps
+  };
+}) satisfies GetServerSideProps;
 
-type Props = InferGetServerSidePropsType<typeof getServerSideProps>
+type Props = InferGetServerSidePropsType<typeof getServerSideProps>;
 
 const ThemePage: NextPageWithLayout<Props> = ({ userId }) => {
-  useSetUserId(userId)
+  useSetUserId(userId);
 
-  const author = DUMMY_AUTHOR
+  const author = DUMMY_AUTHOR;
 
-  const { t } = useRouter().query as { t?: string }
+  const { t } = useRouter().query as { t?: string };
   const theme = useMemo(() => {
     if (t === undefined) {
-      return undefined
+      return undefined;
     }
 
-    return decodeTheme(t)
-  }, [t])
+    return decodeTheme(t);
+  }, [t]);
 
   const dummyFormattedTheme = useMemo<FormattedTheme | undefined>(() => {
     if (theme === undefined || t === undefined) {
-      return undefined
+      return undefined;
     }
     if (theme instanceof Error) {
-      return undefined
+      return undefined;
     }
 
     return {
       ...theme,
       author,
-      visibility: 'public',
+      visibility: "public",
       createdAt: new Date().toISOString(),
       id: t,
       isLike: false,
       likes: 0,
-    }
-  }, [author, t, theme])
+    };
+  }, [author, t, theme]);
 
   const resolvedTheme = useMemo(() => {
     if (theme === undefined) {
-      return undefined
+      return undefined;
     }
     if (theme instanceof Error) {
-      return undefined
+      return undefined;
     }
 
-    return resolveTheme(theme.theme)
-  }, [theme])
+    return resolveTheme(theme.theme);
+  }, [theme]);
 
   const themeString = useMemo(() => {
     if (theme === undefined) {
-      return undefined
+      return undefined;
     }
     if (theme instanceof Error) {
-      return undefined
+      return undefined;
     }
 
-    return JSON.stringify(theme.theme)
-  }, [theme])
+    return JSON.stringify(theme.theme);
+  }, [theme]);
 
   const {
     mutate: { changeTheme },
-  } = useCurrentTheme()
+  } = useCurrentTheme();
 
   if (theme instanceof Error) {
-    return <ErrorPage statusCode={404} />
+    return <ErrorPage statusCode={404} />;
   }
 
   if (
@@ -110,7 +111,7 @@ const ThemePage: NextPageWithLayout<Props> = ({ userId }) => {
     themeString === undefined ||
     dummyFormattedTheme === undefined
   ) {
-    return <LoadingBar />
+    return <LoadingBar />;
   }
 
   return (
@@ -141,9 +142,10 @@ const ThemePage: NextPageWithLayout<Props> = ({ userId }) => {
                 </FullWidthContent>
               </>
             }
-            date={''}
+            date={""}
             tag={theme.type}
             name={author}
+            // biome-ignore lint/complexity/noUselessFragments: あとで追加するかも
             stamps={<></>}
           />
           <Message
@@ -158,7 +160,7 @@ const ThemePage: NextPageWithLayout<Props> = ({ userId }) => {
                 </BreakP>
               </>
             }
-            date={''}
+            date={""}
             tag={theme.type}
             name={author}
           />
@@ -170,20 +172,20 @@ const ThemePage: NextPageWithLayout<Props> = ({ userId }) => {
         />
       </Wrap>
     </>
-  )
-}
-ThemePage.getLayout = page => <Layout>{page}</Layout>
-export default ThemePage
+  );
+};
+ThemePage.getLayout = (page) => <Layout>{page}</Layout>;
+export default ThemePage;
 
 const Wrap = styled.div`
   height: 100%;
   display: grid;
   grid-template-rows: 1fr max-content;
-`
+`;
 const MainWrap = styled.div`
   contain: strict;
   overflow-y: auto;
-`
+`;
 export const BreakP = styled.p`
   ${BreakStyle}
 
@@ -194,7 +196,7 @@ export const BreakP = styled.p`
       text-decoration: underline;
     }
   }
-`
+`;
 
 const CopyBox = styled(TextBox)`
   margin: 0 32px 20px;
@@ -205,10 +207,10 @@ const CopyBox = styled(TextBox)`
     border-radius: 0;
     margin: 0;
   }
-`
+`;
 
 interface AfterProps {
-  text: string
+  text: string;
 }
 const After: React.FC<AfterProps> = ({ text }) => {
   return (
@@ -217,16 +219,16 @@ const After: React.FC<AfterProps> = ({ text }) => {
         <CopyButton text={text} />
       </CopyButtonWrap>
     </AfterWrap>
-  )
-}
+  );
+};
 const AfterWrap = styled.div`
   height: 100%;
   display: grid;
   place-items: center;
   padding: 0 8px;
-`
+`;
 const CopyButtonWrap = styled.div`
   height: 24px;
   width: 24px;
   font-size: 24px;
-`
+`;

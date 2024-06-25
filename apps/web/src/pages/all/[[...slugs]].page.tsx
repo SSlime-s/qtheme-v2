@@ -1,59 +1,59 @@
-import styled from '@emotion/styled'
-import Head from 'next/head'
-import { useCallback, useEffect, useMemo } from 'react'
+import styled from "@emotion/styled";
+import Head from "next/head";
+import { useCallback, useEffect, useMemo } from "react";
 
-import { Error } from '@/components/Error'
-import { InfiniteLoad } from '@/components/InfiniteLoad'
-import { LoadingBar } from '@/components/LoadingBar'
-import { PreviewCard } from '@/components/PreviewCard'
-import { SEO } from '@/components/SEO'
-import { Layout } from '@/components/layout'
-import { useSetTopic } from '@/components/layout/Header'
-import { extractShowcaseUser } from '@/utils/extractUser'
+import { Error } from "@/components/Error";
+import { InfiniteLoad } from "@/components/InfiniteLoad";
+import { LoadingBar } from "@/components/LoadingBar";
+import { PreviewCard } from "@/components/PreviewCard";
+import { SEO } from "@/components/SEO";
+import { Layout } from "@/components/layout";
+import { useSetTopic } from "@/components/layout/Header";
+import { extractShowcaseUser } from "@/utils/extractUser";
 import {
   prefetchUseThemeList,
   useCurrentTheme,
   useThemeList,
-} from '@/utils/theme/hooks'
-import { pageTitle } from '@/utils/title'
-import { assertIsArray } from '@/utils/typeUtils'
-import { useWithAuth } from '@/utils/useWithAuth'
-import { useSetUserId } from '@/utils/userId'
+} from "@/utils/theme/hooks";
+import { pageTitle } from "@/utils/title";
+import { assertIsArray } from "@/utils/typeUtils";
+import { useWithAuth } from "@/utils/useWithAuth";
+import { useSetUserId } from "@/utils/userId";
 
-import type { NextPageWithLayout } from '@/pages/_app.page'
-import type { GetServerSideProps, InferGetServerSidePropsType } from 'next'
+import type { NextPageWithLayout } from "@/pages/_app.page";
+import type { GetServerSideProps, InferGetServerSidePropsType } from "next";
 
 export const getServerSideProps = (async ({ req, query }) => {
-  const userId = extractShowcaseUser(req)
+  const userId = extractShowcaseUser(req);
 
-  const { slugs } = query
-  let filter: 'all' | 'light' | 'dark' | 'invalid'
+  const { slugs } = query;
+  let filter: "all" | "light" | "dark" | "invalid";
   if (slugs === undefined || slugs.length === 0) {
-    filter = 'all'
+    filter = "all";
   } else if (slugs.length === 1) {
-    assertIsArray(slugs)
-    if (['light', 'dark'].includes(slugs[0].toLowerCase())) {
-      filter = slugs[0].toLowerCase() as 'light' | 'dark'
+    assertIsArray(slugs);
+    if (["light", "dark"].includes(slugs[0].toLowerCase())) {
+      filter = slugs[0].toLowerCase() as "light" | "dark";
     } else {
-      filter = 'invalid'
+      filter = "invalid";
     }
   } else {
-    filter = 'invalid'
+    filter = "invalid";
   }
 
-  if (filter === 'invalid') {
+  if (filter === "invalid") {
     return {
       redirect: {
-        destination: '/all',
+        destination: "/all",
         permanent: false,
       },
-    }
+    };
   }
 
   const initialData = await prefetchUseThemeList(
-    filter === 'all' ? null : filter,
-    null
-  )
+    filter === "all" ? null : filter,
+    null,
+  );
 
   return {
     props: {
@@ -61,17 +61,17 @@ export const getServerSideProps = (async ({ req, query }) => {
       filter,
       initialData,
     },
-  }
-}) satisfies GetServerSideProps
+  };
+}) satisfies GetServerSideProps;
 
-type Props = InferGetServerSidePropsType<typeof getServerSideProps>
+type Props = InferGetServerSidePropsType<typeof getServerSideProps>;
 
 const AllPage: NextPageWithLayout<Props> = ({
   userId,
   filter,
   initialData,
 }) => {
-  useSetUserId(userId)
+  useSetUserId(userId);
 
   const {
     themes,
@@ -81,35 +81,33 @@ const AllPage: NextPageWithLayout<Props> = ({
     isReachingEnd,
     mutate: { loadMore, toggleLike },
   } = useThemeList(
-    filter === 'all' ? null : filter,
+    filter === "all" ? null : filter,
     null,
     undefined,
-    initialData
-  )
+    initialData,
+  );
   const {
     mutate: { changeTheme },
-  } = useCurrentTheme()
+  } = useCurrentTheme();
 
   const toggleLikeWithAuth = useWithAuth(
     userId,
     toggleLike,
-    'favorite は部員限定です'
-  )
+    "favorite は部員限定です",
+  );
 
   const title = useMemo(() => {
-    if (filter === 'all') {
-      return '#all'
-    } else {
-      return `#all/${filter}`
+    if (filter === "all") {
+      return "#all";
     }
-  }, [filter])
+    return `#all/${filter}`;
+  }, [filter]);
   const url = useMemo(() => {
-    if (filter === 'all') {
-      return '/all'
-    } else {
-      return `/all/${filter}`
+    if (filter === "all") {
+      return "/all";
     }
-  }, [filter])
+    return `/all/${filter}`;
+  }, [filter]);
 
   const Heads = useCallback(() => {
     return (
@@ -117,19 +115,19 @@ const AllPage: NextPageWithLayout<Props> = ({
         <Head>
           <title>{pageTitle(title)}</title>
         </Head>
-        <SEO url={url} title={title} description='all themes' />
+        <SEO url={url} title={title} description="all themes" />
       </>
-    )
-  }, [title, url])
+    );
+  }, [title, url]);
 
-  const setTopic = useSetTopic()
+  const setTopic = useSetTopic();
   useEffect(() => {
-    setTopic(`${total} themes`)
+    setTopic(`${total} themes`);
 
     return () => {
-      setTopic(null)
-    }
-  }, [total, setTopic])
+      setTopic(null);
+    };
+  }, [total, setTopic]);
 
   if (isLoading) {
     return (
@@ -137,11 +135,11 @@ const AllPage: NextPageWithLayout<Props> = ({
         <Heads />
         <LoadingBar />
       </>
-    )
+    );
   }
 
   if (error !== undefined) {
-    return <Error statusCode={500} />
+    return <Error statusCode={500} />;
   }
 
   return (
@@ -149,7 +147,7 @@ const AllPage: NextPageWithLayout<Props> = ({
       <Heads />
       <Wrap>
         <Grid>
-          {themes.map(theme => {
+          {themes.map((theme) => {
             return (
               <PreviewCard
                 key={theme.id}
@@ -157,7 +155,7 @@ const AllPage: NextPageWithLayout<Props> = ({
                 onFavorite={toggleLikeWithAuth}
                 changeTheme={changeTheme}
               />
-            )
+            );
           })}
         </Grid>
         <InfiniteLoad
@@ -166,19 +164,19 @@ const AllPage: NextPageWithLayout<Props> = ({
         />
       </Wrap>
     </>
-  )
-}
-export default AllPage
-AllPage.getLayout = page => {
-  return <Layout>{page}</Layout>
-}
+  );
+};
+export default AllPage;
+AllPage.getLayout = (page) => {
+  return <Layout>{page}</Layout>;
+};
 
 const Wrap = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
-`
+`;
 const Grid = styled.div`
   /* TODO: grid でいい感じに並べる */
   display: grid;
@@ -187,4 +185,4 @@ const Grid = styled.div`
   padding: 32px;
   justify-items: center;
   width: 100%;
-`
+`;

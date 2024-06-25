@@ -1,24 +1,24 @@
-import styled from '@emotion/styled'
-import { useEffect, useRef } from 'react'
-import WebGLFluid from 'webgl-fluid'
+import styled from "@emotion/styled";
+import { useEffect, useRef } from "react";
+import WebGLFluid from "webgl-fluid";
 
-import { parseHexNotationColor } from '@repo/theme/color'
-import { lightTheme, darkTheme } from '@repo/theme/default'
+import { parseHexNotationColor } from "@repo/theme/color";
+import { darkTheme, lightTheme } from "@repo/theme/default";
 
-import type { ComponentProps } from 'react'
+import type { ComponentProps } from "react";
 
-interface Props extends ComponentProps<'canvas'> {
-  mode?: 'dark' | 'light'
+interface Props extends ComponentProps<"canvas"> {
+  mode?: "dark" | "light";
 }
-export const Fluid: React.FC<Props> = ({ mode = 'light', ...props }) => {
-  const canvasRef = useRef<HTMLCanvasElement>(null)
+export const Fluid: React.FC<Props> = ({ mode = "light", ...props }) => {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
   const themeBackground =
-    mode === 'light'
+    mode === "light"
       ? lightTheme.basic.background.primary
-      : darkTheme.basic.background.primary
+      : darkTheme.basic.background.primary;
   useEffect(() => {
-    const canvas = canvasRef.current
-    if (canvas == null) return
+    const canvas = canvasRef.current;
+    if (canvas == null) return;
     WebGLFluid(canvas, {
       // DENSITY_DISSIPATION: 1.5,
       DENSITY_DISSIPATION: 0.3,
@@ -41,13 +41,13 @@ export const Fluid: React.FC<Props> = ({ mode = 'light', ...props }) => {
 
       BLOOM: false,
       SUNRAYS: false,
-    })
-  }, [themeBackground])
+    });
+  }, [themeBackground]);
 
-  return <Canvas ref={canvasRef} {...props} />
-}
+  return <Canvas ref={canvasRef} {...props} />;
+};
 
 const Canvas = styled.canvas`
   width: 100vw;
   height: 100vh;
-`
+`;

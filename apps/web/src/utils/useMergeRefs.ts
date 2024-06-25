@@ -6,24 +6,24 @@ https://opensource.org/licenses/mit-license.php
 // @see https://github.com/chakra-ui/chakra-ui/blob/fd231f720965b505faf5a0d8153366f8989ec9ce/packages/hooks/src/use-merge-refs.ts
 
 /* eslint-disable react-hooks/exhaustive-deps */
-import * as React from 'react'
+import * as React from "react";
 
-type ReactRef<T> = React.Ref<T> | React.MutableRefObject<T>
+type ReactRef<T> = React.Ref<T> | React.MutableRefObject<T>;
 
 export function assignRef<T = unknown>(ref: ReactRef<T> | undefined, value: T) {
-  if (ref == null) return
+  if (ref == null) return;
 
-  if (typeof ref === 'function') {
-    ref(value)
-    return
+  if (typeof ref === "function") {
+    ref(value);
+    return;
   }
 
   try {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    ref.current = value
+    ref.current = value;
   } catch (error) {
-    throw new Error(`Cannot assign value '${value}' to ref '${ref}'`)
+    throw new Error(`Cannot assign value '${value}' to ref '${ref}'`);
   }
 }
 
@@ -40,14 +40,15 @@ export function assignRef<T = unknown>(ref: ReactRef<T> | undefined, value: T) {
  * });
  */
 export function useMergeRefs<T>(...refs: (ReactRef<T> | undefined)[]) {
+  // biome-ignore lint/correctness/useExhaustiveDependencies: 元コードから変えない
   return React.useMemo(() => {
-    if (refs.every(ref => ref == null)) {
-      return null
+    if (refs.every((ref) => ref == null)) {
+      return null;
     }
     return (node: T) => {
-      refs.forEach(ref => {
-        if (ref) assignRef(ref, node)
-      })
-    }
-  }, refs)
+      for (const ref of refs) {
+        if (ref) assignRef(ref, node);
+      }
+    };
+  }, refs);
 }

@@ -1,63 +1,63 @@
-import { useCallback, useId, useMemo, useState } from 'react'
+import { useCallback, useId, useMemo, useState } from "react";
 
 const useControlledTabListAbstract = <T extends string | number>(
   names: readonly [T, ...T[]],
   activeTab: T,
-  onChange?: (name: T) => void
+  onChange?: (name: T) => void,
 ) => {
-  const tabIdPrefix = useId()
-  const panelIdPrefix = useId()
+  const tabIdPrefix = useId();
+  const panelIdPrefix = useId();
 
   const tabIds = useMemo(() => {
     return Object.fromEntries(
-      names.map(name => [name, `${tabIdPrefix}-${name}`])
-    )
-  }, [names, tabIdPrefix])
+      names.map((name) => [name, `${tabIdPrefix}-${name}`]),
+    );
+  }, [names, tabIdPrefix]);
   const panelIds = useMemo(() => {
     return Object.fromEntries(
-      names.map(name => [name, `${panelIdPrefix}-${name}`])
-    )
-  }, [names, panelIdPrefix])
+      names.map((name) => [name, `${panelIdPrefix}-${name}`]),
+    );
+  }, [names, panelIdPrefix]);
 
   const ariaTabListProps = useMemo(() => {
     return {
-      role: 'tablist',
-    } as const
-  }, [])
+      role: "tablist",
+    } as const;
+  }, []);
   const ariaTabProps = useMemo(() => {
     return Object.fromEntries(
-      names.map(name => [
+      names.map((name) => [
         name,
         {
-          role: 'tab',
+          role: "tab",
           id: tabIds[name],
-          'aria-controls': panelIds[name],
-          'aria-selected': name === activeTab,
+          "aria-controls": panelIds[name],
+          "aria-selected": name === activeTab,
           tabIndex: name === activeTab ? 0 : -1,
         } as const,
-      ])
-    )
-  }, [activeTab, names, panelIds, tabIds])
+      ]),
+    );
+  }, [activeTab, names, panelIds, tabIds]);
   const ariaPanelProps = useMemo(() => {
     return Object.fromEntries(
-      names.map(name => [
+      names.map((name) => [
         name,
         {
-          role: 'tabpanel',
+          role: "tabpanel",
           id: panelIds[name],
-          'aria-labelledby': tabIds[name],
+          "aria-labelledby": tabIds[name],
           hidden: name !== activeTab,
         } as const,
-      ])
-    )
-  }, [activeTab, names, panelIds, tabIds])
+      ]),
+    );
+  }, [activeTab, names, panelIds, tabIds]);
 
   const switchTab = useCallback(
     (name: T) => {
-      onChange?.(name)
+      onChange?.(name);
     },
-    [onChange]
-  )
+    [onChange],
+  );
 
   return {
     activeTab,
@@ -65,41 +65,41 @@ const useControlledTabListAbstract = <T extends string | number>(
     ariaTabListProps,
     ariaTabProps,
     ariaPanelProps,
-  }
-}
+  };
+};
 const useTabListAbstract = <T extends string | number>(
-  names: readonly [T, ...T[]]
+  names: readonly [T, ...T[]],
 ) => {
-  const [activeTab, setActiveTab] = useState(names[0])
-  return useControlledTabListAbstract(names, activeTab, setActiveTab)
-}
+  const [activeTab, setActiveTab] = useState(names[0]);
+  return useControlledTabListAbstract(names, activeTab, setActiveTab);
+};
 
 export const useControlledNamedTabList = <T extends string>(
   names: readonly [T, ...T[]],
   activeTab: T,
-  onChange?: (name: T) => void
+  onChange?: (name: T) => void,
 ) => {
-  return useControlledTabListAbstract(names, activeTab, onChange)
-}
+  return useControlledTabListAbstract(names, activeTab, onChange);
+};
 export const useNamedTabList = <T extends string>(
-  names: readonly [T, ...T[]]
+  names: readonly [T, ...T[]],
 ) => {
-  return useTabListAbstract(names)
-}
+  return useTabListAbstract(names);
+};
 
 export const useControlledIndexedTabList = (
   count: number,
   activeTab: number,
-  onChange?: (index: number) => void
+  onChange?: (index: number) => void,
 ) => {
   return useControlledTabListAbstract(
     Array.from({ length: count }, (_, i) => i) as [number, ...number[]],
     activeTab,
-    onChange
-  )
-}
+    onChange,
+  );
+};
 export const useIndexedTabList = (count: number) => {
   return useTabListAbstract(
-    Array.from({ length: count }, (_, i) => i) as [number, ...number[]]
-  )
-}
+    Array.from({ length: count }, (_, i) => i) as [number, ...number[]],
+  );
+};

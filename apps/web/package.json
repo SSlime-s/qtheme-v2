@@ -86,7 +86,6 @@
     "better-typescript-lib": "^2.5.0",
     "csv-parse": "^5.5.2",
     "dotenv": "^16.3.1",
-    "eslint": "8.57.0",
     "eslint-config-next": "14.2.4",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-import": "^2.29.1",

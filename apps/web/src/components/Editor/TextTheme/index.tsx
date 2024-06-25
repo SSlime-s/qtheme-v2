@@ -1,61 +1,61 @@
-import { css, keyframes } from '@emotion/react'
-import styled from '@emotion/styled'
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { useFormContext, useWatch } from 'react-hook-form'
-import { BsCheckLg, BsXLg } from 'react-icons/bs'
+import { css, keyframes } from "@emotion/react";
+import styled from "@emotion/styled";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useFormContext, useWatch } from "react-hook-form";
+import { BsCheckLg, BsXLg } from "react-icons/bs";
 
-import { lineClamp } from '@/styles/lineClamp'
-import { useCheckedClipboard } from '@/utils/clipboard'
-import { useConfirmModal } from '@/utils/modal/ConfirmModal/hooks'
-import { useModal } from '@/utils/modal/useModal'
-import { themeSchema } from '@repo/theme'
-import { lightTheme } from '@repo/theme/default'
+import { lineClamp } from "@/styles/lineClamp";
+import { useCheckedClipboard } from "@/utils/clipboard";
+import { useConfirmModal } from "@/utils/modal/ConfirmModal/hooks";
+import { useModal } from "@/utils/modal/useModal";
+import { themeSchema } from "@repo/theme";
+import { lightTheme } from "@repo/theme/default";
 
-import { ConfirmModal } from './ConfirmModal'
-import { InputModal } from './InputModal'
+import { ConfirmModal } from "./ConfirmModal";
+import { InputModal } from "./InputModal";
 
-import type { Form } from '@/components/Editor'
+import type { Form } from "@/components/Editor";
 
-type CopyStatus = 'idle' | 'copied' | 'failed'
+type CopyStatus = "idle" | "copied" | "failed";
 export const TextTheme: React.FC = () => {
-  const { control, getValues, setValue, setError } = useFormContext<Form>()
+  const { control, getValues, setValue, setError } = useFormContext<Form>();
 
   const [inputValue, setInputValue] = useState(
-    JSON.stringify(getValues('theme'))
-  )
+    JSON.stringify(getValues("theme")),
+  );
 
-  const [clipboard, setClipboard] = useCheckedClipboard()
+  const [clipboard, setClipboard] = useCheckedClipboard();
   const isThemeCopying = useMemo(() => {
     if (clipboard === inputValue) {
-      return false
+      return false;
     }
 
-    let theme
+    let theme: unknown;
     try {
-      theme = JSON.parse(clipboard)
+      theme = JSON.parse(clipboard);
     } catch (e) {
-      return false
+      return false;
     }
 
-    return themeSchema.safeParse(theme).success
-  }, [clipboard, inputValue])
+    return themeSchema.safeParse(theme).success;
+  }, [clipboard, inputValue]);
 
-  const [copyStatus, setCopyStatus] = useState<CopyStatus>('idle')
+  const [copyStatus, setCopyStatus] = useState<CopyStatus>("idle");
   const copy = useCallback(async () => {
-    const success = await setClipboard(inputValue)
-    setCopyStatus(success ? 'copied' : 'failed')
+    const success = await setClipboard(inputValue);
+    setCopyStatus(success ? "copied" : "failed");
     setTimeout(() => {
-      setCopyStatus('idle')
-    }, 700)
-  }, [inputValue, setClipboard])
+      setCopyStatus("idle");
+    }, 700);
+  }, [inputValue, setClipboard]);
 
   const theme = useWatch({
     control,
-    name: 'theme',
-  })
+    name: "theme",
+  });
   useEffect(() => {
-    setInputValue(JSON.stringify(theme))
-  }, [theme])
+    setInputValue(JSON.stringify(theme));
+  }, [theme]);
 
   const {
     isOpen: isConfirmOpen,
@@ -63,75 +63,75 @@ export const TextTheme: React.FC = () => {
     ok,
     cancel,
     modalProps: confirmModalProps,
-  } = useConfirmModal('pages/edit/components/TextTheme/InputModal/confirm')
+  } = useConfirmModal("pages/edit/components/TextTheme/InputModal/confirm");
 
-  const isPreventCloseRef = useRef(false)
+  const isPreventCloseRef = useRef(false);
   const preventClose = useCallback(async () => {
-    const needPrevent = isPreventCloseRef.current
+    const needPrevent = isPreventCloseRef.current;
     if (needPrevent) {
-      const confirmed = await waitConfirm()
+      const confirmed = await waitConfirm();
       if (confirmed) {
-        isPreventCloseRef.current = false
-        return true
+        isPreventCloseRef.current = false;
+        return true;
       }
     }
-    return !needPrevent
-  }, [waitConfirm])
+    return !needPrevent;
+  }, [waitConfirm]);
   const setNeedPreventClose = useCallback((needPreventClose: boolean) => {
-    isPreventCloseRef.current = needPreventClose
-  }, [])
+    isPreventCloseRef.current = needPreventClose;
+  }, []);
   const { isOpen, open, close, triggerRef, modalProps, titleProps, titleRef } =
-    useModal('pages/edit/components/TextTheme/InputModal', preventClose)
+    useModal("pages/edit/components/TextTheme/InputModal", preventClose);
 
   useEffect(() => {
     if (!isOpen) {
-      return
+      return;
     }
 
     const handleUnload = async (e: BeforeUnloadEvent) => {
       if (isPreventCloseRef.current) {
-        e.preventDefault()
-        e.returnValue = ''
+        e.preventDefault();
+        e.returnValue = "";
       }
-    }
-    window.addEventListener('beforeunload', handleUnload)
+    };
+    window.addEventListener("beforeunload", handleUnload);
     return () => {
-      window.removeEventListener('beforeunload', handleUnload)
-    }
-  }, [isOpen])
+      window.removeEventListener("beforeunload", handleUnload);
+    };
+  }, [isOpen]);
 
   const handleChange = useCallback(
     (value: string): boolean => {
-      setInputValue(value)
+      setInputValue(value);
 
-      let parsedValue: object
+      let parsedValue: object;
       try {
-        parsedValue = JSON.parse(value)
+        parsedValue = JSON.parse(value);
       } catch (e) {
-        setError('theme', {
-          type: 'validate',
+        setError("theme", {
+          type: "validate",
           message: `テーマの形式が不正です: ${e}`,
-        })
-        return false
+        });
+        return false;
       }
 
       if (themeSchema.safeParse(parsedValue).success) {
-        setValue('theme', JSON.parse(value), {
+        setValue("theme", JSON.parse(value), {
           shouldValidate: true,
           shouldDirty: true,
-        })
-        isPreventCloseRef.current = false
-        return true
-      } else {
-        setError('theme', {
-          type: 'validate',
-          message: 'テーマの形式が不正です',
-        })
-        return false
+        });
+        isPreventCloseRef.current = false;
+        return true;
       }
+
+      setError("theme", {
+        type: "validate",
+        message: "テーマの形式が不正です",
+      });
+      return false;
     },
-    [setError, setValue]
-  )
+    [setError, setValue],
+  );
 
   return (
     <Wrap>
@@ -149,9 +149,9 @@ export const TextTheme: React.FC = () => {
         </InputButton>
 
         <CopyButton onClick={copy} status={copyStatus}>
-          <LogicalHidden hidden={copyStatus !== 'idle'}>Copy</LogicalHidden>
-          {copyStatus === 'copied' && <BsCheckLg />}
-          {copyStatus === 'failed' && <BsXLg />}
+          <LogicalHidden hidden={copyStatus !== "idle"}>Copy</LogicalHidden>
+          {copyStatus === "copied" && <BsCheckLg />}
+          {copyStatus === "failed" && <BsXLg />}
         </CopyButton>
       </TextsWrap>
 
@@ -174,11 +174,11 @@ export const TextTheme: React.FC = () => {
         <ConfirmModal {...confirmModalProps} onOk={ok} onCancel={cancel} />
       )}
     </Wrap>
-  )
-}
+  );
+};
 
-const Wrap = styled.div``
-const Title = styled.h2``
+const Wrap = styled.div``;
+const Title = styled.h2``;
 const ImportButton = styled.button`
   cursor: pointer;
 
@@ -186,16 +186,16 @@ const ImportButton = styled.button`
     display: block;
     visibility: hidden;
   }
-`
+`;
 
 const TextsWrap = styled.div`
   display: grid;
   grid-template-columns: 1fr max-content;
   gap: 16px;
-`
+`;
 const InputButton = styled.button`
   cursor: pointer;
-`
+`;
 const InputButtonContent = styled.div`
   ${lineClamp(1)}
 
@@ -210,7 +210,7 @@ const InputButtonContent = styled.div`
   backdrop-filter: blur(4px);
   padding: 4px 8px;
   color: ${lightTheme.basic.ui.secondary};
-`
+`;
 const FailKeyframe = keyframes`
   0% {
     transform: translateX(0);
@@ -227,7 +227,7 @@ const FailKeyframe = keyframes`
   100% {
     transform: translateX(0);
   }
-`
+`;
 const CopyButton = styled.button<{ status: CopyStatus }>`
   cursor: pointer;
   display: grid;
@@ -244,19 +244,19 @@ const CopyButton = styled.button<{ status: CopyStatus }>`
   backdrop-filter: blur(4px);
   padding: 4px 8px;
   color: ${({ status }) =>
-    status === 'idle'
+    status === "idle"
       ? lightTheme.basic.ui.primary
       : lightTheme.basic.background.primary};
   background-color: ${({ status }) =>
-    status === 'idle'
+    status === "idle"
       ? lightTheme.basic.background.primary
-      : status === 'copied'
+      : status === "copied"
         ? lightTheme.basic.accent.online
         : lightTheme.basic.accent.error};
-  opacity: ${({ status }) => (status === 'idle' ? 1 : 0.6)};
+  opacity: ${({ status }) => (status === "idle" ? 1 : 0.6)};
 
   ${({ status }) =>
-    status === 'failed' &&
+    status === "failed" &&
     css`
       animation: ${FailKeyframe} 0.3s ease-out;
     `}
@@ -264,7 +264,7 @@ const CopyButton = styled.button<{ status: CopyStatus }>`
   &:focus {
     border-color: ${lightTheme.basic.accent.primary};
   }
-`
+`;
 const LogicalHidden = styled.span`
   grid-area: 1 / 1;
 
@@ -272,4 +272,4 @@ const LogicalHidden = styled.span`
     display: block;
     visibility: hidden;
   }
-`
+`;

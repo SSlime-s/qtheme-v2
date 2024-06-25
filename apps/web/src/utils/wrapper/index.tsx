@@ -1,12 +1,12 @@
-import { useMemo } from 'react'
+import { useMemo } from "react";
 
 export interface IWrapper {
-  children: string
+  children: string;
   Wrapper?:
     | React.FC<{
-        children: string
+        children: string;
       }>
-    | React.FC<IWrapper>[]
+    | React.FC<IWrapper>[];
 }
 
 /**
@@ -19,23 +19,23 @@ export interface IWrapper {
 export const WrapResolver: React.FC<IWrapper> = ({ children, Wrapper }) => {
   const MainWrapper = useMemo(() => {
     if (Wrapper === undefined) {
-      return undefined
+      return undefined;
     }
     if (Array.isArray(Wrapper)) {
-      return Wrapper[0]
+      return Wrapper[0];
     }
-    return Wrapper
-  }, [Wrapper])
+    return Wrapper;
+  }, [Wrapper]);
 
   const parsed = useMemo(() => {
     if (MainWrapper === undefined) {
-      return children
+      return children;
     }
     if (Array.isArray(Wrapper)) {
-      return <MainWrapper Wrapper={Wrapper.slice(1)}>{children}</MainWrapper>
+      return <MainWrapper Wrapper={Wrapper.slice(1)}>{children}</MainWrapper>;
     }
-    return <MainWrapper>{children}</MainWrapper>
-  }, [MainWrapper, Wrapper, children])
+    return <MainWrapper>{children}</MainWrapper>;
+  }, [MainWrapper, Wrapper, children]);
 
-  return <>{parsed}</>
-}
+  return <>{parsed}</>;
+};

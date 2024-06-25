@@ -1,50 +1,50 @@
-import '@/styles/reset.css'
-import { css, Global, ThemeProvider } from '@emotion/react'
-import { atom, useAtom } from 'jotai'
-import { Inter, M_PLUS_1p } from 'next/font/google'
-import Head from 'next/head'
-import { useRouter } from 'next/router'
+import "@/styles/reset.css";
+import { Global, ThemeProvider, css } from "@emotion/react";
+import { atom, useAtom } from "jotai";
+import { Inter, M_PLUS_1p } from "next/font/google";
+import Head from "next/head";
+import { useRouter } from "next/router";
 
-import { GoogleTagManager } from '@/components/Editor/GoogleTagManager'
-import { SEO } from '@/components/SEO'
-import { googleTagManagerId } from '@/utils/gtm'
-import { isMobile } from '@/utils/isMobile'
-import { useCurrentTheme } from '@/utils/theme/hooks'
+import { GoogleTagManager } from "@/components/Editor/GoogleTagManager";
+import { SEO } from "@/components/SEO";
+import { googleTagManagerId } from "@/utils/gtm";
+import { isMobile } from "@/utils/isMobile";
+import { useCurrentTheme } from "@/utils/theme/hooks";
 
-import type { GoogleTagManagerId } from '@/components/Editor/GoogleTagManager'
-import type { NextPage } from 'next'
-import type { AppProps } from 'next/app'
-import type { ReactElement, ReactNode } from 'react'
+import type { GoogleTagManagerId } from "@/components/Editor/GoogleTagManager";
+import type { NextPage } from "next";
+import type { AppProps } from "next/app";
+import type { ReactElement, ReactNode } from "react";
 
 export type NextPageWithLayout<P = Record<string, unknown>, IP = P> = NextPage<
   P,
   IP
 > & {
-  getLayout?: (page: ReactElement) => ReactNode
-}
+  getLayout?: (page: ReactElement) => ReactNode;
+};
 
 type AppPropsWithLayout = AppProps & {
-  Component: NextPageWithLayout
-}
+  Component: NextPageWithLayout;
+};
 
 export const inter = Inter({
-  weight: ['400', '700'],
-  subsets: ['latin'],
-})
+  weight: ["400", "700"],
+  subsets: ["latin"],
+});
 
 export const mPlus1p = M_PLUS_1p({
-  weight: ['400', '700'],
+  weight: ["400", "700"],
   preload: false,
-})
+});
 
-export const fixLayoutAtom = atom<boolean>(false)
+export const fixLayoutAtom = atom<boolean>(false);
 export default function App({ Component, pageProps }: AppPropsWithLayout) {
-  const getLayout = Component.getLayout ?? (x => x)
-  const { currentTheme } = useCurrentTheme()
-  const router = useRouter()
-  const key = router.pathname !== '/edit' ? 'default' : `edit ${router.asPath}`
+  const getLayout = Component.getLayout ?? ((x) => x);
+  const { currentTheme } = useCurrentTheme();
+  const router = useRouter();
+  const key = router.pathname !== "/edit" ? "default" : `edit ${router.asPath}`;
 
-  const [isFixed] = useAtom(fixLayoutAtom)
+  const [isFixed] = useAtom(fixLayoutAtom);
 
   return (
     <>
@@ -53,18 +53,18 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
       />
       <Head>
         <title>QTheme v2</title>
-        <meta charSet='utf-8' />
-        <meta name='viewport' content='width=device-width, initial-scale=1' />
-        <link rel='icon' href='/favicon.ico' />
-        <meta name='theme-color' content='#fff' />
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/favicon.ico" />
+        <meta name="theme-color" content="#fff" />
       </Head>
-      <SEO type='website' />
+      <SEO type="website" />
       <Global styles={isFixed ? GlobalStyleFixed : GlobalStyleNotFixed} />
       <ThemeProvider theme={{ theme: currentTheme }}>
         {getLayout(<Component key={key} {...pageProps} />)}
       </ThemeProvider>
     </>
-  )
+  );
 }
 const GlobalStyle = (isFixed: boolean) => css`
   html {
@@ -93,14 +93,16 @@ const GlobalStyle = (isFixed: boolean) => css`
     height: 100%;
 
     ${isMobile} {
-      ${isFixed
-        ? css`
+      ${
+        isFixed
+          ? css`
             overflow-x: hidden;
           `
-        : css`
+          : css`
             overflow-x: auto;
             overflow-x: overlay;
-          `}
+          `
+      }
       scroll-snap-type: x mandatory;
     }
   }
@@ -140,6 +142,6 @@ const GlobalStyle = (isFixed: boolean) => css`
     visibility: hidden;
     display: none;
   }
-`
-const GlobalStyleFixed = GlobalStyle(true)
-const GlobalStyleNotFixed = GlobalStyle(false)
+`;
+const GlobalStyleFixed = GlobalStyle(true);
+const GlobalStyleNotFixed = GlobalStyle(false);

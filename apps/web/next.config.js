@@ -1,17 +1,17 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  distDir: 'build',
+  distDir: "build",
   compiler: {
     emotion: true,
   },
-  pageExtensions: ['page.tsx', 'page.ts', 'page.jsx', 'page.js'],
+  pageExtensions: ["page.tsx", "page.ts", "page.jsx", "page.js"],
   images: {
     remotePatterns: [
       {
-        protocol: 'https',
-        hostname: 'q.trap.jp',
-        port: '',
+        protocol: "https",
+        hostname: "q.trap.jp",
+        port: "",
       },
     ],
   },
@@ -20,10 +20,10 @@ const nextConfig = {
     config.module.rules.push({
       test: /\.(graphql|gql)$/,
       exclude: /node_modules/,
-      loader: 'graphql-tag/loader',
-    })
+      loader: "graphql-tag/loader",
+    });
 
-    return config
+    return config;
   },
 
   // transpilePackages: ['@repo/database', '@repo/theme'],
@@ -31,6 +31,6 @@ const nextConfig = {
   experimental: {
     externalDir: true,
   },
-}
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;

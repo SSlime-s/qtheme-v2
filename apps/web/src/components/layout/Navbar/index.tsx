@@ -1,45 +1,45 @@
-import styled from '@emotion/styled'
-import { atom, useAtom, useSetAtom } from 'jotai'
-import Image from 'next/image'
-import { useCallback, useMemo } from 'react'
-import { FaUser, FaWrench } from 'react-icons/fa'
-import { MdHome } from 'react-icons/md'
+import styled from "@emotion/styled";
+import { atom, useAtom, useSetAtom } from "jotai";
+import Image from "next/image";
+import { useCallback, useMemo } from "react";
+import { FaUser, FaWrench } from "react-icons/fa";
+import { MdHome } from "react-icons/md";
 
-import Logo from '@/assets/QTheme.png'
-import { isMobile, useIsMobile } from '@/utils/isMobile'
-import { useControlledNamedTabList } from '@/utils/tablist'
-import { useUserId } from '@/utils/userId'
+import Logo from "@/assets/QTheme.png";
+import { isMobile, useIsMobile } from "@/utils/isMobile";
+import { useControlledNamedTabList } from "@/utils/tablist";
+import { useUserId } from "@/utils/userId";
 
-import { NavbarChannels } from './Channels'
-import { NavbarCustom } from './Custom'
-import { UserIcon } from './UserIcon'
-import { NavbarUsers } from './Users'
+import { NavbarChannels } from "./Channels";
+import { NavbarCustom } from "./Custom";
+import { UserIcon } from "./UserIcon";
+import { NavbarUsers } from "./Users";
 
-import type { ButtonHTMLAttributes, HTMLAttributes, RefObject } from 'react'
+import type { ButtonHTMLAttributes, HTMLAttributes, RefObject } from "react";
 
-type NavbarState = 'channel' | 'user' | 'custom'
+type NavbarState = "channel" | "user" | "custom";
 const states = [
-  'channel',
-  'user',
-  'custom',
-] as const satisfies ReadonlyArray<NavbarState>
+  "channel",
+  "user",
+  "custom",
+] as const satisfies ReadonlyArray<NavbarState>;
 const titlesMap = {
-  channel: 'ホーム',
-  user: 'ユーザー',
-  custom: 'カスタム',
-} as const satisfies Record<NavbarState, string>
-const NavbarAtom = atom<NavbarState>('channel')
+  channel: "ホーム",
+  user: "ユーザー",
+  custom: "カスタム",
+} as const satisfies Record<NavbarState, string>;
+const NavbarAtom = atom<NavbarState>("channel");
 interface Props {
-  scrollRef: RefObject<HTMLDivElement>
+  scrollRef: RefObject<HTMLDivElement>;
 }
 export const Navbar: React.FC<Props> = ({ scrollRef }) => {
-  const isMobile = useIsMobile()
+  const isMobile = useIsMobile();
 
-  const [state, setState] = useAtom(NavbarAtom)
+  const [state, setState] = useAtom(NavbarAtom);
   const { ariaTabListProps, ariaTabProps, ariaPanelProps } =
-    useControlledNamedTabList(states, state, setState)
+    useControlledNamedTabList(states, state, setState);
 
-  const userId = useUserId()
+  const userId = useUserId();
 
   return (
     <>
@@ -48,13 +48,13 @@ export const Navbar: React.FC<Props> = ({ scrollRef }) => {
         <TabListWrap>
           <Image
             src={Logo}
-            alt='QTheme'
+            alt="QTheme"
             width={24}
             height={24}
             hidden={isMobile}
           />
           <TabList {...ariaTabListProps}>
-            {states.map(s => (
+            {states.map((s) => (
               <Button key={s} state={s} {...ariaTabProps[s]} />
             ))}
           </TabList>
@@ -62,13 +62,13 @@ export const Navbar: React.FC<Props> = ({ scrollRef }) => {
         <Selector>
           <UserIcon userId={userId ?? undefined} />
         </Selector>
-        {states.map(s => (
+        {states.map((s) => (
           <NavPanel key={s} state={s} {...ariaPanelProps[s]} />
         ))}
       </Wrap>
     </>
-  )
-}
+  );
+};
 const Wrap = styled.nav`
   grid-area: nav;
   background: ${({ theme }) =>
@@ -94,7 +94,7 @@ const Wrap = styled.nav`
       theme.theme.specific.navigationBarMobileBackground};
     padding: 16px;
   }
-`
+`;
 const DummyWrap = styled.div`
   grid-area: nav;
   display: hidden;
@@ -105,7 +105,7 @@ const DummyWrap = styled.div`
     scroll-snap-align: start;
     scroll-snap-stop: always;
   }
-`
+`;
 
 const Selector = styled.div`
   grid-area: selector;
@@ -123,7 +123,7 @@ const Selector = styled.div`
     grid-template-columns: repeat(auto-fill, 60px);
     grid-template-rows: 1fr;
   }
-`
+`;
 const TabListWrap = styled.div`
   grid-area: list;
   display: grid;
@@ -137,11 +137,10 @@ const TabListWrap = styled.div`
   ${isMobile} {
     grid-template-columns: 1fr;
     grid-template-rows: 1fr;
-    background: ${({ theme }) =>
-      theme.theme.basic.background.secondary.default};
+    background: ${({ theme }) => theme.theme.basic.background.secondary.default};
     border-radius: 4px;
   }
-`
+`;
 const TabList = styled.div`
   display: grid;
   width: 100%;
@@ -155,31 +154,31 @@ const TabList = styled.div`
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: 1fr;
   }
-`
+`;
 
 interface ButtonProps {
-  state: NavbarState
+  state: NavbarState;
 }
 const Button: React.FC<
   ButtonProps & ButtonHTMLAttributes<HTMLButtonElement>
 > = ({ state, ...props }) => {
-  const setCurrent = useSetAtom(NavbarAtom)
+  const setCurrent = useSetAtom(NavbarAtom);
   const changeCurrent = useCallback(() => {
-    setCurrent(state)
-  }, [setCurrent, state])
+    setCurrent(state);
+  }, [setCurrent, state]);
 
   return (
     <IconButton {...props} onClick={changeCurrent} title={titlesMap[state]}>
-      {state === 'channel' ? (
+      {state === "channel" ? (
         <MdHome />
-      ) : state === 'user' ? (
+      ) : state === "user" ? (
         <FaUser />
       ) : (
         <FaWrench />
       )}
     </IconButton>
-  )
-}
+  );
+};
 
 const IconButton = styled.button`
   height: 44px;
@@ -214,35 +213,35 @@ const IconButton = styled.button`
   &:hover::after {
     opacity: 0.1;
   }
-`
+`;
 
 interface NavPanelProps {
-  state: NavbarState
+  state: NavbarState;
 }
 const NavPanel: React.FC<NavPanelProps & HTMLAttributes<HTMLDivElement>> = ({
   state,
   ...props
 }) => {
-  const title = useMemo(() => titlesMap[state], [state])
+  const title = useMemo(() => titlesMap[state], [state]);
 
   return (
-    <Panel {...props} hasRPad={state !== 'channel'}>
+    <Panel {...props} hasRPad={state !== "channel"}>
       <Title>{title}</Title>
-      {state === 'channel' ? (
+      {state === "channel" ? (
         <NavbarChannels />
-      ) : state === 'user' ? (
+      ) : state === "user" ? (
         <NavbarUsers />
       ) : (
         <NavbarCustom />
       )}
     </Panel>
-  )
-}
+  );
+};
 const Panel = styled.div<{ hasRPad: boolean }>`
   grid-area: panel;
   display: grid;
   padding: 24px 0 0 8px;
-  padding-right: ${({ hasRPad }) => (hasRPad ? '24px' : '0px')};
+  padding-right: ${({ hasRPad }) => (hasRPad ? "24px" : "0px")};
   grid-template-rows: max-content 1fr;
   gap: 24px;
   overflow-y: auto;
@@ -252,15 +251,14 @@ const Panel = styled.div<{ hasRPad: boolean }>`
   }
 
   ${isMobile} {
-    background: ${({ theme }) =>
-      theme.theme.basic.background.secondary.default};
+    background: ${({ theme }) => theme.theme.basic.background.secondary.default};
     border-radius: 4px;
     padding-left: 16px;
-    padding-right: ${({ hasRPad }) => (hasRPad ? '16px' : '0px')};
+    padding-right: ${({ hasRPad }) => (hasRPad ? "16px" : "0px")};
   }
-`
+`;
 const Title = styled.h2`
   font-size: 1.25rem;
   font-weight: 700;
   color: ${({ theme }) => theme.theme.basic.ui.primary.default};
-`
+`;

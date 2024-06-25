@@ -1,76 +1,77 @@
-import styled from '@emotion/styled'
-import { atom, useAtom } from 'jotai'
-import { useState, useEffect, useCallback } from 'react'
-import { useFormContext, useWatch } from 'react-hook-form'
+import styled from "@emotion/styled";
+import { atom, useAtom } from "jotai";
+import { useCallback, useEffect, useState } from "react";
+import { useFormContext, useWatch } from "react-hook-form";
 
-import { ColoredGlassmorphismStyle } from '@/components/Glassmorphism'
-import { useCurrentTheme } from '@/utils/theme/hooks'
+import { ColoredGlassmorphismStyle } from "@/components/Glassmorphism";
+import { useCurrentTheme } from "@/utils/theme/hooks";
 
-import type { Form } from '@/components/Editor'
+import type { Form } from "@/components/Editor";
 
-const AlwaysSyncAtom = atom<boolean>(false)
+const AlwaysSyncAtom = atom<boolean>(false);
 export const SyncControls: React.FC = () => {
   const {
     mutate: { changeTmpTheme, resetTmpTheme },
-  } = useCurrentTheme()
-  const { control, getValues } = useFormContext<Form>()
-  const theme = useWatch({ control, name: 'theme' })
-  const [alwaysSync, setAlwaysSync] = useAtom(AlwaysSyncAtom)
-  const [isSynced, setIsSynced] = useState(false)
+  } = useCurrentTheme();
+  const { control, getValues } = useFormContext<Form>();
+  const theme = useWatch({ control, name: "theme" });
+  const [alwaysSync, setAlwaysSync] = useAtom(AlwaysSyncAtom);
+  const [isSynced, setIsSynced] = useState(false);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: theme の更新に合わせて isSynced をリセットする
   useEffect(() => {
-    setIsSynced(false)
-  }, [theme])
+    setIsSynced(false);
+  }, [theme]);
   useEffect(() => {
     if (!alwaysSync) {
-      return
+      return;
     }
-    changeTmpTheme(theme)
-    setIsSynced(true)
-  }, [alwaysSync, changeTmpTheme, theme])
+    changeTmpTheme(theme);
+    setIsSynced(true);
+  }, [alwaysSync, changeTmpTheme, theme]);
   useEffect(() => {
     return () => {
-      resetTmpTheme()
-    }
-  }, [resetTmpTheme])
+      resetTmpTheme();
+    };
+  }, [resetTmpTheme]);
   const sync = useCallback(() => {
-    const theme = getValues('theme')
-    changeTmpTheme(theme)
-    setIsSynced(true)
-  }, [changeTmpTheme, getValues])
+    const theme = getValues("theme");
+    changeTmpTheme(theme);
+    setIsSynced(true);
+  }, [changeTmpTheme, getValues]);
 
   const toggleAlwaysSync = useCallback(() => {
-    setAlwaysSync(prev => !prev)
-  }, [setAlwaysSync])
+    setAlwaysSync((prev) => !prev);
+  }, [setAlwaysSync]);
 
   return (
     <Wrap>
       <SyncButton onClick={sync} disabled={isSynced} aria-pressed={isSynced}>
         <Dummy hidden>Synced</Dummy>
-        <Real>{isSynced ? 'Synced' : 'Sync '}</Real>
+        <Real>{isSynced ? "Synced" : "Sync "}</Real>
       </SyncButton>
       <Label>
         <ToggleSwitch
-          type='checkbox'
+          type="checkbox"
           checked={alwaysSync}
           onChange={toggleAlwaysSync}
         />
         Always Sync
       </Label>
     </Wrap>
-  )
-}
+  );
+};
 const Wrap = styled.div`
   display: flex;
   align-items: center;
   gap: 8px 16px;
   flex-wrap: wrap;
-`
+`;
 const SyncButton = styled.button`
   ${ColoredGlassmorphismStyle(
-    'rgba(0, 91, 172, 0.3)',
-    'rgba(0, 91, 172, 0.1)',
-    'rgba(0, 91, 172, 0.3)'
+    "rgba(0, 91, 172, 0.3)",
+    "rgba(0, 91, 172, 0.1)",
+    "rgba(0, 91, 172, 0.3)",
   )}
 
   box-shadow: none;
@@ -87,33 +88,33 @@ const SyncButton = styled.button`
   }
   &:disabled {
     ${ColoredGlassmorphismStyle(
-      'rgba(255, 255, 255, 0.3)',
-      'rgba(255, 255, 255, 0.1)',
-      'rgba(0, 91, 172, 0.3)'
+      "rgba(255, 255, 255, 0.3)",
+      "rgba(255, 255, 255, 0.1)",
+      "rgba(0, 91, 172, 0.3)",
     )}
 
     box-shadow: none;
     border-radius: 4px;
     cursor: default;
   }
-`
+`;
 const Dummy = styled.span`
   display: inline-block;
   visibility: hidden;
-`
+`;
 const Real = styled.span`
   display: inline-block;
   inset: 0;
   position: absolute;
   text-align: center;
-`
+`;
 
 const Label = styled.label`
   cursor: pointer;
   user-select: none;
   display: flex;
   align-items: center;
-`
+`;
 const ToggleSwitch = styled.input`
   margin-right: 2px;
 
@@ -160,4 +161,4 @@ const ToggleSwitch = styled.input`
   &:focus:after {
     box-shadow: 0 0 0 2px rgba(0, 91, 172, 0.3);
   }
-`
+`;

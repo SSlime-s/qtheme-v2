@@ -1,72 +1,72 @@
-import { css } from '@emotion/react'
-import styled from '@emotion/styled'
-import dynamic from 'next/dynamic'
-import Link from 'next/link'
-import { useRouter } from 'next/router'
-import { useCallback, useEffect, useState } from 'react'
-import { HiArrowRight } from 'react-icons/hi'
+import { css } from "@emotion/react";
+import styled from "@emotion/styled";
+import dynamic from "next/dynamic";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { useCallback, useEffect, useState } from "react";
+import { HiArrowRight } from "react-icons/hi";
 
-import { GlassmorphismStyle } from '@/components/Glassmorphism'
-import { extractShowcaseUser } from '@/utils/extractUser'
-import { isMobile, useIsMobile } from '@/utils/isMobile'
-import { useLoginUrl } from '@/utils/useLoginUrl'
-import { lightTheme } from '@repo/theme/default'
-import { SmallPreview } from '@repo/theme-preview'
+import { GlassmorphismStyle } from "@/components/Glassmorphism";
+import { extractShowcaseUser } from "@/utils/extractUser";
+import { isMobile, useIsMobile } from "@/utils/isMobile";
+import { useLoginUrl } from "@/utils/useLoginUrl";
+import { SmallPreview } from "@repo/theme-preview";
+import { lightTheme } from "@repo/theme/default";
 
-import { Logo } from './components/Logo'
-import { TrimMarkGroup } from './components/TrimMark'
-import { useRandomTheme } from './random/hooks'
+import { Logo } from "./components/Logo";
+import { TrimMarkGroup } from "./components/TrimMark";
+import { useRandomTheme } from "./random/hooks";
 
-import type { GetServerSideProps, NextPage } from 'next'
+import type { GetServerSideProps, NextPage } from "next";
 
 const Fluid = dynamic(
-  () => import('@/components/Fluid.client').then(mod => mod.Fluid),
+  () => import("@/components/Fluid.client").then((mod) => mod.Fluid),
   {
     ssr: false,
-  }
-)
+  },
+);
 
 export const getServerSideProps = (async ({ req }) => {
-  const userId = extractShowcaseUser(req)
+  const userId = extractShowcaseUser(req);
 
   // 部員とわかってる人はトップページを表示しない
   if (userId !== undefined) {
     return {
       redirect: {
-        destination: '/random',
+        destination: "/random",
         permanent: false,
       },
-    }
+    };
   }
 
   return {
     props: {},
-  }
-}) satisfies GetServerSideProps
+  };
+}) satisfies GetServerSideProps;
 
 const Home: NextPage = () => {
-  const [isShowTopPage, setIsShowTopPage] = useState(true)
-  const [isRendered, setIsRendered] = useState(false)
+  const [isShowTopPage, setIsShowTopPage] = useState(true);
+  const [isRendered, setIsRendered] = useState(false);
 
-  const router = useRouter()
+  const router = useRouter();
   useEffect(() => {
-    if (localStorage.getItem('isShowTopPage') === '0') {
-      void router.replace('/random')
-      return
+    if (localStorage.getItem("isShowTopPage") === "0") {
+      void router.replace("/random");
+      return;
     }
-    setIsRendered(true)
-  }, [router])
+    setIsRendered(true);
+  }, [router]);
 
   const onToggleShowTopPage = useCallback(() => {
-    setIsShowTopPage(prev => !prev)
-    localStorage.setItem('isShowTopPage', isShowTopPage ? '0' : '1')
-  }, [isShowTopPage, setIsShowTopPage])
+    setIsShowTopPage((prev) => !prev);
+    localStorage.setItem("isShowTopPage", isShowTopPage ? "0" : "1");
+  }, [isShowTopPage]);
 
-  const { theme, resolvedTheme } = useRandomTheme(null)
+  const { theme, resolvedTheme } = useRandomTheme(null);
 
-  const loginUrl = useLoginUrl()
+  const loginUrl = useLoginUrl();
 
-  const isMobile = useIsMobile()
+  const isMobile = useIsMobile();
 
   return (
     <>
@@ -84,9 +84,9 @@ const Home: NextPage = () => {
           <TrimMarkGroup size={32} margin={isMobile ? 16 : 32} />
 
           <Title>
-            <Logo role='img' aria-label='Qtheme v2' />
+            <Logo />
           </Title>
-          <ViewLink href='/random'>
+          <ViewLink href="/random">
             <span>テーマを見てみる</span>
             <HiArrowRight />
           </ViewLink>
@@ -98,7 +98,7 @@ const Home: NextPage = () => {
 
           <Label>
             <Checkbox
-              type='checkbox'
+              type="checkbox"
               checked={!isShowTopPage}
               onChange={onToggleShowTopPage}
             />
@@ -112,9 +112,9 @@ const Home: NextPage = () => {
         </TopContentWrap>
       </TopContainer>
     </>
-  )
-}
-export default Home
+  );
+};
+export default Home;
 
 const TopContainer = styled.main`
   width: 100vw;
@@ -126,27 +126,27 @@ const TopContainer = styled.main`
   &[hidden] {
     display: none;
   }
-`
+`;
 const BackgroundStyle = css`
   position: absolute;
   top: 0;
   height: 100%;
   min-width: 100%;
   aspect-ratio: 16 / 9;
-`
+`;
 const BlurBackground = styled.div`
   position: absolute;
   inset: 0;
   backdrop-filter: blur(10px);
   background-color: rgba(255, 255, 255, 0.7);
-`
+`;
 const FluidBackground = styled(Fluid)`
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-`
+`;
 
 const TopContentWrap = styled.div`
   position: relative;
@@ -162,7 +162,7 @@ const TopContentWrap = styled.div`
   ${isMobile} {
     padding: 48px;
   }
-`
+`;
 const Title = styled.h1`
   font-size: 3rem;
   margin: 8px 0;
@@ -179,7 +179,7 @@ const Title = styled.h1`
   margin-right: auto;
   padding: 24px 16px;
   border-radius: 8px;
-`
+`;
 
 const LinkButtonStyle = css`
   display: flex;
@@ -200,13 +200,13 @@ const LinkButtonStyle = css`
   &:hover > svg {
     transform: translateX(4px);
   }
-`
+`;
 const ViewLink = styled(Link)`
   ${LinkButtonStyle}
-`
+`;
 const LoginButton = styled.a`
   ${LinkButtonStyle}
-`
+`;
 
 const Label = styled.label`
   display: flex;
@@ -218,7 +218,7 @@ const Label = styled.label`
   pointer-events: auto;
   margin-top: auto;
   gap: 8px;
-`
+`;
 const Checkbox = styled.input`
   width: 24px;
   height: 24px;
@@ -227,10 +227,10 @@ const Checkbox = styled.input`
   &:focus {
     outline: 2px solid ${lightTheme.basic.accent.primary};
   }
-`
+`;
 
 const CurrentLink = styled(Link)`
   pointer-events: auto;
   margin-left: auto;
   width: auto;
-`
+`;

@@ -1,4 +1,4 @@
-import type { CodegenConfig } from '@graphql-codegen/cli'
+import type { CodegenConfig } from "@graphql-codegen/cli";
 
 const defaultAdd = [
   {
@@ -12,12 +12,12 @@ const defaultAdd = [
   },
   {
     add: {
-      content: '/* eslint-disable */',
+      content: "/* eslint-disable */",
     },
   },
-] as const
+] as const;
 
-const defaultConfig: CodegenConfig['config'] = {
+const defaultConfig: CodegenConfig["config"] = {
   enumsAsConst: true,
   // avoidOptionals: {
   //   field: true,
@@ -26,64 +26,64 @@ const defaultConfig: CodegenConfig['config'] = {
   //   defaultValue: false,
   // },
   strictScalars: true,
-}
+};
 
 const config: CodegenConfig = {
   overwrite: true,
-  schema: 'src/apollo/schema.graphql',
-  documents: 'src/**/*.graphql',
+  schema: "src/apollo/schema.graphql",
+  documents: "src/**/*.graphql",
   hooks: {
-    afterAllFileWrite: ['prettier --write'],
+    afterAllFileWrite: ["prettier --write"],
   },
   generates: {
-    'src/apollo/generated/resolvers.ts': {
-      plugins: ['typescript', 'typescript-resolvers', ...defaultAdd],
+    "src/apollo/generated/resolvers.ts": {
+      plugins: ["typescript", "typescript-resolvers", ...defaultAdd],
       config: {
         ...defaultConfig,
         enumValues: {
           Visibility: {
-            PUBLIC: 'public',
-            PRIVATE: 'private',
-            DRAFT: 'draft',
+            PUBLIC: "public",
+            PRIVATE: "private",
+            DRAFT: "draft",
           },
           Type: {
-            LIGHT: 'light',
-            DARK: 'dark',
-            OTHER: 'other',
+            LIGHT: "light",
+            DARK: "dark",
+            OTHER: "other",
           },
         },
         scalars: {
-          DateTime: 'Date',
+          DateTime: "Date",
         },
       },
     },
-    'src/apollo/generated/graphql.ts': {
-      plugins: ['typescript', ...defaultAdd],
+    "src/apollo/generated/graphql.ts": {
+      plugins: ["typescript", ...defaultAdd],
       config: {
         ...defaultConfig,
         scalars: {
-          DateTime: 'string',
+          DateTime: "string",
         },
       },
     },
-    './src/': {
+    "./src/": {
       plugins: [
-        'typescript-operations',
-        'typescript-graphql-request',
+        "typescript-operations",
+        "typescript-graphql-request",
         ...defaultAdd,
       ],
-      preset: 'near-operation-file',
+      preset: "near-operation-file",
       presetConfig: {
-        extension: '.generated.ts',
-        baseTypesPath: '~@/apollo/generated/graphql',
+        extension: ".generated.ts",
+        baseTypesPath: "~@/apollo/generated/graphql",
       },
       config: {
         ...defaultConfig,
         scalars: {
-          DateTime: 'string',
+          DateTime: "string",
         },
       },
     },
   },
-}
-export default config
+};
+export default config;

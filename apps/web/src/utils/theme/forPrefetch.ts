@@ -1,23 +1,23 @@
-import dayjs from 'dayjs'
-import { print } from 'graphql'
-import { unstable_serialize } from 'swr'
+import dayjs from "dayjs";
+import { print } from "graphql";
+import { unstable_serialize } from "swr";
 
-import { themeSchema } from '@repo/theme'
+import { themeSchema } from "@repo/theme";
 
-import { ThemeDocument } from '../graphql/getTheme.generated'
+import { ThemeDocument } from "../graphql/getTheme.generated";
 
-import type { FormattedTheme } from './hooks'
-import type { Type, Visibility } from '@/apollo/generated/graphql'
-import type { PrismaClient } from '@repo/database'
+import type { Type, Visibility } from "@/apollo/generated/graphql";
+import type { PrismaClient } from "@repo/database";
+import type { FormattedTheme } from "./hooks";
 
 /**
  * @warning 権限のチェックは行わない
  */
 export const prefetchUseTheme = async (
   prisma: PrismaClient,
-  id: string
+  id: string,
 ): Promise<Record<string, FormattedTheme>> => {
-  const key = unstable_serialize([print(ThemeDocument), { id }])
+  const key = unstable_serialize([print(ThemeDocument), { id }]);
 
   try {
     const theme = await prisma.themes.findUnique({
@@ -39,9 +39,9 @@ export const prefetchUseTheme = async (
       where: {
         id,
       },
-    })
+    });
     if (theme === null) {
-      return {}
+      return {};
     }
 
     const {
@@ -51,7 +51,7 @@ export const prefetchUseTheme = async (
       type,
       visibility,
       ...themeRest
-    } = theme
+    } = theme;
 
     const themeWhole = {
       ...themeRest,
@@ -60,25 +60,25 @@ export const prefetchUseTheme = async (
       isLike: false,
       theme: themeSchema.parse(JSON.parse(themeRest.theme)),
       // おそらく lowercase で帰ってくるが、念のため toLowerCase する
-      type: (type ?? 'other').toLowerCase() as Lowercase<Type>,
+      type: (type ?? "other").toLowerCase() as Lowercase<Type>,
       visibility: visibility.toLowerCase() as Lowercase<Visibility>,
-      createdAt: dayjs(createdAt).format('YYYY/MM/DD'),
-    } satisfies FormattedTheme
+      createdAt: dayjs(createdAt).format("YYYY/MM/DD"),
+    } satisfies FormattedTheme;
 
     return {
       [key]: themeWhole,
-    }
+    };
   } catch (e) {
-    console.error(e)
-    return {}
+    console.error(e);
+    return {};
   }
-}
+};
 
 /**
  * @warning 権限のチェックは行わない
  */
 export const prefetchThemeIdList = async (
-  prisma: PrismaClient
+  prisma: PrismaClient,
 ): Promise<string[]> => {
   try {
     const themes = await prisma.themes.findMany({
@@ -87,12 +87,12 @@ export const prefetchThemeIdList = async (
       },
       take: 1000,
       orderBy: {
-        created_at: 'desc',
+        created_at: "desc",
       },
-    })
-    return themes.map(theme => theme.id)
+    });
+    return themes.map((theme) => theme.id);
   } catch (e) {
-    console.error(e)
-    throw new Error(`Failed to prefetch theme id list: ${e}`)
+    console.error(e);
+    throw new Error(`Failed to prefetch theme id list: ${e}`);
   }
-}
+};

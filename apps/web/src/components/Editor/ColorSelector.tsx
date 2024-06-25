@@ -1,32 +1,32 @@
-import { css } from '@emotion/react'
-import styled from '@emotion/styled'
-import { useSetAtom } from 'jotai'
-import dynamic from 'next/dynamic'
-import { useCallback, useEffect, useMemo, useState } from 'react'
-import React from 'react'
+import { css } from "@emotion/react";
+import styled from "@emotion/styled";
+import { useSetAtom } from "jotai";
+import dynamic from "next/dynamic";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import React from "react";
 
-import { TransparentCheckerStyle } from '@/components/TransparentChecker'
-import { fixLayoutAtom } from '@/pages/_app.page'
-import { useControlledAccordion, useHiddenTransition } from '@/utils/accordion'
-import { parseHexNotationColor } from '@repo/theme/color'
-import { lightTheme } from '@repo/theme/default'
+import { TransparentCheckerStyle } from "@/components/TransparentChecker";
+import { fixLayoutAtom } from "@/pages/_app.page";
+import { useControlledAccordion, useHiddenTransition } from "@/utils/accordion";
+import { parseHexNotationColor } from "@repo/theme/color";
+import { lightTheme } from "@repo/theme/default";
 
 // NOTE: react color が SSR で動かないので、SSR では動かないようにする
 const SketchPicker = dynamic(
-  () => import('react-color').then(mod => mod.SketchPicker),
+  () => import("react-color").then((mod) => mod.SketchPicker),
   {
     ssr: false,
-  }
-)
+  },
+);
 
 interface Props {
-  allowText?: boolean
-  suggestedColors?: string[]
-  onChange: (color: string) => void
-  value: string
+  allowText?: boolean;
+  suggestedColors?: string[];
+  onChange: (color: string) => void;
+  value: string;
 
-  isExpanded: boolean
-  setExpanded?: (expanded: boolean) => void
+  isExpanded: boolean;
+  setExpanded?: (expanded: boolean) => void;
 }
 const ColorSelectorRaw: React.FC<Props> = ({
   allowText,
@@ -37,94 +37,94 @@ const ColorSelectorRaw: React.FC<Props> = ({
   isExpanded,
   setExpanded,
 }) => {
-  const setIsFixed = useSetAtom(fixLayoutAtom)
+  const setIsFixed = useSetAtom(fixLayoutAtom);
   const rgbValue = useMemo(() => {
-    const ret = parseHexNotationColor(value)
+    const ret = parseHexNotationColor(value);
     if (ret === null) {
-      return { r: 0, g: 0, b: 0, a: 1 }
+      return { r: 0, g: 0, b: 0, a: 1 };
     }
-    const { type: _, ...rest } = ret
-    return rest
-  }, [value])
+    const { type: _, ...rest } = ret;
+    return rest;
+  }, [value]);
 
-  const [innerColor, setInnerColor] = useState(rgbValue)
+  const [innerColor, setInnerColor] = useState(rgbValue);
   const onChangePartial = useCallback(
     (color: { rgb: { r: number; g: number; b: number; a?: number } }) => {
       setInnerColor({
         ...color.rgb,
         a: color.rgb.a ?? 1,
-      })
+      });
     },
-    [setInnerColor]
-  )
+    [],
+  );
   const onChangeComplete = useCallback(
     (color: { hex: string; rgb: { a?: number } }) => {
       if (color.rgb.a === undefined || color.rgb.a === 1) {
-        onChange(color.hex)
-        return
+        onChange(color.hex);
+        return;
       }
-      const trimmedHex = color.hex.replace(/^#/, '')
+      const trimmedHex = color.hex.replace(/^#/, "");
       if (trimmedHex.length === 3) {
-        const alphaHex = Math.round((color.rgb.a ?? 1) * 15).toString(16)
-        onChange(`#${trimmedHex}${alphaHex}`)
-        return
+        const alphaHex = Math.round((color.rgb.a ?? 1) * 15).toString(16);
+        onChange(`#${trimmedHex}${alphaHex}`);
+        return;
       }
 
       if (trimmedHex.length === 6) {
         const alphaHex = Math.round((color.rgb.a ?? 1) * 255)
           .toString(16)
-          .padStart(2, '0')
-        onChange(`#${trimmedHex}${alphaHex}`)
-        return
+          .padStart(2, "0");
+        onChange(`#${trimmedHex}${alphaHex}`);
+        return;
       }
     },
-    [onChange]
-  )
+    [onChange],
+  );
 
   useEffect(() => {
-    setInnerColor(rgbValue)
-  }, [rgbValue])
+    setInnerColor(rgbValue);
+  }, [rgbValue]);
 
   const { toggle, contentRef, contentHeight, ariaToggle, ariaContent } =
-    useControlledAccordion<HTMLDivElement>(isExpanded, setExpanded, 2)
+    useControlledAccordion<HTMLDivElement>(isExpanded, setExpanded, 2);
 
   const onTouchStart = useCallback(() => {
-    setIsFixed(true)
-  }, [setIsFixed])
+    setIsFixed(true);
+  }, [setIsFixed]);
   const onTouchEnd = useCallback(() => {
-    setIsFixed(false)
-  }, [setIsFixed])
+    setIsFixed(false);
+  }, [setIsFixed]);
   useEffect(() => {
     if (!isExpanded) {
-      return
+      return;
     }
-    const content = contentRef.current
+    const content = contentRef.current;
     if (content === null) {
-      return
+      return;
     }
-    const abortController = new AbortController()
-    const { signal } = abortController
-    content.addEventListener('touchstart', onTouchStart, {
+    const abortController = new AbortController();
+    const { signal } = abortController;
+    content.addEventListener("touchstart", onTouchStart, {
       signal,
       passive: true,
-    })
-    content.addEventListener('touchend', onTouchEnd, {
+    });
+    content.addEventListener("touchend", onTouchEnd, {
       signal,
       passive: true,
-    })
-    content.addEventListener('touchcancel', onTouchEnd, {
+    });
+    content.addEventListener("touchcancel", onTouchEnd, {
       signal,
       passive: true,
-    })
+    });
     return () => {
-      abortController.abort()
-    }
-  }, [isExpanded, onTouchStart, onTouchEnd, contentRef])
+      abortController.abort();
+    };
+  }, [isExpanded, onTouchStart, onTouchEnd, contentRef]);
 
-  const { ref: wrapRef, style: hiddenStyle } = useHiddenTransition(isExpanded)
+  const { ref: wrapRef, style: hiddenStyle } = useHiddenTransition(isExpanded);
 
   return (
-    <Wrap className='mono'>
+    <Wrap className="mono">
       <ColorPreview onClick={toggle} {...ariaToggle}>
         <ColorPreviewColor color={value} />
         <ColorPreviewText>{value}</ColorPreviewText>
@@ -142,7 +142,7 @@ const ColorSelectorRaw: React.FC<Props> = ({
             onChangeComplete={onChangeComplete}
             presetColors={suggestedColors}
             disableAlpha={false}
-            width='min(100%, 300px)'
+            width="min(100%, 300px)"
             css={css`
               box-sizing: border-box !important;
               margin: 1px;
@@ -151,11 +151,11 @@ const ColorSelectorRaw: React.FC<Props> = ({
         </div>
       </ContentWrap>
     </Wrap>
-  )
-}
-export const ColorSelector = React.memo(ColorSelectorRaw)
+  );
+};
+export const ColorSelector = React.memo(ColorSelectorRaw);
 
-const Wrap = styled.div``
+const Wrap = styled.div``;
 
 const ColorPreview = styled.button`
   display: grid;
@@ -177,9 +177,9 @@ const ColorPreview = styled.button`
   &:focus {
     border-color: ${lightTheme.basic.accent.focus};
   }
-`
+`;
 const ColorPreviewColor = styled.div<{
-  color: string
+  color: string;
 }>`
   aspect-ratio: 1 / 1;
   height: calc(1.5rem + 8px);
@@ -198,18 +198,18 @@ const ColorPreviewColor = styled.div<{
     inset: 0;
     background: ${({ color }) => color};
   }
-`
+`;
 const ColorPreviewText = styled.div`
   line-height: 1.5;
   padding: 4px;
-`
+`;
 
 const ContentWrap = styled.div<{ height: number | undefined }>`
   overflow: hidden;
-  height: ${({ height }) => (height !== undefined ? `${height}px` : 'auto')};
+  height: ${({ height }) => (height !== undefined ? `${height}px` : "auto")};
   transition: height 0.3s ease-out;
 
   &[aria-hidden='true'] {
     height: 0;
   }
-`
+`;

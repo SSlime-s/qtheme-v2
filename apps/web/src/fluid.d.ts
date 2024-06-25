@@ -4,118 +4,118 @@ interface Options {
   /**
    * @default true
    */
-  IMMEDIATE: boolean
+  IMMEDIATE: boolean;
   /**
    * @default 'hover'
    * Can be change to 'click'
    */
-  TRIGGER: 'hover' | 'click'
+  TRIGGER: "hover" | "click";
   /**
    * @default 128
    */
-  SIM_RESOLUTION: number
+  SIM_RESOLUTION: number;
   /**
    * @default 1024
    */
-  DYE_RESOLUTION: number
+  DYE_RESOLUTION: number;
   /**
    * @default 512
    */
-  CAPTURE_RESOLUTION: number
+  CAPTURE_RESOLUTION: number;
   /**
    * @default 1
    */
-  DENSITY_DISSIPATION: number
+  DENSITY_DISSIPATION: number;
   /**
    * @default 0.3
    */
-  VELOCITY_DISSIPATION: number
+  VELOCITY_DISSIPATION: number;
   /**
    * @default 0.8
    */
-  PRESSURE: number
+  PRESSURE: number;
   /**
    * @default 20
    */
-  PRESSURE_ITERATIONS: number
+  PRESSURE_ITERATIONS: number;
   /**
    * @default 30
    */
-  CURL: number
+  CURL: number;
   /**
    * @default 0.35
    */
-  SPLAT_RADIUS: number
+  SPLAT_RADIUS: number;
   /**
    * @default 6000
    */
-  SPLAT_FORCE: number
+  SPLAT_FORCE: number;
   /**
    * @default true
    */
-  SHADING: boolean
+  SHADING: boolean;
   /**
    * @default true
    */
-  COLORFUL: boolean
+  COLORFUL: boolean;
   /**
    * @default 10
    */
-  COLOR_UPDATE_SPEED: number
+  COLOR_UPDATE_SPEED: number;
   /**
    * @default false
    */
-  PAUSED: boolean
+  PAUSED: boolean;
   /**
    * @default { r: 0, g: 0, b: 0 }
    */
-  BACK_COLOR: { r: number; g: number; b: number }
+  BACK_COLOR: { r: number; g: number; b: number };
   /**
    * @default false
    */
-  TRANSPARENT: boolean
+  TRANSPARENT: boolean;
   /**
    * @default true
    */
-  BLOOM: boolean
+  BLOOM: boolean;
   /**
    * @default 8
    */
-  BLOOM_ITERATIONS: number
+  BLOOM_ITERATIONS: number;
   /**
    * @default 256
    */
-  BLOOM_RESOLUTION: number
+  BLOOM_RESOLUTION: number;
   /**
    * @default 0.8
    */
-  BLOOM_INTENSITY: number
+  BLOOM_INTENSITY: number;
   /**
    * @default 0.6
    */
-  BLOOM_THRESHOLD: number
+  BLOOM_THRESHOLD: number;
   /**
    * @default 0.7
    */
-  BLOOM_SOFT_KNEE: number
+  BLOOM_SOFT_KNEE: number;
   /**
    * @default true
    */
-  SUNRAYS: boolean
+  SUNRAYS: boolean;
   /**
    * @default 196
    */
-  SUNRAYS_RESOLUTION: number
+  SUNRAYS_RESOLUTION: number;
   /**
    * @default 1.0
    */
-  SUNRAYS_WEIGHT: number
+  SUNRAYS_WEIGHT: number;
 }
 
-declare module 'webgl-fluid' {
+declare module "webgl-fluid" {
   function WebGLFluid(
     canvas: HTMLCanvasElement,
-    options?: Partial<Options>
-  ): void
-  export = WebGLFluid
+    options?: Partial<Options>,
+  ): void;
+  export = WebGLFluid;
 }

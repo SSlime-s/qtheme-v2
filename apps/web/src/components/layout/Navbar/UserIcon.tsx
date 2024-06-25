@@ -1,25 +1,25 @@
-import styled from '@emotion/styled'
-import Image from 'next/image'
-import NextLink from 'next/link'
-import { BiWorld } from 'react-icons/bi'
-import { FaRegUserCircle, FaLock } from 'react-icons/fa'
-import { HiOutlineExternalLink } from 'react-icons/hi'
-import { MdClose, MdFavorite, MdNavigateNext } from 'react-icons/md'
+import styled from "@emotion/styled";
+import Image from "next/image";
+import NextLink from "next/link";
+import { BiWorld } from "react-icons/bi";
+import { FaLock, FaRegUserCircle } from "react-icons/fa";
+import { HiOutlineExternalLink } from "react-icons/hi";
+import { MdClose, MdFavorite, MdNavigateNext } from "react-icons/md";
 
-import { userIconUrl } from '@/utils/api'
-import { ModalTemplate } from '@/utils/modal/ModalTemplate'
-import { useModal } from '@/utils/modal/useModal'
-import { useLoginUrl } from '@/utils/useLoginUrl'
-import { lightTheme } from '@repo/theme/default'
+import { userIconUrl } from "@/utils/api";
+import { ModalTemplate } from "@/utils/modal/ModalTemplate";
+import { useModal } from "@/utils/modal/useModal";
+import { useLoginUrl } from "@/utils/useLoginUrl";
+import { lightTheme } from "@repo/theme/default";
 
 interface Props {
-  userId?: string
+  userId?: string;
 }
 export const UserIcon: React.FC<Props> = ({ userId }) => {
   const { isOpen, open, close, modalProps, titleProps, titleRef, triggerRef } =
-    useModal('layout/Navbar/User')
+    useModal("layout/Navbar/User");
 
-  const loginUrl = useLoginUrl()
+  const loginUrl = useLoginUrl();
 
   if (userId !== undefined) {
     return (
@@ -28,10 +28,10 @@ export const UserIcon: React.FC<Props> = ({ userId }) => {
           src={userIconUrl(userId)}
           height={36}
           width={36}
-          alt='My Page'
+          alt="My Page"
         />
       </NextLink>
-    )
+    );
   }
 
   return (
@@ -73,7 +73,7 @@ export const UserIcon: React.FC<Props> = ({ userId }) => {
             </Li>
           </Ol>
 
-          <Link href='https://trap.jp/about/' target='_blank' rel='noreferrer'>
+          <Link href="https://trap.jp/about/" target="_blank" rel="noreferrer">
             traPとは
             <HiOutlineExternalLink />
           </Link>
@@ -85,13 +85,13 @@ export const UserIcon: React.FC<Props> = ({ userId }) => {
         </Wrap>
       )}
     </>
-  )
-}
+  );
+};
 const UserIconImage = styled(Image)`
   height: 36px;
   width: 36px;
   border-radius: 9999px;
-`
+`;
 
 const UserIconButton = styled.button`
   height: 36px;
@@ -99,7 +99,7 @@ const UserIconButton = styled.button`
   cursor: pointer;
   background: transparent;
   color: ${({ theme }) => theme.theme.basic.ui.secondary.inactive};
-`
+`;
 
 const Wrap = styled(ModalTemplate)`
   width: 100%;
@@ -110,18 +110,18 @@ const Wrap = styled(ModalTemplate)`
   display: grid;
   grid-template-rows: auto 1fr auto auto;
   gap: 16px;
-`
+`;
 const Header = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-`
+`;
 const Title = styled.h2`
   font-size: 1.5rem;
   font-weight: bold;
   margin: 0;
   letter-spacing: 1px;
-`
+`;
 const CloseButton = styled.button`
   height: 36px;
   width: 36px;
@@ -141,23 +141,23 @@ const CloseButton = styled.button`
   &:focus {
     outline: 1px solid ${lightTheme.basic.accent.primary};
   }
-`
+`;
 
-const Ol = styled.ol``
+const Ol = styled.ol``;
 const Li = styled.li`
   margin-bottom: 8px;
   display: grid;
   grid-template-columns: max-content 1fr;
   gap: 4px;
   line-height: 32px;
-`
+`;
 const Marker = styled.span`
   width: 32px;
   height: 32px;
   font-size: 16px;
   display: grid;
   place-items: center;
-`
+`;
 
 const Link = styled.a`
   display: flex;
@@ -168,7 +168,7 @@ const Link = styled.a`
 
   backdrop-filter: blur(4px);
   margin-right: auto;
-`
+`;
 
 const LoginButton = styled.a`
   display: flex;
@@ -191,4 +191,4 @@ const LoginButton = styled.a`
   &:focus {
     outline: 1px solid ${lightTheme.basic.accent.primary};
   }
-`
+`;

@@ -1,54 +1,54 @@
-import styled from '@emotion/styled'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import styled from "@emotion/styled";
+import { useCallback, useEffect, useRef, useState } from "react";
 
-import { useIsHoverable } from '@/utils/isMobile'
-import { lightTheme } from '@repo/theme/default'
+import { useIsHoverable } from "@/utils/isMobile";
+import { lightTheme } from "@repo/theme/default";
 
-import { GlassmorphismStyle } from './Glassmorphism'
+import { GlassmorphismStyle } from "./Glassmorphism";
 
 interface Props {
-  loadMore: () => Promise<void> | void
-  isReachingEnd: boolean
+  loadMore: () => Promise<void> | void;
+  isReachingEnd: boolean;
 }
 export const InfiniteLoad: React.FC<Props> = ({ loadMore, isReachingEnd }) => {
-  const isHoverable = useIsHoverable()
+  const isHoverable = useIsHoverable();
 
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
   const checkedLoadMore = useCallback(async () => {
     if (isLoading) {
-      return
+      return;
     }
     if (isReachingEnd ?? true) {
-      return
+      return;
     }
-    setIsLoading(true)
-    await loadMore()
-    setIsLoading(false)
-  }, [isLoading, isReachingEnd, loadMore])
+    setIsLoading(true);
+    await loadMore();
+    setIsLoading(false);
+  }, [isLoading, isReachingEnd, loadMore]);
 
-  const bottomRef = useRef<HTMLDivElement>(null)
+  const bottomRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     if (isHoverable) {
-      return
+      return;
     }
 
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          void checkedLoadMore()
+          void checkedLoadMore();
         }
       },
       {
         threshold: 0.5,
-      }
-    )
+      },
+    );
     if (bottomRef.current) {
-      observer.observe(bottomRef.current)
+      observer.observe(bottomRef.current);
     }
     return () => {
-      observer.disconnect()
-    }
-  }, [checkedLoadMore, isHoverable])
+      observer.disconnect();
+    };
+  }, [checkedLoadMore, isHoverable]);
 
   return (
     <>
@@ -59,8 +59,8 @@ export const InfiniteLoad: React.FC<Props> = ({ loadMore, isReachingEnd }) => {
       )}
       <Stopper ref={bottomRef} />
     </>
-  )
-}
+  );
+};
 
 const LoadMoreButton = styled.button`
   ${GlassmorphismStyle}
@@ -77,7 +77,7 @@ const LoadMoreButton = styled.button`
     outline: 1px solid ${lightTheme.basic.accent.primary};
     outline-offset: -2px;
   }
-`
+`;
 const Stopper = styled.div`
   width: 100%;
-`
+`;

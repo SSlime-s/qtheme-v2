@@ -5,7 +5,8 @@
   "scripts": {
     "build": "turbo build",
     "dev": "turbo dev",
-    "fix": "turbo lint:fix && pnpm run format",
+    "check": "biome check .",
+    "fix": "biome check --write .",
     "check-types": "turbo check-types",
     "format:base": "prettier '{apps,packages}/*/src/**/*.{js,jsx,ts,tsx,graphql,yaml,css,html,json,md,mdx}' --cache",
     "format": "pnpm run format:base --write",
@@ -33,7 +34,7 @@
     }
   },
   "devDependencies": {
-    "prettier": "^3.3.2",
+    "@biomejs/biome": "^1.8.2",
     "turbo": "^2.0.4"
   }
 }

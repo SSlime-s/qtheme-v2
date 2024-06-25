@@ -1,114 +1,114 @@
-import styled from '@emotion/styled'
-import { useCallback, useEffect, useMemo, useState } from 'react'
-import { useFormContext, useWatch } from 'react-hook-form'
+import styled from "@emotion/styled";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { useFormContext, useWatch } from "react-hook-form";
 
-import { ColorInput } from '@/components/Editor/ColorInput'
-import { ColorSelector } from '@/components/Editor/ColorSelector'
-import { useControlledAccordion, useHiddenTransition } from '@/utils/accordion'
+import { ColorInput } from "@/components/Editor/ColorInput";
+import { ColorSelector } from "@/components/Editor/ColorSelector";
+import { useControlledAccordion, useHiddenTransition } from "@/utils/accordion";
 
-import { DescriptionMap } from '.'
+import { DescriptionMap } from ".";
 
-import type { AdvancedKeys } from '.'
-import type { Form } from '@/components/Editor'
+import type { Form } from "@/components/Editor";
+import type { AdvancedKeys } from ".";
 
-type Type = 'color' | 'boolean' | 'text'
+type Type = "color" | "boolean" | "text";
 interface Props<K extends keyof typeof AdvancedKeys> {
-  key1: K
-  label: (typeof AdvancedKeys)[K][number]
+  key1: K;
+  label: (typeof AdvancedKeys)[K][number];
 
-  type?: Type
+  type?: Type;
 }
 export const OptionalSelectors: React.FC<Props<keyof typeof AdvancedKeys>> = <
   K extends keyof typeof AdvancedKeys,
 >({
   key1,
   label,
-  type = 'color',
+  type = "color",
 }: Props<K>) => {
-  const { control, setValue, getValues } = useFormContext<Form>()
+  const { control, setValue, getValues } = useFormContext<Form>();
   const [innerColor, setInnerColor] = useState(
-    getValues('theme')?.[key1]?.[
+    getValues("theme")?.[key1]?.[
       label as keyof (typeof DescriptionMap)[keyof typeof DescriptionMap]
-    ] ?? '#000000'
-  )
+    ] ?? "#000000",
+  );
 
-  const theme = useWatch({ name: 'theme', control })
+  const theme = useWatch({ name: "theme", control });
   const valid = useMemo(() => {
     return (
       theme?.[key1]?.[
         label as keyof (typeof DescriptionMap)[keyof typeof DescriptionMap]
       ] !== undefined
-    )
-  }, [theme, key1, label])
+    );
+  }, [theme, key1, label]);
   const setValid = useCallback(
     (valid: boolean) => {
       if (valid) {
-        setValue('theme', {
-          ...getValues('theme'),
+        setValue("theme", {
+          ...getValues("theme"),
           [key1]: {
-            ...getValues('theme')?.[key1],
+            ...getValues("theme")?.[key1],
             [label]: innerColor,
           },
-        })
-        return
+        });
+        return;
       }
-      const newVal = { ...getValues('theme')?.[key1] }
+      const newVal = { ...getValues("theme")?.[key1] };
       if (newVal === undefined) {
-        return
+        return;
       }
       // @ts-expect-error: label と key の対応がうまくいかない
-      delete newVal[label]
+      delete newVal[label];
       if (Object.keys(newVal).length === 0) {
-        setValue('theme', {
-          ...getValues('theme'),
+        setValue("theme", {
+          ...getValues("theme"),
           [key1]: undefined,
-        })
-        return
+        });
+        return;
       }
-      setValue('theme', {
-        ...getValues('theme'),
+      setValue("theme", {
+        ...getValues("theme"),
         [key1]: newVal,
-      })
+      });
     },
-    [getValues, innerColor, key1, label, setValue]
-  )
+    [getValues, innerColor, key1, label, setValue],
+  );
 
   const { isOpen, ariaContent, ariaToggle, contentHeight, contentRef } =
-    useControlledAccordion(valid, setValid)
-  const [isExpanded, setIsExpanded] = useState(false)
+    useControlledAccordion(valid, setValid);
+  const [isExpanded, setIsExpanded] = useState(false);
   const toggle = useCallback(() => {
     if (valid) {
-      setIsExpanded(false)
+      setIsExpanded(false);
     }
-    setValid(!valid)
-  }, [setValid, valid])
-  const { ref: wrapRef, style: hiddenStyle } = useHiddenTransition(valid)
+    setValid(!valid);
+  }, [setValid, valid]);
+  const { ref: wrapRef, style: hiddenStyle } = useHiddenTransition(valid);
 
   useEffect(() => {
     setInnerColor(
-      old =>
+      (old) =>
         theme?.[key1]?.[
           label as keyof (typeof DescriptionMap)[keyof typeof DescriptionMap]
-        ] ?? old
-    )
-  }, [theme, key1, label])
+        ] ?? old,
+    );
+  }, [theme, key1, label]);
 
   const setColor = useCallback(
     (value: string) => {
-      setInnerColor(value)
+      setInnerColor(value);
       if (valid) {
-        setValue('theme', {
-          ...getValues('theme'),
+        setValue("theme", {
+          ...getValues("theme"),
           [key1]: {
-            ...getValues('theme')?.[key1],
+            ...getValues("theme")?.[key1],
             [label]: value,
           },
-        })
-        return
+        });
+        return;
       }
     },
-    [getValues, key1, label, setValue, valid]
-  )
+    [getValues, key1, label, setValue, valid],
+  );
 
   return (
     <Wrap valid={valid}>
@@ -133,7 +133,7 @@ export const OptionalSelectors: React.FC<Props<keyof typeof AdvancedKeys>> = <
               ]
             }
           </Description>
-          {type === 'color' ? (
+          {type === "color" ? (
             <ColorSelector
               isExpanded={isExpanded}
               setExpanded={setIsExpanded}
@@ -146,12 +146,12 @@ export const OptionalSelectors: React.FC<Props<keyof typeof AdvancedKeys>> = <
         </div>
       </OptionalSelectorsContent>
     </Wrap>
-  )
-}
+  );
+};
 const Wrap = styled.div<{ valid: boolean }>`
   transition: transform 0.2s ease-out;
-  transform: ${({ valid }) => (valid ? 'none' : 'translateX(16px)')};
-`
+  transform: ${({ valid }) => (valid ? "none" : "translateX(16px)")};
+`;
 const Label = styled.button`
   display: flex;
   cursor: pointer;
@@ -164,10 +164,10 @@ const Label = styled.button`
   &:hover {
     transform: scale(1.05, 1.1);
   }
-`
+`;
 const Description = styled.p`
   color: #333;
-`
+`;
 const Icon = styled.div`
   width: 16px;
   height: 16px;
@@ -202,13 +202,13 @@ const Icon = styled.div`
   [aria-expanded='true'] > &::after {
     transform: rotate(225deg) scale(1, 1.4);
   }
-`
+`;
 const LabelInner = styled.span`
   display: flex;
   align-items: center;
   gap: 4px 8px;
   flex-wrap: wrap;
-`
+`;
 const DisableText = styled.span`
   color: #333;
   font-size: 12px;
@@ -217,7 +217,7 @@ const DisableText = styled.span`
   &[aria-hidden='true'] {
     color: transparent;
   }
-`
+`;
 const OptionalSelectorsContent = styled.div<{ height: number }>`
   overflow: hidden;
   transition: height 0.2s ease-out;
@@ -227,4 +227,4 @@ const OptionalSelectorsContent = styled.div<{ height: number }>`
   &[aria-hidden='true'] {
     height: 0;
   }
-`
+`;

@@ -1,21 +1,21 @@
-import { ThemeProvider } from '@emotion/react'
+import { ThemeProvider } from "@emotion/react";
 
-import { lightTheme } from '@repo/theme/default'
-import { resolveTheme } from '@repo/theme/resolve'
+import { lightTheme } from "@repo/theme/default";
+import { resolveTheme } from "@repo/theme/resolve";
 
-import { TextBox } from './TextBox'
+import { TextBox } from "./TextBox";
 
-import type { Meta } from '@storybook/react'
+import type { Meta } from "@storybook/react";
 
 const meta: Meta<typeof TextBox> = {
-  title: 'Components/TextBox',
+  title: "Components/TextBox",
   component: TextBox,
-}
+};
 
-export default meta
+export default meta;
 
 export const Default = () => (
   <ThemeProvider theme={{ theme: resolveTheme(lightTheme) }}>
-    <TextBox placeholder='placeholder' />
+    <TextBox placeholder="placeholder" />
   </ThemeProvider>
-)
+);

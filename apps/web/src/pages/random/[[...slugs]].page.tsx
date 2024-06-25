@@ -1,61 +1,61 @@
-import styled from '@emotion/styled'
-import Head from 'next/head'
-import { useMemo } from 'react'
-import { TfiReload } from 'react-icons/tfi'
+import styled from "@emotion/styled";
+import Head from "next/head";
+import { useMemo } from "react";
+import { TfiReload } from "react-icons/tfi";
 
-import { CopyButton } from '@/components/CopyButton'
-import { Error } from '@/components/Error'
-import { FavoriteButton } from '@/components/FavoriteButton'
-import { GlassmorphismStyle } from '@/components/Glassmorphism'
-import { LargePreviewCard } from '@/components/LargePreviewCard'
-import { LoadingBar } from '@/components/LoadingBar'
-import { H1, H2, Message } from '@/components/Message'
-import { SEO } from '@/components/SEO'
-import { TextBox } from '@/components/TextBox'
-import { Layout } from '@/components/layout'
-import { extractShowcaseUser } from '@/utils/extractUser'
-import { isMobile } from '@/utils/isMobile'
-import { useCurrentTheme } from '@/utils/theme/hooks'
-import { pageTitle } from '@/utils/title'
-import { assertIsArray } from '@/utils/typeUtils'
-import { useWithAuth } from '@/utils/useWithAuth'
-import { useSetUserId } from '@/utils/userId'
-import { WrapResolver } from '@/utils/wrapper'
-import { BreakStyle, BudouJa } from '@/utils/wrapper/BudouX'
-import { Linkify } from '@/utils/wrapper/Linkify'
-import { ReplaceNewLine } from '@/utils/wrapper/ReplaceNewLine'
-import { lightTheme } from '@repo/theme/default'
+import { CopyButton } from "@/components/CopyButton";
+import { Error } from "@/components/Error";
+import { FavoriteButton } from "@/components/FavoriteButton";
+import { GlassmorphismStyle } from "@/components/Glassmorphism";
+import { LargePreviewCard } from "@/components/LargePreviewCard";
+import { LoadingBar } from "@/components/LoadingBar";
+import { H1, H2, Message } from "@/components/Message";
+import { SEO } from "@/components/SEO";
+import { TextBox } from "@/components/TextBox";
+import { Layout } from "@/components/layout";
+import { extractShowcaseUser } from "@/utils/extractUser";
+import { isMobile } from "@/utils/isMobile";
+import { useCurrentTheme } from "@/utils/theme/hooks";
+import { pageTitle } from "@/utils/title";
+import { assertIsArray } from "@/utils/typeUtils";
+import { useWithAuth } from "@/utils/useWithAuth";
+import { useSetUserId } from "@/utils/userId";
+import { WrapResolver } from "@/utils/wrapper";
+import { BreakStyle, BudouJa } from "@/utils/wrapper/BudouX";
+import { Linkify } from "@/utils/wrapper/Linkify";
+import { ReplaceNewLine } from "@/utils/wrapper/ReplaceNewLine";
+import { lightTheme } from "@repo/theme/default";
 
-import { useRandomTheme } from './hooks'
+import { useRandomTheme } from "./hooks";
 
-import type { NextPageWithLayout } from '../_app.page'
-import type { GetServerSideProps, InferGetServerSidePropsType } from 'next'
+import type { GetServerSideProps, InferGetServerSidePropsType } from "next";
+import type { NextPageWithLayout } from "../_app.page";
 
 export const getServerSideProps = (async ({ req, query }) => {
-  const userId = extractShowcaseUser(req)
+  const userId = extractShowcaseUser(req);
 
-  const { slugs } = query
-  let filter: 'all' | 'light' | 'dark' | 'invalid'
+  const { slugs } = query;
+  let filter: "all" | "light" | "dark" | "invalid";
   if (slugs === undefined || slugs.length === 0) {
-    filter = 'all'
+    filter = "all";
   } else if (slugs.length === 1) {
-    assertIsArray(slugs)
-    if (['light', 'dark'].includes(slugs[0].toLowerCase())) {
-      filter = slugs[0].toLowerCase() as 'light' | 'dark'
+    assertIsArray(slugs);
+    if (["light", "dark"].includes(slugs[0].toLowerCase())) {
+      filter = slugs[0].toLowerCase() as "light" | "dark";
     } else {
-      filter = 'invalid'
+      filter = "invalid";
     }
   } else {
-    filter = 'invalid'
+    filter = "invalid";
   }
 
-  if (filter === 'invalid') {
+  if (filter === "invalid") {
     return {
       redirect: {
-        destination: '/random',
+        destination: "/random",
         permanent: false,
       },
-    }
+    };
   }
 
   return {
@@ -63,13 +63,13 @@ export const getServerSideProps = (async ({ req, query }) => {
       userId: userId ?? null,
       filter,
     },
-  }
-}) satisfies GetServerSideProps
+  };
+}) satisfies GetServerSideProps;
 
-type Props = InferGetServerSidePropsType<typeof getServerSideProps>
+type Props = InferGetServerSidePropsType<typeof getServerSideProps>;
 
 const RandomPage: NextPageWithLayout<Props> = ({ userId, filter }) => {
-  useSetUserId(userId)
+  useSetUserId(userId);
 
   const {
     theme,
@@ -77,41 +77,41 @@ const RandomPage: NextPageWithLayout<Props> = ({ userId, filter }) => {
     isLoading,
     error,
     mutate: { changeNext, toggleLike },
-  } = useRandomTheme(filter === 'all' ? null : filter)
+  } = useRandomTheme(filter === "all" ? null : filter);
   const {
     mutate: { changeTheme },
-  } = useCurrentTheme()
+  } = useCurrentTheme();
 
   const toggleLikeWithAuth = useWithAuth(
     userId,
     toggleLike,
-    'favorite は部員限定です'
-  )
+    "favorite は部員限定です",
+  );
 
   const themeString = useMemo(() => {
     if (theme === null) {
-      return ''
+      return "";
     }
-    return JSON.stringify(theme.theme)
-  }, [theme])
+    return JSON.stringify(theme.theme);
+  }, [theme]);
 
   if (error !== undefined) {
-    return <Error statusCode={500} />
+    return <Error statusCode={500} />;
   }
   if (isLoading || theme === null || resolvedTheme === null) {
-    return <LoadingBar />
+    return <LoadingBar />;
   }
 
   return (
     <>
       <Head>
         <title>
-          {pageTitle(`#random${filter !== 'all' ? `/${filter}` : ''}`)}
+          {pageTitle(`#random${filter !== "all" ? `/${filter}` : ""}`)}
         </title>
       </Head>
       <SEO
-        title={`#random${filter !== 'all' ? `/${filter}` : ''}`}
-        url={`/random${filter !== 'all' ? `/${filter}` : ''}`}
+        title={`#random${filter !== "all" ? `/${filter}` : ""}`}
+        url={`/random${filter !== "all" ? `/${filter}` : ""}`}
       />
       <Wrap>
         <MainWrap>
@@ -161,27 +161,27 @@ const RandomPage: NextPageWithLayout<Props> = ({ userId, filter }) => {
         <CopyBox
           defaultValue={themeString}
           after={<After text={themeString} changeNext={changeNext} />}
-          aria-label='テーマのjson'
+          aria-label="テーマのjson"
           readOnly
         />
       </Wrap>
     </>
-  )
-}
-export default RandomPage
-RandomPage.getLayout = page => {
-  return <Layout>{page}</Layout>
-}
+  );
+};
+export default RandomPage;
+RandomPage.getLayout = (page) => {
+  return <Layout>{page}</Layout>;
+};
 
 const Wrap = styled.div`
   height: 100%;
   display: grid;
   grid-template-rows: 1fr max-content;
-`
+`;
 const MainWrap = styled.div`
   contain: strict;
   overflow-y: auto;
-`
+`;
 
 const ChangeNextButton = styled.button`
   ${GlassmorphismStyle}
@@ -198,7 +198,7 @@ const ChangeNextButton = styled.button`
     outline: 1px solid ${lightTheme.basic.accent.primary};
     outline-offset: -2px;
   }
-`
+`;
 export const BreakP = styled.p`
   ${BreakStyle}
 
@@ -209,7 +209,7 @@ export const BreakP = styled.p`
       text-decoration: underline;
     }
   }
-`
+`;
 const CopyBox = styled(TextBox)`
   margin: 0 32px 20px;
   & textarea {
@@ -219,24 +219,24 @@ const CopyBox = styled(TextBox)`
     border-radius: 0;
     margin: 0;
   }
-`
+`;
 
 interface AfterProps {
-  text: string
-  changeNext?: () => void
+  text: string;
+  changeNext?: () => void;
 }
 const After: React.FC<AfterProps> = ({ text, changeNext }) => {
   return (
     <AfterWrap>
       <CopyButtonWrap>
-        <CopyButton text={text} title='テーマをコピー' />
+        <CopyButton text={text} title="テーマをコピー" />
       </CopyButtonWrap>
-      <NextButton onClick={changeNext} title='次のテーマを表示'>
+      <NextButton onClick={changeNext} title="次のテーマを表示">
         <TfiReload />
       </NextButton>
     </AfterWrap>
-  )
-}
+  );
+};
 const AfterWrap = styled.div`
   height: 100%;
   display: grid;
@@ -244,12 +244,12 @@ const AfterWrap = styled.div`
   grid-auto-flow: column;
   padding: 0 8px;
   gap: 8px;
-`
+`;
 const CopyButtonWrap = styled.div`
   height: 24px;
   width: 24px;
   font-size: 24px;
-`
+`;
 const NextButton = styled.button`
   height: 24px;
   width: 24px;
@@ -271,4 +271,4 @@ const NextButton = styled.button`
       ${({ theme }) => theme.theme.basic.accent.primary.default};
     outline-offset: 4px;
   }
-`
+`;

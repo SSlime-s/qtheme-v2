@@ -1,20 +1,20 @@
-import { css } from '@emotion/react'
-import styled from '@emotion/styled'
-import Image from 'next/image'
-import Link from 'next/link'
+import { css } from "@emotion/react";
+import styled from "@emotion/styled";
+import Image from "next/image";
+import Link from "next/link";
 
-import { userIconUrl } from '@/utils/api'
+import { userIconUrl } from "@/utils/api";
 
 interface Props {
-  iconUser: string
-  name?: string
-  tag: string
-  date: string
-  content: React.ReactNode
-  stamps?: React.ReactNode
+  iconUser: string;
+  name?: string;
+  tag: string;
+  date: string;
+  content: React.ReactNode;
+  stamps?: React.ReactNode;
 
-  nonHover?: boolean
-  className?: string
+  nonHover?: boolean;
+  className?: string;
 }
 
 export const Message = ({
@@ -27,7 +27,7 @@ export const Message = ({
   nonHover = false,
   className,
 }: Props) => {
-  const name = nameRaw ?? iconUser
+  const name = nameRaw ?? iconUser;
 
   return (
     <Wrap className={className} nonHover={nonHover}>
@@ -42,40 +42,40 @@ export const Message = ({
       <Content>{content}</Content>
       {stamps !== undefined ? <Stamps>{stamps}</Stamps> : null}
     </Wrap>
-  )
-}
+  );
+};
 
 export const H1 = styled.p`
   font-size: 2rem;
   font-weight: bold;
   overflow-wrap: anywhere;
-`
+`;
 export const H2 = styled.p`
   font-size: 1.5rem;
   font-weight: bold;
   overflow-wrap: anywhere;
-`
+`;
 export const H3 = styled.p`
   font-size: 1.25rem;
   font-weight: bold;
   overflow-wrap: anywhere;
-`
+`;
 export const H4 = styled.p`
   font-size: 1rem;
   font-weight: bold;
   overflow-wrap: anywhere;
-`
+`;
 export const H5 = styled.p`
   font-size: 0.875rem;
   font-weight: bold;
   overflow-wrap: anywhere;
-`
+`;
 export const H6 = styled.p`
   font-size: 0.85rem;
   font-weight: bold;
   overflow-wrap: anywhere;
   ${({ theme }) => theme.theme.markdown.h6Text};
-`
+`;
 
 const Wrap = styled.div<{ nonHover: boolean }>`
   display: grid;
@@ -94,21 +94,21 @@ const Wrap = styled.div<{ nonHover: boolean }>`
         background: ${theme.theme.specific.messageHoverBackground};
       }
     `}
-`
+`;
 const Icon = styled(Link)`
   grid-area: icon;
   height: 40px;
   width: 40px;
   border-radius: 9999px;
   overflow: hidden;
-`
+`;
 const Header = styled.div`
   grid-area: header;
   margin-left: 8px;
   display: flex;
   align-items: baseline;
   gap: 4px;
-`
+`;
 const NameWrap = styled.span`
   font-weight: bold;
   flex: 2;
@@ -118,7 +118,7 @@ const NameWrap = styled.span`
   text-overflow: ellipsis;
   overflow: hidden;
   color: ${({ theme }) => theme.theme.basic.ui.primary.default};
-`
+`;
 const TagWrap = styled.span`
   background: ${({ theme }) => theme.theme.basic.background.secondary.default};
   color: ${({ theme }) => theme.theme.basic.ui.secondary.default};
@@ -128,23 +128,23 @@ const TagWrap = styled.span`
   font-weight: bold;
   padding: 0 4px;
   border-radius: 4px;
-`
+`;
 const DateWrap = styled.span`
   color: ${({ theme }) => theme.theme.basic.ui.secondary.default};
   font-size: 0.75rem;
-`
+`;
 const Content = styled.div`
   grid-area: content;
   margin-top: 4px;
   margin-left: 8px;
   color: ${({ theme }) => theme.theme.basic.ui.primary.default};
-`
+`;
 const Stamps = styled.div`
   grid-area: stamps;
   margin-top: 8px;
   margin-left: 8px;
-`
+`;
 
 export const FullWidthContent = styled.div`
   margin-left: calc(-40px - 8px);
-`
+`;

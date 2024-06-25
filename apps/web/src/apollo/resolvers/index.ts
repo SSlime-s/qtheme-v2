@@ -1,33 +1,33 @@
-import { createTheme } from './createTheme'
-import { deleteTheme } from './deleteTheme'
-import { getAuthors } from './getAuthors'
-import { getMe } from './getMe'
-import { getRandomTheme } from './getRandomTheme'
-import { getTheme } from './getTheme'
-import { getThemes } from './getThemes'
-import { toggleLike } from './toggleLike'
-import { updateTheme } from './updateTheme'
+import { createTheme } from "./createTheme";
+import { deleteTheme } from "./deleteTheme";
+import { getAuthors } from "./getAuthors";
+import { getMe } from "./getMe";
+import { getRandomTheme } from "./getRandomTheme";
+import { getTheme } from "./getTheme";
+import { getThemes } from "./getThemes";
+import { toggleLike } from "./toggleLike";
+import { updateTheme } from "./updateTheme";
 
-import type { Resolvers } from '@/apollo/generated/resolvers'
-import type { PrismaClient } from '@repo/database'
-import type { NextApiResponse } from 'next'
+import type { Resolvers } from "@/apollo/generated/resolvers";
+import type { PrismaClient } from "@repo/database";
+import type { NextApiResponse } from "next";
 
 export interface ContextValue {
-  userId?: string
-  revalidate?: NextApiResponse['revalidate']
-  prisma: PrismaClient
+  userId?: string;
+  revalidate?: NextApiResponse["revalidate"];
+  prisma: PrismaClient;
 }
 
 export const resolvers: Resolvers<ContextValue> = {
   Visibility: {
-    PUBLIC: 'public',
-    PRIVATE: 'private',
-    DRAFT: 'draft',
+    PUBLIC: "public",
+    PRIVATE: "private",
+    DRAFT: "draft",
   },
   Type: {
-    LIGHT: 'light',
-    DARK: 'dark',
-    OTHER: 'other',
+    LIGHT: "light",
+    DARK: "dark",
+    OTHER: "other",
   },
   Query: {
     getRandomTheme,
@@ -43,4 +43,4 @@ export const resolvers: Resolvers<ContextValue> = {
     deleteTheme,
     toggleLike,
   },
-}
+};

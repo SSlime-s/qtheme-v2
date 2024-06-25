@@ -1,101 +1,101 @@
-import { css } from '@emotion/react'
-import styled from '@emotion/styled'
-import Link from 'next/link'
-import { useCallback, useEffect, useRef, useState } from 'react'
-import { MdKeyboardDoubleArrowLeft } from 'react-icons/md'
-import { RxReset } from 'react-icons/rx'
+import { css } from "@emotion/react";
+import styled from "@emotion/styled";
+import Link from "next/link";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { MdKeyboardDoubleArrowLeft } from "react-icons/md";
+import { RxReset } from "react-icons/rx";
 
-import { isMobile, useIsMobile } from '@/utils/isMobile'
-import { useCurrentTheme } from '@/utils/theme/hooks'
-import { WrapResolver } from '@/utils/wrapper'
-import { BreakStyle, BudouJa } from '@/utils/wrapper/BudouX'
-import { Linkify } from '@/utils/wrapper/Linkify'
-import { ReplaceNewLine } from '@/utils/wrapper/ReplaceNewLine'
+import { isMobile, useIsMobile } from "@/utils/isMobile";
+import { useCurrentTheme } from "@/utils/theme/hooks";
+import { WrapResolver } from "@/utils/wrapper";
+import { BreakStyle, BudouJa } from "@/utils/wrapper/BudouX";
+import { Linkify } from "@/utils/wrapper/Linkify";
+import { ReplaceNewLine } from "@/utils/wrapper/ReplaceNewLine";
 
-import type { ResolvedTheme } from '@repo/theme/resolve'
-import type { PropsWithChildren } from 'react'
+import type { ResolvedTheme } from "@repo/theme/resolve";
+import type { PropsWithChildren } from "react";
 
 interface Props {
-  id?: string
+  id?: string;
 }
 export const Sidebar: React.FC<PropsWithChildren<Props>> = ({
   children,
   id,
 }) => {
-  const isMobile = useIsMobile()
-  const ref = useRef<HTMLDivElement>(null)
-  const [isOpen, setIsOpen] = useState(false)
+  const isMobile = useIsMobile();
+  const ref = useRef<HTMLDivElement>(null);
+  const [isOpen, setIsOpen] = useState(false);
   useEffect(() => {
-    if (ref.current === null) return
-    if (!isMobile) return
+    if (ref.current === null) return;
+    if (!isMobile) return;
 
-    setIsOpen(false)
+    setIsOpen(false);
     const observer = new IntersectionObserver(
-      entries => {
-        const entry = entries[0]
+      (entries) => {
+        const entry = entries[0];
         if (entry.isIntersecting) {
           if (entry.intersectionRatio >= 0.6) {
-            setIsOpen(true)
+            setIsOpen(true);
           } else {
-            setIsOpen(false)
+            setIsOpen(false);
           }
         }
       },
       {
         root: null,
         threshold: [0, 0.4, 0.6],
-      }
-    )
-    observer.observe(ref.current)
+      },
+    );
+    observer.observe(ref.current);
     return () => {
-      observer.disconnect()
-    }
-  }, [isMobile, ref])
+      observer.disconnect();
+    };
+  }, [isMobile]);
 
   const scrollToSelf = useCallback(() => {
     if (!isMobile) {
-      return
+      return;
     }
-    ref.current?.scrollIntoView({ behavior: 'smooth', block: 'end' })
-  }, [isMobile])
+    ref.current?.scrollIntoView({ behavior: "smooth", block: "end" });
+  }, [isMobile]);
 
   return (
     <>
       <Cover hidden={!isOpen} />
       <Wrap ref={ref} id={id}>
         <OpenButton onClick={scrollToSelf} hidden={!isMobile || isOpen}>
-          <MdKeyboardDoubleArrowLeft role='img' aria-label='open' />
+          <MdKeyboardDoubleArrowLeft role="img" aria-label="open" />
         </OpenButton>
         {children}
       </Wrap>
     </>
-  )
-}
+  );
+};
 export const DefaultSidebarContent: React.FC = () => {
   const {
     currentThemeInfo,
     mutate: { changeToDefaultTheme },
-  } = useCurrentTheme()
-  const [isConfirm, setIsConfirm] = useState(false)
-  const [confirmTimeoutId, setConfirmTimeoutId] = useState<NodeJS.Timeout>()
+  } = useCurrentTheme();
+  const [isConfirm, setIsConfirm] = useState(false);
+  const [confirmTimeoutId, setConfirmTimeoutId] = useState<NodeJS.Timeout>();
   const confirmedToDefaultTheme = useCallback(() => {
     if (isConfirm) {
-      changeToDefaultTheme()
-      setIsConfirm(false)
+      changeToDefaultTheme();
+      setIsConfirm(false);
       if (confirmTimeoutId) {
-        clearTimeout(confirmTimeoutId)
-        setConfirmTimeoutId(undefined)
+        clearTimeout(confirmTimeoutId);
+        setConfirmTimeoutId(undefined);
       }
-      return
+      return;
     }
 
-    setIsConfirm(true)
+    setIsConfirm(true);
     const timeoutId = setTimeout(() => {
-      setIsConfirm(false)
-      setConfirmTimeoutId(undefined)
-    }, 2000)
-    setConfirmTimeoutId(timeoutId)
-  }, [changeToDefaultTheme, confirmTimeoutId, isConfirm])
+      setIsConfirm(false);
+      setConfirmTimeoutId(undefined);
+    }, 2000);
+    setConfirmTimeoutId(timeoutId);
+  }, [changeToDefaultTheme, confirmTimeoutId, isConfirm]);
 
   return (
     <>
@@ -124,14 +124,14 @@ export const DefaultSidebarContent: React.FC = () => {
           </Block>
 
           <ResetButton onClick={confirmedToDefaultTheme}>
-            {isConfirm ? 'もう一度クリックで確定' : 'デフォルトテーマに戻す'}
+            {isConfirm ? "もう一度クリックで確定" : "デフォルトテーマに戻す"}
             <RxReset />
           </ResetButton>
         </>
       )}
     </>
-  )
-}
+  );
+};
 
 const Wrap = styled.aside`
   grid-area: side;
@@ -145,7 +145,7 @@ const Wrap = styled.aside`
     scroll-snap-align: end;
     scroll-snap-stop: always;
   }
-`
+`;
 const OpenButton = styled.button`
   position: absolute;
   top: 80px;
@@ -165,11 +165,11 @@ const OpenButton = styled.button`
   &[hidden] {
     display: none;
   }
-`
+`;
 export const BlockStyle = ({
   theme,
 }: {
-  theme: { theme: ResolvedTheme }
+  theme: { theme: ResolvedTheme };
 }) => css`
   background: ${theme.theme.basic.background.primary.default};
   color: ${theme.theme.basic.ui.secondary.default};
@@ -178,13 +178,13 @@ export const BlockStyle = ({
   border-radius: 4px;
   margin-bottom: 16px;
   display: block;
-`
+`;
 export const Block = styled.div`
   ${BlockStyle}
-`
+`;
 export const LinkBlock = styled(Link)`
   ${BlockStyle}
-`
+`;
 export const BreakP = styled.p`
   ${BreakStyle}
 
@@ -195,7 +195,7 @@ export const BreakP = styled.p`
       text-decoration: underline;
     }
   }
-`
+`;
 export const ResetButton = styled.button`
   ${BlockStyle}
 
@@ -210,11 +210,11 @@ export const ResetButton = styled.button`
     font-size: 1.5rem;
     margin-top: 2px;
   }
-`
+`;
 const Title = styled.p`
   font-weight: bold;
   margin-bottom: 8px;
-`
+`;
 
 const Cover = styled.div`
   position: fixed;
@@ -236,4 +236,4 @@ const Cover = styled.div`
       opacity: 0;
     }
   }
-`
+`;

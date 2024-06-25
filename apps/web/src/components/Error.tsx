@@ -1,19 +1,19 @@
-import styled from '@emotion/styled'
-import { useMemo } from 'react'
-import { HiArrowRight } from 'react-icons/hi'
+import styled from "@emotion/styled";
+import { useMemo } from "react";
+import { HiArrowRight } from "react-icons/hi";
 
-import { useLoginUrl } from '@/utils/useLoginUrl'
+import { useLoginUrl } from "@/utils/useLoginUrl";
 
-import { GlassmorphismStyle } from './Glassmorphism'
-import { Forbidden } from './svg/Forbidden'
-import { NotFound } from './svg/NotFound'
-import { OtherError } from './svg/OtherError'
-import { Unauthorized } from './svg/Unauthorized'
+import { GlassmorphismStyle } from "./Glassmorphism";
+import { Forbidden } from "./svg/Forbidden";
+import { NotFound } from "./svg/NotFound";
+import { OtherError } from "./svg/OtherError";
+import { Unauthorized } from "./svg/Unauthorized";
 
 interface Props {
-  color?: string
-  message?: string
-  statusCode?: number
+  color?: string;
+  message?: string;
+  statusCode?: number;
 }
 export const Error: React.FC<Props> = ({
   color,
@@ -22,28 +22,28 @@ export const Error: React.FC<Props> = ({
 }) => {
   const Icon = useMemo(() => {
     if (statusCode === 404) {
-      return NotFound
+      return NotFound;
     }
     if (statusCode === 403) {
-      return Forbidden
+      return Forbidden;
     }
     if (statusCode === 401) {
-      return Unauthorized
+      return Unauthorized;
     }
-    return OtherError
-  }, [statusCode])
+    return OtherError;
+  }, [statusCode]);
 
   const message =
     rawMessage ??
     (statusCode === 404
-      ? 'コンテンツが見つかりませんでした'
+      ? "コンテンツが見つかりませんでした"
       : statusCode === 403
-        ? 'アクセス権限がありません'
+        ? "アクセス権限がありません"
         : statusCode === 401
-          ? ' 部員限定コンテンツです'
-          : '予期せぬエラーが発生しました')
+          ? " 部員限定コンテンツです"
+          : "予期せぬエラーが発生しました");
 
-  const loginUrl = useLoginUrl()
+  const loginUrl = useLoginUrl();
 
   return (
     <Wrap>
@@ -62,24 +62,24 @@ export const Error: React.FC<Props> = ({
         </Message>
       </Inner>
     </Wrap>
-  )
-}
+  );
+};
 const Wrap = styled.div`
   display: grid;
   place-items: center;
   width: 100%;
   min-height: 100%;
-`
+`;
 const Inner = styled.div<{ textColor?: string }>`
   display: flex;
   flex-direction: column;
   align-items: center;
   color: ${({ textColor, theme }) =>
     textColor ?? theme.theme.basic.ui.primary.default};
-`
+`;
 const Message = styled.div`
   text-align: center;
-`
+`;
 const LoginLink = styled.a`
   display: flex;
   ${GlassmorphismStyle}
@@ -99,4 +99,4 @@ const LoginLink = styled.a`
   &:hover > svg {
     transform: translateX(4px);
   }
-`
+`;

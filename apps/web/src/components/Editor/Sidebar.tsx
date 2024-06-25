@@ -1,12 +1,12 @@
-import { keyframes } from '@emotion/react'
-import styled from '@emotion/styled'
+import { keyframes } from "@emotion/react";
+import styled from "@emotion/styled";
 
-import { BlockStyle } from '@/components/layout/Sidebar'
+import { BlockStyle } from "@/components/layout/Sidebar";
 
 interface Props {
-  submit?: () => void
-  isSubmitting?: boolean
-  shareUrl?: string
+  submit?: () => void;
+  isSubmitting?: boolean;
+  shareUrl?: string;
 }
 
 export const Sidebar: React.FC<Props> = ({
@@ -21,12 +21,12 @@ export const Sidebar: React.FC<Props> = ({
           Submit
         </SubmitButton>
       </SubmitButtonWrapper>
-      <ShareButton href={shareUrl} target='_blank' rel='noopener noreferrer'>
+      <ShareButton href={shareUrl} target="_blank" rel="noopener noreferrer">
         Share
       </ShareButton>
     </>
-  )
-}
+  );
+};
 
 const rotateKeyframe = keyframes`
   from {
@@ -35,7 +35,7 @@ const rotateKeyframe = keyframes`
   to {
     transform: translate(-50%, -50%) rotate(1turn);
   }
-`
+`;
 
 const SubmitButtonWrapper = styled.div`
   position: relative;
@@ -80,15 +80,15 @@ const SubmitButtonWrapper = styled.div`
       display: none;
     }
   }
-`
+`;
 
 const SubmitButton = styled.button`
   ${BlockStyle}
   margin-bottom: 0px;
   cursor: pointer;
-`
+`;
 
 const ShareButton = styled.a`
   ${BlockStyle}
   cursor: pointer;
-`
+`;

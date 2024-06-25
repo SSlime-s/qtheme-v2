@@ -1,36 +1,36 @@
-import { GraphQLError } from 'graphql'
+import { GraphQLError } from "graphql";
 
-import { getHistoryFromDb } from './utils/getHistoryFromDb'
-import { getThemeFromDb } from './utils/getThemeFromDb'
+import { getHistoryFromDb } from "./utils/getHistoryFromDb";
+import { getThemeFromDb } from "./utils/getThemeFromDb";
 
-import type { ContextValue } from '.'
-import type { QueryResolvers } from '@/apollo/generated/resolvers'
+import type { QueryResolvers } from "@/apollo/generated/resolvers";
+import type { ContextValue } from ".";
 
-export const getTheme: QueryResolvers<ContextValue>['getTheme'] = async (
+export const getTheme: QueryResolvers<ContextValue>["getTheme"] = async (
   _,
   args,
-  { userId, prisma }
+  { userId, prisma },
 ) => {
-  const { id } = args
+  const { id } = args;
   try {
-    const theme = await prisma.$transaction(async prisma => {
-      const theme = await getThemeFromDb(prisma, id, userId)
+    const theme = await prisma.$transaction(async (prisma) => {
+      const theme = await getThemeFromDb(prisma, id, userId);
       if (theme === null) {
-        throw new GraphQLError('Not found')
+        throw new GraphQLError("Not found");
       }
-      const history = await getHistoryFromDb(prisma, id)
+      const history = await getHistoryFromDb(prisma, id);
       return {
         theme,
         versions: history,
-      }
-    })
+      };
+    });
 
-    return theme
+    return theme;
   } catch (err: unknown) {
-    console.error(err)
+    console.error(err);
     if (err instanceof GraphQLError) {
-      throw err
+      throw err;
     }
-    throw new GraphQLError(`Internal server error: ${err}`)
+    throw new GraphQLError(`Internal server error: ${err}`);
   }
-}
+};

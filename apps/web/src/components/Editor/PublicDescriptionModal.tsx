@@ -1,16 +1,16 @@
-import { keyframes } from '@emotion/react'
-import styled from '@emotion/styled'
-import { BiPaint, BiWorld } from 'react-icons/bi'
+import { keyframes } from "@emotion/react";
+import styled from "@emotion/styled";
+import { BiPaint, BiWorld } from "react-icons/bi";
 
-import { ModalTemplate } from '@/utils/modal/ModalTemplate'
-import { lightTheme } from '@repo/theme/default'
+import { ModalTemplate } from "@/utils/modal/ModalTemplate";
+import { lightTheme } from "@repo/theme/default";
 
-interface Props extends React.ComponentProps<'div'> {
-  children?: never
+interface Props extends React.ComponentProps<"div"> {
+  children?: never;
 
-  titleProps?: React.ComponentProps<'h1'>
+  titleProps?: React.ComponentProps<"h1">;
 
-  close: () => void
+  close: () => void;
 }
 export const PublicDescriptionModal: React.FC<Props> = ({
   titleProps,
@@ -38,8 +38,8 @@ export const PublicDescriptionModal: React.FC<Props> = ({
       </p>
       <CloseButton onClick={close}>わかった！</CloseButton>
     </Wrap>
-  )
-}
+  );
+};
 
 const popupKeyframes = keyframes`
   0% {
@@ -53,17 +53,17 @@ const popupKeyframes = keyframes`
     transform: scale(1);
     opacity: 1;
   }
-`
+`;
 const Wrap = styled(ModalTemplate)`
   padding: 24px;
   display: grid;
   gap: 32px;
   animation: ${popupKeyframes} 0.2s ease-out;
-`
+`;
 const Title = styled.h1`
   font-size: 1.25rem;
   font-weight: bold;
-`
+`;
 const CloseButton = styled.button`
   margin-left: auto;
   display: block;
@@ -73,18 +73,18 @@ const CloseButton = styled.button`
   color: ${lightTheme.basic.background.primary};
   font-weight: bold;
   cursor: pointer;
-`
+`;
 const Li = styled.li`
   margin-bottom: 8px;
   display: grid;
   grid-template-columns: max-content 1fr;
   gap: 4px;
   line-height: 32px;
-`
+`;
 const Marker = styled.span`
   width: 32px;
   height: 32px;
   font-size: 16px;
   display: grid;
   place-items: center;
-`
+`;

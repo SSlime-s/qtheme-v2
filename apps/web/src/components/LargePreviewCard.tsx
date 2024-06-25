@@ -1,27 +1,27 @@
-import styled from '@emotion/styled'
-import { useCallback } from 'react'
+import styled from "@emotion/styled";
+import { useCallback } from "react";
 
-import { lightTheme } from '@repo/theme/default'
-import { SmallPreview } from '@repo/theme-preview'
+import { SmallPreview } from "@repo/theme-preview";
+import { lightTheme } from "@repo/theme/default";
 
-import { GlassmorphismStyle } from './Glassmorphism'
+import { GlassmorphismStyle } from "./Glassmorphism";
 
-import type { FormattedTheme } from '@/utils/theme/hooks'
-import type { ResolvedTheme } from '@repo/theme/resolve'
+import type { FormattedTheme } from "@/utils/theme/hooks";
+import type { ResolvedTheme } from "@repo/theme/resolve";
 
 type Props = {
-  theme: FormattedTheme
-  resolvedTheme: ResolvedTheme
+  theme: FormattedTheme;
+  resolvedTheme: ResolvedTheme;
 } & (
   | {
-      changeTheme: (id: string, theme: FormattedTheme) => void
-      noId?: false
+      changeTheme: (id: string, theme: FormattedTheme) => void;
+      noId?: false;
     }
   | {
-      changeTheme: (id: undefined, theme: FormattedTheme) => void
-      noId: true
+      changeTheme: (id: undefined, theme: FormattedTheme) => void;
+      noId: true;
     }
-)
+);
 export const LargePreviewCard: React.FC<Props> = ({
   theme,
   resolvedTheme,
@@ -30,11 +30,11 @@ export const LargePreviewCard: React.FC<Props> = ({
 }) => {
   const changeHandler = useCallback(() => {
     if (noId === true) {
-      changeTheme(undefined, theme)
+      changeTheme(undefined, theme);
     } else {
-      changeTheme(theme.id, theme)
+      changeTheme(theme.id, theme);
     }
-  }, [changeTheme, noId, theme])
+  }, [changeTheme, noId, theme]);
 
   return (
     <Card>
@@ -45,8 +45,8 @@ export const LargePreviewCard: React.FC<Props> = ({
         </ChangeCurrentButton>
       </CardInner>
     </Card>
-  )
-}
+  );
+};
 
 const Card = styled.div`
   ${GlassmorphismStyle}
@@ -55,7 +55,7 @@ const Card = styled.div`
   margin: 32px auto;
   max-width: 800px;
   width: 100%;
-`
+`;
 const CardInner = styled.button`
   cursor: pointer;
   border-radius: 8px;
@@ -70,7 +70,7 @@ const CardInner = styled.button`
   &:hover > * > span {
     transform: scale(1.05);
   }
-`
+`;
 const ChangeCurrentButton = styled.div`
   display: grid;
   place-items: center;
@@ -80,4 +80,4 @@ const ChangeCurrentButton = styled.div`
   border-top: 1px solid ${lightTheme.basic.ui.tertiary};
   backdrop-filter: blur(2px);
   color: ${lightTheme.basic.text.primary};
-`
+`;

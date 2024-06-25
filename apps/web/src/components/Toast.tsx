@@ -1,28 +1,28 @@
-import { css, keyframes } from '@emotion/react'
-import styled from '@emotion/styled'
-import dynamic from 'next/dynamic'
-import { useMemo } from 'react'
-import ReactDOM from 'react-dom'
+import { css, keyframes } from "@emotion/react";
+import styled from "@emotion/styled";
+import dynamic from "next/dynamic";
+import { useMemo } from "react";
+import ReactDOM from "react-dom";
 
-import { useToastList } from '@/utils/toast'
+import { useToastList } from "@/utils/toast";
 
-import type { ToastOptions } from '@/utils/toast'
-import type { Theme } from '@emotion/react'
+import type { ToastOptions } from "@/utils/toast";
+import type { Theme } from "@emotion/react";
 
-type Props = Omit<ToastOptions, 'durationMs' | 'key'> & {
-  toastKey: string
-}
+type Props = Omit<ToastOptions, "durationMs" | "key"> & {
+  toastKey: string;
+};
 const Toast: React.FC<Props> = ({ type, content, toastKey, onClick }) => {
   const Wrap = useMemo(() => {
-    return onClick ? WrapButton : WrapDiv
-  }, [onClick])
+    return onClick ? WrapButton : WrapDiv;
+  }, [onClick]);
 
   return (
     <Wrap onClick={onClick} key={toastKey} data-type={type}>
       {content}
     </Wrap>
-  )
-}
+  );
+};
 const slideIn = keyframes`
   from {
     transform: translateX(-50%);
@@ -34,7 +34,7 @@ const slideIn = keyframes`
   to {
     transform: translateX(0);
   }
-`
+`;
 const WrapStyle = ({ theme: { theme } }: { theme: Theme }) => css`
   filter: drop-shadow(0 2px 4px rgba(33, 63, 99, 0.3));
   color: #fff;
@@ -58,18 +58,18 @@ const WrapStyle = ({ theme: { theme } }: { theme: Theme }) => css`
   }
 
   animation: ${slideIn} 0.3s ease-out;
-`
-const WrapDiv = styled.div<{ 'data-type': ToastOptions['type'] }>`
+`;
+const WrapDiv = styled.div<{ "data-type": ToastOptions["type"] }>`
   ${WrapStyle}
-`
-const WrapButton = styled.button<{ 'data-type': ToastOptions['type'] }>`
+`;
+const WrapButton = styled.button<{ "data-type": ToastOptions["type"] }>`
   ${WrapStyle}
 
   cursor: pointer;
-`
+`;
 
 const RawToastContainer: React.FC = () => {
-  const toasts = useToastList()
+  const toasts = useToastList();
 
   return ReactDOM.createPortal(
     <Container>
@@ -77,15 +77,15 @@ const RawToastContainer: React.FC = () => {
         <Toast key={key} toastKey={key} {...t} />
       ))}
     </Container>,
-    document.getElementById('toast') as HTMLElement
-  )
-}
+    document.getElementById("toast") as HTMLElement,
+  );
+};
 export const ToastContainer = dynamic(
   () => Promise.resolve(RawToastContainer),
   {
     ssr: false,
-  }
-)
+  },
+);
 const Container = styled.div`
   position: absolute;
   z-index: 1000;
@@ -95,4 +95,4 @@ const Container = styled.div`
   flex-direction: column-reverse;
   pointer-events: none;
   contain: layout;
-`
+`;

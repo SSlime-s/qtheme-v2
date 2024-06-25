@@ -1,38 +1,38 @@
-import type { Version } from '@/apollo/generated/resolvers'
-import type { PrismaClient } from '@repo/database'
+import type { Version } from "@/apollo/generated/resolvers";
+import type { PrismaClient } from "@repo/database";
 
 interface IHistory extends Version {
-  id: string
-  themeId: string
-  version: string
-  theme: string
-  createdAt: Date
+  id: string;
+  themeId: string;
+  version: string;
+  theme: string;
+  createdAt: Date;
 }
 interface HistoryRow {
-  id: string
-  theme_id: string
-  version: string
-  theme: string
-  created_at: Date
+  id: string;
+  theme_id: string;
+  version: string;
+  theme: string;
+  created_at: Date;
 }
 
 const convertRowToI = (history: HistoryRow): IHistory => {
-  const { theme_id, created_at, ...restHistory } = history
+  const { theme_id, created_at, ...restHistory } = history;
 
   return {
     ...restHistory,
     themeId: theme_id,
     createdAt: created_at,
-  }
-}
+  };
+};
 
 /**
  * **WARNING**: この関数では閲覧権限の確認は行わない
  */
 
 export const getHistoryFromDb = async (
-  prisma: Pick<PrismaClient, 'theme_versions'>,
-  id: string
+  prisma: Pick<PrismaClient, "theme_versions">,
+  id: string,
 ) => {
   try {
     const history = await prisma.theme_versions.findMany({
@@ -47,23 +47,23 @@ export const getHistoryFromDb = async (
         theme_id: id,
       },
       orderBy: {
-        created_at: 'desc',
+        created_at: "desc",
       },
-    })
+    });
 
-    return history.map(convertRowToI) satisfies IHistory[]
+    return history.map(convertRowToI) satisfies IHistory[];
   } catch (err) {
-    console.error(err)
-    throw err
+    console.error(err);
+    throw err;
   }
-}
+};
 
 /**
  * **WARNING**: この関数では閲覧権限の確認は行わない
  */
 export const getLatestHistoryFromDb = async (
-  prisma: Pick<PrismaClient, 'theme_versions'>,
-  id: string
+  prisma: Pick<PrismaClient, "theme_versions">,
+  id: string,
 ) => {
   try {
     const history = await prisma.theme_versions.findFirst({
@@ -78,15 +78,15 @@ export const getLatestHistoryFromDb = async (
         theme_id: id,
       },
       orderBy: {
-        created_at: 'desc',
+        created_at: "desc",
       },
-    })
+    });
     if (history === null) {
-      return null
+      return null;
     }
-    return convertRowToI(history)
+    return convertRowToI(history);
   } catch (err) {
-    console.error(err)
-    throw err
+    console.error(err);
+    throw err;
   }
-}
+};

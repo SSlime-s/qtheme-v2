@@ -1,40 +1,42 @@
-import styled from '@emotion/styled'
-import { useRef, useState, useCallback, useEffect, forwardRef } from 'react'
+import styled from "@emotion/styled";
+import { forwardRef, useCallback, useEffect, useRef, useState } from "react";
 
-import type { ComponentProps } from 'react'
+import type { ComponentProps } from "react";
 
-type Props = ComponentProps<'textarea'>
+type Props = ComponentProps<"textarea">;
 export const AutoResizeTextarea = forwardRef<HTMLTextAreaElement, Props>(
   ({ onChange, ...props }, receiveRef) => {
-    const ref = useRef<HTMLTextAreaElement>(null)
-    const [height, setHeight] = useState<number | null>(null)
-    const [dummyValue, setDummyValue] = useState(props.value ?? '')
+    const ref = useRef<HTMLTextAreaElement>(null);
+    const [height, setHeight] = useState<number | null>(null);
+    const [dummyValue, setDummyValue] = useState(props.value ?? "");
 
     const onChangeHandler = useCallback(
       (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-        onChange?.(e)
-        setDummyValue(e.target.value)
+        onChange?.(e);
+        setDummyValue(e.target.value);
       },
-      [onChange]
-    )
+      [onChange],
+    );
+    // biome-ignore lint/correctness/useExhaustiveDependencies: dummyValue が変わるときに再計算する
     useEffect(() => {
       if (ref.current === null) {
-        return
+        return;
       }
-      const { scrollHeight } = ref.current
-      setHeight(scrollHeight)
-      const observer = new ResizeObserver(entries => {
-        const entry = entries[0]
-        setHeight(entry.target.scrollHeight)
-      })
-      observer.observe(ref.current)
+      const { scrollHeight } = ref.current;
+      setHeight(scrollHeight);
+      const observer = new ResizeObserver((entries) => {
+        const entry = entries[0];
+        setHeight(entry.target.scrollHeight);
+      });
+      observer.observe(ref.current);
       return () => {
-        observer.disconnect()
-      }
-    }, [dummyValue])
+        observer.disconnect();
+      };
+    }, [dummyValue]);
+
     useEffect(() => {
-      setDummyValue(props.value ?? '')
-    }, [props.value])
+      setDummyValue(props.value ?? "");
+    }, [props.value]);
 
     return (
       <>
@@ -49,20 +51,20 @@ export const AutoResizeTextarea = forwardRef<HTMLTextAreaElement, Props>(
           value={dummyValue}
           className={props.className}
           rows={props.rows}
-          aria-hidden='true'
+          aria-hidden="true"
           readOnly
         />
       </>
-    )
-  }
-)
-AutoResizeTextarea.displayName = 'AutoResizeTextarea'
+    );
+  },
+);
+AutoResizeTextarea.displayName = "AutoResizeTextarea";
 
 const Textarea = styled.textarea<{ height: number | null }>`
-  height: ${({ height }) => (height === null ? 'auto' : `${height}px`)};
+  height: ${({ height }) => (height === null ? "auto" : `${height}px`)};
   resize: none;
   overflow: hidden;
-`
+`;
 const Dummy = styled.textarea`
   position: fixed !important;
   top: 0;
@@ -70,4 +72,4 @@ const Dummy = styled.textarea`
   visibility: hidden;
   height: auto;
   overflow: hidden;
-`
+`;

@@ -1,23 +1,23 @@
-import { ThemeProvider } from '@emotion/react'
-import styled from '@emotion/styled'
+import { ThemeProvider } from "@emotion/react";
+import styled from "@emotion/styled";
 
-import { lightTheme, darkTheme } from '@repo/theme/default'
-import { resolveTheme } from '@repo/theme/resolve'
-import { SmallPreview } from '@repo/theme-preview'
+import { SmallPreview } from "@repo/theme-preview";
+import { darkTheme, lightTheme } from "@repo/theme/default";
+import { resolveTheme } from "@repo/theme/resolve";
 
-import { GlassmorphismStyle } from '../components/Glassmorphism'
+import { GlassmorphismStyle } from "../components/Glassmorphism";
 
-import type { Meta, StoryFn } from '@storybook/react'
+import type { Meta, StoryFn } from "@storybook/react";
 
 const meta: Meta<typeof SmallPreview> = {
-  title: 'Components/Preview',
+  title: "Components/Preview",
   component: SmallPreview,
-}
+};
 
-export default meta
+export default meta;
 
 const Template: StoryFn<typeof SmallPreview> = (
-  args: Parameters<typeof SmallPreview>[0]
+  args: Parameters<typeof SmallPreview>[0],
 ) => (
   <ThemeProvider theme={{ theme: args.theme }}>
     <Wrap>
@@ -28,13 +28,13 @@ const Template: StoryFn<typeof SmallPreview> = (
       </WrapCard>
     </Wrap>
   </ThemeProvider>
-)
+);
 const Wrap = styled.div`
   height: 100%;
   width: 400px;
   background-color: white;
   border: 2px solid black;
-`
+`;
 const WrapCard = styled.div`
   margin: 40px;
   border-radius: 20px;
@@ -50,20 +50,20 @@ const WrapCard = styled.div`
       ${({ theme }) => theme.theme.basic.accent.primary.default} 0%,
       transparent 100%
     );
-`
+`;
 const CardGlass = styled.div`
   ${GlassmorphismStyle}
   padding: 40px;
-`
+`;
 
-export const LightDefault: StoryFn<typeof SmallPreview> = Template.bind({})
+export const LightDefault: StoryFn<typeof SmallPreview> = Template.bind({});
 LightDefault.args = {
-  author: 'SSlime',
+  author: "SSlime",
   theme: resolveTheme(lightTheme),
-}
+};
 
-export const DarkDefault: StoryFn<typeof SmallPreview> = Template.bind({})
+export const DarkDefault: StoryFn<typeof SmallPreview> = Template.bind({});
 DarkDefault.args = {
-  author: 'SSlime',
+  author: "SSlime",
   theme: resolveTheme(darkTheme),
-}
+};

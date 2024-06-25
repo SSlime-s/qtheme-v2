@@ -1,34 +1,34 @@
-import styled from '@emotion/styled'
-import { useCallback, useId } from 'react'
-import { BiSearch } from 'react-icons/bi'
+import styled from "@emotion/styled";
+import { useCallback, useId } from "react";
+import { BiSearch } from "react-icons/bi";
 
 export const FilterBox: React.FC<{
-  word: string
-  setWord: (word: string) => void
-  placeholder?: string
+  word: string;
+  setWord: (word: string) => void;
+  placeholder?: string;
 }> = ({ word, setWord, placeholder }) => {
-  const id = useId()
+  const id = useId();
 
   const onSubmit = useCallback(
     () => (e: React.FormEvent<HTMLFormElement>) => {
-      e.preventDefault()
+      e.preventDefault();
     },
-    []
-  )
+    [],
+  );
 
   const onChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      setWord(e.target.value)
+      setWord(e.target.value);
     },
-    [setWord]
-  )
+    [setWord],
+  );
 
   return (
     <Form onSubmit={onSubmit}>
       <InputWrap>
         <BiSearch />
         <Input
-          type='search'
+          type="search"
           id={id}
           placeholder={placeholder}
           value={word}
@@ -36,12 +36,12 @@ export const FilterBox: React.FC<{
         />
       </InputWrap>
     </Form>
-  )
-}
+  );
+};
 
 const Form = styled.form`
   margin-bottom: 8px;
-`
+`;
 
 const InputWrap = styled.div`
   background: ${({ theme }) => theme.theme.basic.background.primary.default};
@@ -64,7 +64,7 @@ const InputWrap = styled.div`
   &:focus-within {
     border-color: ${({ theme }) => theme.theme.basic.accent.focus.default};
   }
-`
+`;
 
 const Input = styled.input`
   width: 100%;
@@ -78,4 +78,4 @@ const Input = styled.input`
   &::-webkit-search-cancel-button {
     cursor: pointer;
   }
-`
+`;

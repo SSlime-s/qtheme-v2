@@ -1,4 +1,4 @@
-import { css } from '@emotion/react'
+import { css } from "@emotion/react";
 
 export const lineClamp = (lines: number) => css`
   display: -webkit-box;
@@ -6,4 +6,4 @@ export const lineClamp = (lines: number) => css`
   -webkit-line-clamp: ${lines};
   overflow: hidden;
   text-overflow: ellipsis;
-`
+`;

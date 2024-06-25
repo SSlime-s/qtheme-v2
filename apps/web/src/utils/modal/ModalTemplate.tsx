@@ -1,34 +1,34 @@
-import { css } from '@emotion/react'
-import styled from '@emotion/styled'
-import { useCallback } from 'react'
+import { css } from "@emotion/react";
+import styled from "@emotion/styled";
+import { useCallback } from "react";
 
-import { GlassmorphismStyle } from '@/components/Glassmorphism'
+import { GlassmorphismStyle } from "@/components/Glassmorphism";
 
-import { Modal } from './Modal'
+import { Modal } from "./Modal";
 
-import type { PropsWithChildren } from 'react'
+import type { PropsWithChildren } from "react";
 
-interface Props extends React.ComponentProps<'div'> {
-  onOutsideClick?: () => void
+interface Props extends React.ComponentProps<"div"> {
+  onOutsideClick?: () => void;
 
   /**
    * GlassMorphism のような見た目にする
    *
    * @default false
    */
-  glass?: boolean
+  glass?: boolean;
   /**
    * traQ のよくあるモーダルのサイズにする
    *
    * @default false
    */
-  defaultSize?: boolean
+  defaultSize?: boolean;
   /**
    * モーダルを中央に配置する
    *
    * @default true
    */
-  centered?: boolean
+  centered?: boolean;
 }
 export const ModalTemplate: React.FC<PropsWithChildren<Props>> = ({
   children,
@@ -41,11 +41,11 @@ export const ModalTemplate: React.FC<PropsWithChildren<Props>> = ({
   const handleOutsideClick = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
       if (e.target === e.currentTarget) {
-        onOutsideClick?.()
+        onOutsideClick?.();
       }
     },
-    [onOutsideClick]
-  )
+    [onOutsideClick],
+  );
 
   return (
     <WrapModal onClick={handleOutsideClick} centered={centered}>
@@ -53,10 +53,10 @@ export const ModalTemplate: React.FC<PropsWithChildren<Props>> = ({
         {children}
       </Wrap>
     </WrapModal>
-  )
-}
+  );
+};
 const WrapModal = styled(Modal)<{
-  centered: boolean
+  centered: boolean;
 }>`
   ${({ centered }) =>
     centered &&
@@ -66,10 +66,10 @@ const WrapModal = styled(Modal)<{
     `}
   padding: 16px;
   overflow: auto;
-`
+`;
 const Wrap = styled.div<{
-  glass: boolean
-  defaultSize: boolean
+  glass: boolean;
+  defaultSize: boolean;
 }>`
   ${({ glass }) => glass && GlassmorphismStyle}
   ${({ defaultSize }) =>
@@ -80,4 +80,4 @@ const Wrap = styled.div<{
       max-width: 640px;
       max-height: 480px;
     `}
-`
+`;

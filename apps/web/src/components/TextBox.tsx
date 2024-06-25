@@ -1,22 +1,22 @@
-import styled from '@emotion/styled'
-import { useEffect, useRef } from 'react'
+import styled from "@emotion/styled";
+import { useEffect, useRef } from "react";
 
-import { lineClamp } from '@/styles/lineClamp'
+import { lineClamp } from "@/styles/lineClamp";
 
 export interface Props
   extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
-  before?: React.ReactNode
-  after?: React.ReactNode
+  before?: React.ReactNode;
+  after?: React.ReactNode;
 
-  readOnly?: boolean
+  readOnly?: boolean;
 }
 
 export const TextBox: React.FC<Props> = ({ readOnly, ...props }) => {
   if (readOnly === true) {
-    return <ReadOnlyTextBox {...props} />
+    return <ReadOnlyTextBox {...props} />;
   }
 
-  const { before, after, ...restProps } = props
+  const { before, after, ...restProps } = props;
 
   return (
     <Wrap>
@@ -24,8 +24,8 @@ export const TextBox: React.FC<Props> = ({ readOnly, ...props }) => {
       <Input {...restProps} />
       {after != null && <After>{after}</After>}
     </Wrap>
-  )
-}
+  );
+};
 
 const ReadOnlyTextBox: React.FC<Props> = ({
   before,
@@ -33,21 +33,21 @@ const ReadOnlyTextBox: React.FC<Props> = ({
   className,
   ...props
 }) => {
-  const textAreaRef = useRef<HTMLTextAreaElement>(null)
+  const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
-    if (textAreaRef.current === null) return
-    const textArea = textAreaRef.current
+    if (textAreaRef.current === null) return;
+    const textArea = textAreaRef.current;
     const selectAll = () => {
-      textArea.focus()
-      textArea.select()
-    }
-    textArea.addEventListener('focus', selectAll)
+      textArea.focus();
+      textArea.select();
+    };
+    textArea.addEventListener("focus", selectAll);
 
     return () => {
-      textArea.removeEventListener('focus', selectAll)
-    }
-  }, [])
+      textArea.removeEventListener("focus", selectAll);
+    };
+  }, []);
 
   return (
     <Wrap className={className}>
@@ -59,8 +59,8 @@ const ReadOnlyTextBox: React.FC<Props> = ({
         </After>
       )}
     </Wrap>
-  )
-}
+  );
+};
 
 const Wrap = styled.div`
   display: grid;
@@ -73,11 +73,11 @@ const Wrap = styled.div`
   &:focus-within {
     border-color: ${({ theme }) => theme.theme.basic.accent.focus.default};
   }
-`
+`;
 const Before = styled.div`
   height: 40px;
   align-self: end;
-`
+`;
 const Input = styled.textarea`
   grid-column: 2;
   border: none;
@@ -103,15 +103,15 @@ const Input = styled.textarea`
   height: 40px;
   overflow: hidden;
   resize: none;
-`
+`;
 const After = styled.div`
   grid-column: 3;
   background: ${({ theme }) => theme.theme.basic.background.primary.default};
   border-radius: 0 8px 8px 0;
   display: grid;
   height: 100%;
-`
+`;
 const AfterContent = styled.div`
   height: 40px;
   align-self: end;
-`
+`;

@@ -1,23 +1,23 @@
-import { print } from 'graphql'
-import { useCallback, useMemo } from 'react'
-import useSWRInfinite from 'swr/infinite'
+import { print } from "graphql";
+import { useCallback, useMemo } from "react";
+import useSWRInfinite from "swr/infinite";
 
-import { useClient } from '@/utils/api'
-import { themeFromRaw, THEMES_PER_PAGE } from '@/utils/theme/hooks'
+import { useClient } from "@/utils/api";
+import { THEMES_PER_PAGE, themeFromRaw } from "@/utils/theme/hooks";
 
-import { FavoritesDocument, getSdk } from './getFavorite.generated'
+import { FavoritesDocument, getSdk } from "./getFavorite.generated";
 
 export const useFavoritesList = (
-  type: 'light' | 'dark' | 'other' | null,
-  visibility: 'public' | 'private' | 'draft' | null,
-  pageSize: number = THEMES_PER_PAGE
+  type: "light" | "dark" | "other" | null,
+  visibility: "public" | "private" | "draft" | null,
+  pageSize: number = THEMES_PER_PAGE,
 ) => {
-  const client = useClient()
+  const client = useClient();
 
   const { data, error, isLoading, mutate, setSize } = useSWRInfinite(
     (index, previousPageData) => {
       if (previousPageData !== null && previousPageData.themes.length === 0) {
-        return null
+        return null;
       }
 
       return [
@@ -28,56 +28,56 @@ export const useFavoritesList = (
           type: type?.toUpperCase() ?? null,
           visibility: visibility?.toUpperCase() ?? null,
         },
-      ] as const
+      ] as const;
     },
     async ([_, variables]) => {
-      const sdk = getSdk(client)
-      const { getThemes } = await sdk.Favorites(variables)
+      const sdk = getSdk(client);
+      const { getThemes } = await sdk.Favorites(variables);
       if (getThemes === null || getThemes === undefined) {
-        throw new Error('Theme not found')
+        throw new Error("Theme not found");
       }
 
-      return getThemes
-    }
-  )
+      return getThemes;
+    },
+  );
 
   const themes = useMemo(() => {
-    return data ? data.flatMap(page => page.themes.map(themeFromRaw)) : []
-  }, [data])
+    return data ? data.flatMap((page) => page.themes.map(themeFromRaw)) : [];
+  }, [data]);
 
   const total = useMemo(() => {
-    return data ? data[data.length - 1].total : 0
-  }, [data])
+    return data ? data[data.length - 1].total : 0;
+  }, [data]);
 
   const loadMore = useCallback(async () => {
-    await setSize(size => size + 1)
-  }, [setSize])
+    await setSize((size) => size + 1);
+  }, [setSize]);
 
   const isEmpty = useMemo(() => {
-    return data?.[0].themes.length === 0
-  }, [data])
+    return data?.[0].themes.length === 0;
+  }, [data]);
 
   const isReachingEnd = useMemo(() => {
-    return isEmpty || (data && data[data.length - 1].themes.length < pageSize)
-  }, [data, isEmpty, pageSize])
+    return isEmpty || (data && data[data.length - 1].themes.length < pageSize);
+  }, [data, isEmpty, pageSize]);
 
   const toggleLike = useCallback(
     async (id: string, isLike: boolean) => {
-      const sdk = getSdk(client)
+      const sdk = getSdk(client);
       const {
         toggleLike: { isLike: isLikeNew },
-      } = await sdk.Favorites_ToggleLike({ id, isLike })
+      } = await sdk.Favorites_ToggleLike({ id, isLike });
 
-      await mutate(data => {
+      await mutate((data) => {
         if (!data) {
-          return data
+          return data;
         }
 
-        return data.map(page => {
+        return data.map((page) => {
           return {
             ...page,
             themes: page.themes
-              .map(theme => {
+              .map((theme) => {
                 if (theme.id === id) {
                   return {
                     ...theme,
@@ -86,19 +86,19 @@ export const useFavoritesList = (
                       isLikeNew === theme.isLike
                         ? theme.likes
                         : theme.likes + (isLikeNew ? 1 : -1),
-                  }
+                  };
                 }
-                return theme
+                return theme;
               })
-              .filter(theme => theme.isLike),
-          }
-        })
-      })
+              .filter((theme) => theme.isLike),
+          };
+        });
+      });
 
-      return
+      return;
     },
-    [client, mutate]
-  )
+    [client, mutate],
+  );
 
   return {
     themes,
@@ -110,5 +110,5 @@ export const useFavoritesList = (
     },
     error,
     isLoading,
-  }
-}
+  };
+};

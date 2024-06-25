@@ -1,16 +1,17 @@
-import Script from 'next/script'
-import React from 'react'
+import Script from "next/script";
+import type React from "react";
 
-export type GoogleTagManagerId = `GTM-${string}`
+export type GoogleTagManagerId = `GTM-${string}`;
 
 interface Props {
-  googleTagManagerId: GoogleTagManagerId
+  googleTagManagerId: GoogleTagManagerId;
 }
 
 export const GoogleTagManager: React.FC<Props> = ({ googleTagManagerId }) => (
   <Script
-    id='gtm'
-    strategy='afterInteractive'
+    id="gtm"
+    strategy="afterInteractive"
+    // biome-ignore lint/security/noDangerouslySetInnerHtml: gtm のため
     dangerouslySetInnerHTML={{
       __html: `
       (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -21,4 +22,4 @@ export const GoogleTagManager: React.FC<Props> = ({ googleTagManagerId }) => (
       `,
     }}
   />
-)
+);
