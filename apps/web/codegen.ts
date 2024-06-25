@@ -9,12 +9,7 @@ const defaultAdd = [
 // * Do not make direct changes to the file.                  *
 // ************************************************************`,
     },
-  },
-  {
-    add: {
-      content: "/* eslint-disable */",
-    },
-  },
+  }
 ] as const;
 
 const defaultConfig: CodegenConfig["config"] = {
@@ -32,9 +27,6 @@ const config: CodegenConfig = {
   overwrite: true,
   schema: "src/apollo/schema.graphql",
   documents: "src/**/*.graphql",
-  hooks: {
-    afterAllFileWrite: ["prettier --write"],
-  },
   generates: {
     "src/apollo/generated/resolvers.ts": {
       plugins: ["typescript", "typescript-resolvers", ...defaultAdd],
