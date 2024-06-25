@@ -1,32 +1,35 @@
 {
   "$schema": "https://biomejs.dev/schemas/1.8.2/schema.json",
   "organizeImports": {
-    "enabled": true
+    "enabled": true,
   },
   "linter": {
     "enabled": true,
     "rules": {
       "recommended": true,
+      "nursery": {
+        "noUnusedFunctionParameters": "warn",
+      },
       // FIXME: 以下のルールはすぐの修正が困難なため、一時的に無効化している
       "suspicious": {
         "noDoubleEquals": "off",
-        "noShadowRestrictedNames": "off"
+        "noShadowRestrictedNames": "off",
       },
       "style": {
-        "noNonNullAssertion": "off"
-      }
-    }
+        "noNonNullAssertion": "off",
+      },
+    },
   },
   "formatter": {
     "indentStyle": "space",
-    "indentWidth": 2
+    "indentWidth": 2,
   },
   "vcs": {
     "enabled": true,
     "clientKind": "git",
-    "useIgnoreFile": true
+    "useIgnoreFile": true,
   },
   "files": {
-    "ignore": ["mysql"]
-  }
+    "ignore": ["mysql"],
+  },
 }

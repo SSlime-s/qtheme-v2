@@ -29,7 +29,7 @@ interface Props {
   setExpanded?: (expanded: boolean) => void;
 }
 const ColorSelectorRaw: React.FC<Props> = ({
-  allowText,
+  allowText: _allowText,
   suggestedColors,
   onChange,
   value,

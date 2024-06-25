@@ -16,7 +16,7 @@ const nextConfig = {
     ],
   },
 
-  webpack: (config, options) => {
+  webpack: (config, _options) => {
     config.module.rules.push({
       test: /\.(graphql|gql)$/,
       exclude: /node_modules/,
