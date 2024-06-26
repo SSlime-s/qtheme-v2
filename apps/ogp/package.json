@@ -1,0 +1,24 @@
+{
+	"name": "@repo/ogp",
+	"version": "0.1.0",
+	"private": true,
+	"scripts": {
+		"dev": "next dev --port 6069",
+		"build": "next build",
+		"start": "next start"
+	},
+	"dependencies": {
+		"@repo/theme": "workspace:*",
+		"@repo/theme-preview": "workspace:*",
+		"next": "14.2.4",
+		"react": "^18",
+		"react-dom": "^18"
+	},
+	"devDependencies": {
+		"@repo/typescript-config": "workspace:*",
+		"@types/node": "^20",
+		"@types/react": "^18",
+		"@types/react-dom": "^18",
+		"typescript": "^5.5.2"
+	}
+}
