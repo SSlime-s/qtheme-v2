@@ -1,12 +1,13 @@
+import path from "node:path";
 import { configDefaults, defineConfig } from "vitest/config";
 
 export default defineConfig({
 	test: {
 		globals: true,
 		environment: "jsdom",
-		exclude: [...configDefaults.exclude, "./mysql"],
+		exclude: configDefaults.exclude,
 		alias: {
-			"@": "./src",
+			"@": path.resolve(__dirname, "src"),
 		},
 	},
 });
