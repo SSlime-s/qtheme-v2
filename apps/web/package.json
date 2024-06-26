@@ -87,7 +87,7 @@
 		"ts-patch": "^3.2.0",
 		"tsconfig-paths": "^4.2.0",
 		"typescript-transform-paths": "^3.4.6",
-		"vitest": "^0.31.4",
+		"vitest": "^1.6.0",
 		"webpack": "^5.89.0"
 	}
 }
