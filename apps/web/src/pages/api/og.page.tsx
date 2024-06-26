@@ -1,90 +1,35 @@
-import { ImageResponse } from "next/og";
-
-import { type Theme, themeSchema } from "@repo/theme";
-import { SmallPreview } from "@repo/theme-preview";
-import { lightTheme } from "@repo/theme/default";
-import { resolveTheme } from "@repo/theme/resolve";
-
 import type { NextRequest } from "next/server";
-import type { ReactElement } from "react";
 
 export const config = {
 	runtime: "edge",
 };
 
 const res = async (req: NextRequest) => {
-	const author = req.nextUrl.searchParams.get("author") ?? "traP";
-	const rawTheme = req.nextUrl.searchParams.get("theme");
-	if (rawTheme === null) {
-		const dom = Fallback();
-		if (dom === null) {
-			return new Response("Internal Server Error", { status: 500 });
-		}
-		return new ImageResponse(dom, {
-			width: 1200,
-			height: 630,
-		});
+	const params = req.nextUrl.searchParams;
+	if (process.env.OGP_URL === undefined) {
+		return new Response("Internal Server Error", { status: 500 });
 	}
-	let theme: Theme;
-	try {
-		theme = themeSchema.parse(JSON.parse(rawTheme));
-	} catch (err) {
-		// fallback 考える
-		theme = lightTheme;
-	}
-	const resolvedTheme = resolveTheme(theme);
 
-	const dom = SmallPreview({
-		author,
-		theme: resolvedTheme,
-		ogp: true,
-	});
-	if (dom === null) {
-		return new Response("Not Found", { status: 404 });
+	const ogp_url = new URL(process.env.OGP_URL);
+	for (const [key, value] of params) {
+		ogp_url.searchParams.append(key, value);
 	}
-	return new ImageResponse(dom as ReactElement, {
-		width: 1200,
-		height: 630,
-	});
+
+	const response = await fetch(ogp_url);
+
+	if (!response.ok) {
+		const body = await response.text();
+		const { status, headers, statusText } = response;
+		return new Response(body, { status, headers, statusText });
+	}
+
+	const blob = await response.blob();
+	const headers = new Headers(response.headers);
+	headers.set("Content-Type", blob.type);
+	headers.set("Cache-Control", "public, max-age=604800, immutable");
+
+	const { status, statusText } = response;
+
+	return new Response(blob, { headers, status, statusText });
 };
 export default res;
-
-const Fallback = () => {
-	return (
-		<div style={{ display: "flex", position: "relative" }}>
-			<SmallPreview author={"traP"} theme={resolveTheme(lightTheme)} ogp />
-			<div
-				style={{
-					display: "flex",
-					position: "absolute",
-					top: 0,
-					left: 0,
-					bottom: 0,
-					right: 0,
-					alignItems: "center",
-					justifyContent: "center",
-				}}
-			>
-				<span
-					style={{
-						backgroundColor: "rgba(255, 255, 255, 0.9)",
-						borderRadius: "32px",
-					}}
-				>
-					<span
-						style={{
-							backgroundColor: "rgba(0, 91, 172, 0.3)",
-							color: "black",
-							borderRadius: "32px",
-							fontSize: "180px",
-							padding: "32px 64px",
-							fontWeight: "bold",
-						}}
-					>
-						QTheme
-					</span>
-				</span>
-			</div>
-		</div>
-	);
-};
