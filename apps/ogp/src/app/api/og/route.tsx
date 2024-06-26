@@ -25,8 +25,7 @@ export async function GET(req: NextRequest) {
 	try {
 		theme = themeSchema.parse(JSON.parse(rawTheme));
 	} catch (err) {
-		// fallback 考える
-		theme = lightTheme;
+		return new Response("Invalid Theme", { status: 400 });
 	}
 	const resolvedTheme = resolveTheme(theme);
 
@@ -36,7 +35,7 @@ export async function GET(req: NextRequest) {
 		ogp: true,
 	});
 	if (dom === null) {
-		return new Response("Not Found", { status: 404 });
+		return new Response("Internal Server Error", { status: 500 });
 	}
 	return new ImageResponse(dom as ReactElement, {
 		width: 1200,
