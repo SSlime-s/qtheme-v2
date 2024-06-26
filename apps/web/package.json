@@ -13,7 +13,7 @@
 		"postinstall": "pnpm run generate",
 		"migration": "ts-node-esm ./bin/migrate.ts",
 		"migration:default": "ts-node-esm ./bin/default.ts",
-		"test": "vitest run"
+		"test": "vitest run --passWithNoTests"
 	},
 	"dependencies": {
 		"@apollo/server": "^4.10.4",

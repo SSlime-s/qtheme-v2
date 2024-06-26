@@ -7,7 +7,8 @@
 		"dev": "turbo dev",
 		"check": "biome check .",
 		"fix": "biome check --write .",
-		"check-types": "turbo check-types"
+		"check-types": "turbo check-types",
+		"test": "turbo test"
 	},
 	"packageManager": "pnpm@9.4.0",
 	"engines": {
