@@ -1,22 +1,38 @@
+import { gql, useQuery } from "@apollo/client";
 import { useEffect, useState } from "react";
+import { client } from "./apollo";
+
+const getThemes = gql`
+  query GetThemes {
+    getThemes {
+      total,
+      themes {
+        id,
+        title,
+        author,
+        theme,
+      }
+    }
+  }
+`;
 
 function IndexPopup() {
 	const [data, setData] = useState("");
+	const me = useQuery(getThemes, {
+		client,
+	});
+	console.debug(me);
 
 	useEffect(() => {
 		async function fetchData() {
-			const res = await fetch("https://qtheme-v2.trap.games/api/graphql", {
-				method: "POST",
-				body: JSON.stringify({
-					query: "query Whoami {\n  getMe\n}",
-					operationName: "Whoami",
-				}),
-				headers: {
-					"Content-Type": "application/json",
-				},
+			const res = await client.query({
+				query: gql`
+          query Whoami {
+            getMe
+          }
+        `,
 			});
-			const json = await res.json();
-			setData(json.data);
+			setData(res.data.getMe);
 		}
 		fetchData();
 	}, []);
