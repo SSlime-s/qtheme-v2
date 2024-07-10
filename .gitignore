@@ -48,3 +48,6 @@ mysql/data
 dist/
 
 .turbo
+
+# plasmo
+.plasmo
