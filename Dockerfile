@@ -16,6 +16,9 @@ RUN apt-get install -y openssl
 
 RUN corepack enable pnpm
 RUN pnpm install
+
+ENV NODE_ENV production
+
 RUN pnpm run build --no-lint
 
 EXPOSE 3000
