@@ -1,7 +1,7 @@
 import { GraphQLError } from "graphql";
 
 import type { MutationResolvers } from "@/apollo/generated/resolvers";
-import { logger } from "@/utils/logger";
+import { logger } from "@repo/logger";
 import type { ContextValue } from ".";
 
 export const toggleLike: MutationResolvers<ContextValue>["toggleLike"] = async (

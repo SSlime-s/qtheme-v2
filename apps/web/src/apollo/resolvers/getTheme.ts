@@ -4,7 +4,7 @@ import { getHistoryFromDb } from "./utils/getHistoryFromDb";
 import { getThemeFromDb } from "./utils/getThemeFromDb";
 
 import type { QueryResolvers } from "@/apollo/generated/resolvers";
-import { logger } from "@/utils/logger";
+import { logger } from "@repo/logger";
 import type { ContextValue } from ".";
 
 export const getTheme: QueryResolvers<ContextValue>["getTheme"] = async (

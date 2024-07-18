@@ -1,6 +1,6 @@
 import type { Theme, Type, Visibility } from "@/apollo/generated/resolvers";
-import { logger } from "@/utils/logger";
 import type { Prisma, PrismaClient } from "@repo/database";
+import { logger } from "@repo/logger";
 
 export const getThemeFromDb = async (
 	prisma: Pick<PrismaClient, "themes" | "likes">,

@@ -7,7 +7,7 @@ import { extractShowcaseUser } from "@/utils/extractUser";
 import { prisma } from "@repo/database";
 
 import type { ContextValue } from "@/apollo/resolvers";
-import { logger } from "@/utils/logger";
+import { logger } from "@repo/logger";
 import type { NextApiHandler } from "next";
 
 const server = new ApolloServer<ContextValue>({

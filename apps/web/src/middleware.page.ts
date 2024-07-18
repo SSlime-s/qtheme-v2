@@ -4,8 +4,8 @@ import { NextResponse } from "next/server";
 import { getSdk } from "./Middleware.generated";
 import { newClient } from "./utils/api";
 
+import { logger } from "@repo/logger";
 import type { NextRequest } from "next/server";
-import { logger } from "./utils/logger";
 
 // This function can be marked `async` if using `await` inside
 export async function middleware(request: NextRequest) {

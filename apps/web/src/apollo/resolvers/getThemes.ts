@@ -6,8 +6,8 @@ import type {
 	Type,
 	Visibility,
 } from "@/apollo/generated/resolvers";
-import { logger } from "@/utils/logger";
 import type { Prisma } from "@repo/database";
+import { logger } from "@repo/logger";
 import type { ContextValue } from ".";
 
 export const getThemes: QueryResolvers<ContextValue>["getThemes"] = async (

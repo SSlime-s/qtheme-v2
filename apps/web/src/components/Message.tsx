@@ -32,7 +32,13 @@ export const Message = ({
 	return (
 		<Wrap className={className} nonHover={nonHover}>
 			<Icon href={`/user/${name}`}>
-				<Image src={userIconUrl(iconUser)} alt={name} width={40} height={40} unoptimized />
+				<Image
+					src={userIconUrl(iconUser)}
+					alt={name}
+					width={40}
+					height={40}
+					unoptimized
+				/>
 			</Icon>
 			<Header>
 				<NameWrap>{name}</NameWrap>

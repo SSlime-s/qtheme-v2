@@ -1,7 +1,7 @@
 import crypto from "node:crypto";
 
 import { BASE_URL } from "@/utils/baseUrl";
-import { logger } from "@/utils/logger";
+import { logger } from "@repo/logger";
 
 interface ThemeInfo {
 	author: string;

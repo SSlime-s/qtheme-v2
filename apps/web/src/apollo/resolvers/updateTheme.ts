@@ -12,7 +12,7 @@ import type {
 	Type,
 	Visibility,
 } from "@/apollo/generated/resolvers";
-import { logger } from "@/utils/logger";
+import { logger } from "@repo/logger";
 import type { ContextValue } from ".";
 
 export const updateTheme: MutationResolvers<ContextValue>["updateTheme"] =
