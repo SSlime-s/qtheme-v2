@@ -43,6 +43,11 @@ const res: NextApiHandler = async (req, res) => {
 		}
 	}
 
-	await handler(req, res);
+	try {
+		await handler(req, res);
+	} catch (err: unknown) {
+		console.error(err);
+		res.status(500).json({ message: "Internal server error" });
+	}
 };
 export default res;
