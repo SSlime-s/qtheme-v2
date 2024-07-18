@@ -5,6 +5,7 @@ const nextConfig = {
 	compiler: {
 		emotion: true,
 	},
+	cacheMaxMemorySize: 10 * 1024 * 1024, // 10MB
 	pageExtensions: ["page.tsx", "page.ts", "page.jsx", "page.js"],
 	images: {
 		remotePatterns: [
