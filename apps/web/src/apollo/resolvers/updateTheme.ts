@@ -12,6 +12,7 @@ import type {
 	Type,
 	Visibility,
 } from "@/apollo/generated/resolvers";
+import { logger } from "@/utils/logger";
 import type { ContextValue } from ".";
 
 export const updateTheme: MutationResolvers<ContextValue>["updateTheme"] =
@@ -77,7 +78,10 @@ export const updateTheme: MutationResolvers<ContextValue>["updateTheme"] =
 						themeId: id,
 						title,
 					}).catch((err: unknown) => {
-						console.error(err);
+						logger.error(
+							{ err, on: "updateTheme", args },
+							"Failed to send webhook",
+						);
 					});
 				}
 
@@ -95,7 +99,7 @@ export const updateTheme: MutationResolvers<ContextValue>["updateTheme"] =
 
 			return theme;
 		} catch (err: unknown) {
-			console.error(err);
+			logger.error({ err, on: "updateTheme", args }, "Failed to update theme");
 			if (err instanceof GraphQLError) {
 				throw err;
 			}

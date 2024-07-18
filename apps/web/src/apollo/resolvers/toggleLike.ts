@@ -1,6 +1,7 @@
 import { GraphQLError } from "graphql";
 
 import type { MutationResolvers } from "@/apollo/generated/resolvers";
+import { logger } from "@/utils/logger";
 import type { ContextValue } from ".";
 
 export const toggleLike: MutationResolvers<ContextValue>["toggleLike"] = async (
@@ -41,7 +42,7 @@ export const toggleLike: MutationResolvers<ContextValue>["toggleLike"] = async (
 			}
 		});
 	} catch (err: unknown) {
-		console.error(err);
+		logger.error({ err, on: "toggleLike", args }, "Failed to toggle like");
 		if (err instanceof GraphQLError) {
 			throw err;
 		}

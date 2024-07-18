@@ -1,6 +1,7 @@
 import { GraphQLError } from "graphql";
 
 import type { QueryResolvers } from "@/apollo/generated/resolvers";
+import { logger } from "@/utils/logger";
 import type { ContextValue } from ".";
 
 export const getAuthors: QueryResolvers<ContextValue>["getAuthors"] = async (
@@ -34,7 +35,7 @@ export const getAuthors: QueryResolvers<ContextValue>["getAuthors"] = async (
 			})
 			.filter(({ count }) => count > 0);
 	} catch (err: unknown) {
-		console.error(err);
+		logger.error({ err, on: "getAuthors" }, "Failed to get authors");
 		if (err instanceof GraphQLError) {
 			throw err;
 		}

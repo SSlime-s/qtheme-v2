@@ -6,6 +6,7 @@ import type {
 	Type,
 	Visibility,
 } from "@/apollo/generated/resolvers";
+import { logger } from "@/utils/logger";
 import type { Prisma } from "@repo/database";
 import type { ContextValue } from ".";
 
@@ -201,7 +202,7 @@ export const getThemes: QueryResolvers<ContextValue>["getThemes"] = async (
 			total,
 		};
 	} catch (err: unknown) {
-		console.error(err);
+		logger.error({ err, on: "getThemes", args }, "Failed to get themes");
 		if (err instanceof GraphQLError) {
 			throw err;
 		}

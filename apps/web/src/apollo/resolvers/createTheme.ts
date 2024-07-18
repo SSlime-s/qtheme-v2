@@ -10,6 +10,7 @@ import type {
 	Type,
 	Visibility,
 } from "@/apollo/generated/resolvers";
+import { logger } from "@/utils/logger";
 import type { ContextValue } from ".";
 
 export const createTheme: MutationResolvers<ContextValue>["createTheme"] =
@@ -53,7 +54,10 @@ export const createTheme: MutationResolvers<ContextValue>["createTheme"] =
 						themeId: id,
 						title,
 					}).catch((err: unknown) => {
-						console.error(err);
+						logger.error(
+							{ err, on: "createTheme", args },
+							"Failed to send webhook",
+						);
 					});
 				}
 
@@ -80,7 +84,7 @@ export const createTheme: MutationResolvers<ContextValue>["createTheme"] =
 				}
 			});
 		} catch (err: unknown) {
-			console.error(err);
+			logger.error({ err, on: "createTheme", args }, "Failed to create theme");
 			if (err instanceof GraphQLError) {
 				throw err;
 			}

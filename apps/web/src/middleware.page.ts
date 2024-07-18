@@ -5,6 +5,7 @@ import { getSdk } from "./Middleware.generated";
 import { newClient } from "./utils/api";
 
 import type { NextRequest } from "next/server";
+import { logger } from "./utils/logger";
 
 // This function can be marked `async` if using `await` inside
 export async function middleware(request: NextRequest) {
@@ -33,6 +34,7 @@ export async function middleware(request: NextRequest) {
 				return NextResponse.rewrite(new URL("/error/404", request.url));
 			}
 		}
+		logger.error({ err: e, on: "middleware", id }, "Failed to get theme");
 		return NextResponse.rewrite(new URL("/error/500", request.url));
 	}
 

@@ -1,6 +1,7 @@
 import crypto from "node:crypto";
 
 import { BASE_URL } from "@/utils/baseUrl";
+import { logger } from "@/utils/logger";
 
 interface ThemeInfo {
 	author: string;
@@ -23,7 +24,10 @@ const sendTraqWebhook = async (content: string) => {
 	const id = process.env.WEBHOOK_ID ?? "";
 	const secret = process.env.WEBHOOK_SECRET ?? "";
 	if (id === "" || secret === "") {
-		console.warn("WEBHOOK_ID or WEBHOOK_SECRET is not set");
+		logger.error(
+			{ on: "sendTraqWebhook" },
+			"WEBHOOK_ID or WEBHOOK_SECRET is not set",
+		);
 		return;
 	}
 	const url = `https://q.trap.jp/api/v3/webhooks/${id}`;
@@ -38,7 +42,7 @@ const sendTraqWebhook = async (content: string) => {
 		headers,
 		body: content,
 	});
-	console.log(res);
+	logger.info({ res }, "sendTraqWebhook");
 
 	if (!res.ok) {
 		throw new Error(`Failed to send webhook: ${res.status} ${res.statusText}`);

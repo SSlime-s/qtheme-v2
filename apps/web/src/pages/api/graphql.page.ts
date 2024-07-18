@@ -7,6 +7,7 @@ import { extractShowcaseUser } from "@/utils/extractUser";
 import { prisma } from "@repo/database";
 
 import type { ContextValue } from "@/apollo/resolvers";
+import { logger } from "@/utils/logger";
 import type { NextApiHandler } from "next";
 
 const server = new ApolloServer<ContextValue>({
@@ -46,7 +47,15 @@ const res: NextApiHandler = async (req, res) => {
 	try {
 		await handler(req, res);
 	} catch (err: unknown) {
-		console.error(err);
+		if (req.method === "POST") {
+			logger.error(
+				{ err, on: "api/graphql", body: req.body },
+				"Failed to handle request",
+			);
+		} else {
+			logger.error({ err, on: "api/graphql" }, "Failed to handle request");
+		}
+
 		res.status(500).json({ message: "Internal server error" });
 	}
 };

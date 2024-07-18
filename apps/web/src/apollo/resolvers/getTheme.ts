@@ -4,6 +4,7 @@ import { getHistoryFromDb } from "./utils/getHistoryFromDb";
 import { getThemeFromDb } from "./utils/getThemeFromDb";
 
 import type { QueryResolvers } from "@/apollo/generated/resolvers";
+import { logger } from "@/utils/logger";
 import type { ContextValue } from ".";
 
 export const getTheme: QueryResolvers<ContextValue>["getTheme"] = async (
@@ -27,7 +28,7 @@ export const getTheme: QueryResolvers<ContextValue>["getTheme"] = async (
 
 		return theme;
 	} catch (err: unknown) {
-		console.error(err);
+		logger.error({ err, on: "getTheme", args }, "Failed to get theme");
 		if (err instanceof GraphQLError) {
 			throw err;
 		}

@@ -1,6 +1,7 @@
 import { GraphQLError } from "graphql";
 
 import type { MutationResolvers } from "@/apollo/generated/resolvers";
+import { logger } from "@/utils/logger";
 import type { ContextValue } from ".";
 
 export const deleteTheme: MutationResolvers<ContextValue>["deleteTheme"] =
@@ -26,7 +27,7 @@ export const deleteTheme: MutationResolvers<ContextValue>["deleteTheme"] =
 
 			return null;
 		} catch (err: unknown) {
-			console.error(err);
+			logger.error({ err, on: "deleteTheme", args }, "Failed to delete theme");
 			if (err instanceof GraphQLError) {
 				throw err;
 			}

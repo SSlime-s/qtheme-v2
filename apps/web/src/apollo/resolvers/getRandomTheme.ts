@@ -9,6 +9,7 @@ import type {
 } from "@/apollo/generated/resolvers";
 import type { Prisma } from "@repo/database";
 import type { ContextValue } from ".";
+import { logger } from "@/utils/logger";
 
 export const getRandomTheme: QueryResolvers<ContextValue>["getRandomTheme"] =
 	async (_parent, args, { userId, prisma }) => {
@@ -108,7 +109,7 @@ export const getRandomTheme: QueryResolvers<ContextValue>["getRandomTheme"] =
 				isLike: is_like,
 			} satisfies Theme;
 		} catch (err: unknown) {
-			console.error(err);
+			logger.error({ err, on: "getRandomTheme", args }, "Failed to get random theme");
 			if (err instanceof GraphQLError) {
 				throw err;
 			}

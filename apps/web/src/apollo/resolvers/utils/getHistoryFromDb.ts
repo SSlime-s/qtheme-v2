@@ -1,4 +1,5 @@
 import type { Version } from "@/apollo/generated/resolvers";
+import { logger } from "@/utils/logger";
 import type { PrismaClient } from "@repo/database";
 
 interface IHistory extends Version {
@@ -53,7 +54,7 @@ export const getHistoryFromDb = async (
 
 		return history.map(convertRowToI) satisfies IHistory[];
 	} catch (err) {
-		console.error(err);
+		logger.error({ err, on: "getHistoryFromDb" }, "Failed to get history");
 		throw err;
 	}
 };
@@ -86,7 +87,10 @@ export const getLatestHistoryFromDb = async (
 		}
 		return convertRowToI(history);
 	} catch (err) {
-		console.error(err);
+		logger.error(
+			{ err, on: "getLatestHistoryFromDb" },
+			"Failed to get history",
+		);
 		throw err;
 	}
 };

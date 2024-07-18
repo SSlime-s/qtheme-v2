@@ -1,4 +1,5 @@
 import type { Theme, Type, Visibility } from "@/apollo/generated/resolvers";
+import { logger } from "@/utils/logger";
 import type { Prisma, PrismaClient } from "@repo/database";
 
 export const getThemeFromDb = async (
@@ -87,7 +88,10 @@ export const getThemeFromDb = async (
 			likes,
 		} satisfies Theme;
 	} catch (err: unknown) {
-		console.error(err);
+		logger.error(
+			{ err, on: "getThemeFromDb", id, userId },
+			"Failed to get theme",
+		);
 		throw err;
 	}
 };
