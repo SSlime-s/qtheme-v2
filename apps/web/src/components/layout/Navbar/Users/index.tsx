@@ -79,7 +79,7 @@ const UserCard: React.FC<{
 }> = ({ name, count }) => {
 	return (
 		<CardWrap href={`/user/${name}`}>
-			<Icon src={userIconUrl(name)} alt="" width={36} height={36} />
+			<Icon src={userIconUrl(name)} alt="" width={36} height={36} unoptimized />
 			<Name>{name}</Name>
 			<Count>{count}投稿</Count>
 		</CardWrap>

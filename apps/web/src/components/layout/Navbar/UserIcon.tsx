@@ -29,6 +29,7 @@ export const UserIcon: React.FC<Props> = ({ userId }) => {
 					height={36}
 					width={36}
 					alt="My Page"
+					unoptimized
 				/>
 			</NextLink>
 		);
