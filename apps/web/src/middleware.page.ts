@@ -7,7 +7,6 @@ import { newClient } from "./utils/api";
 import { logger } from "@repo/logger";
 import type { NextRequest } from "next/server";
 
-// This function can be marked `async` if using `await` inside
 export async function middleware(request: NextRequest) {
 	const id = request.nextUrl.pathname
 		.replace(/^\/theme\//, "")
