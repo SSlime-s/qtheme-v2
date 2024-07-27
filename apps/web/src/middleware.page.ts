@@ -9,9 +9,6 @@ import type { NextRequest } from "next/server";
 
 // This function can be marked `async` if using `await` inside
 export async function middleware(request: NextRequest) {
-	const client = newClient();
-	const sdk = getSdk(client);
-
 	const id = request.nextUrl.pathname
 		.replace(/^\/theme\//, "")
 		.replace(/\/$/, "");
@@ -21,6 +18,14 @@ export async function middleware(request: NextRequest) {
 	}
 
 	try {
+		const client = newClient();
+
+		const cookie = request.headers.get("cookie");
+		if (cookie !== null) {
+			client.setHeader("cookie", cookie);
+		}
+
+		const sdk = getSdk(client);
 		const { getTheme } = await sdk.HasPermission({
 			id,
 		});
