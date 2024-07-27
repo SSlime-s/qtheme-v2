@@ -20,7 +20,7 @@ export const CopyButton: React.FC<
 			setStatus("copied");
 			setTimeout(() => setStatus("default"), 700);
 			onCopy?.();
-		} catch (e) {
+		} catch (_e) {
 			setStatus("error");
 			setTimeout(() => setStatus("default"), 700);
 			onCopyError?.();

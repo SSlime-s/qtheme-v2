@@ -13,21 +13,21 @@ const checkValidJson = (value: string): boolean => {
 	try {
 		JSON.parse(value);
 		return true;
-	} catch (e) {
+	} catch (_e) {
 		return false;
 	}
 };
 const format = (value: string) => {
 	try {
 		return `${JSON.stringify(JSON.parse(value), null, 2)}\n`;
-	} catch (e) {
+	} catch (_e) {
 		return value;
 	}
 };
 const unformat = (value: string) => {
 	try {
 		return JSON.stringify(JSON.parse(value));
-	} catch (e) {
+	} catch (_e) {
 		return value;
 	}
 };

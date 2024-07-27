@@ -25,6 +25,6 @@ export const decodeTheme = (encoded: string): ShareTheme | Error => {
 		const decoded = JSON.parse(decompressFromEncodedURIComponent(encoded));
 		return shareThemeScheme.parse(decoded);
 	} catch (e) {
-		return new Error("Failed to decode theme");
+		return new Error(`Failed to decode theme: ${e}`);
 	}
 };

@@ -39,7 +39,7 @@ export const getServerSideProps = (async ({ req, query }) => {
 				userId,
 			},
 		};
-	} catch (e) {
+	} catch (_e) {
 		return {
 			props: {
 				defaultTheme: lightTheme,

@@ -23,7 +23,7 @@ export function assignRef<T = unknown>(ref: ReactRef<T> | undefined, value: T) {
 		// @ts-ignore
 		ref.current = value;
 	} catch (error) {
-		throw new Error(`Cannot assign value '${value}' to ref '${ref}'`);
+		throw new Error(`${error}: Cannot assign value '${value}' to ref '${ref}'`);
 	}
 }
 

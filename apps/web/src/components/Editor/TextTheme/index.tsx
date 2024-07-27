@@ -33,7 +33,7 @@ export const TextTheme: React.FC = () => {
 		let theme: unknown;
 		try {
 			theme = JSON.parse(clipboard);
-		} catch (e) {
+		} catch (_e) {
 			return false;
 		}
 

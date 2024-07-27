@@ -1,5 +1,6 @@
 import { ImageResponse } from "next/og";
 
+import { logger } from "@repo/logger";
 import { type Theme, themeSchema } from "@repo/theme";
 import { SmallPreview } from "@repo/theme-preview";
 import { lightTheme } from "@repo/theme/default";
@@ -25,6 +26,7 @@ export async function GET(req: NextRequest) {
 	try {
 		theme = themeSchema.parse(JSON.parse(rawTheme));
 	} catch (err) {
+		logger.info({ err, rawTheme }, "Failed to parse theme");
 		return new Response("Invalid Theme", { status: 400 });
 	}
 	const resolvedTheme = resolveTheme(theme);

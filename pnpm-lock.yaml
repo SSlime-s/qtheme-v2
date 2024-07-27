@@ -81,6 +81,9 @@ importers:
 
   apps/ogp:
     dependencies:
+      '@repo/logger':
+        specifier: workspace:*
+        version: link:../../packages/logger
       '@repo/theme':
         specifier: workspace:*
         version: link:../../packages/theme
